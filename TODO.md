@@ -86,9 +86,7 @@ spiegare dove si e usato il calcolo simbolico.
 LU simbolica
 ============
 
-
-
-
+Capitolo dove si descrive LEM e LAST perche si usa nelle DAE (riduzione indice) e TRUSS ME per superare limiti di MAPLE.
 
 La fattorizzazione simbolica di una matrice è un processo che consiste nel rappresentare una matrice come prodotto di altre matrici più semplici o speciali. Mentre il calcolo simbolico è spesso associato alla manipolazione di espressioni matematiche, in alcuni contesti può essere utile estenderlo all'analisi numerica, in particolare quando si tratta di risolvere sistemi di equazioni lineari.
 
@@ -108,4 +106,21 @@ Comprendere la Struttura del Problema:
 La rappresentazione simbolica della matrice fornisce una visione più chiara della struttura matematica del problema, agevolando la comprensione dei pattern e delle relazioni matematiche sottostanti.
 
 In sintesi, la fattorizzazione simbolica di una matrice può essere un utile strumento in analisi numerica per migliorare la precisione, l'efficienza e la stabilità degli algoritmi utilizzati nella risoluzione di sistemi lineari e in altri contesti matriciali.
+
+DAE
+===
+
+parlare delle DAE indice e perche non sono facii da risolvere.
+Algoritmo riduzione indice "TEORICO"
+Problemi impementayivi veiling etc etc
+
+TRUSS ME
+========
+
+Applicazione ingegneristica della LU simboica per andare veloci su hardware limitato
+
+CONCLUSIONI
+
+APPENDICE
+
 
