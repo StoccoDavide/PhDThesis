@@ -1,0 +1,297 @@
+\documentclass[a5paper, 10pt, openright]{book} % book template, paper size is b5
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Suppress some warnings -------------------------------------------------------
+\usepackage{silence}
+\WarningsOff[everypage] % Suppress warnings related to package everypage
+\pdfsuppresswarningpagegroup=1
+
+% Maths ------------------------------------------------------------------------
+\usepackage[super]{nth}          % write ordinal numbers superscript 'st',' nd', 'rd', 'th'
+\usepackage{amsmath}             % principal package for serious mathematical typesetting
+\usepackage{mathtools}           % improved version of amsmath
+\usepackage{amssymb}             % particular mathematical symbols
+\usepackage{scalerel}            % scale/stretch/shift an object to conform a second one
+%\usepackage{amsfonts}           % particular mathematical fonts
+%\usepackage{amsthm}             % to define theorems, lemmas, etc
+%\usepackage{mathrsfs}           % math upper case letter fonts
+%\usepackage{bm}                 % bold math formula, similar to '\mathbf'
+%\usepackage{systeme}            % easy way to write systems of equations
+%\usepackage{accents}            % particular accents in math
+%\usepackage{commath}            % differential, partial differ., delimiters, etc
+
+% Document settings ------------------------------------------------------------
+\usepackage{enumitem}            % advanced generate a list with numbered items
+\usepackage{xspace}              % smart spacing at the end of macros
+\usepackage{geometry}            % change margins of the document
+\usepackage{acronym}             % to define abbreviations
+%\usepackage{changepage}         % adjust width environment
+%\usepackage{enumerate}          % basic generate list with numbered items
+%\usepackage{stackengine}        % stack objects vertically
+%\usepackage{setspace}           % spacing between lines in a document
+%\usepackage{pdfpages}           % for the inclusion of multi-page external PDF documents
+
+% Text settings ----------------------------------------------------------------
+\usepackage{lipsum}              % generate random text in Latin
+\usepackage[dvipsnames]{xcolor}  % color the text
+\usepackage{soul}                % to strike-through text
+\usepackage{tcolorbox}           % create a colored box wrapping the text
+\usepackage[toc, page]{appendix} % to create appendices
+\usepackage[english]{babel}      % useful to interpret the language of the document
+\usepackage{lmodern}             % text font
+\usepackage[T1]{fontenc}         % to write correctly in Italian
+\usepackage[utf8]{inputenc}      % to correctly write accented letter and other symbols
+%\usepackage[latin1]{inputenc}   % codec input useful to write docs in Italian
+%\usepackage[normalem]{ulem}     % underline command which will break over line ends
+
+% Units ------------------------------------------------------------------------
+\usepackage{siunitx}             % write unit of measurements
+
+% Citations --------------------------------------------------------------------
+\usepackage{hyperref}            % generate hyper-reference links in the pdf document
+\usepackage{cleveref}            % to reference equations, figures, tables, etc
+%\usepackage{cite}               % lists of numerical citations and representation issues
+%\usepackage{authblk}            % to define authors footstep
+
+% Figures and tables -----------------------------------------------------------
+\usepackage{graphicx}            % advanced package to load figures
+\usepackage{subfig}              % generating subfigures
+\usepackage{booktabs}            % enhance table quality: midrule, toprule, etc
+\usepackage{array}               % array and tabular environments
+\usepackage{float}               % improve the interface to define figs and tables
+\usepackage{multirow}            % multi rows    cells in a table
+\usepackage{longtable}           % long tables
+%\usepackage{background}         % to put a background image in the document
+%\usepackage{multicol}           % multi columns cells in a table
+%\usepackage{ctable}             % alignement of folats objects
+%\usepackage{graphics}           % base package to load figures
+%\usepackage{caption}            % to customize the captions in floating environments
+%\usepackage{subcaption}         % again used to customize the captions
+
+% Algorithms and code ----------------------------------------------------------
+\usepackage[boxed]{algorithm2e}  % to write algorithms
+\usepackage{listings}            % to write code
+
+% TikZ and PGFPlots ------------------------------------------------------------
+\usepackage{pgfplots}            % external TikZ/PGF plots support
+\usepgfplotslibrary{external}    % load the externalization library
+\usetikzlibrary{external}        % use the externalization library
+%\tikzexternalize[mode=list and make, prefix=gfx/ext-tikz/]
+\tikzexternalize[mode=convert with system call, prefix=figures/externalized/]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DOCUMENT SETUP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Set custom margins for the document ------------------------------------------
+%\newgeometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm} % Digital version
+\newgeometry{top=2.0cm, bottom=2.0cm, width=11cm, bindingoffset=12mm} % Print version
+%headsep=0.25in, headheight=20pt, heightrounded
+
+% Write 10^0 instead of 1 (requires 'siunitx') ---------------------------------
+\sisetup{retain-zero-exponent=true}
+
+% Modify layout of command SIrange (requires 'siunitx') ------------------------
+%\sisetup{range-phrase = \text{ -- }}
+
+% Set the indent length to zero ------------------------------------------------
+\setlength\parindent{0pt}
+
+% Set the path of the figure files ---------------------------------------------
+\graphicspath{
+  {figures/frontmatter/}
+  {figures/chapter_1/}
+  {figures/chapter_2/}
+  {figures/chapter_3/}
+  {figures/chapter_4/}
+  {figures/chapter_5/}
+  {figures/chapter_6/}
+  {figures/chapter_7/}
+  {figures/chapter_8/}
+  {figures/appendix_1/}
+}
+
+% Insert a date ----------------------------------------------------------------
+\date{January 2024}
+
+% Bibliography -----------------------------------------------------------------
+\PassOptionsToPackage{%
+  backend=biber, bibencoding=utf8, % instead of bibtex
+  %backend=bibtex8,bibencoding=ascii, %
+  language=auto, %
+  style=numeric-comp, %
+  %style=authoryear-comp, % Author 1999, 2010
+  %bibstyle=authoryear, dashed=false, % dashed: substitute rep. author with ---
+  sorting=none, % sorted by appearance
+  maxbibnames=10, % default: 3, et al.
+  %backref=true, %
+  natbib=true, % natbib compatibility mode (\citep and \citet still work)
+}{biblatex}
+\usepackage{biblatex}
+\addbibresource{bibliography.bib}
+
+% Reduce the margin of the summary/abstract ------------------------------------
+%\def\changemargin#1#2{
+%  \list{}{\rightmargin#2\leftmargin#1}
+%  \item[]}
+%\let\endchangemargin=\endlist
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DEFINITIONS OF COMMANDS AND VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Create the 'abstract' environment (not present by default in the 'book' class)
+\newcommand{\summaryname}{Abstract}
+\newenvironment{Abstract}{
+  \begin{center}
+    \bfseries{\summaryname}
+  \end{center}
+}
+
+% Definitions of new table columns commands (require package 'array') ----------
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+
+% Definitions of mathematical commands to typeset many things ------------------
+\newcommand{\MATLAB}{\textsc{Matlab}\xspace}
+\newcommand{\Lagr}{\mathop{\mathcal{L}}}
+\newcommand*{\tcr}{\textcolor{red}}
+
+\newcommand{\Acme}{\textsc{Acme}}
+\newcommand{\Eigen}{\textsc{Eigen}}
+\newcommand{\CGAL}{\textsc{CGAL}}
+\newcommand{\MatrixBase}{\textsc{MatrixBase}}
+\newcommand{\Entity}{\textsc{Entity}}
+\newcommand{\Entities}{\textsc{Entities}}
+\newcommand{\Point}{\textsc{Point}}
+\newcommand{\Line}{\textsc{Line}}
+\newcommand{\Ray}{\textsc{Ray}}
+\newcommand{\Plane}{\textsc{Plane}}
+\newcommand{\Segment}{\textsc{Segment}}
+\newcommand{\Triangle}{\textsc{Triangle}}
+\newcommand{\Disk}{\textsc{Disk}}
+\newcommand{\Ball}{\textsc{Ball}}
+\newcommand{\Collection}{\textsc{Collection}}
+\newcommand{\Aabb}{\textsc{AABB}}
+\newcommand{\AabbTree}{\textsc{AABBtree}}
+
+\newcommand{\Tire}{\textsc{Tire}}
+\newcommand{\Road}{\textsc{Road}}
+
+\newcommand{\Const}{\textsc{Const}}
+\newcommand{\SharedPointer}{\textsc{SharedPointer}}
+
+\newcommand{\Matlab}{\textsc{Matlab}\textsuperscript{\textregistered}}
+\newcommand{\Mex}{\textsc{Mex}}
+\newcommand{\Doxygen}{\textsc{Doxygen}}
+\newcommand{\Sphinx}{\textsc{Sphinx}}
+\newcommand{\cpp}{C++}
+
+\newcommand{\tb}{\textbullet}
+\newcommand{\tp}{\textopenbullet}
+
+\newcommand{\pa}{\ensuremath{\parallel}}
+\newcommand{\pe}{\ensuremath{\bot}}
+\newcommand{\cl}{\rotatebox[origin=c]{0}{\scalebox{0.76}{\ensuremath{\hspace{0.5mm}\Cup}}}}
+\newcommand{\cp}{\scalebox{0.69}{\ensuremath{\square}}}
+
+
+% Definitions of the abbreviations command -------------------------------------
+\newcommand\nomenclature[2]{#1 & #2 \\}
+
+% Definition of special symbols for some unit of measurement -------------------
+\def\mcirc{\mathbin{\scalerel*{\circ}{j}}}
+\def\msquare{\mathord{\scalerel*{\Box}{gX}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BEGIN DOCUMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+% Frontmatter ------------------------------------------------------------------
+\include{frontmatter/frontmatter}
+\hbox{}
+\thispagestyle{empty}
+\newpage
+
+% Abstract ---------------------------------------------------------------------
+\include{abstract/abstract.tex}
+\vspace*{\fill}
+
+% Table of contents ------------------------------------------------------------
+\tableofcontents
+
+% List of figures --------------------------------------------------------------
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures
+
+% List of tables ---------------------------------------------------------------
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{\listtablename}
+\listoftables
+
+% List of abbreviations --------------------------------------------------------
+\cleardoublepage
+\addcontentsline{toc}{chapter}{List of Abbreviations}
+\chapter*{List of Abbreviations}
+\begin{acronym}[XXXXXX]
+  \acro{HIL}{Hardware In the Loop}
+  \acro{SIL}{Software In the Loop}
+  \acro{DIL}{Driver In the Loop}
+  \acro{MBS}{Multibody System}
+  \acro{MB}{Multibody}
+  \acro{FEM}{Finite Element Method}
+  \acro{FE}{Finite Element}
+  \acro{FEA}{Finite Element Analysis}
+  \acro{RT}{Real-Time}
+  \acro{ODE}{Ordinary Differential Equation}
+  \acro{DAE}{Differential Algebraic Equation}
+  \acro{BLAS}{Basic Linear Algebra Subprograms}
+  \acro{LAPACK}{Linear Algebra PACKage}
+  \acro{DSM}{Direct Stiffness Method}
+  \acro{LU}{Lower-Upper}
+  \acro{RTF}{Real-Time Factor}
+  \acro{API}{Application Programming Interface}
+  \acro{GUI}{Graphical User Interface}
+  \acro{CPU}{Central Processing Unit}
+  \acro{GPU}{Graphics Processing Unit}
+  \acro{RAM}{Random Access Memory}
+\end{acronym}
+
+% Mainmatter -------------------------------------------------------------------
+\include{chapters/chapter_1.tex}
+\include{chapters/chapter_2.tex}
+\include{chapters/chapter_3.tex}
+\include{chapters/chapter_4.tex}
+\include{chapters/chapter_5.tex}
+\include{chapters/chapter_6.tex}
+\include{chapters/chapter_7.tex}
+\include{chapters/chapter_8.tex}
+\begin{appendices}
+\include{appendices/appendix_1.tex}
+\end{appendices}
+
+% Bibliography -----------------------------------------------------------------
+\addcontentsline{toc}{chapter}{Bibliography}
+\nocite{*}
+\printbibliography
+
+% Acknowledgments --------------------------------------------------------------
+\addcontentsline{toc}{chapter}{Acknowledgments (Ringraziamenti)}
+\include{acknowledgments/acknowledgments.tex}
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% END DOCUMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

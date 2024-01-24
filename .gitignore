@@ -1,0 +1,18 @@
+# LaTeX files
+
+*.aux
+*.auxlock
+*.bbl
+*.blg
+*.bcf
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.run.xml
+*.synctex.gz
+*.synctex.gz(busy)
+*main.pdf
+figures/externalized/
+out/

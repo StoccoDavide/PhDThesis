@@ -1,0 +1,92 @@
+%% Creator: Inkscape 1.3.2 (091e20e, 2023-11-25), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'acme_entities.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{497.97738143bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.19199264)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{acme_entities.pdf}}%
+    \put(0.8605522,0.01355644){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{AABB}\end{tabular}}}}%
+    \put(0.96004765,0.17062228){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{p}_{max}$\\\end{tabular}}}}%
+    \put(0.72081854,0.08507739){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{o}$\\\end{tabular}}}}%
+    \put(0.71713162,0.01388462){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Ball}\end{tabular}}}}%
+    \put(0.81340882,0.03027273){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{p}_{min}$\\\end{tabular}}}}%
+    \put(0.5559823,0.01355644){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Disk}\end{tabular}}}}%
+    \put(0.54895811,0.14204194){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{\boldsymbol{n}}$\\\end{tabular}}}}%
+    \put(0.57444678,0.08681895){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{o}$\\\end{tabular}}}}%
+    \put(0.37512621,0.01388462){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Triangle}\end{tabular}}}}%
+    \put(0.22529833,0.01492035){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Plane}\end{tabular}}}}%
+    \put(0.4056767,0.1652831){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{p}_{1}$\\\end{tabular}}}}%
+    \put(0.31941037,0.03312609){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{p}_{2}$\\\end{tabular}}}}%
+    \put(0.45983407,0.05869704){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{p}_{3}$\\\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{acme_entities.pdf}}%
+    \put(0.7383626,0.12274973){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$r$\\\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{acme_entities.pdf}}%
+    \put(0.52627107,0.08147681){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$r$\\\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{acme_entities.pdf}}%
+    \put(0.24753021,0.05851157){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{p}$\\\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{acme_entities.pdf}}%
+    \put(0.2287842,0.14848382){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{\boldsymbol{n}}$\\\end{tabular}}}}%
+    \put(0.0539678,0.01492036){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Segment}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{acme_entities.pdf}}%
+    \put(0.03550328,0.03647763){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{p}_{1}$\\\end{tabular}}}}%
+    \put(0.13206335,0.03647763){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{p}_{2}$\\\end{tabular}}}}%
+    \put(0.0731304,0.07287056){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Ray}\end{tabular}}}}%
+    \put(0.07163221,0.12887031){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Line}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{acme_entities.pdf}}%
+    \put(0.04145846,0.09234879){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{o}$\\\end{tabular}}}}%
+    \put(0.12904767,0.08753135){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{\boldsymbol{d}}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{acme_entities.pdf}}%
+    \put(0.04357325,0.15035331){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{o}$\\\end{tabular}}}}%
+    \put(0.12864882,0.14446533){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\vec{\boldsymbol{d}}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{acme_entities.pdf}}%
+  \end{picture}%
+\endgroup%

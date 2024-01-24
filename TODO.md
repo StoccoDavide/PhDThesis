@@ -1,4 +1,6 @@
-Argomenti trattati
+# Symbolic Computation Methods for the Real-Time Numerical Solution of Dynamical Systems
+
+# Argomenti trattati
 
 - ACME libreria geometrica C++ MEX elementi geometrici
   - 1 articolo
@@ -12,29 +14,27 @@ Argomenti trattati
 - TRUSSME liberia sospensione FEM con calcolo simbolico
   - 2 articolo sottomesso
 
-TITOLO BIRAL:
-Symbolic Computation Methods for the Real-Time Numerical Solution of Dynamical Systems
 
 Introduzione:
 
 pippone storico:
 ================
 
-L'analisi numerica è una disciplina che si occupa dello sviluppo e dell'applicazione di metodi computazionali per risolvere problemi 
-matematici attraverso l'uso di algoritmi e tecniche numeriche. Le sue origini risalgono ai tempi antichi, quando le prime società umane 
-iniziarono a sviluppare metodi approssimati per risolvere equazioni e misurare grandezze. Tuttavia, il vero impulso per l'analisi numerica 
+L'analisi numerica è una disciplina che si occupa dello sviluppo e dell'applicazione di metodi computazionali per risolvere problemi
+matematici attraverso l'uso di algoritmi e tecniche numeriche. Le sue origini risalgono ai tempi antichi, quando le prime società umane
+iniziarono a sviluppare metodi approssimati per risolvere equazioni e misurare grandezze. Tuttavia, il vero impulso per l'analisi numerica
 si è verificato con l'avvento delle macchine calcolatrici e dei computer nel XX secolo.
 
-Nel corso del tempo, con l'aumentare della complessità dei problemi scientifici e ingegneristici, è diventato evidente che era necessario 
-sviluppare approcci più sofisticati per risolvere equazioni differenziali, integrali e altri problemi matematici. Il lavoro pionieristico 
-di matematici come John von Neumann e Alonzo Church ha contribuito allo sviluppo di metodi numerici fondamentali, tra cui l'approssimazione di funzioni, 
+Nel corso del tempo, con l'aumentare della complessità dei problemi scientifici e ingegneristici, è diventato evidente che era necessario
+sviluppare approcci più sofisticati per risolvere equazioni differenziali, integrali e altri problemi matematici. Il lavoro pionieristico
+di matematici come John von Neumann e Alonzo Church ha contribuito allo sviluppo di metodi numerici fondamentali, tra cui l'approssimazione di funzioni,
 l'integrazione numerica e la risoluzione di sistemi di equazioni lineari e non lineari.
 
-Con l'avanzare della tecnologia informatica, è emersa una nuova branca dell'analisi numerica nota come calcolo simbolico. Questo approccio si distingue per la manipolazione simbolica 
+Con l'avanzare della tecnologia informatica, è emersa una nuova branca dell'analisi numerica nota come calcolo simbolico. Questo approccio si distingue per la manipolazione simbolica
 delle espressioni matematiche, consentendo la rappresentazione e la manipolazione di variabili simboliche anziché numeriche. Il calcolo simbolico ha trovato applicazioni in diverse discipline,
 dalla matematica pura all'ingegneria, fornendo strumenti potenti per la semplificazione di formule, la derivazione simbolica e la risoluzione simbolica di equazioni.
 
-Il calcolo simbolico e l'analisi numerica, dunque, collaborano per offrire soluzioni complete a una vasta gamma di problemi matematici e scientifici. Mentre l'analisi numerica si concentra sull'approccio 
+Il calcolo simbolico e l'analisi numerica, dunque, collaborano per offrire soluzioni complete a una vasta gamma di problemi matematici e scientifici. Mentre l'analisi numerica si concentra sull'approccio
 computazionale e approssimativo, il calcolo simbolico offre precisione attraverso la manipolazione simbolica delle espressioni matematiche, portando a una combinazione sinergica di potenti strumenti per l'indagine matematica e scientifica.
 
 INtroduzione con esempi di problemi che richiedono il calcolo simbolico
@@ -44,12 +44,12 @@ Il calcolo simbolico è particolarmente utile per risolvere problemi che coinvol
 
 Derivazione e Integrazione Simbolica:
 Esempio 1: Calcolare la derivata di una funzione complessa, come ad esempio .
-Esempio 2: Eseguire l'integrazione simbolica di una funzione come 
+Esempio 2: Eseguire l'integrazione simbolica di una funzione come
 Algebra Simbolica:
 Esempio 3: Semplificare espressioni algebriche comple
 Esempio 4: Risolvere sistemi di equazioni lineari o non lineari in forma simbolica.
 Equazioni Differenziali Ordinarie (EDO):
-Esempio 5: Risolvere un'equazione differenziale come 
+Esempio 5: Risolvere un'equazione differenziale come
 Esempio 6: Trovare una soluzione generale per un sistema di EDO complesso.
 Matrici e Algebra Lineare:
 Esempio 7: Calcolare l'inversa di una matrice simbolica.
