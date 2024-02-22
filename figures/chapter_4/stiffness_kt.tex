@@ -1,0 +1,45 @@
+\begin{tikzpicture}
+
+\begin{axis}[
+  minor tick num=1,
+  minor grid style={dashed, line width=.1pt, draw=gray!45},
+  major grid style={line width=.2pt, draw=gray!60},
+  width=1.5in,
+  height=1.5in,
+  at={(0.0in,0.0in)},
+  scale only axis,
+  xmin=0.55,
+  xmax=1.05,
+  xlabel style={font=\color{black}},
+  xlabel={$p$ (\unit{\kilo\pascal})},
+  ymin=0.55,
+  ymax=1.05,
+  xtick={0.6,0.8,1},
+  xticklabels={$75$, $150$, $225$},
+  ylabel style={font=\color{black}},
+  ylabel={$K_\theta/K_\theta(p = \SI{225}{\kilo\pascal})$},
+  axis background/.style={fill=none},
+  %yticklabel=\empty,
+  ytick style={draw=none},
+  xmajorgrids,
+  xminorgrids,
+  ymajorgrids,
+  yminorgrids
+]
+
+\addplot [color=mycolor1, opacity=0.8, line width=0.9pt, forget plot]
+  table[row sep=crcr]{
+  0.000000000000000		0.281188132265784\\
+  1.500000000000000   1.359405933867108\\
+};
+
+\addplot [color=mycolor2, only marks, mark size=2.0pt, mark=*, mark options={solid, mycolor2}, forget plot]
+  table[row sep=crcr]{
+  0.717272727272727	0.76900990311343\\
+  0.818181818181818	0.889207923128533\\
+  0.909090909090909	0.929702972767672\\
+};
+
+\end{axis}
+
+\end{tikzpicture}%

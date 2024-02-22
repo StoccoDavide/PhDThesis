@@ -1,212 +1,230 @@
 %!TEX root = ../main.tex
 
 \chapter{\Acme{}: A Small 3D Geometry Library}
-\label{appendix:acme}
+\label{app1:acme}
 
-Simulation of manned and unmanned vehicles has become more and more important in the last decades. High-performance real-time DIL (\emph{Driver-In-The-Loop}) and HIL (\emph{Hardware-In-The-Loop}) simulators require efficient, accurate, and fast algorithms to properly model how a vehicle moves in a virtual environment. Most of the time, the virtual world is made from a multitude of basic geometric entities that can collide and modify accordingly. The ability to quickly resolve basic geometric problems is one of the most important roles in this kind of simulation. \Acme{} library is built to efficiently perform simple operations on a large number of basic geometric entities. In particular, the library is designed to address specific hard real-time tire-road contact geometry analysis. In this paper, we discuss the details about the \Acme{} library implementation, data types, features, and an example application to demonstrate the capabilities of this newly born software.
+\subsubsection{Copyright Notice}
+Part of this chapter has been first published in
+%
+\begin{center}
+  \begin{minipage}{0.9\textwidth}
+    \fullcite{stocco2021acme}
+  \end{minipage}
+\end{center}
+%
+by Elsevier. Reproduced with permission from Elsevier.
 
-% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\begin{center}
+  $\ast$~$\ast$~$\ast$
+\end{center}
+
+In the past few decades, the simulation of both manned and unmanned vehicles has gained increasing significance. The demand for highly efficient \ac{RT} \ac{DIL}/\ac{HIL}/\ac{SIL} simulators underscores the necessity for algorithms that are not only efficient but also accurate in modeling vehicle movements within a virtual environment. Typically, the virtual world comprises numerous basic geometric entities capable of colliding and adjusting accordingly. The ability to quickly solve basic geometric problems is one of the most important roles in this kind of simulation. The \Acme{} library is built to efficiently perform simple operations on a large number of basic geometric entities. Specifically, the library is tailored to address specific \ac{HRT} tire-ground contact geometry analysis. This chapter describes the implementation details of the \Acme{} library, exploring its data types and characteristics, and providing an exemplary application to showcase the prowess of this innovative software.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
 \section{Motivation and Significance}
+\label{app1:acme_motivation}
 
-In the last few decades, manufacturers in the automotive field have placed their attention on simulation. Specifically, with the coming of high-performance CPUs and GPUs, the focus has been more and more on real-time DIL and HIL simulators. These high-fidelity and fully integrated simulators require a large computational capability. In addition, specifically designed codes are needed to meet both the real-time requirement and high accuracy in a very limited time interval\footnote{Refresh frequency in driving simulators is typically 1kHz. This frequency is a trade-off to correctly catch typical frequencies in vehicle subsystems.}.
+Over the recent decades, there has been a notable shift in the automotive manufacturing sector towards prioritizing simulation. In particular, the advent of high-performance \acp{CPU} and \acp{GPU} has intensified the focus on \ac{RT} simulators. These sophisticated simulators, characterized by high fidelity and full integration, demand substantial computational capabilities. Moreover, specialized codes are essential to meet the dual requirements of \ac{HRT} responsiveness and high accuracy within very limited time intervals\footnote{The refresh frequency in driving simulators typically stands at \SSI{1}{\kilo\hertz}. This frequency is a trade-off to accurately capture typical frequencies in vehicle subsystems.}.
 
-An important aspect when dealing with simulation is the environment. In driving simulators the virtual environment on which the vehicle moves is made from a multitude of basic geometric entities that can intersect and modify with time. Therefore, the ability to resolve simple geometric problems in an efficient way plays a pivotal role in reaching a high accuracy and consequently a realistic simulation. In particular, when working with a large number of geometric objects, it is essential to partition the 3D Euclidean space with an appropriate data structure. This data structure allows efficient access to spatial objects. Without spatial partitioning, any search would require a scan of all the elements in the database increasing the processing time considerably.
+An important aspect of simulation lies in the treatment of the environment. In driving simulators the virtual environment on which the vehicle moves is made from a multitude of basic geometric entities that can intersect and evolve. Consequently, the efficient resolution of simple geometric problems assumes a crucial role in achieving high accuracy and, by extension, a realistic simulation. Particularly, when working with numerous geometric objects, it is essential to partition the \ac{3D} Euclidean space with an appropriate data structure. This structured partitioning facilitates efficient access to spatial objects. The absence of spatial partitioning would necessitate scanning the entire database during any search, resulting in a significant increase in processing time.
 
-There is a multitude of geometric libraries already implemented and capable of solving even very complex geometric problems, \emph{e.g.} mesh-mesh intersection, re-meshing, Delaunay triangulation, etc. The size of such libraries and their high complexity make them unsuitable to be applied to the previously introduced simulation environment. The need to easily maintain and correct inefficiencies has led to the development of a new geometry library. We, therefore, present in this paper a \cpp{} library named \Acme{}, which provides support for fast basic 3D geometric problems resolution. The first version of \Acme{} was tailor-made to perform hard real-time tire-road contact geometry analysis. On that occasion, geometrical objects and tire-road intersection objects were mixed up. The desire to bring the work to the next level made it necessary to better formalize and produce a more effective framework. All the geometrical algorithms are then collected in an independent library. But why build a new library even if there are plenty available out there? The world of simulation is evolving over time, newer and newer features are being added. The ability to keep a simple yet robust minimum core allows us to better and efficiently respond to changes. Most of the available geometry libraries are large or just too complex for this latter purpose \cite{cgal2023cgal, libigl2018libigl}. Secondly, we want to reduce the dependencies only on the \cpp{} \Eigen{} template library. Last but not least, keeping a minimum core allows us to better test all algorithms and find out any numerical instability.
+There is a multitude of geometric libraries already implemented and capable of solving even very complex geometric problems, \eg{}, mesh-mesh intersection, re-meshing, Delaunay triangulation, etc. The sheer size of such libraries and their high complexity make them unsuitable for application in the simulation environment introduced earlier. The need to easily maintain and correct inefficiencies has led to the development of a new geometry library. In this chapter, we introduce a \cpp{} library named \Acme{}, designed to efficiently address the resolution of basic \ac{3D} geometric problems at high speed. The first version of \Acme{} was tailor-made to perform \ac{HRT} tire-ground contact geometry analysis, where geometrical objects and tire-ground intersection objects were initially intertwined. The desire to bring the work to the next level made it necessary to formalize and create a more effective framework. Consequently, all the geometrical algorithms are then collected in an independent library. But why create a new library even if there are plenty of alternatives available out there? The dynamic nature of the simulation field, with the continual introduction of new features, underscores the importance of maintaining a simple yet robust minimum core. This approach enables quick response to changes. Most of the available geometry libraries are either excessively large or overly complex for this specific purpose~\cite{cgal2023cgal, libigl2018libigl}. Furthermore, we aim to reduce the dependencies by relying solely on the \cpp{} \Eigen{} template library. Lastly, maintaining a streamlined core facilitates thorough testing of all algorithms, aiding in the identification and resolution of any potential numerical instabilities.
 
-% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
 \section{Software Description}
 
-As mentioned before, the software is written in \cpp{}, which is one of the most common and fast among the object-oriented general-purpose programming languages. As an experienced reader surely knows, since its invention by Bjarne Stroustrup in 1985, the language has been extended significantly over time. For this reason, we chose to develop our code on the \cpp{}11 standard \cite{stroustrup2013cpp}. The 2011 standard brought significant improvements and freshness in the coding style, like the new smart pointer classes, which are heavily used in \Acme{} library. The source code of the software is available online\footnote{Repository URL: \url{https://github.com/StoccoDavide/acme}} under the BSD 2-Clause license. Online documentation includes a \cpp{} and \Matlab{} \Mex{} API description as well as usage examples\footnote{Documentation URL: \url{https://stoccodavide.github.io/acme}}. The software has been tested under MacOS, Linux, and Windows operative systems.
+As previously mentioned, the software is implemented in \cpp{}, a widely used and high-performance object-oriented general-purpose programming language. Since its invention by Bjarne Stroustrup in 1985, \cpp{} has undergone significant extensions and modifications. Therefore, we chose to develop our code based on the \cpp{}11 standard~\cite{stroustrup2013cpp}. The adoption of the 2011 standard introduced notable improvements and a refreshed coding style, exemplified by the new smart pointer classes, extensively utilized in the \Acme{} library. The source code of the software is freely available online~\cite{acme} and is released under the \ac{BSD} 2-Clause license. The online documentation includes descriptions of the \cpp{} and \Matlab{} \Mex{} \acp{API}, along with usage examples. Rigorous testing has been conducted on MacOS, Linux, and Windows operating systems to ensure the software's compatibility across diverse platforms.
 
 \subsection{Design Choices}
-This software is neither intended as a black-box nor as a GUI based application for end-users. It is rather an easy-to-use and extensible set of \cpp{} classes that provides a basic and reliable foundation, which can be extended by the developers according to their specific needs. The software was built on the following pillars.
 
-\subsubsection{Driven by Actual Needs}
-We only implemented a stable minimum core library with features that are currently used. Such a choice allows us to progressively test the software and to a less concerned third-party extension process.
+This software is neither intended as a black box nor as a \ac{GUI} based application for end-users. Instead, it is designed as an easy-to-use set of \cpp{} classes that provides a basic and reliable foundation, which can be extended by the developers according to their specific needs. The design of the software is grounded in the following principles.
 
-\subsubsection{Build on the State-of-the-Art \Eigen{} Library}
-To provide a flexible and extensible framework, we decided to build \Acme{} on the \Eigen{} template library for linear algebra \cite{eigen2010eigen}. This library is very efficient for small vectors and matrices. In the field of computational geometry matrices and vectors usually have small sizes, the \Eigen{} library is, therefore, a due choice. Moreover, \Eigen{} can use LAPACK/BLAS~\cite{anderson1999lapack} for peak performance when matrices and vectors have a large size. The heavy usage of such a well-tested and performing template library allows it to reach high performances, while providing an extremely elegant and expressive API.
+\paragraph{Driven by Actual Needs}
+The implementation focuses on a stable minimum core library, including only features that are currently in use. This deliberate choice allows for progressive testing of the software and a less concerned third-party extension process.
 
-\subsubsection{Avoiding Memory Leaks}
-Managing dynamically allocated memory is one of the most critical aspects of a low-level programming language like \cpp{}. Often, the most insidious errors are due to imperfect memory allocation and release policies, resulting in excessive use of resources (\emph{memory leak}), or irreversible error conditions that undermine program stability (\emph{access violation}). Thanks to the heavy usage of the \cpp{}11 smart pointers, the probability of a memory leak or an access violation is dramatically reduced. Smart pointers come as a set of standard library utility classes that act as wrappers for raw pointers. They offer various programmer transparent memory release policies that are suitable for multiple use cases. In particular, \SharedPointer{} objects retain a shared ownership. In other words, several \SharedPointer{} objects may own the same object instance. The object is destroyed and its memory deallocated only when either the last remaining \SharedPointer{} owning the object is destroyed or assigned to another \SharedPointer{}. The object can also be destroyed using the \texttt{delete} or a custom \texttt{delete} expression.
+\paragraph{Build on the State-of-the-Art \Eigen{} Library}
+For a flexible and extensible framework, \Acme{} is constructed using the \Eigen{} template library for linear algebra~\cite{eigen2010eigen}. Recognized for its efficiency with small vectors and matrices, \Eigen{} is an apt choice in the field of computational geometry where matrices and vectors are typically of limited size. Additionally, \Eigen{} can leverage \ac{LAPACK}/\ac{BLAS}~\cite{anderson1999lapack} for peak performance when dealing with larger matrices and vectors. Relying on this well-tested and high-performing template library allows \Acme{} to achieve high-performance levels while maintaining an elegant and expressive \ac{API}.
 
-\subsubsection{Polymorphic Behaviour}
-An important feature of \Acme{} is that it exploits \cpp{} polymorphism. The polymorphic behaviour is one of the pillars of \Acme{} design pattern and it greatly simplifies the management of heterogeneous objects that share a common interface of geometric entities. The same \cpp{} polymorphic behaviour is also present in the \Matlab{} \Mex{} wrapper.
+\paragraph{Avoiding Memory Leaks}
+Managing dynamically allocated memory is one of the most critical aspects of a low-level programming language like \cpp{}. Often, the most insidious errors are due to imperfect memory allocation and release policies, resulting in excessive use of resources (\emph{memory leak}), or irreversible error conditions that undermine program stability (\emph{access violation}). The usage of \cpp{}11 smart pointers in \Acme{} significantly reduces the likelihood of memory leaks or access violations. Smart pointers, as part of the standard library utility classes, act as wrappers for raw pointers, offering transparent memory release policies suitable for various use cases. Notably, \SharedPointer{} objects retain shared ownership, allowing multiple objects to own the same instance. The object is only destroyed and its memory deallocated when either the last \SharedPointer{} owning it is destroyed or reassigned to another \SharedPointer{}. Additionally, the object can be destroyed using the \texttt{delete} expression or a custom \texttt{delete} expression.
 
-\subsubsection{High-quality Documentation}
-Users can benefit from the documentation present on the aforementioned website. Both the \cpp{} and \Matlab{} \Mex{} APIs documentation and examples are built through a combination of both \Doxygen{} and \Sphinx{}. In particular, \Doxygen{} generates documentation from annotated \cpp{} sources. Unfortunately, the graphical quality of the generated documentation is very basic. \Sphinx{} is then used to transform the \texttt{html} documentation created by \Doxygen{} into a more beautiful and rich graphic design.
+\paragraph{Polymorphic Behavior}
+\Acme{} capitalizes on \cpp{} polymorphism as a fundamental design pattern. This polymorphic behavior greatly simplifies the management of heterogeneous objects that share a common interface of geometric entities. The same \cpp{} polymorphic behavior is also present in the \Matlab{} \Mex{} wrapper.
 
-\subsection{Data Types}
-\Acme{} supports a limited number of geometrical entities. We have chosen to keep the library as essential as possible for efficiency and ease of maintenance reasons. So there are only the necessary classes to describe and manipulate virtual road surfaces and tires. The library is however extensible according to the needs of end-users. The geometrical entities are of course organised in classes. Each class is placed inside the namespace \Acme{} and publicly inherit from the virtual superclass \Entity{}. The derived classes representing the homonyms geometric entities are: \Point{}, \Line{}, \Ray{}, \Plane{}, \Segment{}, \Triangle{}, \Disk{} and \Ball{}. Now we give a brief mathematical description of all the data types present in the software.
+\paragraph{High-quality Documentation}
+Comprehensive documentation is available on the provided website, encompassing both the \cpp{} and \Matlab{} \Mex{} \acp{API}, along with examples. The documentation is generated using a combination of \Doxygen{} and \Sphinx{}. \Doxygen{} processes annotated \cpp{} sources to create documentation, while \Sphinx{} enhances the graphical quality of the generated \html{} code, providing a more visually appealing and graphically rich design.
+
+\paragraph{Data Types}
+\Acme{} supports a limited number of geometrical entities, carefully chosen to maintain the library's essential nature for efficiency and easy maintenance. The chosen classes specifically describe and manipulate virtual ground surfaces and tires. While the library is intentionally kept minimal, it is extensible according to the needs of end-users. The geometric entities are systematically organized into classes, each being within the \Acme{} namespace and publicly inheriting from the virtual superclass \Entity{}. The derived classes, representing the homonyms geometric entities are \Point{}, \Line{}, \Ray{}, \Plane{}, \Segment{}, \Triangle{}, \Disk{}, and \Ball{}, are integral components of the library. In \figurename{}~\ref{app1:fig:acme_entities}, a representation of all \Acme{} basic \Entity{} objects is shown. A concise mathematical description of each data type in the software follows.
 
 \begin{figure*}[!ht]
   \centering
-  \input{./figures/appendix_1/acme_entities.pdf_tex}
+  \def\svgwidth{9cm}
+  \input{./figures/appendix_1/acme_entities_1.pdf_tex} \\[1.0em]
+  \def\svgwidth{9cm}
+  \input{./figures/appendix_1/acme_entities_2.pdf_tex}
   \caption{Representation of all \Acme{} basic \Entity{} objects.}
-  \label{fig::entities}
+  \label{app1:acme_entities}
 \end{figure*}
 
-\subsubsection{\Point{}}
-In the 3D Euclidean space, the point represents an exact location in the space. A point $\boldsymbol{p} \in \mathbb{R}^3$ is represented by an ordered triplet, namely:
+\paragraph{\Point{}}
+In the \ac{3D} Euclidean space, a point represents an exact location. A point $\pt{p} \in \mathbb{R}^3$ is represented by an ordered triplet of coordinates
 %
 \begin{equation*}
-\boldsymbol{p} = \left[x, y, z\right]^T
+  \pt{p} = \left[x, \, y, \, z\right]^{\top} \, \text{.}
 \end{equation*}
 %
-The \Point{} class is built by the public inheritance of the virtual class \Entity{} and the \Eigen{}::\MatrixBase{} template class. It should be noticed that in \cpp{} libraries vectors and points are often described by the same class, meanwhile in \Acme{} we provided a clear way to distinguish them. Firstly, the difference is tangible in the inheritance of the \Entity{} class by the class \Point{}. On the other hand, the inheritance of the \MatrixBase{} template class makes it possible to easily build mathematical vectors out of point entities and vice versa. In our software, both vectors and points are represented by a column set of elements.
+The \Point{} class is built through public inheritance from the virtual class \Entity{} and the \Eigen{}::\MatrixBase{} template class. It's worth noting that in many \cpp{} libraries, vectors and points are often described by the same class. However, in \Acme{}, we have provided a clear way to distinguish them. This distinction is evident in the inheritance structure, where the \Point{} class inherits publicly from the \Entity{} class. On the other hand, the inheritance of the \MatrixBase{} template class makes it possible to easily build mathematical vectors out of point entities and vice versa. In our software, both vectors and points are represented by column sets of elements.
 
-\subsubsection{\Line{}}
-A line $\ell$ is defined by an origin point $\boldsymbol{o}$ and a unit direction vector $\vec{\boldsymbol{d}}$ such that the line corresponds to the set:
-%
-\begin{equation*}
-  \ell ( \boldsymbol{o}, \vec{\boldsymbol{d}} ) = \left\{ \boldsymbol{o} + \vec{\boldsymbol{d}} t ~ \big| ~ t \in \mathbb{R} \right\}
-\end{equation*}
-
-\subsubsection{\Ray{}}
-A ray $\varrho$ is defined by an origin point $\boldsymbol{o}$ and a unit direction vector $\vec{\boldsymbol{d}}$ such that the ray corresponds to the set:
+\paragraph{\Line{}}
+A line $\boldsymbol{\ell}$ is defined by an origin point $\pt{o}$ and a unit direction vector $\et{d}$, such that the line corresponds to the set
 %
 \begin{equation*}
-  \varrho ( \boldsymbol{o}, \vec{\boldsymbol{d}} ) = \left\{ \boldsymbol{o} + \vec{\boldsymbol{d}} t ~ \big| ~ t \in \mathbb{R}_{\ge0} \right\}
+  \boldsymbol{\ell}(\pt{o}, \et{d}) = \left\{ \pt{o} + \et{d} t ~ \big| ~ t \in \mathbb{R} \right\} \, \text{.}
 \end{equation*}
 
-\subsubsection{\Plane{}}
-A plane $\pi$ is defined by a generic point on the plane $\boldsymbol{p}$ and a unit normal vector $\vec{\boldsymbol{n}}$ such that the plane corresponds to the set:
+\paragraph{\Ray{}}
+A ray $\boldsymbol{\varrho}$ is defined by an origin point $\pt{o}$ and a unit direction vector $\et{d}$, such that the ray corresponds to the set
 %
 \begin{equation*}
-  \pi ( \boldsymbol{p}, \vec{\boldsymbol{n}} ) = \left\{ \vec{\boldsymbol{n}} \cdot \left(\boldsymbol{p} - \left[x, y, z\right]^T \right) = 0 ~ \big| ~ \left[x, y, z\right]^T \in \mathbb{R}^3 \right\}
+  \boldsymbol{\varrho}(\pt{o}, \et{d}) = \left\{ \pt{o} + \et{d} t ~ \big| ~ t \in \mathbb{R}_{\ge0} \right\} \, \text{.}
 \end{equation*}
 
-\subsubsection{\Segment{}}
-A segment $\sigma$ is defined by two points $\boldsymbol{p}_1$ and $\boldsymbol{p}_2$ such that the segment corresponds to the set:
+\paragraph{\Plane{}}
+A plane $\boldsymbol{\pi}$ is defined by a generic point on the plane $\pt{p}$ and a unit normal vector $\et{n}$, such that the plane corresponds to the set
 %
 \begin{equation*}
-\sigma ( \boldsymbol{p}_1, \boldsymbol{p}_2 ) = \left\{ \boldsymbol{p}_1 + \left(\boldsymbol{p}_2-\boldsymbol{p}_1\right)t ~ \big| ~ t \in \mathbb{R},  0 \le t \le 1 \right\}
+  \boldsymbol{\pi}(\pt{p}, \et{n}) = \left\{ \et{n} \cdot (\pt{p} - \left[x, \, y, \, z\right]^{\top}) = 0 ~ \big| ~ \left[x, \, y, \, z\right]^{\top} \in \mathbb{R}^3 \right\} \, \text{.}
 \end{equation*}
 
-\subsubsection{\Triangle{}}
-A triangle $\tau$ is defined by three points $\boldsymbol{p}_1$, $\boldsymbol{p}_2$ and $\boldsymbol{p}_3$ such that the triangle corresponds to the set:
+\paragraph{\Segment{}}
+A segment $\boldsymbol{\sigma}$ is defined by two points $\pt{p}_1$ and $\pt{p}_2$, such that the segment corresponds to the set
 %
 \begin{equation*}
-  \tau(\boldsymbol{p}_1, \boldsymbol{p}_2, \boldsymbol{p}_3) = \Big\{ t_1\boldsymbol{p}_1 + t_2\boldsymbol{p}_2 + t_3\boldsymbol{p}_3 \big| ~ t_1, t_2, t_3 \in \mathbb{R}_{\ge0}, t_1 + t_2+t_3 \le 1 \Big\}
+  \boldsymbol{\sigma}(\pt{p}_1, \pt{p}_2) = \left\{ \pt{p}_1 + \left(\pt{p}_2-\pt{p}_1\right)t ~ \big| ~ t \in \mathbb{R}, \, 0 \le t \le 1 \right\} \, \text{.}
 \end{equation*}
 
-\subsubsection{\Disk{}}
-A disk $\phi$ is defined by a radius $r$, a center point $\boldsymbol{o}$ and a unit normal vector to the disk face $\vec{\boldsymbol{n}}$. Equivalently, with the same notation for the center point and unit normal vector to the face, a disk can be defined by a radius $r$ and a laying plane $\pi(\boldsymbol{o}, \vec{\boldsymbol{n}})$ such that the disk corresponds to the set:
+\paragraph{\Triangle{}}
+A triangle $\boldsymbol{\tau}$ is defined by three points $\pt{p}_1$, $\pt{p}_2$ and $\pt{p}_3$, such that the triangle corresponds to the set
 %
 \begin{equation*}
-  \begin{split}
-    \phi(r, \boldsymbol{o}, \vec{\boldsymbol{n}}) = \phi(r, \pi(\boldsymbol{o}, \vec{\boldsymbol{n}})) = \dots \qquad \qquad \qquad \qquad \\
-    \dots \left\{ \big|\big| \boldsymbol{o} - \left[x, y, z\right]^T \big|\big|^2_2 \le r^2 ~ \big| ~\left[x, y, z\right]^T \in \pi(\boldsymbol{o}, \vec{\boldsymbol{n}}) \right\}
-  \end{split}
+  \boldsymbol{\tau}(\pt{p}_1, \pt{p}_2, \pt{p}_3) = \left\{ t_1\pt{p}_1 + t_2\pt{p}_2 + t_3\pt{p}_3 ~ \big| ~ t_1, t_2, t_3 \in \mathbb{R}_{\ge0}, \, t_1 + t_2+t_3 \le 1 \right\} \, \text{.}
 \end{equation*}
 
-\subsubsection{\Ball{}}
-A ball $\omega$ is defined by a radius $r$ and a center point $\boldsymbol{o}$ such that it corresponds to the set:
+\paragraph{\Disk{}}
+A disk $\boldsymbol{\phi}$ is defined by a radius $r$, a center point $\pt{o}$, and a unit normal vector to the disk face $\et{n}$. Equivalently, using the same notation for the center point and the unit normal vector to the face, a disk can be defined by a radius $r$ and a laying plane $\boldsymbol{\pi}(\pt{o}, \et{n})$. In both cases, the disk corresponds to the set
 %
 \begin{equation*}
-  \omega(r, \boldsymbol{o}) = \left\{ \big|\big| \boldsymbol{o} - \left[x, y, z\right]^T \big|\big|^2_2 \le r^2 ~ \big| ~\left[x, y, z\right]^T \in \mathbb{R}^3 \right\}
+  \boldsymbol{\phi}(r, \pt{o}, \et{n}) = \boldsymbol{\phi}(r, \boldsymbol{\pi}(\pt{o}, \et{n})) = \left\{ \big\| \pt{o} - \left[x, \, y, \, z\right]^{\top} \big\|^2_2 \le r^2 ~ \big| ~ \left[x, \, y, \, z\right]^{\top} \in \boldsymbol{\pi}(\pt{o}, \et{n}) \right\} \, \text{.}
 \end{equation*}
 
-\subsection{Mesh tools}
-Together with the presented basic data types we also provide other classes that are useful in case of mesh or large numbers of entities manipulation. These objects are: \Collection{}, \Aabb{} and \AabbTree{}.
+\paragraph{\Ball{}}
+A ball $\boldsymbol{\omega}$ is defined by a radius $r$ and a center point $\pt{o}$, such that it corresponds to the set
+%
+\begin{equation*}
+  \boldsymbol{\omega}(r, \pt{o}) = \left\{ \big\| \pt{o} - \left[x, \, y, \, z\right]^{\top} \big\|^2_2 \le r^2 ~ \big| ~\left[x, \, y, \, z\right]^{\top} \in \mathbb{R}^3 \right\} \, \text{.}
+\end{equation*}
 
-\subsubsection{\Collection{}}
-The \Collection{} object consists on a vector of \SharedPointer{} to \Entity{} type objects. This class can be used when a large amount of \Entity{} object instances need to be grouped into a single object. This grouping, together with the usage of \SharedPointer{} objects, allows for an effective data manipulation and safe memory management.
+\subsection{Mesh Tools}
+In addition to the fundamental data types presented, we also provide other classes that are useful in scenarios involving mesh or manipulation of large numbers of entities. These objects include \Collection{}, \Aabb{}, and \AabbTree{}.
+
+\paragraph{\Collection{}}
+The \Collection{} object consists of a vector of \SharedPointer{} to \Entity{} type objects. This class can be used when a substantial number of \Entity{} object instances need to be grouped into a single object. The grouping, coupled with the usage of \SharedPointer{} objects, facilitates effective data manipulation and ensures safe memory management. Nonetheless, the \Collection{} object is not a geometric entity and does not have any geometric meaning. It is merely a container for \Entity{} objects that can be used to perform operations on a large number of \Entity{} objects simultaneously. In \figurename{}~\ref{app1:fig:acme_collection}, an example of two \Collection{} objects bounded in two different \Aabb{}s is reported.
 
 \begin{figure}[!ht]
   \centering
+  \def\svgwidth{9cm}
   \input{./figures/appendix_1/acme_collection.pdf_tex}
-  \caption{Example of two \Collection{} objects bounded in two different \Aabb{}s. The two \Aabb{} objects are then bounded in a master \Aabb{} (in red).}
-  \label{fig::collection}
+  \caption[Example \Collection{} objects bounded in two different \Aabb{}s.]{Example \Collection{} objects bounded in two different \Aabb{}s. The two \Aabb{} objects are then bounded in a master \Aabb{} depicted in red.}
+  \label{app1:acme_collection}
 \end{figure}
 
-\subsubsection{\Aabb}
-An axis-aligned bounding box $\beta$ is defined by a maximum point $\boldsymbol{p}_{max}$ and a minimum point $\boldsymbol{p}_{min}$, respectively equal to:
+\paragraph{\Aabb{}}
+An \Aabb{} $\boldsymbol{\beta}$ is defined by a maximum point $\pt{p}_{\max}$ and a minimum point $\pt{p}_{\min}$, which are respectively equal to
 %
 \begin{equation*}
-\begin{split}
-\boldsymbol{p}_{max} = \left[x_{max}, y_{max}, z_{max}\right]^T \\
-\boldsymbol{p}_{min} = \left[x_{min}, y_{min}, z_{min}\right]^T ~
-\end{split}
+  \pt{p}_{\max} = \left[x_{\max}, \, y_{\max}, \, z_{\max}\right]^{\top}
+  \quad \text{and} \quad
+  \pt{p}_{\min} = \left[x_{\min}, \, y_{\min}, \, z_{\min}\right]^{\top} \, \text{.}
 \end{equation*}
 %
-such that it corresponds to the set:
+The \Aabb{} corresponds to the set
 %
 \begin{equation*}
-  \beta (\boldsymbol{p}_{max}, \boldsymbol{p}_{min}) =
+  \boldsymbol{\beta} (\pt{p}_{\max}, \pt{p}_{\min}) =
   \left\{
-  \left[x, y, z\right]^T \in \mathbb{R}^3\;\bigg|\;
+  \left[ x, \, y, \, z \right]^{\top} \in \mathbb{R}^3 ~ \bigg| ~
   \begin{array}{c}
-    x_{min} \leq x \leq x_{max}\\
-    y_{min} \leq y \leq y_{max}\\
-    z_{min} \leq z \leq z_{max}
+    x_{\min} \leq x \leq x_{\max} \\
+    y_{\min} \leq y \leq y_{\max} \\
+    z_{\min} \leq z \leq z_{\max}
   \end{array}
-  \right\}
+  \right\} \, \text{.}
 \end{equation*}
 %
-As it can be seen, this kind of geometrical entity is very simple and only needs two \Point{} objects to fully describe the space it occupies. Moreover, the algorithms involved in \Aabb{} collision detection and/or intersection are extremely fast. In particular, the basic algorithm for \Aabb{}-\Aabb{} collision detection can be performed only by mean of two-way comparison operators, thus resulting lightweight and fast to perform.
+Indeed, this type of geometrical entity is very simple, requiring only two \Point{} objects to fully describe the space it occupies. Furthermore, the algorithms involved in \Aabb{} collision detection and/or intersection are highly efficient. Specifically, the basic algorithm for \Aabb{}-\Aabb{} collision detection can be executed solely through two-way comparison operators, making it lightweight and fast to perform.
 
-\subsubsection{\AabbTree{}}
+\paragraph{\AabbTree{}}
+There are plenty of possible tree structures. Some of them are suitable for a more rough spatial description with low computational complexity, while others are suitable for accurate spatial indexing but carry high computational complexity. In the \Acme{} library, the \ac{AABB} tree is chosen due to its balanced complexity-performance ratio, making it effective for \ac{RT} applications. The performance of a generic \ac{BVH} is generally measured by the computation time required to solve an intersection query. To enhance the \ac{BVH} performance and consequently reduce the number of comparisons among pairs of \acp{BVP}, a \ac{BVH} should be as compact as possible, minimizing the bounding volume contained in each \ac{BVP}~\cite{asyrani2012bounding, eloe2014dual}. Several techniques can be employed to build an \ac{AABB} tree, with the most common being the \emph{top-down} and \emph{bottom-up} strategies. While the \emph{top-down} strategy allows to easily perform the tree construction~\cite{eloe2014dual, ericson2004realtime, asyrani2012bounding}, the \emph{bottom-up} approach usually achieves more compact trees and better performances, albeit being more intricate to construct~\cite{omohundro1989five, asyrani2012bounding}. The typical average computational complexity of tree construction is $\mathcal{O}(n\log{n})$, while the intersection of two \ac{AABB} trees has an average cost of $\mathcal{O}(m\log{n})$, where $n$ and $m$ are the numbers of \acp{BVP} of the two trees. If one intends to intersect two sets of \acp{BVP} without the use of the \ac{AABB} tree the computational cost is always $\mathcal{O}(nm)$, as each element of the first set must be compared with all the elements of the second set~\cite{xing2010efficient}.
 
-There are plenty of possible tree structures. Some of them are suitable for a more rough spatial description with low computational complexity, others are suitable for accurate spatial indexing but carry high computational complexity. In \Acme{} library the AABB (\emph{Axis-Aligned Bounding Box}) tree is selected among the various possible solutions. The AABB tree has a balanced complexity-performance ratio that can be effectively employed in real-time applications. The performance of a generic BVH is generally measured on the computation time to solve an intersection query. To enhance the BVH performance and consequently reduce the number of comparisons among pairs of BVP, a BVH should be as compact as possible. Moreover, it should also minimise the bounding volume contained in each BVP~\cite{asyrani2012bounding, eloe2014dual}. Several techniques can be used to build an AABB tree. The most common are the \emph{top-down} and \emph{bottom-up} strategies. While the first strategy allows to easily perform the tree construction~\cite{eloe2014dual, ericson2004realtime, asyrani2012bounding}, the second approach usually achieve more compact trees and better performances. On the other hand, the \emph{bottom-up} strategy results to be more complicated to build~\cite{omohundro1989five, asyrani2012bounding}. The typical average computational complexity of the tree construction is $\mathcal{O}(n\log{n})$, while the intersection of two AABB trees have an average cost of $\mathcal{O}(m\log{n})$, where $n$ and $m$ are the numbers of BVPs of the two trees. If one wants to intersect two sets of BVPs without the usage of the AABB tree the computational cost is always $\mathcal{O}(nm)$, since each element of the first set must be compared with all the elements of the second set~\cite{xing2010efficient}.
-
-The \AabbTree{} implemented in the \Acme{} library comes directly from that presented in~\cite{frego2019pointcoloud, bertolazzi2020efficient} and it has been extended from 2D to 3D case. For this, the AABB tree construction algorithm is modified as in Algorithm \ref{algorithm::tree}.
+The \AabbTree{} implemented in the \Acme{} library is directly derived from the one presented in~\cite{frego2019pointcoloud, bertolazzi2020efficient} and has been extended from the \ac{2D} to the \ac{3D} case. For this extension, the \ac{AABB} tree construction algorithm is modified as in Algorithm~\ref{app1:alg:acme_aabbtree_construction}.
 
 \begin{algorithm}[!ht]
-  \texttt{BuildTree}{(\Entities{})}\\
-  \Begin{
-  \lIf{$\Entities{} = \varnothing$}{\Return nil}
-  \lIf{$\#\Entities{} = 1$}{\Return~\Aabb{}(\Entities{})}
-  $root \leftarrow \Aabb{}(\Entities{})$\;
-  $h \leftarrow \texttt{Height}(root)$\;
-  $w \leftarrow \texttt{Width}(root)$\;
-  $d \leftarrow \texttt{Depth}(root)$\;
-  \uIf{$w > h$  {\bf and} $w > d$}{
-  $split \leftarrow \texttt{mean}_x(root)$\;
-  $E_1 \leftarrow \{ E \in \Entities{} ~|~ \texttt{centroid}_x(E) < split \}$\;
-  $E_2 \leftarrow \{ E \in \Entities{} ~|~ \texttt{centroid}_x(E) \ge split \}$\;
-  $T_1 \leftarrow \texttt{BuildTree}(E_1)$\;
-  $T_2 \leftarrow \texttt{BuildTree}(E_2)$\;
-  \Return $(root, T_1, T_1)$\;
-  }
-  \uElseIf{$h > w$  {\bf and} $h > d$}{
-  $split \leftarrow \texttt{mean}_y(root)$\;
-  $E_1 \leftarrow \{ E \in \Entities{} ~|~ \texttt{centroid}_y(E) < split \}$\;
-  $E_2 \leftarrow \{ E \in \Entities{} ~|~ \texttt{centroid}_y(E) \ge split \}$\;
-  $T_1 \leftarrow \texttt{BuildTree}(E_1)$\;
-  $T_2 \leftarrow \texttt{BuildTree}(E_2)$\;
-  \Return $(root, T_1, T_2)$\;
-  }
-  \Else{
-  $split \leftarrow \texttt{mean}_z(root)$\;
-  $E_1 \leftarrow \{ E \in \Entities{} ~|~ \texttt{centroid}_z(E) < split \}$\;
-  $E_2 \leftarrow \{ E \in \Entities{} ~|~ \texttt{centroid}_z(E) \ge split \}$\;
-  $T_1 \leftarrow \texttt{BuildTree}(E_1)$\;
-  $T_2 \leftarrow \texttt{BuildTree}(E_2)$\;
-  \Return $(root, T_1, T_2)$\;
-  }
-  }
   \caption{Axis-aligned bounding box tree construction procedure.}
-  \label{algorithm::tree}
+  \label{app1:acme_aabbtree_construction}
+  \begin{algorithmic}
+    \State \textbf{Require:} $\Entities{}$: The tire \Entities{} object vector.
+    \Function{BuildTree}{$\Entities{}$}
+      \If{$\mathrm{Length}{\Entities{}} = 0$}
+        \State \Return $\varnothing$
+      \EndIf
+      \If{$\mathrm{Length}{\Entities{}} = 1$}
+        \State \Return $\mathrm{Aabb}{\Entities{}}$
+      \EndIf
+      \State $root \gets \mathrm{Aabb}{\Entities{}}$
+      \State $h \gets \mathrm{Height}(root)$
+      \State $w \gets \mathrm{Width}(root)$
+      \State $d \gets \mathrm{Depth}(root)$
+      \If{$w > h$ \textbf{and} $w > d$}
+        \State $split_{x} \gets \mathrm{Mean_{x}}(root)$
+        \State $E_1 \gets \left\{E \in \Entities{} ~|~ \mathrm{Centroid_{x}}(E) < split_{x} \right\}$
+        \State $E_2 \gets \left\{E \in \Entities{} ~|~ \mathrm{Centroid_{x}}(E) \ge split_{x} \right\}$
+        \State $T_1 \gets \mathrm{BuildTree}(E_1)$
+        \State $T_2 \gets \mathrm{BuildTree}(E_2)$
+        \State \Return $(root, T_1, T_2)$
+      \ElsIf{$h > w$ \textbf{and} $h > d$}
+        \State $split_{y} \gets \mathrm{Mean_{y}}(root)$
+        \State $E_1 \gets \left\{E \in \Entities{} ~|~ \mathrm{Centroid_{y}}(E) < split_{y} \right\}$
+        \State $E_2 \gets \left\{E \in \Entities{} ~|~ \mathrm{Centroid_{y}}(E) \ge split_{y} \right\}$
+        \State $T_1 \gets \mathrm{BuildTree}(E_1)$
+        \State $T_2 \gets \mathrm{BuildTree}(E_2)$
+        \State \Return $(root, T_1, T_2)$
+      \Else
+        \State $split_{z} \gets \mathrm{Mean_{z}}(root)$
+        \State $E_1 \gets \left\{E \in \Entities{} ~|~ \mathrm{Centroid_{z}}(E) < split_{z} \right\}$
+        \State $E_2 \gets \left\{E \in \Entities{} ~|~ \mathrm{Centroid_{z}}(E) \ge split_{z} \right\}$
+        \State $T_1 \gets \mathrm{BuildTree}(E_1)$
+        \State $T_2 \gets \mathrm{BuildTree}(E_2)$
+        \State \Return $(root, T_1, T_2)$
+      \EndIf
+    \EndFunction
+  \end{algorithmic}
 \end{algorithm}
 
 \subsection{Basic Intersection Algorithms}
-Specific algorithms for basic intersections are unavoidably excluded from the discussion for obvious reasons of compactness. It should be pointed out that there is commonly a lack of comprehensive sources for intersection testing. Exceptions are~\cite{schneider2002geometric} and~\cite{eberly2020robust}, which are caskets of geometric tests of all types and excellent handbooks. References~\cite{ericson2004realtime} and~\cite{vandenbergen2003collision} are equally good references, though not as complete. Individual articles on specific tests can also be found in the valuable five-volumes \emph{Graphic Gems} series~\cite{glassner1990graphics, arvo1991graphics, kirk1992graphics, heckbert1994graphics, paeth1995graphics}.
+
+Specific algorithms for basic intersections are necessarily excluded from this discussion due to space constraints. It is important to note that comprehensive sources for intersection testing are limited. Exceptions include~\cite{schneider2002geometric} and~\cite{eberly2020robust}, which serve as extensive collections of geometric tests of various types. References~\cite{ericson2004realtime} and~\cite{vandenbergen2003collision} are equally valuable, although not as exhaustive. Individual articles on specific tests can also be found in the five-volume \emph{Graphic Gems} series~\cite{glassner1990graphics, arvo1991graphics, kirk1992graphics, heckbert1994graphics, paeth1995graphics}.
 
 \subsection{Software Functionalities}
-The \Acme{} geometry library is made of a \cpp{} core and a \Matlab{} \Mex{} wrapper. The library is built to efficiently \emph{create}, \emph{intersect} and \emph{destroy} basic geometry entities objects. It is possible to check geometrical conditions between objects, like \emph{parallelism}, \emph{orthogonality}, \emph{collinearity} and \emph{coplanarity}. The intersections that can be carried out thanks to \Acme{} library are only those that potentially return a \emph{single} \Acme{}::\Entity{} object (\emph{e.g.} the intersection of a coplanar disk and triangle may potentially return a circular arc and two segments, thus it cannot be directly performed). Respectively, on \tablename{} \ref{table::conditions} and \tablename{}~\ref{table::intersections} the set of geometrical conditions tests and intersections that can be performed are summarised.
+The \Acme{} geometry library consists of a \cpp{} core and a \Matlab{} \Mex{} wrapper. The library is built to efficiently \emph{create}, \emph{intersect} and \emph{destroy} basic geometry entities objects. It is possible to check geometrical conditions between objects, like \emph{parallelism}, \emph{orthogonality}, \emph{collinearity} and \emph{coplanarity}. The intersections that can be performed with the \Acme{} library are limited to those that potentially return a \emph{single} \Acme{}::\Entity{} object. For example, the intersection of a coplanar disk and a triangle may potentially return a circular arc and two segments, making it unsuitable for direct execution through the \Acme{} library. The sets of geometrical condition tests and intersections that can be performed are summarized in Tables~\ref{app1:tab:acme_conditions} and~\ref{app1:tab:acme_intersections} respectively.
 
-%\renewcommand{\arraystretch}{1.5}
-%\newcommand{\FOURSYM}[2]{\ensuremath{\displaystyle{#1}\atop{#2}}}
-\newcommand{\FOURSYM}[2]{\ensuremath{\genfrac{}{}{0pt}{}{#1}{#2}}}
 \begin{table}[!htb]
   \centering
-  \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
-    \hline
-    \rotatebox[origin=c]{-45}{~~\Entity{}~~}   &
+  \begin{tabular}{ccccccccc}
+    \toprule
+    \makecell[cc]{\textbf{Geometrical}\\\textbf{intersection}\\\textbf{tests}} &
     \rotatebox[origin=c]{270}{~~\Point{}~~}    &
     \rotatebox[origin=c]{270}{~~\Line{}~~}     &
     \rotatebox[origin=c]{270}{~~\Ray{}~~}      &
@@ -214,26 +232,23 @@ The \Acme{} geometry library is made of a \cpp{} core and a \Matlab{} \Mex{} wra
     \rotatebox[origin=c]{270}{~~\Segment{}~~}  &
     \rotatebox[origin=c]{270}{~~\Triangle{}~~} &
     \rotatebox[origin=c]{270}{~~\Disk{}~~}     &
-    \rotatebox[origin=c]{270}{~~\Ball{}~~}     \\ \hline
-    \Point{}    & $-$ & $-$          & $-$          & $-$       & $-$          & $-$       & $-$       & $-$ \\ \hline
-    \Line{}     & $-$ & \FOURSYM{\pa\cl}{\pe\cp} & \FOURSYM{\pa\cl}{\pe\cp} & \FOURSYM{\pa}{\pe\cp} & \FOURSYM{\pa\cl}{\pe\cp} & \FOURSYM{\pa}{\pe\cp} & \FOURSYM{\pa}{\pe\cp} & $-$ \\ \hline
-    \Ray{}      & $-$ & \FOURSYM{\pa\cl}{\pe\cp} & \FOURSYM{\pa\cl}{\pe\cp} & \FOURSYM{\pa}{\pe\cp} & \FOURSYM{\pa\cl}{\pe\cp} & \FOURSYM{\pa}{\pe\cp} & \FOURSYM{\pa}{\pe\cp} & $-$ \\ \hline
-    \Plane{}    & $-$ & \FOURSYM{\pa}{\pe\cp}    & \FOURSYM{\pa}{\pe\cp}    & \FOURSYM{\pa}{\pe\cp} & \FOURSYM{\pa}{\pe\cp}    & \FOURSYM{\pa}{\pe\cp} & \FOURSYM{\pa}{\pe\cp} & $-$ \\ \hline
-    \Segment{}  & $-$ & \FOURSYM{\pa\cl}{\pe\cp} & \FOURSYM{\pa\cl}{\pe\cp} & \FOURSYM{\pa}{\pe\cp} & \FOURSYM{\pa\cl}{\pe\cp} & \FOURSYM{\pa}{\pe\cp} & \FOURSYM{\pa}{\pe\cp} & $-$ \\ \hline
-    \Triangle{} & $-$ & \FOURSYM{\pa}{\pe\cp}    & \FOURSYM{\pa}{\pe\cp}    & \FOURSYM{\pa}{\pe\cp} & \FOURSYM{\pa}{\pe\cp}    & \FOURSYM{\pa}{\pe\cp} & \FOURSYM{\pa}{\pe\cp} & $-$ \\ \hline
-    \Disk{}     & $-$ & \FOURSYM{\pa}{\pe\cp}    & \FOURSYM{\pa}{\pe\cp}    & \FOURSYM{\pa}{\pe\cp} & \FOURSYM{\pa}{\pe\cp}    & \FOURSYM{\pa}{\pe\cp} & \FOURSYM{\pa}{\pe\cp} & $-$ \\ \hline
-    \Ball{}     & $-$ & $-$          & $-$          & $-$       & $-$          & $-$       & $-$       & $-$ \\ \hline
+    \rotatebox[origin=c]{270}{~~\Ball{}~~}     \\
+    \midrule
+    Parallelism   & $-$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $-$ \\
+    Orthogonality & $-$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $-$ \\
+    Collinearity  & $-$ & $\bullet$ & $\bullet$ & $-$       & $-$       & $-$       & $-$       & $-$ \\
+    Coplanarity   & $-$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $-$ \\
+    \bottomrule
   \end{tabular}
-  \caption{Geometrical conditions tests that can be performed through \Acme{} library.
-  \emph{Legend} \pa{}: parallelism, \pe{}: orthogonality, \cl{}: collinearity, \cp{}: coplanarity, and $-$: none.}
-  \label{table::conditions}
+  \caption[Geometrical conditions tests that can be performed through \Acme{} library.]{Geometrical conditions tests that can be performed through \Acme{} library. \emph{Legend}: $\bullet$ test is available for the entity, $-$ test is not available for the entity.}
+  \label{app1:acme_conditions}
 \end{table}
 
 \begin{table}[!htb]
   \centering
-  \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
-    \hline
-    \rotatebox[origin=c]{315}{~~\Entity{}~~}   &
+  \begin{tabular}{ccccccccc}
+    \toprule
+    \makecell[cc]{\textbf{Geometrical}\\\textbf{intersection}\\\textbf{tests}} &
     \rotatebox[origin=c]{270}{~~\Point{}~~}    &
     \rotatebox[origin=c]{270}{~~\Line{}~~}     &
     \rotatebox[origin=c]{270}{~~\Ray{}~~}      &
@@ -241,168 +256,178 @@ The \Acme{} geometry library is made of a \cpp{} core and a \Matlab{} \Mex{} wra
     \rotatebox[origin=c]{270}{~~\Segment{}~~}  &
     \rotatebox[origin=c]{270}{~~\Triangle{}~~} &
     \rotatebox[origin=c]{270}{~~\Disk{}~~}     &
-    \rotatebox[origin=c]{270}{~~\Ball{}~~}     \\ \hline
-    \Point{}    & \tb & \tb & \tb & \tb & \tb & \tb & \tb & \tb \\ \hline
-    \Line{}     & \tb & \tb & \tb & \tb & \tb & \tb & \tb & \tb \\ \hline
-    \Ray{}      & \tb & \tb & \tb & \tb & \tb & \tb & \tb & \tb \\ \hline
-    \Plane{}    & \tb & \tb & \tb & \tb & \tb & \tb & \tb & \tb \\ \hline
-    \Segment{}  & \tb & \tb & \tb & \tb & \tb & \tb & \tb & \tb \\ \hline
-    \Triangle{} & \tb & \tb & \tb & \tb & \tb & \tp & \tp & $-$ \\ \hline
-    \Disk{}     & \tb & \tb & \tb & \tb & \tb & \tp & \tp & $-$ \\ \hline
-    \Ball{}     & \tb & \tb & \tb & \tb & \tb & $-$ & $-$ & $-$ \\ \hline
+    \rotatebox[origin=c]{270}{~~\Ball{}~~}     \\
+    \midrule
+    \Point{}    & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ \\
+    \Line{}     & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ \\
+    \Ray{}      & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ \\
+    \Plane{}    & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ \\
+    \Segment{}  & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ \\
+    \Triangle{} & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\circ$   & $\circ$   & $-$       \\
+    \Disk{}     & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\circ$   & $\circ$   & $-$       \\
+    \Ball{}     & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $-$       & $-$       & $-$       \\
+    \bottomrule
   \end{tabular}
-  \caption{Intersections that can be performed through \Acme{} library.
-  \emph{Legend} \tb{}: intersection can be always performed, \tp{}:
-  intersection can be performed only if entities are not coplanar, $-$: intersection can not be performed.}
-  \label{table::intersections}
+  \caption[Geometrical intersection tests that can be performed through \Acme{} library.]{Geometrical intersection tests that can be performed through \Acme{} library. \emph{Legend}: $\bullet${} intersection can be always performed, $\circ${} intersection can be performed only if entities are not coplanar, $-$ intersection can not be performed.}
+  \label{app1:acme_intersections}
 \end{table}
 
-Thanks to the \Matlab{} \Mex{} the objects can also be manipulated and \emph{visualised} in the \Matlab{} environment. An interesting feature of the \Matlab{} \Mex{} is that it preserves the \cpp{} polymorphism. In other words, while performing an intersection between two generic objects both in \cpp{} and in \Matlab{} the software outputs the exact data type of entity resulting from the intersection, keeping all the checks and verifications transparent to the end-user.
+Thanks to the \Matlab{} \Mex{}, objects can be manipulated and \emph{visualized} in the \Matlab{} environment. An interesting feature of the \Matlab{} \Mex{} is that it preserves \cpp{} polymorphism. In other words, when performing an intersection between two generic objects, both in \cpp{} and in \Matlab{}, the software outputs the exact data type of the entity resulting from the intersection, maintaining all checks and verifications transparent to the end-user.
 
-Table \ref{table::timing} shows a comparison between the timing performances of \CGAL{} and \Acme{} libraries in a \cpp{} environment. As can be seen from the results, the increase in speed is notable. The reason for this may be the greater complexity of the \CGAL{} library which, as well as having a much more complex and complete framework than \Acme{}, most probably carries out additional check or dynamical allocations on the objects in use.
+Table~\ref{app1:tab:acme_timing} presents a comparison of timing performances between the \CGAL{} and \Acme{} libraries in a \cpp{} environment. As evident from the results, there is a notable increase in speed. This could be attributed to the greater complexity of the \CGAL{} library, which, in addition to having a much more intricate and comprehensive framework than \Acme{}, likely carries out additional checks or dynamic allocations on the objects in use.
 
 \begin{table}[!htb]
   \centering
-  \begin{tabular}{|c|c|c|c|c|c|}
-    \hline
-    Intersection            & \multicolumn{2}{c|}{\CGAL{}} & \multicolumn{2}{c|}{\Acme{}} & \multicolumn{1}{c|}{Speed} \\
-    \Entity{}-\Entity{}     & $\mu$ & $\sigma^2$ & $\mu$ & $\sigma^2$ & \multicolumn{1}{c|}{up}\\ \hline
-    \Line{}-\Line{}         & {\scriptsize$18.3$} & {\scriptsize$0.291$}  & {\scriptsize$2.2$}  & {\scriptsize$0.0132$} & {\scriptsize$8.3$x} \\ \hline
-    \Ray{}-\Ray{}           & {\scriptsize$1030$} & {\scriptsize$0.739$}  & {\scriptsize$8.5$}  & {\scriptsize$0.0974$} & {\scriptsize$121$x} \\ \hline
-    \Segment{}-\Segment{}   & {\scriptsize$1050$} & {\scriptsize$1.05$}   & {\scriptsize$8$}    & {\scriptsize$0.138$}  & {\scriptsize$131$x} \\ \hline
-    \Triangle{}-\Triangle{} & {\scriptsize$2920$} & {\scriptsize$3.83$}   & {\scriptsize$24$}   & {\scriptsize$0.454$}  & {\scriptsize$121$x} \\ \hline
-    \Line{}-\Ray{}          & {\scriptsize$13$}   & {\scriptsize$0.0268$} & {\scriptsize$1.9$}  & {\scriptsize$0.0164$} & {\scriptsize$6.8$x} \\ \hline
-    \Line{}-\Segment{}      & {\scriptsize$17$}   & {\scriptsize$0.104$}  & {\scriptsize$6.9$}  & {\scriptsize$0.192$}  & {\scriptsize$2.4$x} \\ \hline
-    \Line{}-\Triangle{}     & {\scriptsize$11.3$} & {\scriptsize$0.0228$} & {\scriptsize$5.6$}  & {\scriptsize$0.0526$} & {\scriptsize$2$x} \\ \hline
-    \Ray{}-\Triangle{}      & {\scriptsize$11.6$} & {\scriptsize$2.28$}   & {\scriptsize$25.5$} & {\scriptsize$0.858$}  & {\scriptsize$-0.45$x} \\ \hline
-    \Segment{}-\Triangle{}  & {\scriptsize$15$}   & {\scriptsize$0.568$}  & {\scriptsize$13.8$} & {\scriptsize$0.247$}  & {\scriptsize$1.1$x} \\ \hline
+  \begin{tabular}{cccccc}
+    \toprule
+    \multirow{2.5}{*}{\makecell[cc]{\textbf{Intersected}\\\textbf{entities}}} &
+    \multicolumn{2}{c}{\textbf{\CGAL{}}} & \multicolumn{2}{c}{\textbf{\Acme{}}} &
+    \textbf{Speed-up} \\ \cmidrule(l{4pt}r{4pt}){2-3} \cmidrule(l{4pt}r{4pt}){4-5}
+    & $\mu$~(\si{\nano\second}) & $\sigma^2$~(\si{\nano\second\squared}) &
+      $\mu$~(\si{\nano\second}) & $\sigma^2$~(\si{\nano\second\squared}) &
+      ($\times$) \\
+    \midrule
+    \Line{}-\Line{}         & \num{18.3} & \num{0.291}  & \num{2.2}  & \num{0.0132} & \num{8.3} \\
+    \Ray{}-\Ray{}           & \num{1030} & \num{0.739}  & \num{8.5}  & \num{0.0974} & \num{121} \\
+    \Segment{}-\Segment{}   & \num{1050} & \num{1.05}   & \num{8}    & \num{0.138}  & \num{131} \\
+    \Triangle{}-\Triangle{} & \num{2920} & \num{3.83}   & \num{24}   & \num{0.454}  & \num{121} \\
+    \Line{}-\Ray{}          & \num{13}   & \num{0.0268} & \num{1.9}  & \num{0.0164} & \num{6.8} \\
+    \Line{}-\Segment{}      & \num{17}   & \num{0.104}  & \num{6.9}  & \num{0.192}  & \num{2.4} \\
+    \Line{}-\Triangle{}     & \num{11.3} & \num{0.0228} & \num{5.6}  & \num{0.0526} & \num{2} \\
+    \Ray{}-\Triangle{}      & \num{11.6} & \num{2.28}   & \num{25.5} & \num{0.858}  & \num{-0.45} \\
+    \Segment{}-\Triangle{}  & \num{15}   & \num{0.568}  & \num{13.8} & \num{0.247}  & \num{1.1} \\
+    \bottomrule
   \end{tabular}
-  \caption{Comparison between \CGAL{} and \Acme{} libraries based on the total run-time of $10^5$ intersections of randomly created objects. Intersections are only made between certain types of geometric entities common to the two above libraries. \emph{Legend} $T$: $\mu$: average run-time per intersection (ns),  $\sigma^2$: run-time per intersection variance (ns).}
-  \label{table::timing}
+  \caption[Timing performance comparison between \CGAL{} and \Acme{} libraries.]{Timing performance comparison between \CGAL{} and \Acme{} libraries. The test consists of $10^5$ intersections between randomly created objects. Notice that intersections are only made between types of geometric entities common to the two libraries. \emph{Legend}: $\mu$ average run-time per intersection, $\sigma^2$ run-time per intersection variance.}
+  \label{app1:acme_timing}
 \end{table}
 
-% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
 \section{Application Examples}
-\label{example}
+\label{app1:acme_example}
 
-The following examples were generated on a MacOS system with 6-Core Intel i7 Processor 2.6GHz, AMD Radeon Pro 5300M 4GB, Intel UHD Graphics 630 1536MB and 16GB at 2667MHz DDR4 of RAM. The CPU architecture is equipped with L2 and L3 cache memory of 256KB and 12MB respectively.
+The provided examples were generated on a MacOS system with a 6-Core Intel i7 Processor (\SSI{2.6}{\giga\hertz}), AMD Radeon Pro 5300M (\SSI{4}{\giga\byte}), Intel \ac{UHD} Graphics 630 (\SSI{1536}{\mega\byte}), and \SSI{16}{\giga\byte} at \SSI{2667}{\mega\hertz} DDR4 of \ac{RAM}. The \ac{CPU} architecture is equipped with L2 and L3 cache memory of \SSI{256}{\kilo\byte} and \SSI{12}{\mega\byte}, respectively.
 
 \subsection{Worked Examples}
-We will now see an example that demonstrates some capabilities of the \Acme{} library. In particular, the same example will be proposed both in the \cpp{} language and in the \Matlab{} environment, so that we can appreciate the few differences between the two working environments. In the following \cpp{} and \Matlab{} codes we will create the disks:
+We will now examine an example that illustrates some capabilities of the \Acme{} library. Specifically, the same example will be presented in both the \cpp{} language and the \Matlab{} environment, allowing us to appreciate the few differences between the two working environments. In the following \cpp{} and \Matlab{} code snippets, we will create the \Disk{} objects:
 %
 \begin{equation*}
 \begin{split}
-\phi_1(r_1, \boldsymbol{o}_1, \vec{\boldsymbol{n}}_1) = \phi_1(2,\left[0,0,0\right]^T, \left[0,1,0\right]^T) \\
-\phi_2(r_2, \boldsymbol{o}_2, \vec{\boldsymbol{n}}_2) = \phi_2(1,\left[0,0,0\right]^T, \left[1,1,0\right]^T)
+\boldsymbol{\phi}_1(r_1, \pt{o}_1, \et{n}_1) = \boldsymbol{\phi}_1(2, \, \left[0, \, 0, \, 0\right]^{\top}, \left[0,1,0\right]^{\top}) \\
+\boldsymbol{\phi}_2(r_2, \pt{o}_2, \et{n}_2) = \boldsymbol{\phi}_2(1, \, \left[0, \, 0, \, 0\right]^{\top}, \left[1,1,0\right]^{\top})
 \end{split}
 \end{equation*}
 %
-that will be respectively indicated by the variables \texttt{d1} and \texttt{d2}. We will then intersect them obtaining a geometric entity which type is unknown to us. We will then go to understand what it is through the method \texttt{type()}, which will allow us to print a string describing the type of object obtained.
+that will be indicated by the variables \texttt{d1} and \texttt{d2}, respectively. We will then intersect them, obtaining a geometric entity whose type is unknown to us. Subsequently, we will use the \texttt{type()} method to identify and print a string describing the type of the obtained \Entity{} object. \\[0.5em]
 
+\begin{minipage}[t]{0.475\textwidth}
 \cpp{}
 \begin{verbatim}
 #include "acme.hh"
-#include "acme_intersection.hh"
-#include "acme_disk.hh"
-#include "acme_utils.hh"
-
 using namespace acme;
+using namespace std;
 
-int main()
-{
-// Create disks
-entity *d1 = new disk(2, point(0,0,0), vec3(0,1,0));
-entity *d2 = new disk(1, point(0,0,0), vec3(1,1,0));
+int main(void){
+  // Create the disks
+  entity *d1 = new disk(
+    2, point(0,0,0), vec3(0,1,0)
+  );
+  entity *d2 = new disk(
+    1, point(0,0,0), vec3(1,1,0)
+  );
 
-// Perform intersection
-entity *e1 = acme::intersection(d1, d2);
+  // Perform the intersection
+  entity *e1 = intersection(d1,d2);
 
-// Check output entity type
-std::cout << "Output entity is of type: "
-          << e1->type() << "\n";
+  // Check output entity type
+  cout << e1->type() << endl;
 
-// Exit program
-return 0;
+  return 0;
 }
 \end{verbatim}
-
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.475\textwidth}
 \Matlab{}
 \begin{verbatim}
-% Create disks
-d1 = acme_disk(2, [0,0,0]', [0,1,0]');
-d2 = acme_disk(1, [0,0,0]', [1,1,0]');
+% Create the disks
+d1 = acme_disk( ...
+  2, [0,0,0]', [0,1,0]' ...
+);
+d2 = acme_disk( ...
+  1, [0,0,0]', [1,1,0]' ...
+);
 
-% Perform intersection
+% Perform the intersection
 e1 = d1.intersection(d2);
 
 % Check output entity type
-disp(['Output entity is of type: ', e1.type()]);
+disp(e1.type());
 
 % Plot output
 f1 = figure;
-d1.plot(f1,'red');
-d2.plot(f1,'blue');
-e1.plot(f1,'green');
+d1.plot(f1, 'red');
+d2.plot(f1, 'blue');
+e1.plot(f1, 'green');
 \end{verbatim}
-In both cases the output is the following:
-\begin{verbatim}
->> Output entity is of type: segment
-\end{verbatim}
+\end{minipage} \\[0.5em]
+
+In both cases, the output is the string ``\texttt{segment}''.
 
 \begin{figure}[!ht]
   \centering
-  \input{./figures/appendix_1/acme_example}
-  \caption{Visualisation of the worked example problem. Notice that the same figure can be obtained through lines 12$-$15 of \Matlab{} example code.}
+  \includetikz{./figures/appendix_1/acme_example.tex}
+  \caption[Visualization of the example problem.]{Visualization of the example problem. Notice that the same figure can be obtained through the last 4 lines of the \Matlab{} example code.}
+  \label{app1:fig:acme_example}
 \end{figure}
 
-\subsection{Real-time Driving Simulator}
-As it has been mentioned before, thanks to \Acme{} library, we developed another \cpp{} library able to evaluate the contact geometry between tire and road under hard real-time constraints. The tire is represented through a set of undeformable ribs, which are a set of properly sized and distanced \Disk{} objects. The 3D mapped road consists of thousands of \Triangle{} objects provided with a surface friction coefficients scaling factors. Triangles data is stored in a RDF (\emph{Road Data Format}) file or in an OBJ file that is dynamically loaded at execution time. Both RDF and OBJ files consist of two sections. In the first part all vertices are declared through a vertex identification number and a set of three axes coordinates (\emph{e.g.} \texttt{id x y z}). In the second part, vertices are linked and the friction coefficient scaling factor on the relative triangle surface is declared in order to compose all the triangles of the road surface (\emph{e.g.} \texttt{id}$_1$ \texttt{id}$_2$ \texttt{id}$_3$ \texttt{mu}$_s$). Together with the multi-rib tire and road representations we also provided custom single and multiple contact points enveloping models. This novel approach to geometrically model the tire-road intersection problem is extremely scalable in terms of both accuracy and execution time. This last feature allows to fulfil the real-time requirement also on less performant and dated machines.
+\subsection{Real-Time Driving Simulator}
+As mentioned earlier, leveraging the \Acme{} library, we developed another \cpp{} library capable of evaluating the contact geometry between tire and ground under \ac{HRT} constraints. The tire is represented through a set of undeformable ribs, which are properly sized and spaced \Disk{} objects (see \figurename{}~\ref{app1:fig:acme_tire}). The \ac{3D} mapped ground consists of thousands of \Triangle{} objects, each provided with a surface friction coefficients scaling factor. Triangles data is stored in an \ac{RDF} file or in a wavefront OBJ file, which is dynamically loaded at execution time. Both \ac{RDF} and OBJ files consist of two sections. In the first part, all vertices are declared with a vertex identification number and a set of three axes coordinates, \eg{}, \texttt{id x y z}. In the second part, vertices are linked, and the friction coefficient scaling factor on the relative triangle surface is declared to compose all the triangles of the ground surface, \eg{}, \texttt{id}\textsubscript{\texttt{1}} \texttt{id}\textsubscript{\texttt{2}} \texttt{id}\textsubscript{\texttt{3}} \texttt{mu}\textsubscript{\texttt{s}}. Alongside the multi-rib tire and ground representations, we also provided in Chapter~\ref{app1:chap:enve} a custom enveloping model for single and multiple contact points. This novel approach to geometrically modeling the tire-ground intersection problem is highly scalable in terms of both accuracy and execution time. This feature allows us to meet the \ac{RT} requirement even on less powerful machines. In Table~\ref{app1:tab:acme_data}, we report the performance data of the tire-ground intersection algorithm on a medium-density ground surface mesh location, obtained by the results of $10^5$ executions on the previously mentioned MacOS system \ac{PC}.
 
-In this specific application, the \AabbTree{} object plays a pivotal role to reach a high refresh rate. Since the road surface is often composed of thousands of custom modified \Triangle{} objects, it is impractical that the tire ribs are intersected with the road objects one by one. Instead, when the road surface object is created, also its respective \AabbTree{} is constructed. When it comes the time to intersect the tire with the road also the tire one-leaf \AabbTree{} is build. The trees are then intersected through tailor-made algorithms and only the road triangles that touches the tire \Aabb{} are considered in the subsequent detailed intersection analysis.
+In this specific application, the \AabbTree{} object plays a crucial role in achieving a high refresh rate. Since the ground surface is often composed of thousands of custom-modified \Triangle{} objects, individually intersecting the tire ribs with each ground object is impractical. Instead, when the ground surface object is created, its respective \AabbTree{} is built. When it comes time to intersect the tire with the ground, the tire's one-leaf \AabbTree{} is also created. The trees are then intersected through tailored algorithms, and only the ground triangles that touch the tire \Aabb{} are considered in the subsequent detailed intersection analysis.
 
-\renewcommand{\arraystretch}{1}
+This framework makes the library suitable for a multitude of applications, ranging from advanced control testing to race car driving simulation. Two of the most notable characteristics of the implemented tire-ground contact models are their ability to detect different local grip conditions on \ac{3D} mapped grounds and the capability to locally approximate the ground surface with multiple planes. This implies the ability not only to capture slope and track banking angles but also to account for minor unevennesses in the ground surface. These properties make the model a valuable tool for both online and offline virtual \ac{ADAS} testing and/or handling analysis.
+
+\begin{figure}[!ht]
+  \centering
+  \def\svgwidth{9cm}
+  \input{./figures/appendix_1/acme_tire.pdf_tex}
+  \caption[Example illustrating the intersection between a tire and ground.]{Example illustrating the intersection between a tire and ground. In the image, the ground mesh is composed of numerous custom-modified \Triangle{} objects, while the tire is represented as a sequence of appropriately shaped and spaced \Disk{} instances, commonly referred to as \emph{ribs}. The shape of each rib is derived directly from a specialized tire profile function (see Chapter~\ref{app1:chap:enve}).}
+  \label{app1:fig:acme_tire}
+\end{figure}
+
 \begin{table}[!ht]
   \centering
-  \begin{tabular}{|c|c|}
-    \hline
-    Tire ribs               & $10$ \\ \hline
-    Total road triangles    & $27231$ \\ \hline
-    Average intersection candidates & $12.74$ \\ \hline
-    Mean execution time     & $42.28\,\mu s$ \\ \hline
-    Execution time variance & $0.22\cdot10^{-3}\,\mu s$ \\ \hline
+  \begin{tabular}{cc}
+    \toprule
+    \textbf{Parameter description} & \textbf{Value} \\
+    \midrule
+    Tire ribs                       & \num{10} \\
+    Total ground triangles            & \num{27231} \\
+    Average intersection candidates & \num{12.74} \\
+    Mean execution time             & \SSI{42.28}{\micro\second} \\
+    Execution time variance         & \SSI{0.22}{\nano\second\squared} \\
+    \bottomrule
   \end{tabular}
-  \caption{Example of tire-road intersection performance data on a medium density road surface mesh location.}
-  \label{table::data}
+  \caption{Example of tire-ground intersection performance data on a medium-density ground surface mesh location.}
+  \label{app1:acme_data}
 \end{table}
 
-This framework makes the library adequate for a multitude of applications, from advanced controls testing to race car driving simulation. Two of the most important peculiarities of the implemented tire-road contact models are that they can detect different local grip conditions on the tridimensional mapped roads. Moreover, the road surface can be locally approximated by multiple planes. This means that it is possible not only to grab the slope and track banking angles, but also road surface minor unevennesses. All of these properties make the model a useful tool for on-line and off-line virtual ADAS (\emph{Advanced Driver-Assistance Systems}) testing and/or handling analysis.
-
-\begin{figure}[!ht]
-  \centering
-  \input{./figures/appendix_1/acme_tire.pdf_tex}
-  \caption{Example of tire-road intersection. As it can be seen from the picture the \Road{} is modelled as a multitude of custom modified \Triangle{} objects. On the other hand, the \Tire{} object is modelled as a series properly shaped and distanced \Disk{} instances (also called \emph{ribs}). The ribs shape is extracted directly from a custom tire profile function.}
-  \label{fig::tire}
-\end{figure}
-
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[width=1.0\columnwidth]{simulator}
-  \caption{Cockpit view screenshot of the real-time driving simulator giving a glimpse on the graphical quality and realism.}
-\end{figure}
-
-% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
 \section{Impact}
 
-The free and open-source \Acme{} library provides users quick and easy access to the manipulation of geometric entities. It has been successfully used in the tire-road interaction computation. A first version of the library was developed in~\cite{stocco2019valutazione} and was planned to be used coupled with H. Pacejka \emph{Magic Formulae}~\cite{pacejka2012tire} tire model for online time-optimal motion planning and control of vehicle applications~\cite{piccinini2022predictive}.
+The free and open-source \Acme{} library provides users quick and easy access to geometric entity manipulation, with successful applications in tire-ground interaction computation. The initial version of the library was developed for integration with the \ac{MF} tire model~\cite{pacejka2012tire}, intended for online time-optimal motion planning and control in vehicle applications~\cite{piccinini2022predictive,piccinini2023physics}.
 
-The library has a \Matlab{} \Mex{} wrapper that allows less experienced developers to exploit the software core while maintaining low programming language complexity. In case it was decided on a \cpp{} interface, the library allows you to quickly develop efficient, memory safe and low verbose code. The usage of the \Collection{} object, combined with the \AabbTree{} and the heavy usage of smart pointers allows to perform fast collision detection, intersection and sorting on a large set of (potentially heterogeneous) objects of type \Entity{}. Above all, from what is known to the authors, \Acme{} is the only library that has the same polymorphic behaviour in both the \cpp{} interface and the \Matlab{} \Mex{} wrapper. Moreover, other state-of-the-art geometry libraries like those mentioned in Section \ref{sec:1} do not guarantee double compatibility between \cpp{} and \Matlab{} environments.
+The library includes a \Matlab{} \Mex{} wrapper, enabling less experienced developers to leverage the software core with low programming language complexity. For users opting for a \cpp{} interface, the library allows for the rapid development of efficient, memory-safe, and concise code. The combination of the \Collection{} object, \AabbTree{}, and the extensive use of smart pointers allows for fast collision detection, intersection, and sorting across a large set of potentially heterogeneous objects of type \Entity{}. Notably, \Acme{} stands out as the only library known to the authors that maintains the same polymorphic behavior in both the \cpp{} interface and the \Matlab{} \Mex{} wrapper. Additionally, other state-of-the-art geometry libraries mentioned in Section~\ref{app1:sec:acme_motivation} do not ensure dual compatibility between \cpp{} and \Matlab{} environments.
 
-% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
 \section{Conclusions}
 
-The world of simulation is always in evolution. The ability to keep a minimum stable core is a key feature for a less concerned future developments. \Acme{} library is a very basic and easy-to-use \cpp{} geometry library that aims to be a minimal tool for real-time applications. The peculiarity that makes this library simple but at the same time effective is the presence of a minimum set of basic entities data types together with \AabbTree{} and \Collection{} objects. The user can work with a large number of object instances in an efficient way. The library allows to efficiently create, intersect, and destroy basic geometry entities. \Acme{} is thus convenient for both a simple collision detection work and a more time expensive intersection evaluation. The object-oriented design allows experienced programmers to extend the library if needed. Thorough documentation on both \cpp{} and \Matlab{} APIs, together with a set of step-by-step examples complete this tool. An example of library extension and practical usage has been shown in Section \ref{example}. In its current version, the library is in fact very keen on representing tires and road surfaces respectively modelled by a multitude of \Triangle{}\textsc{s} and a set of \Disk{} objects, and it has been tested on a real-time driving simulator. In order to guarantee performance and stability, the library has been accessed in high density mesh locations and extreme cases. Even if the natural habitat of \Acme{} is in driving simulation, we believe that it may serve also for generic third-party projects involving collision detection and intersection evaluation of large sets of basic or compositions of geometrical entities.
+In the ever-evolving world of simulation, maintaining a stable minimum core is crucial for future developments. The \Acme{} library, as a basic and user-friendly \cpp{} geometry library, aims to be a minimal tool for \ac{RT} applications. Its simple and effective design stems from a minimal set of basic entity data types, along with \AabbTree{} and \Collection{} objects, allowing users to work efficiently with a large number of object instances. The library enables the creation, intersection, and destruction of basic geometry entities, making it suitable for both simple collision detection and more intricate intersection evaluations. Its object-oriented design allows experienced programmers to extend the library as needed. Thorough documentation for both \cpp{} and \Matlab{} \acp{API}, together with step-by-step examples, complements this tool.
 
+The example in Section~\ref{app1:sec:acme_example} demonstrates the library's extension and practical use, particularly in the context of modeling tires and ground surfaces. Tested on a \ac{HRT} driving simulator, the library performed well in high-density mesh locations and extreme cases. While \Acme{} is tailored for driving simulation, its potential applications extend to generic projects involving collision detection and intersection evaluation of large sets of basic or composite geometrical entities.
 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %

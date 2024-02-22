@@ -1,4 +1,4 @@
-\documentclass[a5paper, 10pt, openright]{book} % book template, paper size is b5
+\documentclass[a4paper, 11pt, openright]{book} % book template, paper size is b5
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -7,45 +7,55 @@
 % Suppress some warnings -------------------------------------------------------
 \usepackage{silence}
 \WarningsOff[everypage] % Suppress warnings related to package everypage
-\pdfsuppresswarningpagegroup=1
+%\pdfsuppresswarningpagegroup=1
 
 % Maths ------------------------------------------------------------------------
-\usepackage[super]{nth}          % write ordinal numbers superscript 'st',' nd', 'rd', 'th'
 \usepackage{amsmath}             % principal package for serious mathematical typesetting
 \usepackage{mathtools}           % improved version of amsmath
 \usepackage{amssymb}             % particular mathematical symbols
-\usepackage{scalerel}            % scale/stretch/shift an object to conform a second one
-%\usepackage{amsfonts}           % particular mathematical fonts
-%\usepackage{amsthm}             % to define theorems, lemmas, etc
-%\usepackage{mathrsfs}           % math upper case letter fonts
-%\usepackage{bm}                 % bold math formula, similar to '\mathbf'
-%\usepackage{systeme}            % easy way to write systems of equations
-%\usepackage{accents}            % particular accents in math
-%\usepackage{commath}            % differential, partial differ., delimiters, etc
+\usepackage{bm}                  % bold math formula, similar to '\mathbf'
+\usepackage{mathrsfs}            % math upper case letter fonts
+%\usepackage{scalerel}            % scale/stretch/shift an object to conform a second one
+%\usepackage{amsfonts}            % particular mathematical fonts
+%\usepackage{amsthm}              % to define theorems, lemmas, etc
+%\usepackage{mathrsfs}            % math upper case letter fonts
+%\usepackage{systeme}             % easy way to write systems of equations
+%\usepackage{accents}             % particular accents in math
+%\usepackage{commath}             % differential, partial differ., delimiters, etc
 
 % Document settings ------------------------------------------------------------
-\usepackage{enumitem}            % advanced generate a list with numbered items
-\usepackage{xspace}              % smart spacing at the end of macros
 \usepackage{geometry}            % change margins of the document
 \usepackage{acronym}             % to define abbreviations
-%\usepackage{changepage}         % adjust width environment
-%\usepackage{enumerate}          % basic generate list with numbered items
-%\usepackage{stackengine}        % stack objects vertically
-%\usepackage{setspace}           % spacing between lines in a document
-%\usepackage{pdfpages}           % for the inclusion of multi-page external PDF documents
+\usepackage{rotating}            % rotate objects
+%\usepackage{changepage}          % adjust width environment
+%\usepackage{enumerate}           % basic generate list with numbered items
+%\usepackage{stackengine}         % stack objects vertically
+%\usepackage{setspace}            % spacing between lines in a document
+%\usepackage{pdfpages}            % for the inclusion of multi-page external PDF documents
 
 % Text settings ----------------------------------------------------------------
-\usepackage{lipsum}              % generate random text in Latin
 \usepackage[dvipsnames]{xcolor}  % color the text
 \usepackage{soul}                % to strike-through text
 \usepackage{tcolorbox}           % create a colored box wrapping the text
+\usepackage[final]{microtype}    % improves the spacing between words and letters
 \usepackage[toc, page]{appendix} % to create appendices
 \usepackage[english]{babel}      % useful to interpret the language of the document
-\usepackage{lmodern}             % text font
 \usepackage[T1]{fontenc}         % to write correctly in Italian
-\usepackage[utf8]{inputenc}      % to correctly write accented letter and other symbols
-%\usepackage[latin1]{inputenc}   % codec input useful to write docs in Italian
-%\usepackage[normalem]{ulem}     % underline command which will break over line ends
+%\usepackage[utf8]{inputenc}      % to correctly write accented letter and other symbols
+%\usepackage[latin1]{inputenc}    % codec input useful to write docs in Italian
+%\usepackage[normalem]{ulem}      % underline command which will break over line ends
+\usepackage{url}                % to write url in the document
+\urlstyle{same}                 % tt font of the document (forced in the bibliography)
+
+% Fonts ------------------------------------------------------------------------
+\usepackage{lmodern}             % text font
+%\usepackage{newtx}
+%\usepackage{mathspec}            % font selection for XeLaTeX
+%\defaultfontfeatures{Mapping=tex-text}       % to support TeX conventions
+%\setallmainfonts{Adobe Caslon Pro}           % normal document font
+%\setallsansfonts[Scale=0.9]{Optima}          % sans-serif font (\textsf{})
+%\setallmonofonts[Scale=0.75]{JetBrains Mono} % mono spaced font (\texttt{})
+\usepackage{textgreek}           % to write greek letters in text mode
 
 % Units ------------------------------------------------------------------------
 \usepackage{siunitx}             % write unit of measurements
@@ -58,47 +68,78 @@
 
 % Figures and tables -----------------------------------------------------------
 \usepackage{graphicx}            % advanced package to load figures
-\usepackage{subfig}              % generating subfigures
 \usepackage{booktabs}            % enhance table quality: midrule, toprule, etc
+\usepackage{tabularx}            % to create tables with a fixed width
 \usepackage{array}               % array and tabular environments
 \usepackage{float}               % improve the interface to define figs and tables
-\usepackage{multirow}            % multi rows    cells in a table
+\usepackage{multirow}            % multi rows cells in a table
 \usepackage{longtable}           % long tables
-%\usepackage{background}         % to put a background image in the document
-%\usepackage{multicol}           % multi columns cells in a table
-%\usepackage{ctable}             % alignement of folats objects
-%\usepackage{graphics}           % base package to load figures
-%\usepackage{caption}            % to customize the captions in floating environments
-%\usepackage{subcaption}         % again used to customize the captions
+\usepackage{makecell}            % to make cells in a table
+\usepackage{multicol}            % multi columns cells in a table
+\usepackage{caption}             % to customize the captions in floating environments
+\usepackage{subcaption}          % again used to customize the captions
+\usepackage{overpic}             % to put text over a figure
+%\usepackage{subfig}              % generating subfigures
+%\usepackage{background}          % to put a background image in the document
+%\usepackage{ctable}              % alignement of folats objects
+%\usepackage{graphics}            % base package to load figures
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\renewcommand{\theadalign}{cl}
+\renewcommand{\cellalign}{cl}
+
+\usepackage{fontawesome}
+\newcommand{\mycheckmark}{\textcolor{mycolor5}{\faCheck}}
+\newcommand{\mycrossmark}{\textcolor{mycolor2}{\faTimes}}
+\newcommand{\mywarnmark}{\textcolor{mycolor3}{\faExclamationTriangle}}
 
 % Algorithms and code ----------------------------------------------------------
-\usepackage[boxed]{algorithm2e}  % to write algorithms
-\usepackage{listings}            % to write code
+\usepackage{algpseudocode}       % to write algorithms
+\usepackage{algorithm}           % to write algorithms
+\usepackage{algorithmicx}        % to write algorithms
+
+\algnewcommand{\IfThen}[2]{% \IfThenElse{<if>}{<then>}
+  \State \algorithmicif\ #1\ \algorithmicthen\ #2}
+\algnewcommand{\IfThenElse}[3]{% \IfThenElse{<if>}{<then>}{<else>}
+  \State \algorithmicif\ #1\ \algorithmicthen\ #2\ \algorithmicelse\ #3}
 
 % TikZ and PGFPlots ------------------------------------------------------------
+\usepackage{tikz}                % to draw figures
 \usepackage{pgfplots}            % external TikZ/PGF plots support
+\usepgfplotslibrary{fillbetween} % fill the area between two curves
+\pgfplotsset{compat=newest}      % compatibility mode
+\pgfplotsset{plot coordinates/math parser=false} % to avoid math parser
 \usepgfplotslibrary{external}    % load the externalization library
 \usetikzlibrary{external}        % use the externalization library
 %\tikzexternalize[mode=list and make, prefix=gfx/ext-tikz/]
 \tikzexternalize[mode=convert with system call, prefix=figures/externalized/]
+% include tikz images and set externalization filename
+\newcommand{\includetikz}[1]{%
+  % substitute dots and slash in filename with underscores
+  \StrSubstitute{#1}{./}{}[\temp]%
+  \StrSubstitute{\temp}{.}{_}[\temp]%
+  \StrSubstitute{\temp}{/}{_}[\temp]%
+  \tikzsetnextfilename{\temp}%
+  \input{#1}%
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DOCUMENT SETUP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Set custom margins for the document ------------------------------------------
-%\newgeometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm} % Digital version
-\newgeometry{top=2.0cm, bottom=2.0cm, width=11cm, bindingoffset=12mm} % Print version
+\newgeometry{top=2.5cm, bottom=2.0cm, left=2.0cm, right=2.0cm} % digital version
+%\newgeometry{top=2.0cm, bottom=2.0cm, width=11cm, bindingoffset=12mm} % print version
 %headsep=0.25in, headheight=20pt, heightrounded
 
 % Write 10^0 instead of 1 (requires 'siunitx') ---------------------------------
-\sisetup{retain-zero-exponent=true}
+\sisetup{retain-zero-exponent=false}
 
 % Modify layout of command SIrange (requires 'siunitx') ------------------------
-%\sisetup{range-phrase = \text{ -- }}
+\sisetup{range-phrase = \text{ -- }}
 
 % Set the indent length to zero ------------------------------------------------
 \setlength\parindent{0pt}
+\setlength\itemsep{0pt}
 
 % Set the path of the figure files ---------------------------------------------
 \graphicspath{
@@ -130,7 +171,9 @@
   %backref=true, %
   natbib=true, % natbib compatibility mode (\citep and \citet still work)
 }{biblatex}
-\usepackage{biblatex}
+\usepackage{biblatex} % to display bibliography
+\usepackage{bibentry} % to insert bibliography entries inline
+\emergencystretch=1em
 \addbibresource{bibliography.bib}
 
 % Reduce the margin of the summary/abstract ------------------------------------
@@ -159,14 +202,46 @@
 \newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
 
 % Definitions of mathematical commands to typeset many things ------------------
-\newcommand{\MATLAB}{\textsc{Matlab}\xspace}
-\newcommand{\Lagr}{\mathop{\mathcal{L}}}
-\newcommand*{\tcr}{\textcolor{red}}
 
-\newcommand{\Acme}{\textsc{Acme}}
+\newtheorem{observation}{Observation}
+\newtheorem{remark}{Remark}
+
+% General commands
+\newcommand{\eg}{\emph{e.g.}}
+\newcommand{\ie}{\emph{i.e.}}
+\newcommand{\SSI}[2]{\SI[per-mode=symbol]{#1}{#2}}
+
+% Software programs
+\newcommand{\MapleSoft}{\textsc{Maplesoft}\textsuperscript{\textregistered}}
+\newcommand{\Maple}{\textsc{Maple}\textsuperscript{\textregistered}}
+\newcommand{\Wolfram}{\textsc{Wolfram}}
+\newcommand{\Mathematica}{\textsc{Mathematica}\textsuperscript{\textregistered}}
+\newcommand{\Matlab}{\textsc{Matlab}\textsuperscript{\textregistered}}
+\newcommand{\Simulink}{\textsc{Simulink}\textsuperscript{\textregistered}}
+\newcommand{\Mex}{\textsc{Mex}}
+\newcommand{\SFunction}{\textsc{S-Function}}
+
+% Miscellaneous libraries, languages and tools
+\newcommand{\cpp}{C++}
+\newcommand{\html}{HTML}
+\newcommand{\CGAL}{CGAL}
+\newcommand{\LEM}{LEM}
+\newcommand{\SIG}{SIG}
+\newcommand{\LAST}{LAST}
+\newcommand{\LULEM}{\texttt{LULEM}}
+\newcommand{\Indigo}{\textsc{Indigo}}
+\newcommand{\Doxygen}{\textsc{Doxygen}}
+\newcommand{\Sphinx}{\textsc{Sphinx}}
+\newcommand{\CMake}{\textsc{CMake}}
+\newcommand{\Const}{\textsc{Const}}
+\newcommand{\SharedPointer}{\textsc{SharedPointer}}
+
+% Eigen namespace and classes
 \newcommand{\Eigen}{\textsc{Eigen}}
-\newcommand{\CGAL}{\textsc{CGAL}}
 \newcommand{\MatrixBase}{\textsc{MatrixBase}}
+
+% Acme namespace and classes
+\newcommand{\Acme}{ACME}
 \newcommand{\Entity}{\textsc{Entity}}
 \newcommand{\Entities}{\textsc{Entities}}
 \newcommand{\Point}{\textsc{Point}}
@@ -178,36 +253,119 @@
 \newcommand{\Disk}{\textsc{Disk}}
 \newcommand{\Ball}{\textsc{Ball}}
 \newcommand{\Collection}{\textsc{Collection}}
-\newcommand{\Aabb}{\textsc{AABB}}
-\newcommand{\AabbTree}{\textsc{AABBtree}}
+\newcommand{\Aabb}{\ac{AABB}}
+\newcommand{\AabbTree}{\ac{AABB}\textsc{tree}}
 
+% Enve namespace and classes
+\newcommand{\Enve}{\textsc{Enve}}
+\newcommand{\TriangleGround}{\textsc{TriangleGround}}
+\newcommand{\Mesh}{\textsc{Mesh}}
+\newcommand{\Flat}{\textsc{Flat}}
+\newcommand{\Rib}{\textsc{Rib}}
+\newcommand{\Shape}{\textsc{Shape}}
+\newcommand{\Shell}{\textsc{Shell}}
 \newcommand{\Tire}{\textsc{Tire}}
 \newcommand{\Road}{\textsc{Road}}
 
-\newcommand{\Const}{\textsc{Const}}
-\newcommand{\SharedPointer}{\textsc{SharedPointer}}
+% Tire models
+\newcommand{\MagicFormulae}{\textsc{Magic Formula}}
+\newcommand{\Swift}{\textsc{Swift}\textsuperscript{\textregistered}}
+\newcommand{\TMEasy}{\textsc{TMEasy}}
+\newcommand{\FTire}{\textsc{FTire}\textsuperscript{\textregistered}}
+\newcommand{\CDTire}{\textsc{CDTire}\textsuperscript{\textregistered}}
 
-\newcommand{\Matlab}{\textsc{Matlab}\textsuperscript{\textregistered}}
-\newcommand{\Mex}{\textsc{Mex}}
-\newcommand{\Doxygen}{\textsc{Doxygen}}
-\newcommand{\Sphinx}{\textsc{Sphinx}}
-\newcommand{\cpp}{C++}
+% Mathematical symbols
+\newcommand{\pt}[1]{\ensuremath{\mathbf{#1}}}
+\newcommand{\vt}[1]{\ensuremath{\vec{\pt{#1}}}}
+\newcommand{\et}[1]{\ensuremath{\hat{\pt{#1}}}}
 
-\newcommand{\tb}{\textbullet}
-\newcommand{\tp}{\textopenbullet}
+\newcommand{\sett}[1]{\ensuremath{\mathcal{#1}}}
+\newcommand{\boundary}[1]{\ensuremath{\partial{\sett{#1}}}}
+\newcommand{\interior}[1]{\ensuremath{\mathring{\sett{#1}}}}
 
-\newcommand{\pa}{\ensuremath{\parallel}}
-\newcommand{\pe}{\ensuremath{\bot}}
-\newcommand{\cl}{\rotatebox[origin=c]{0}{\scalebox{0.76}{\ensuremath{\hspace{0.5mm}\Cup}}}}
-\newcommand{\cp}{\scalebox{0.69}{\ensuremath{\square}}}
+\newcommand{\de}{\mathrm{d}}
+
+% Matrices and vectors
+\newcommand{\m}[1]{\ensuremath{\mathbf{#1}}}
+\newcommand{\mx}{\ensuremath{\m{x}}}
+\newcommand{\mxp}{\ensuremath{\mx^\prime}}
+\newcommand{\mE}{\ensuremath{\m{E}(\mx, t)}}
+\newcommand{\mg}{\ensuremath{\m{g}(\mx, t)}}
+\newcommand{\ma}{\ensuremath{\m{a}(\mx, t)}}
+\newcommand{\mv}{\ensuremath{\m{v}(\mx, t)}}
+\newcommand{\mA}{\ensuremath{\m{A}(\mx, t)}}
+\newcommand{\mN}{\ensuremath{\m{N}(\mx, t)}}
+\newcommand{\mK}{\ensuremath{\m{K}(\mx, t)}}
+\newcommand{\mI}{\ensuremath{\m{I}}}
+\newcommand{\mP}{\ensuremath{\m{P}}}
+\newcommand{\mQ}{\ensuremath{\m{Q}}}
+\newcommand{\mL}{\ensuremath{\m{L}(\mx, t)}}
+\newcommand{\mU}{\ensuremath{\m{U}(\mx, t)}}
+\newcommand{\mM}{\ensuremath{\m{M}(\mx, t)}}
+\newcommand{\mb}{\ensuremath{\m{b}(\mx, t)}}
+\newcommand{\mAd}{\ensuremath{\m{E}_{\m{a}}(\mx, t)}}
+\newcommand{\mgd}{\ensuremath{\m{g}_{\m{a}}(\mx, t)}}
+\newcommand{\mF}{\ensuremath{\m{F}(\mx, \mxp, t)}}
+\newcommand{\mh}{\ensuremath{\m{h}(\mx, t)}}
+\newcommand{\mV}{\ensuremath{\m{v}(\mx, t)}}
+
+\newcommand{\mq}{\ensuremath{\m{q}}}
+\newcommand{\mqd}{\ensuremath{\m{{q}^{\prime}}}}
+\newcommand{\mqdd}{\ensuremath{\m{{q}^{\prime\prime}}}}
+\newcommand{\ml}{\ensuremath{\boldsymbol{\lambda}}}
+
+\newcommand{\cf}{\ensuremath{\,\mathrm{f}}}
+\newcommand{\cm}{\ensuremath{\,\mathrm{m}}}
+\newcommand{\cd}{\ensuremath{\,\mathrm{d}}}
+\newcommand{\ca}{\ensuremath{\,\mathrm{a}}}
 
 
-% Definitions of the abbreviations command -------------------------------------
-\newcommand\nomenclature[2]{#1 & #2 \\}
 
-% Definition of special symbols for some unit of measurement -------------------
-\def\mcirc{\mathbin{\scalerel*{\circ}{j}}}
-\def\msquare{\mathord{\scalerel*{\Box}{gX}}}
+\newcommand{\eqdef}{\mathrel{\overset{\makebox[0pt]{\mbox{\normalfont\tiny def}}}{=}}}
+\newcommand{\bfell}{\ensuremath{\mathcal{L}}}
+\newcommand{\huvec}{\ensuremath{\hat{\mathbf{n}}}}
+\newcommand{\euvec}{\ensuremath{\hat{\mathbf{e}}}}
+\newcommand{\road}{\ensuremath{\mathcal{R}}}
+\newcommand{\tire}{\ensuremath{\mathcal{T}}}
+\newcommand{\cp}{\ensuremath{\mathcal{P}}}
+\newcommand{\adh}{\ensuremath{\mathcal{A}}}
+\newcommand{\sli}{\ensuremath{\mathcal{S}}}
+
+\newcommand{\mini}{\ensuremath{\mathrm{\min}}}
+\newcommand{\maxi}{\ensuremath{\mathrm{\max}}}
+\newcommand{\meai}{\ensuremath{\mathrm{\mu}}}
+\newcommand{\vari}{\ensuremath{\mathrm{\sigma^2}}}
+
+\newcommand{\Fiala}{\textsc{Fiala}}
+\newcommand{\NeoFiala}{\textsc{Neo-Fiala}}
+\newcommand{\TreadSim}{\textsc{TreadSim}}
+\newcommand{\TaMeTire}{\textsc{TaMeTire}\textsuperscript{\textregistered}}
+\newcommand{\Hoosier}{\textsc{Hoosier}\textsuperscript{\textregistered}}
+
+
+% Matlab colors
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}
+\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}
+\definecolor{mycolor4}{rgb}{0.49400,0.18400,0.55600}
+\definecolor{mycolor5}{rgb}{0.46600,0.67400,0.18800}
+\definecolor{mycolor6}{rgb}{0.30100,0.74500,0.93300}
+\definecolor{mycolor7}{rgb}{0.63500,0.07800,0.18400}
+
+% Pages numbering --------------------------------------------------------------
+\makeatletter
+\newcommand*{\emptystyles}{% remove page style
+\let\oldplain\ps@plain
+\let\ps@plain\ps@empty
+\pagestyle{empty}}
+
+\newcommand*{\restorestyles}{% restore page style
+\clearpage\thispagestyle{empty}
+\let\ps@plain\oldplain
+\pagestyle{headings}}
+
+\let\ps@plain\ps@empty% remove page numbers from chapter pages
+\makeatother
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % BEGIN DOCUMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -216,17 +374,27 @@
 \begin{document}
 
 % Frontmatter ------------------------------------------------------------------
+\emptystyles
 \include{frontmatter/frontmatter}
 \hbox{}
 \thispagestyle{empty}
 \newpage
 
+% Copyrigth --------------------------------------------------------------------
+\vspace*{\fill}
+\begin{center}
+  Copyright \textcopyright{} 2024 Davide Stocco \\
+\end{center}
+\thispagestyle{empty}
+\cleardoublepage
+
 % Abstract ---------------------------------------------------------------------
-\include{abstract/abstract.tex}
+\include{abstract/abstract}
 \vspace*{\fill}
 
 % Table of contents ------------------------------------------------------------
 \tableofcontents
+\restorestyles
 
 % List of figures --------------------------------------------------------------
 \cleardoublepage
@@ -242,9 +410,17 @@
 
 % List of abbreviations --------------------------------------------------------
 \cleardoublepage
+\phantomsection
 \addcontentsline{toc}{chapter}{List of Abbreviations}
 \chapter*{List of Abbreviations}
+\markboth{LIST OF ABBREVIATIONS}{}
 \begin{acronym}[XXXXXX]
+  \acro{2D}{Two-Dimensional}
+  \acro{3D}{Three-Dimensional}
+  \acro{BSD}{Berkeley Software Distribution}
+  \acro{PC}{Personal Computer}
+  \acro{ADAS}{Advanced Driver-Assistance Systems}
+  \acro{RDF}{Road Data Format}
   \acro{HIL}{Hardware In the Loop}
   \acro{SIL}{Software In the Loop}
   \acro{DIL}{Driver In the Loop}
@@ -253,42 +429,65 @@
   \acro{FEM}{Finite Element Method}
   \acro{FE}{Finite Element}
   \acro{FEA}{Finite Element Analysis}
+  \acro{SRT}{Soft Real-Time}
+  \acro{HRT}{Hard Real-Time}
   \acro{RT}{Real-Time}
   \acro{ODE}{Ordinary Differential Equation}
   \acro{DAE}{Differential Algebraic Equation}
   \acro{BLAS}{Basic Linear Algebra Subprograms}
   \acro{LAPACK}{Linear Algebra PACKage}
   \acro{DSM}{Direct Stiffness Method}
+  \acro{SA}{Structural Analysis}
   \acro{LU}{Lower-Upper}
+  \acro{FFLU}{Fraction-Free Lower-Upper}
+  \acro{GJ}{Gauss-Jordan}
   \acro{RTF}{Real-Time Factor}
   \acro{API}{Application Programming Interface}
   \acro{GUI}{Graphical User Interface}
   \acro{CPU}{Central Processing Unit}
   \acro{GPU}{Graphics Processing Unit}
   \acro{RAM}{Random Access Memory}
+  \acro{AABB}{Axis-Aligned Bounding Box}
+  \acro{BVH}{Bounding Volume Hierarchy}
+  \acro{BVP}{Bounding Volume Primitive}
+  \acro{OS}{Operative System}
+  \acro{UHD}{Ultra High Definition}
+  \acro{MF}{\textsc{Magic Formula}}
+  \acro{DOF}{Degree of Freedom}
+  \acro{RTF}{Real-Time Factor}
 \end{acronym}
 
 % Mainmatter -------------------------------------------------------------------
-\include{chapters/chapter_1.tex}
-\include{chapters/chapter_2.tex}
-\include{chapters/chapter_3.tex}
-\include{chapters/chapter_4.tex}
-\include{chapters/chapter_5.tex}
-\include{chapters/chapter_6.tex}
-\include{chapters/chapter_7.tex}
-\include{chapters/chapter_8.tex}
+\include{chapters/chapter_1}
+\include{chapters/chapter_2}
+\include{chapters/chapter_3}
+\include{chapters/chapter_4}
+\include{chapters/chapter_5}
+\include{chapters/chapter_6}
+\include{chapters/chapter_7}
+\include{chapters/chapter_8}
 \begin{appendices}
-\include{appendices/appendix_1.tex}
+\include{appendices/appendix_1}
 \end{appendices}
 
 % Bibliography -----------------------------------------------------------------
 \addcontentsline{toc}{chapter}{Bibliography}
 \nocite{*}
+\DeclareFieldFormat{doi}{%
+  \textsc{Doi}\addcolon\space%
+  \ifhyperref{%
+  \href{https://doi.org/#1}{
+    \nolinkurl{#1}
+  }
+  }{
+    \nolinkurl{#1}
+  }
+}
 \printbibliography
 
 % Acknowledgments --------------------------------------------------------------
 \addcontentsline{toc}{chapter}{Acknowledgments (Ringraziamenti)}
-\include{acknowledgments/acknowledgments.tex}
+\include{acknowledgments/acknowledgments}
 
 \end{document}
 

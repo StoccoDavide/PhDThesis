@@ -1,0 +1,491 @@
+<?xml version="1.0"?>
+<!DOCTYPE ipe SYSTEM "ipe.dtd">
+<ipe version="70218" creator="Ipe 7.2.28">
+<info created="D:20230117145617" modified="D:20240220173557"/>
+<preamble>\usepackage{newtxtext}
+\usepackage{newtxmath}</preamble>
+<ipestyle name="basic">
+<symbol name="arrow/arc(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/farc(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/ptarc(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/fptarc(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="mark/circle(sx)" transformations="translations">
+<path fill="sym-stroke">
+0.6 0 0 0.6 0 0 e
+0.4 0 0 0.4 0 0 e
+</path>
+</symbol>
+<symbol name="mark/disk(sx)" transformations="translations">
+<path fill="sym-stroke">
+0.6 0 0 0.6 0 0 e
+</path>
+</symbol>
+<symbol name="mark/fdisk(sfx)" transformations="translations">
+<group>
+<path fill="sym-fill">
+0.5 0 0 0.5 0 0 e
+</path>
+<path fill="sym-stroke" fillrule="eofill">
+0.6 0 0 0.6 0 0 e
+0.4 0 0 0.4 0 0 e
+</path>
+</group>
+</symbol>
+<symbol name="mark/box(sx)" transformations="translations">
+<path fill="sym-stroke" fillrule="eofill">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+h
+-0.4 -0.4 m
+0.4 -0.4 l
+0.4 0.4 l
+-0.4 0.4 l
+h
+</path>
+</symbol>
+<symbol name="mark/square(sx)" transformations="translations">
+<path fill="sym-stroke">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+h
+</path>
+</symbol>
+<symbol name="mark/fsquare(sfx)" transformations="translations">
+<group>
+<path fill="sym-fill">
+-0.5 -0.5 m
+0.5 -0.5 l
+0.5 0.5 l
+-0.5 0.5 l
+h
+</path>
+<path fill="sym-stroke" fillrule="eofill">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+h
+-0.4 -0.4 m
+0.4 -0.4 l
+0.4 0.4 l
+-0.4 0.4 l
+h
+</path>
+</group>
+</symbol>
+<symbol name="mark/cross(sx)" transformations="translations">
+<group>
+<path fill="sym-stroke">
+-0.43 -0.57 m
+0.57 0.43 l
+0.43 0.57 l
+-0.57 -0.43 l
+h
+</path>
+<path fill="sym-stroke">
+-0.43 0.57 m
+0.57 -0.43 l
+0.43 -0.57 l
+-0.57 0.43 l
+h
+</path>
+</group>
+</symbol>
+<symbol name="arrow/fnormal(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/pointed(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/fpointed(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/linear(spx)">
+<path stroke="sym-stroke" pen="sym-pen">
+-1 0.333 m
+0 0 l
+-1 -0.333 l
+</path>
+</symbol>
+<symbol name="arrow/fdouble(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+-1 0 m
+-2 0.333 l
+-2 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/double(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+-1 0 m
+-2 0.333 l
+-2 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/mid-normal(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0.5 0 m
+-0.5 0.333 l
+-0.5 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/mid-fnormal(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0.5 0 m
+-0.5 0.333 l
+-0.5 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/mid-pointed(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0.5 0 m
+-0.5 0.333 l
+-0.3 0 l
+-0.5 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/mid-fpointed(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0.5 0 m
+-0.5 0.333 l
+-0.3 0 l
+-0.5 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/mid-double(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+1 0 m
+0 0.333 l
+0 -0.333 l
+h
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/mid-fdouble(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+1 0 m
+0 0.333 l
+0 -0.333 l
+h
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<anglesize name="22.5 deg" value="22.5"/>
+<anglesize name="30 deg" value="30"/>
+<anglesize name="45 deg" value="45"/>
+<anglesize name="60 deg" value="60"/>
+<anglesize name="90 deg" value="90"/>
+<arrowsize name="large" value="10"/>
+<arrowsize name="small" value="5"/>
+<arrowsize name="tiny" value="3"/>
+<color name="blue" value="0 0 1"/>
+<color name="brown" value="0.647 0.165 0.165"/>
+<color name="darkblue" value="0 0 0.545"/>
+<color name="darkcyan" value="0 0.545 0.545"/>
+<color name="darkgray" value="0.663"/>
+<color name="darkgreen" value="0 0.392 0"/>
+<color name="darkmagenta" value="0.545 0 0.545"/>
+<color name="darkorange" value="1 0.549 0"/>
+<color name="darkred" value="0.545 0 0"/>
+<color name="gold" value="1 0.843 0"/>
+<color name="gray" value="0.745"/>
+<color name="green" value="0 1 0"/>
+<color name="lightblue" value="0.678 0.847 0.902"/>
+<color name="lightcyan" value="0.878 1 1"/>
+<color name="lightgray" value="0.827"/>
+<color name="lightgreen" value="0.565 0.933 0.565"/>
+<color name="lightyellow" value="1 1 0.878"/>
+<color name="navy" value="0 0 0.502"/>
+<color name="orange" value="1 0.647 0"/>
+<color name="pink" value="1 0.753 0.796"/>
+<color name="purple" value="0.627 0.125 0.941"/>
+<color name="red" value="1 0 0"/>
+<color name="seagreen" value="0.18 0.545 0.341"/>
+<color name="turquoise" value="0.251 0.878 0.816"/>
+<color name="violet" value="0.933 0.51 0.933"/>
+<color name="yellow" value="1 1 0"/>
+<dashstyle name="dash dot dotted" value="[4 2 1 2 1 2] 0"/>
+<dashstyle name="dash dotted" value="[4 2 1 2] 0"/>
+<dashstyle name="dashed" value="[4] 0"/>
+<dashstyle name="dotted" value="[1 3] 0"/>
+<gridsize name="10 pts (~3.5 mm)" value="10"/>
+<gridsize name="14 pts (~5 mm)" value="14"/>
+<gridsize name="16 pts (~6 mm)" value="16"/>
+<gridsize name="20 pts (~7 mm)" value="20"/>
+<gridsize name="28 pts (~10 mm)" value="28"/>
+<gridsize name="32 pts (~12 mm)" value="32"/>
+<gridsize name="4 pts" value="4"/>
+<gridsize name="56 pts (~20 mm)" value="56"/>
+<gridsize name="8 pts (~3 mm)" value="8"/>
+<opacity name="10%" value="0.1"/>
+<opacity name="30%" value="0.3"/>
+<opacity name="50%" value="0.5"/>
+<opacity name="75%" value="0.75"/>
+<pen name="fat" value="1.2"/>
+<pen name="heavier" value="0.8"/>
+<pen name="ultrafat" value="2"/>
+<symbolsize name="large" value="5"/>
+<symbolsize name="small" value="2"/>
+<symbolsize name="tiny" value="1.1"/>
+<textsize name="Huge" value="\Huge"/>
+<textsize name="LARGE" value="\LARGE"/>
+<textsize name="Large" value="\Large"/>
+<textsize name="footnote" value="\footnotesize"/>
+<textsize name="huge" value="\huge"/>
+<textsize name="large" value="\large"/>
+<textsize name="script" value="\scriptsize"/>
+<textsize name="small" value="\small"/>
+<textsize name="tiny" value="\tiny"/>
+<textstyle name="center" begin="\begin{center}" end="\end{center}"/>
+<textstyle name="item" begin="\begin{itemize}\item{}" end="\end{itemize}"/>
+<textstyle name="itemize" begin="\begin{itemize}" end="\end{itemize}"/>
+<tiling name="falling" angle="-60" step="4" width="1"/>
+<tiling name="rising" angle="30" step="4" width="1"/>
+</ipestyle>
+<page>
+<layer name="alpha"/>
+<view layers="alpha" active="alpha"/>
+<path layer="alpha" matrix="1 0 0 1 -24 0" stroke="black" fill="pink">
+256 768 m
+256 736 l
+400 736 l
+400 768 l
+h
+</path>
+<text matrix="1 0 0 1 -34.351 2.60994" transformations="translations" pos="272 752" stroke="black" type="label" width="132.932" height="6.869" depth="0.13" valign="baseline">Create a tire model class instance</text>
+<text matrix="1 0 0 1 -20.1506 -8.4185" transformations="translations" pos="272 752" stroke="black" type="label" width="102.366" height="6.861" depth="2.17" valign="baseline">specifying the parameters</text>
+<path matrix="1 0 0 1 -24 0" stroke="black" fill="lightblue">
+264 712 m
+256 672 l
+392 672 l
+400 712 l
+h
+</path>
+<text matrix="1 0 0 1 -21.3836 -52.4135" transformations="translations" pos="272 752" stroke="black" type="label" width="107.009" height="6.861" depth="2.16" valign="baseline">Provide contact shape, hub</text>
+<text matrix="1 0 0 1 -14.8928 -63.4419" transformations="translations" pos="272 752" stroke="black" type="label" width="93.788" height="6.864" depth="1.4" valign="baseline">kinematics, and carcass</text>
+<path matrix="1 0 0 1 -24 0" stroke="black" arrow="normal/normal">
+328 736 m
+328 712 l
+</path>
+<text matrix="1 0 0 1 -17.6396 -73.7259" transformations="translations" pos="272 752" stroke="black" type="label" width="98.869" height="6.861" depth="2.17" valign="baseline">deformation initial guess</text>
+<path matrix="1 0 0 1 -24 -120" stroke="black" fill="lightyellow">
+256 768 m
+256 736 l
+400 736 l
+400 768 l
+h
+</path>
+<text matrix="1 0 0 1 -30.887 -117.39" transformations="translations" pos="272 752" stroke="black" type="label" width="125.519" height="6.869" depth="0.13" valign="baseline">Calculate tire total vertical load</text>
+<text matrix="1 0 0 1 -17.2382 -128.418" transformations="translations" pos="272 752" stroke="black" type="label" width="98.57" height="6.869" depth="0.13" valign="baseline">subdivide it over the ribs</text>
+<path matrix="1 0 0 1 -24 0" stroke="black" arrow="normal/normal">
+328 616 m
+328 584 l
+</path>
+<path matrix="1 0 0 1 -24 -64" stroke="black" arrow="normal/normal">
+328 736 m
+328 712 l
+</path>
+<path matrix="1 0 0 1 -24 -184" stroke="black" fill="lightyellow">
+256 768 m
+256 736 l
+400 736 l
+400 768 l
+h
+</path>
+<text matrix="1 0 0 1 -14.4303 -181.39" transformations="translations" pos="272 752" stroke="black" type="label" width="92.423" height="6.869" depth="0.13" valign="baseline">Calculate the transition</text>
+<text matrix="1 0 0 1 -12.6982 -192.418" transformations="translations" pos="272 752" stroke="black" type="label" width="88.857" height="6.869" depth="0.1" valign="baseline">coordinate on each rib</text>
+<text matrix="1 0 0 1 -95.0787 0.796685" transformations="translations" pos="256 592" stroke="black" type="label" width="97.07" height="6.106" depth="0.13" valign="baseline" size="small">\textbf{Parallelizable on each rib}</text>
+<path matrix="1 0 0 1 -16 -8" stroke="black" fill="lightyellow">
+184 528 m
+184 496 l
+312 496 l
+312 528 l
+h
+</path>
+<text matrix="1 0 0 1 -100.16 -245.39" transformations="translations" pos="272 752" stroke="black" type="label" width="120.498" height="6.861" depth="2.16" valign="baseline">Compute the adherence forces</text>
+<text matrix="1 0 0 1 -86.4598 -256.418" transformations="translations" pos="272 752" stroke="black" type="label" width="92.912" height="6.861" depth="2.16" valign="baseline">and torques on each rib</text>
+<path matrix="1 0 0 1 -24 -8" stroke="black" arrow="normal/normal" rarrow="normal/normal">
+400 528 m
+400 544 l
+256 544 l
+256 528 l
+</path>
+<path matrix="1 0 0 1 -24 -8" stroke="black">
+328 560 m
+328 544 l
+</path>
+<path matrix="1 0 0 1 128 -8" stroke="black" fill="lightyellow">
+184 528 m
+184 496 l
+312 496 l
+312 528 l
+h
+</path>
+<text matrix="1 0 0 1 50.4004 -245.39" transformations="translations" pos="272 752" stroke="black" type="label" width="107.248" height="6.861" depth="2.17" valign="baseline">Compute the sliding forces</text>
+<text matrix="1 0 0 1 57.4559 -256.418" transformations="translations" pos="272 752" stroke="black" type="label" width="92.912" height="6.861" depth="2.16" valign="baseline">and torques on each rib</text>
+<path matrix="1 0 0 1 -24 -8" stroke="black">
+400 496 m
+400 480 l
+256 480 l
+256 496 l
+</path>
+<path matrix="1 0 0 1 -24 0" stroke="black" arrow="normal/normal">
+328 472 m
+328 440 l
+</path>
+<path matrix="1 0 0 1 -24 0" stroke="black" dash="dashed" pen="heavier" cap="1">
+184 600 m
+184 456 l
+472 456 l
+472 600 l
+h
+</path>
+<path matrix="1 0 0 1 -24 0" stroke="black" fill="lightcyan">
+256 424 m
+328 408 l
+400 424 l
+328 440 l
+h
+</path>
+<text matrix="1 0 0 1 -18.351 -330.871" transformations="translations" pos="272 752" stroke="black" type="label" width="104.209" height="6.861" depth="2.17" valign="baseline">Verify system equilibrium</text>
+<path stroke="black" fill="lightblue">
+240 384 m
+232 352 l
+368 352 l
+376 384 l
+h
+</path>
+<text matrix="1 0 0 1 -12.5341 -380.413" transformations="translations" pos="272 752" stroke="black" type="label" width="88.618" height="6.869" depth="0.13" valign="baseline">Provide the forces and</text>
+<text matrix="1 0 0 1 -11.1089 -391.442" transformations="translations" pos="272 752" stroke="black" type="label" width="87.064" height="6.861" depth="2.16" valign="baseline">torques as output data</text>
+<path matrix="1 0 0 1 -24 -328" stroke="black" arrow="normal/normal">
+328 736 m
+328 712 l
+</path>
+<path matrix="1 0 0 1 -24.0331 8" stroke="black" arrow="normal/normal">
+328 344 m
+328 320 l
+</path>
+<path matrix="1 0 0 1 -24.0331 -440" stroke="black" fill="pink">
+256 768 m
+256 736 l
+400 736 l
+400 768 l
+h
+</path>
+<text matrix="1 0 0 1 -33.6918 -442.469" transformations="translations" pos="272 752" stroke="black" type="label" width="131.009" height="6.861" depth="2.17" valign="baseline">Destroy tire model class instance</text>
+<path matrix="1 0 0 1 0 4.06353" stroke="black" fill="pink">
+24 520 m
+24 480 l
+152 480 l
+152 520 l
+h
+</path>
+<text matrix="1 0 0 1 -235.119 -240.751" transformations="translations" pos="272 752" stroke="black" type="label" width="102.047" height="6.861" depth="2.16" valign="baseline">Provide the outputs to the</text>
+<text matrix="1 0 0 1 -238.944 -250.965" transformations="translations" pos="272 752" stroke="black" type="label" width="109.24" height="6.861" depth="2.17" valign="baseline">multi-body solver and wait </text>
+<path stroke="black" arrow="normal/normal">
+376 424.014 m
+520 424 l
+520 484.064 l
+</path>
+<path stroke="black" arrow="normal/normal">
+520 524.064 m
+520 568 l
+376 568.014 l
+</path>
+<path stroke="black" arrow="normal/normal">
+88.0004 524.064 m
+88.0177 692.002 l
+235.978 691.889 l
+</path>
+<text matrix="1 0 0 1 38.2865 178.046" transformations="translations" pos="256 592" stroke="black" type="label" width="19.511" height="6.102" depth="0.17" valign="baseline" size="small">\textbf{Start}</text>
+<text matrix="1 0 0 1 40.0376 -303.793" transformations="translations" pos="256 592" stroke="black" type="label" width="15.951" height="5.976" depth="0.13" valign="baseline" size="small">\textbf{End}</text>
+<path stroke="black" rarrow="normal/normal">
+88.0003 484.064 m
+88 368 l
+236 368 l
+</path>
+<text matrix="1 0 0 1 -4.40188 1.24062" transformations="translations" pos="310.343 397.026" stroke="black" type="label" width="12.932" height="4.585" depth="2.17" valign="baseline">yes</text>
+<text matrix="1 0 0 1 -1.52851 -4.54228" transformations="translations" pos="385.513 430.134" stroke="black" type="label" width="9.963" height="4.592" depth="0.1" valign="baseline">no</text>
+<text matrix="1 0 0 1 -225.325 -261.087" transformations="translations" pos="272 752" stroke="black" type="label" width="83.776" height="6.861" depth="2.16" valign="baseline">for the next time step</text>
+<path matrix="1 0 0 1 432 4.06353" stroke="black" fill="pink">
+24 520 m
+24 480 l
+152 480 l
+152 520 l
+h
+</path>
+<text matrix="1 0 0 1 197.185 -241.312" transformations="translations" pos="272 752" stroke="black" type="label" width="102.336" height="6.869" depth="0.13" valign="baseline">Calculate the new carcass</text>
+<text matrix="1 0 0 1 200.457 -251.475" transformations="translations" pos="272 752" stroke="black" type="label" width="96.219" height="6.869" depth="0.13" valign="baseline">deformation state with a</text>
+<text matrix="1 0 0 1 207.03 -261.159" transformations="translations" pos="272 752" stroke="black" type="label" width="81.534" height="6.861" depth="2.16" valign="baseline">quasi-Newton solver</text>
+</page>
+</ipe>

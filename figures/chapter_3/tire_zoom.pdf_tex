@@ -1,0 +1,71 @@
+%% Creator: Inkscape 1.3 (0e150ed, 2023-07-21), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'tire_zoom.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%%
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{251.16640587bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.92514919)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{tire_zoom.pdf}}%
+    \put(0.36315224,0.45121761){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\Shell{} object\end{tabular}}}}%
+    \put(0.79551056,0.04017838){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\Shell{}-\Mesh{}\\instersection\end{tabular}}}}%
+    \put(0.15548074,0.02850256){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\Mesh{}\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{tire_zoom.pdf}}%
+    \put(0.84357608,0.45052271){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\Shell{} object\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{tire_zoom.pdf}}%
+    \put(0.60178118,0.1300971){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\et{e}_x$\\\end{tabular}}}}%
+    \put(0.85604082,0.31106895){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\et{e}_y$\\\end{tabular}}}}%
+    \put(0.67871309,0.49572882){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\et{e}_z$\\\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{tire_zoom.pdf}}%
+    \put(0.12502819,0.86223684){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Shape\\function\\$R(y)$\end{tabular}}}}%
+    \put(0.78067263,0.68873663){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\Rib{} objects\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{tire_zoom.pdf}}%
+  \end{picture}%
+\endgroup%

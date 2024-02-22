@@ -20,7 +20,7 @@
 %%   \import{<path to file>}{<filename>.pdf_tex}
 %% Alternatively, one can specify
 %%   \graphicspath{{<path to file>/}}
-%% 
+%%
 %% For more information, please see info/svg-inkscape on CTAN:
 %%   http://tug.ctan.org/tex-archive/info/svg-inkscape
 %%
@@ -54,16 +54,16 @@
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{acme_collection.pdf}}%
-    \put(0.31086066,0.12919293){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Collection}$_2$\end{tabular}}}}%
+    \put(0.30086066,0.11619293){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Collection}$_2$\end{tabular}}}}%
     \put(0.55069544,0.94728615){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{AABB}$_1$\end{tabular}}}}%
-    \put(0.6506175,0.89602739){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Collection}$_1$\end{tabular}}}}%
+    \put(0.6206175,0.89502739){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Collection}$_1$\end{tabular}}}}%
     \put(0.15170781,0.01947831){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$x$\\\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{acme_collection.pdf}}%
     \put(0.08447651,0.12004946){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$y$\\\end{tabular}}}}%
     \put(0.007556,0.15729336){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$z$\\\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{acme_collection.pdf}}%
-    \put(0.00903624,0.48603754){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{AABB}$_2$\end{tabular}}}}%
-    \put(0.38376897,0.0488212){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textcolor{red}{\textsc{AABB}}\end{tabular}}}}%
+    \put(-0.01203624,0.48603754){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{AABB}$_2$\end{tabular}}}}%
+    \put(0.38376897,0.0448212){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textcolor{red}{\textsc{AABB}}\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{acme_collection.pdf}}%
   \end{picture}%
 \endgroup%

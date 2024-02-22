@@ -1,3 +1,5 @@
+%!TEX root = ../main.tex
+
 %% Creator: Inkscape 1.3.2 (091e20e, 2023-11-25), www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
 %% Accompanies image file 'acme_tire.pdf' (pdf, eps, ps)
@@ -20,7 +22,7 @@
 %%   \import{<path to file>}{<filename>.pdf_tex}
 %% Alternatively, one can specify
 %%   \graphicspath{{<path to file>/}}
-%% 
+%%
 %% For more information, please see info/svg-inkscape on CTAN:
 %%   http://tug.ctan.org/tex-archive/info/svg-inkscape
 %%
@@ -54,19 +56,19 @@
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{acme_tire.pdf}}%
-    \put(0.39315224,0.45121761){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Tire}$_1$\end{tabular}}}}%
-    \put(0.79551056,0.04617838){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Tire}-\textsc{Road}\\instersection\end{tabular}}}}%
-    \put(0.00307261,0.26536984){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Road}\end{tabular}}}}%
+    \put(0.39315224,0.45121761){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Tire\textsubscript{1}\end{tabular}}}}%
+    \put(0.79551056,0.04617838){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Tire-ground\\instersection\end{tabular}}}}%
+    \put(-0.0807261,0.27036984){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Ground mesh\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{acme_tire.pdf}}%
-    \put(0.84357608,0.45052271){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Tire}$_2$\end{tabular}}}}%
+    \put(0.84357608,0.45552271){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Tire\textsubscript{2}\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{acme_tire.pdf}}%
-    \put(0.60178118,0.1460971){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$x_{t}$\\\end{tabular}}}}%
-    \put(0.85973775,0.31106895){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$y_{t}$\\\end{tabular}}}}%
-    \put(0.68220653,0.50365097){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$z_{t}$\\\end{tabular}}}}%
+    \put(0.60178118,0.1460971){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$x$\end{tabular}}}}%
+    \put(0.85973775,0.31206895){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$y$\end{tabular}}}}%
+    \put(0.68520653,0.50365097){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$z$\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{acme_tire.pdf}}%
-    \put(0.12756477,0.82397698){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Tire} profile\\$z_t(x_t,y_t)$\end{tabular}}}}%
-    \put(0.77867263,0.71873663){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Acme}::\textsc{Circle}\\ objects\end{tabular}}}}%
+    \put(0.09556477,0.84397698){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}Tire profile\\function $R(y)$\end{tabular}}}}%
+    \put(0.77867263,0.69073663){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Acme}::\textsc{Disk}\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=5]{acme_tire.pdf}}%
-    \put(0.00350531,0.06925694){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Acme}::\textsc{Triangle}\\ objects\end{tabular}}}}%
+    \put(-0.02050531,0.06625694){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{r}\textsc{Acme}::\textsc{Triangle}\end{tabular}}}}%
   \end{picture}%
 \endgroup%

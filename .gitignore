@@ -13,6 +13,7 @@
 *.run.xml
 *.synctex.gz
 *.synctex.gz(busy)
+*-eps-converted-to.pdf
 *main.pdf
 figures/externalized/
 out/

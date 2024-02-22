@@ -1,7 +1,7 @@
 %!TEX root = ../main.tex
 
 \chapter{Symbolic Linear Algebra and Applications}
-\label{chapter:symbolic_linear_algebra}
+\label{chap5:chap:symbolic_linear_algebra}
 
 
 Capitolo dove si descrive LEM e LAST perche si usa nelle DAE (riduzione indice) e TRUSS ME per superare limiti di MAPLE.
@@ -24,3 +24,155 @@ Comprendere la Struttura del Problema:
 La rappresentazione simbolica della matrice fornisce una visione più chiara della struttura matematica del problema, agevolando la comprensione dei pattern e delle relazioni matematiche sottostanti.
 
 In sintesi, la fattorizzazione simbolica di una matrice può essere un utile strumento in analisi numerica per migliorare la precisione, l'efficienza e la stabilità degli algoritmi utilizzati nella risoluzione di sistemi lineari e in altri contesti matriciali.
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\section{Expression Swell}
+\label{chap5:sec:lem}
+
+Symbolic calculation software like \Maple{} can handle quite large symbolic expressions. The increase in complexity inherent in the index reduction process severely slows down the execution of the algorithm presented above making CPU times unacceptably long. This phenomenon, known literally as expression swell, is a major source of performance deterioration of symbolic computation kernels. There are two types of expression swell: the first is the \emph{inherent} expression swell, while the second is the \emph{intermediate} expression swell. Intermediate expression swell occurs when a calculation temporarily creates large expressions, along the way to a possibly small final result. To mitigate this problem, one may use hierarchical representation techniques~\cite{zhou2006hierarchical}. The main idea behind this hierarchical representation tool is to \emph{veil} complicated expressions from the user by using auxiliary variables called \emph{veil variables}, and to \emph{unveil} them only when it is strictly necessary. %In this way, the user can work with a compact representation of the expressions, while the actual complexity of the expressions is hidden in the veil variables. In the following paragraphs, we discuss the most important characteristics of a slighly improved version of hierarchical representation technique.
+
+\subsection{Expression Complexity}
+
+As one may think, expression swell is directly linked to expression complexity. In particular, choosing the complexity boundaries between intermediate expressions appropriately is of utmost importance in order not to produce too much expression swelling, but also not to have too many veiling levels. Therefore, a metric of expression complexity must be introduced first. Many definitions of expression complexity could be given. The one used in~\cite{carette2006linear,zhou2006hierarchical} is based on the expression length, calculated through the \texttt{length} \Maple{} function. Instead, we chose the computational cost, calculated through the \texttt{cost} function of \texttt{codegen} package. As demonstrated in the following example, the latter metric is insensitive to the number of characters used to represent the expression itself and guarantees better control of the final expression size.
+
+\subsubsection{Expression Complexity Calculation}
+
+Let us consider two algebraically equivalent expressions stored in \texttt{expr\_1} and \texttt{expr\_2} variables.
+%
+\begin{verbatim}
+> expr_1 := (x^2+y^2)^2/g(x)-z/f(x):
+> expr_2 := (x_tmp^2+y_tmp^2)^2/g_tmp(x)-z_tmp/f_tmp(x):
+\end{verbatim}
+%
+If we respectively calculate the expression complexity calculation through the \texttt{length} and \texttt{codegen:-cost} functions we obtain the following results.
+%
+\begin{verbatim}
+> map(length, <expr_1, expr_2>);
+\end{verbatim}
+\begin{equation*}
+    \begin{bmatrix}
+        53 \\
+        73
+    \end{bmatrix}
+\end{equation*}
+\begin{verbatim}
+> map(codegen:-cost, <expr_1, expr_2>);
+\end{verbatim}
+\begin{equation*}
+  \begin{bmatrix}
+        3\,\mathrm{multiplications} + 2\,\mathrm{additions} + 2\,\mathrm{divisions} + 2\,\mathrm{functions} \\
+        3\,\mathrm{multiplications} + 2\,\mathrm{additions} + 2\,\mathrm{divisions} + 2\,\mathrm{functions}
+    \end{bmatrix}
+\end{equation*}
+%
+As can be seen, the \texttt{length} function is sensitive to the characters that \Maple{} internally uses to represent the expression. Conversely, the \texttt{codegen}'s \texttt{cost} calculates the actual computational complexity of the two expressions and returns the same result.
+
+\subsection{Large Expression Management}
+
+There exist specific modules to perform large expression management tasks and help the user to handle hierarchical representations~\cite{carette2006linear,zhou2007symbolic}. The \Maple{} module \texttt{LargeExpressions} already does this job. However, from the authors' perspective, it has some minor limitations given by the chosen user interface rather than the underlying idea or the adopted programming technique. For this reason, the authors have reinterpreted it to a new object-oriented \LEM{} package~\cite{lem2023source}. The new version does not differ much from its original version, but it allows more effective control and straightforward use of the veiling variables. The object-oriented feature also allows for the creation of multiple instances of \LEM{} objects, giving the ability to sharply separate veiling variables that could lead to conflicts if improperly used. Here an example is given to briefly illustrate the capabilities of the large expression management technique and, particularly, of the \LEM{} module.
+
+\subsubsection{Usage Example}
+
+Let us consider a random polynomial \texttt{p} generated by the \texttt{randpoly} function.
+%
+\begin{verbatim}
+> p := randpoly([x,y,z], degree=3, dense):
+\end{verbatim}
+%
+Then, we create a \LEM{} object instance and set the veiling label to \texttt{X}.
+%
+\begin{verbatim}
+> LEM_obj := Object(LEM):
+> LEM_obj:-SetVeilingLabel('X'):
+\end{verbatim}
+%
+The expressions are veiled to get a more compact hierarchical representation.
+%
+\begin{verbatim}
+> p_X := collect(p, x, i -> LEM_obj:-Veil(i));
+\end{verbatim}
+\begin{equation*}
+    p\_X := -7\,x^4 + (22\,y - 55\,z - 94)\,x^3 + X[1]\,x^2 - X[2]\,x
+\end{equation*}
+%
+The veiling variables are stored in the \LEM{} object and can be used to unveil the expression whenever necessary.
+%
+\begin{verbatim}
+> <LEM_obj:-VeilList()>;
+\end{verbatim}
+\begin{equation*}
+  \begin{bmatrix}
+      X[1] = 87\,y^2 - 56\,y\,z - 62\,z^2 + 97\,z - 73 \\[1mm]
+      X[2] = 4\,y^3 + 83\,y^2\,z - 62\,y\,z^2 + 44\,z^3 + 10\,y^2 + 82\,y\,z - 71\,z^2 - 80\,y + 17\,z + 75
+    \end{bmatrix}
+\end{equation*}
+%
+In addition to the few functions just presented, \LEM{} allows to customize the strategy and parameters used to control the veiling process. For further information on the \LEM{} package refer to the documentation in~\cite{lem2023source}.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\section{Matrix Factorization}
+\label{chap5:sec:last}
+
+As it has been mentioned before, matrix factorization is one of the most widely used tools for solving linear systems. There are numerous types of decomposition, each with different properties and characteristics. Among the most widely used is certainly the LU decomposition. While for the purely numerical case, the practice is as robust as the theory behind the algorithm; in the case of a matrix with symbolic entries, the matter gets more complicated~\cite{carette2006linear,zhou2007symbolic}.
+
+\subsection{Symbolic Decomposition Characteristics}
+
+In exact symbolic linear algebra problems, the cost of each operation during factorization can differ because of the uncontrolled expression swell~\cite{zhou2006hierarchical}. Moreover, numerical stability is not guaranteed due to the presence of undefined values. Therefore, an important goal is to obtain an output format that both maintains the symbolic structure of the input matrix and is numerically stable.
+
+\subsubsection{Fill-In}
+
+If we consider the LU factorization of a sparse matrix $\m{A}$, the matrices $\m{L}$ and $\m{U}$ can be much less sparse than the original matrix $\m{A}$. This phenomenon, called fill-in, deteriorates performance because of the increment in the algebraic operation number used in solving linear systems. To overcome this problem, one can apply specific reordering algorithms that reduce the fill-in generation of the factorized matrices, such as \emph{nested dissection}~\cite{george1973nested,lipton1979generalized} or \emph{minimum degree}~\cite{markowitz1957elimination,rose1970symmetric} algorithms. In the package the minimum degree algorithm is used because straightforward to implement. Conversely, nested dissection is not yet considered because it requires working on the graph of the system to find graph separators, which is less straightforward to implement.
+
+\subsubsection{Numerical Stability}
+
+The last but certainly not the least important issue is how to ensure that the output symbolic code generated by matrix factorization is also numerically stable. This problem is strongly related to the expressions \emph{zero-} or \emph{identity-testing}. If the simplification of the expression is not feasible, the most widely used approaches for zero-testing are the probabilistic ones, which are based on the \emph{DeMillo-Lipton-Schwarz-Zippel lemma}~\cite{demillo1978probabilistic,schwartz1980fast,zippel1979probabilistic}.
+%
+\begin{itemize}
+    \item \emph{Signature functions} verify the presence of equivalent expressions within thousands of sub-expressions through hashing techniques~\cite{char1984design,gonnet1984determining,gonnet1986results,monagan1994signature}. In \Maple{}, each expression is inserted into the simplification table using its signature as a key. The signature of an expression is itself a hashing function, with one very important feature: equivalent expressions have identical signatures. However, it is not possible to find the signature for all expressions, \emph{e.g.}, trigonometric expressions~\cite{cox1994ideals,zhou2005implicit}\footnote{In the \LEM{} package, the signature of trigonometric polynomials can be computed through the Weierstra{\ss} transformation. Coordinates changes and signature computation routines are collected within the \SIG{} sub-package~\cite{lem2023source}.}.
+    \item \emph{Hybrid symbolic-numerical} or \emph{static pivoting approach} allows for the verification of the symbolic code stability through random numerical evaluations~\cite{giesbrecht2014symbolic,li1998making}. This approach is computationally less efficient than the previous one, but it leads to good results: ``at most numerical specializations''~---~\cite{giesbrecht2014symbolic}.
+\end{itemize}
+%
+It is worth noting that, to the authors' knowledge, there is still no well-established rule for determining whether an expression is ``likely'' null. This topic still deserves to be further investigated in the future.
+
+\subsection{Linear Algebra Symbolic Toolbox}
+
+The considerations just made are the basis of the \LAST{} package~\cite{last2023source}. This package is a \Maple{} toolbox for symbolic linear algebra. It is based on the original works in~\cite{carette2006linear,zhou2008fraction} and offers a set of routines for symbolic full-pivoting LU, a Fraction-Free LU (FFLU), QR decomposition, and Gauss-Jordan (GJ) factorizations. The package \LAST{} is designed to be used in conjunction with the \LEM{} package~\cite{lem2023source} to limit the expression swell.
+
+An important aspect of LU-based decompositions is the pivoting strategy. In the \LAST{} package, the pivoting process is developed to take into account the aforementioned aspects of expression swell and numerical stability. In particular, the pivots are chosen based on the degree of the elements of the system matrix and the actual complexity of the expressions. The elements of the system matrix are sorted in descending order of their degree and the least complex element is chosen as the pivot. Pivots with numeric values are preferred over pivots with symbolic values due to their inherent numerical stability. During the pivoting procedure, whenever possible, signatures are also exploited to verify the presence of null expressions. Here a simple example is given to briefly illustrate the usage of the \LAST{} package.
+
+\subsubsection{Usage Example}
+
+Let us consider a simple linear system of equations in the form $\m{A}\mx = \m{b}$ and initialize them as follows.
+%
+\begin{verbatim}
+> A := Matrix(3, symbol='a'):
+> B := Vector(3, symbol='b'):
+\end{verbatim}
+%
+Then we create a \LAST{} object and initialize the built-in \LEM{} object with label \texttt{V}.
+%
+\begin{verbatim}
+> LAST_obj := Object(LAST):
+> LAST_obj:-InitLEM('V');
+\end{verbatim}
+%
+To solve the linear system with \LAST{} it is first necessary to perform one of the available decompositions, \emph{i.e.}, \texttt{LU}, \texttt{FFLU}, \texttt{QR}, or \texttt{GJ}. The intermediate results of the decomposition are internally stored in the \LAST{} object and are available on demand. Once the decomposition is performed, the solution of the linear system can be obtained by calling the \texttt{SolveLinearSystem} routine.
+%
+\begin{verbatim}
+> LAST_obj:-LU(A):
+> LAST_obj:-SolveLinearSystem(B)^%T;
+\end{verbatim}
+\begin{equation*}
+    \begin{bmatrix}
+        -\dfrac{V_{4}}{a_{1,1}}, &
+        \dfrac{V_{3} \, a_{1,1}}{a_{2,2} \, a_{1,1}-a_{2,1} \, a_{1,2}}, &
+        \dfrac{V_{2}}{V_{1}}
+    \end{bmatrix}
+\end{equation*}
+%
+It must be noticed that in this example the size of the system is chosen to be small for the sake of simplicity. In practice, the \LAST{} package is designed to be used with large systems of equations. For further information on the \LAST{} package refer to the documentation in~\cite{last2023source}.

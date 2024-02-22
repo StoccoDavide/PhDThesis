@@ -1,0 +1,175 @@
+\setlength\tabcolsep{0.0pt}
+\setlength{\LTcapwidth}{\textwidth}
+{\footnotesize\centering\begin{longtable}{cccc}
+  \caption{Expression complexity encountered throughout the index reduction algorithm of the test \ac{DAE} systems. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions. Expressions preceded by the $\star$ symbol could not be simplified within \SI{100}{\second} of CPU time in the \Maple{} environment.}
+  \label{chap6:tab:complexity}
+  \endfirsthead
+  \endhead
+  %
+  \multicolumn{4}{c}{\textbf{1.~~Index-3 \acp{DAE}~\cite{mathematica}}} \\
+  \toprule
+  \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 10\cf + 5\ca$ \quad $\mh = 0$} \\
+  \midrule
+  \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+  \midrule
+  Index-3 \acp{DAE} & 0 & $4\cf + 2\ca$ & $2\cf + 1\ca$ \\
+  Index-2 \acp{DAE} & 0 & $4\cf + 2\ca$ & $2\cf + 1\cm + 1\ca$ \\
+  Index-1 \acp{DAE} & 0 & $4\cf + 2\ca$ & $3\cf + 1\cm + 1\ca$ \\
+  Index-0 \acp{DAE} & 0 & $6\cf + 1\cm + 3\ca$ & $0$ \\
+  \midrule
+  \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 12\cf + 1\cm + 6\ca$ \quad $\mh = 7\cf + 2\cm + 4\ca$} \\
+  \bottomrule \\[-0.1em]
+  %
+  \multicolumn{4}{c}{\textbf{2.~~Particle Motion~\cite{campbell1995index}}} \\
+  \toprule
+  \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 47\cf + 30\cm + 23\ca$ \quad $\mh = 0$} \\
+  \midrule
+  \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+  \midrule
+  Index-3 \acp{DAE} & 0 & $39\cf + 36\cm + 13\ca$ & $7\cf + 10\cm + 6\ca$ \\
+  Index-2 \acp{DAE} & 0 & $39\cf + 36\cm + 13\ca$ & $22\cf + 20\cm + 8\ca$ \\
+  Index-1 \acp{DAE} & 0 & $39\cf + 36\cm + 13\ca$ & $68\cf + 72\cm + 33\ca$ \\
+  Index-0 \acp{DAE} & $388\cf + 424\cm + 180\ca$ & $79\cf + 77\cm + 26\ca$ & 0 \\
+  \midrule
+  \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 258\cf + 239\cm + 109\ca$ \quad $\mh = 97\cf + 102\cm + 47\ca$} \\
+  \bottomrule \\[-0.1em]
+  %
+  \multicolumn{4}{c}{\textbf{3.~~Car-Axis~\cite{lioen1998test, mazzia2008test}} } \\
+  \toprule
+  \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 108\cf + 131\cm + 56\ca$ \quad $\mh = 0$} \\
+  \midrule
+  \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+  \midrule
+  Index-3 \acp{DAE} & $12\cm$ & $94\cf + 145\cm + 54\ca$ & $14\cf + 16\cm + 10\ca$ \\
+  Index-2 \acp{DAE} & $12\cm$ & $94\cf + 145\cm + 54\ca$ & $26\cf + 45\cm + 15\ca$ \\
+  Index-1 \acp{DAE} & $12\cm$ & $94\cf + 145\cm + 54\ca$ & $136\cf + 4\cd + 261\cm + 95\ca$ \\
+  Index-0 \acp{DAE} & $1060\cf + 38\cd + 1901\cm + 717\ca$ & $431\cf + 8\cd + 842\cm + 268\ca$ & 0 \\
+  \midrule
+  \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 896\cf + 4\cd + 1202\cm + 546\ca$ \quad $\mh = 176\cf + 4\cd + 322\cm + 120\ca$} \\
+  \bottomrule \\[-0.1em]
+  %
+  \multicolumn{4}{c}{\textbf{4.~~Eight-Nodes Transistor-Amplifier~\cite{lioen1998test, mazzia2008test}}} \\
+  \toprule
+  \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 55\cf + 21\cd + 29\cm + 41\ca$ \quad $\mh = 0$} \\
+  \midrule
+  \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+  \midrule
+  Index-1 \acp{DAE} & $5\ca$ & $17\cf + 11\cd + 22\cm + 20\ca$ & $19\cf + 12\cd + 44\cm + 24\ca$ \\
+  Index-0 \acp{DAE} & $24\cf + 26\cd + 24\cm + 24\ca$ & $18\cf + 12\cd + 26\cm + 20\ca$ & 0 \\
+  \midrule
+  \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 74\cf + 26\cd + 87\cm + 49\ca$ \quad $\mh = 19\cf + 12\cd + 44\cm + 26\ca$} \\
+  \bottomrule \\[-0.1em]
+  %
+  \multicolumn{4}{c}{\textbf{5.~~Electric Ring Modulator~\cite{lioen1998test, mazzia2008test}}} \\
+  \toprule
+  \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 116\cf + 3\cd + 75\cm + 92\ca$ \quad $\mh = 0$} \\
+  \midrule
+  \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+  \midrule
+  Index-2 \acp{DAE} & $0$ & $51\cf + 3\cd + 41\cm + 41\ca$ & $44\cf + 32\cm + 36\ca$ \\
+  Index-1 \acp{DAE} & $86\cf + 68\cm + 66\ca$ & $262\cf + 13\cd + 416\cm + 220\ca$ & $10\cf + 2\cd + 18\cm + 11\ca$ \\
+  Index-0 \acp{DAE} & $86\cf + 12\cd + 72\cm + 70\ca$ & $262\cf + 13\cd + 416\cm + 220\ca$ & 0 \\
+  \midrule
+  \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 335\cf + 15\cd + 537\cm + 256\ca$ \quad $\mh = 54\cf + 2\cd + 50\cm + 47\ca$} \\
+  \bottomrule \\[-0.1em]
+  %
+  \multicolumn{4}{c}{\textbf{6.~~Rei{\ss}ig's \acp{DAE}~\cite{reissig2000differential}}} \\
+  \toprule
+  \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 13\cf + 26\ca$ \quad $\mh = 0$} \\
+  \midrule
+  \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+  \midrule
+  Index-1 \acp{DAE} & $0$ & $4\cf + 2\ca$ & $10\cf + 5\ca$ \\
+  Index-0 \acp{DAE} & $0$ & $14\cf + 5\ca$ & 0 \\
+  \midrule
+  \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 32\cf + 13\ca$ \quad $\mh = 10\cf + 7\ca$} \\
+  \bottomrule \\[-0.1em]
+  %
+  \multicolumn{4}{c}{\textbf{7.~~Space Shuttle Reentry~\cite{brenan1995numerical}}} \\
+  \toprule
+  \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 116\cf + 16\cd + 77\cm + 38\ca$ \quad $\mh = 0$} \\
+  \midrule
+  \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+  \midrule
+  Index-3 \acp{DAE} & $0$ & $112\cf + 13\cd + 247\cm + 49\ca$ & $6\cf + 1\cd + 30\cm + 11\ca$ \\
+  Index-2 \acp{DAE} & $0$ & $112\cf + 13\cd + 247\cm + 49\ca$ & $66\cf + 2\cd + 529\cm + 123\ca$ \\
+  Index-1 \acp{DAE} & $0$ & $112\cf + 13\cd + 247\cm + 49\ca$ & $903\cf + 4\cd + 8382\cm + 1369\ca$ \\
+  Index-0 \acp{DAE} & $5612\cf + 28\cd + 50347\cm + 8204\ca$ & $112\cf + 13\cd + 247\cm + 49\ca$ & 0 \\
+  \midrule
+  \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\star \mF = 5749\cf + 41\cd + 50599\cm + 8263\ca$ \quad $\mh = 975\cf + 7\cd + 8941\cm + 1503\ca$} \\
+  \bottomrule \\[-0.1em]
+  %
+  \multicolumn{4}{c}{\textbf{8.~~Robotic Arm~\cite{pryce1998solving}}} \\
+  \toprule
+  \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 125\cf + 19\cd + 56\cm + 64\ca$ \quad $\mh = 0$} \\
+  \midrule
+  \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+  \midrule
+  Index-5 \acp{DAE} & $0$ & $66\cf + 3\cd + 50\cm + 35\ca$ & $16\cf + 12\ca$ \\
+  Index-4 \acp{DAE} & $0$ & $66\cf + 3\cd + 50\cm + 35\ca$ & $24\cf + 6\cm + 14\ca$ \\
+  Index-3 \acp{DAE} & $0$ & $66\cf + 3\cd + 50\cm + 35\ca$ & $162\cf + 2\cd + 138\cm + 114\ca$ \\
+  Index-2 \acp{DAE} & $14\cf + 2\cd + 6\cm + 6\ca$ & $372\cf + 4\cd + 375\cm + 253\ca$ & $972\cf + 1\cd + 1062\cm + 770\ca$ \\
+  Index-1 \acp{DAE} & $14\cf + 2\cd + 6\cm + 6\ca$ & $372\cf + 4\cd + 375\cm + 253\ca$ & $\star (6.5\cf + 5.6\cm + 1.8\ca)\cdot10^{6} + 4\cd$ \\
+  Index-0 \acp{DAE} & $\star (8.3\cf + 7.1\cm + 2.3\ca)\cdot10^{7} + 58\cd$ & $(2.4\cf + 2.0\cm + 0.9\ca)\cdot10^{6} + 8\cd$ & 0 \\
+  \midrule
+  \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\star \mF = (8.6\cf + 7.3\cm + 2.4\ca)\cdot10^{7} + 66\cd$ \quad $\star \mh = (6.5\cf + 5.6\cm + 1.8\ca)\cdot10^{6} + 7\cd$} \\
+  \bottomrule \\[-0.1em]
+  %
+  \multicolumn{4}{c}{\textbf{9a.~~2-Pendula~\cite{pryce1998solving}}} \\
+  \toprule
+  \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 67\cf + 31\cm + 31\ca$ \quad $\mh = 0$} \\
+  \midrule
+  \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+  \midrule
+  Index-5 \acp{DAE} & $0$                  & $12\cf + 8\cm + 2\ca$ & $6\cf + 12\cm + 6\ca$ \\
+  Index-4 \acp{DAE} & $1\cf + 5\cm + 1\ca$ & $16\cf + 12\cm + 3\ca$ & $4\cf + 4\cm + 1\ca$ \\
+  Index-3 \acp{DAE} & $1\cf + 5\cm + 1\ca$ & $16\cf + 12\cm + 3\ca$ & $7\cf + 12\cm + 4\ca$ \\
+  Index-2 \acp{DAE} & $1\cf + 5\cm + 1\ca$ & $16\cf + 12\cm + 3\ca$ & $18\cf + 2\cd + 30\cm + 9\ca$ \\
+  Index-1 \acp{DAE} & $1\cf + 5\cm + 1\ca$ & $16\cf + 12\cm + 3\ca$ & $118\cf + 2\cd + 283\cm + 72\ca$ \\
+  Index-0 \acp{DAE} & $555\cf + 21\cd + 1213\cm + 287\ca$ & $16\cf + 12\cm + 3\ca$ & $0$ \\
+  \midrule
+  \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{
+  $\mF = 482\cf + 2\cd + 807\cm + 229\ca$ \quad $\mh = 153\cf + 4\cd + 341\cm + 92\ca$} \\
+  \bottomrule \\[-0.1em]
+  %
+  \multicolumn{4}{c}{\textbf{9b.~~3-Pendula~\cite{nedialkov2008solvingIII}}} \\
+  \toprule
+  \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 67\cf + 31\cm + 31\ca$ \quad $\mh = 0$} \\
+  \midrule
+  \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+  \midrule
+  Index-7 \acp{DAE} & $0$                   & $18\cf + 12\cm + 3\ca$ & $10\cf + 21\cm + 10\ca$ \\
+  Index-6 \acp{DAE} & $2\cf + 10\cm + 2\ca$ & $26\cf + 20\cm + 5\ca$ & $4\cf + 4\cm + 1\ca$ \\
+  Index-5 \acp{DAE} & $2\cf + 10\cm + 2\ca$ & $26\cf + 20\cm + 5\ca$ & $4\cf + 12\cm + 7\ca$ \\
+  Index-4 \acp{DAE} & $2\cf + 10\cm + 2\ca$ & $26\cf + 20\cm + 5\ca$ & $18\cf + 2\cd + 30\cm + 9\ca$ \\
+  Index-3 \acp{DAE} & $2\cf + 10\cm + 2\ca$ & $26\cf + 20\cm + 5\ca$ & $118\cf + 2\cd + 283\cm + 72\ca$ \\
+  Index-2 \acp{DAE} & $2\cf + 10\cm + 2\ca$ & $26\cf + 20\cm + 5\ca$ & $992\cf + 3\cd + 2077\cm + 479\ca$ \\
+  Index-1 \acp{DAE} & $2\cf + 10\cm + 2\ca$ & $26\cf + 20\cm + 5\ca$ & $6824\cf + 3\cd + 17665\cm + 4030\ca$ \\
+  Index-0 \acp{DAE} & $54152\cf + 51\cd + 136388\cm + 28945\ca$ & $26\cf + 20\cm + 5\ca$ & $0$ \\
+  \midrule
+  \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{
+  $\mF = 28319\cf + 3\cd + 64295\cm + 15806\ca$ \quad $\mh = 7973\cf + 10\cd + 20092\cm + 4605\ca$} \\
+  \bottomrule \\[-0.1em]
+  %
+  \multicolumn{4}{c}{\textbf{9c.~~4-Pendula~\cite{nedialkov2008solvingIII}}} \\
+  \toprule
+  \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 67\cf + 31\cm + 31\ca$ \quad $\mh = 0$} \\
+  \midrule
+  \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+  \midrule
+  Index-9 \acp{DAE} & $0$                   & $24\cf + 16\cm + 4\ca$ & $14\cf + 30\cm + 14\ca$ \\
+  Index-8 \acp{DAE} & $3\cf + 15\cm + 3\ca$ & $36\cf + 28\cm + 7\ca$ & $4\cf + 4\cm + 1\ca$ \\
+  Index-7 \acp{DAE} & $3\cf + 15\cm + 3\ca$ & $36\cf + 28\cm + 7\ca$ & $7\cf + 12\cm + 4\ca$ \\
+  Index-6 \acp{DAE} & $3\cf + 15\cm + 3\ca$ & $36\cf + 28\cm + 7\ca$ & $18\cf + 2\cd + 30\cm + 9\ca$ \\
+  Index-5 \acp{DAE} & $3\cf + 15\cm + 3\ca$ & $36\cf + 28\cm + 7\ca$ & $118\cf + 2\cd + 283\cm + 72\ca$ \\
+  Index-4 \acp{DAE} & $3\cf + 15\cm + 3\ca$ & $36\cf + 28\cm + 7\ca$ & $992\cf + 3\cd + 2077\cm + 479\ca$ \\
+  Index-3 \acp{DAE} & $3\cf + 15\cm + 3\ca$ & $36\cf + 28\cm + 7\ca$ & $6824\cf + 3\cd + 17665\cm + 4030\ca$ \\
+  Index-2 \acp{DAE} & $3\cf + 15\cm + 3\ca$ & $36\cf + 28\cm + 7\ca$ & $(4.8\cf + 4\cd + 11.9\cm + 2.7\ca)\cdot10^{5}$ \\
+  Index-1 \acp{DAE} & $3\cf + 15\cm + 3\ca$ & $36\cf + 28\cm + 7\ca$ & $\star (3.0\cf + 14.9\cm + 0.4\ca)\cdot10^{6} + 4\cd$ \\
+  Index-0 \acp{DAE} & $\star (3.0\cf + 14.7\cm + 0.4\ca)\cdot10^{7} + 92\cd$ & $7\cf + 28\cm + 36\ca$ & 0 \\
+  \midrule
+  \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{
+  $\star \mF = (3.0\cf + 14.7\cm + 0.4\ca)\cdot10^{7} + 92\cd$ \quad $\star \mh = (3.1\cf + 15.1\cm + 0.5\ca)\cdot10^{6} + 18\cd$} \\
+  \bottomrule
+  %
+\end{longtable}}

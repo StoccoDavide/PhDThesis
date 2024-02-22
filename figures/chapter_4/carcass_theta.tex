@@ -1,0 +1,37 @@
+\begin{tikzpicture}[declare function={f(\x,\xc,\yc,\tc,\psi)=%
+    (\yc+\tc*(\x-\xc) - 1e-4*0.5*\psi*\yc*(\x-\xc)*(\x-\xc));}
+  ]
+
+\begin{axis}[
+  minor tick num=1,
+  minor grid style={dashed, line width=.1pt, draw=gray!45},
+  major grid style={line width=.2pt, draw=gray!60},
+  width=1.5in,
+  height=1.5in,
+  at={(0.0in,0.0in)},
+  scale only axis,
+  xmax=6.0,
+  xmin=-6.0,
+  xlabel style={font=\color{black}},
+  xlabel={$x$ (\unit{\centi\meter})},
+  ymin=1.6,
+  ymax=6.4,
+  ylabel style={font=\color{black}},
+  ylabel={$y$ (\unit{\centi\meter})},
+  axis background/.style={fill=none},
+  xmajorgrids,
+  ymajorgrids,
+  xminorgrids,
+  yminorgrids,
+  samples=50
+  ]
+
+  \addplot[mycolor1, line width=0.9pt, domain=-5.0:5.0] {f(x, 0.0, 4.25, 0.0, 50.0)};
+  \addplot[mycolor2, line width=0.9pt, domain=-5.0:5.0] {f(x, 0.0, 4.25, 0.1, 50.0)};
+  \addplot[mycolor3, line width=0.9pt, domain=-5.0:5.0] {f(x, 0.0, 4.25, 0.2, 50.0)};
+  \addplot[mycolor4, line width=0.9pt, domain=-5.0:5.0] {f(x, 0.0, 4.25, 0.3, 50.0)};
+  \addplot[mycolor5, line width=0.9pt, domain=-5.0:5.0] {f(x, 0.0, 4.25, 0.4, 50.0)};
+
+\end{axis}
+
+\end{tikzpicture}%
