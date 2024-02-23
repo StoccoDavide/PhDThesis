@@ -40,12 +40,42 @@
 \usepackage[final]{microtype}    % improves the spacing between words and letters
 \usepackage[toc, page]{appendix} % to create appendices
 \usepackage[english]{babel}      % useful to interpret the language of the document
+\usepackage[utf8]{inputenc}      % to correctly write accented letter and other symbols
 \usepackage[T1]{fontenc}         % to write correctly in Italian
-%\usepackage[utf8]{inputenc}      % to correctly write accented letter and other symbols
 %\usepackage[latin1]{inputenc}    % codec input useful to write docs in Italian
 %\usepackage[normalem]{ulem}      % underline command which will break over line ends
-\usepackage{url}                % to write url in the document
-\urlstyle{same}                 % tt font of the document (forced in the bibliography)
+\usepackage{listings}            % to include code in the document
+\usepackage{realboxes}           % to create boxes around text
+\usepackage{url}                 % to write url in the document
+
+\urlstyle{tt}                    % tt font of the document (forced in the bibliography)
+\lstset{                         % settings for the listings package
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  keepspaces=false
+}
+\lstnewenvironment{mapleinline}[1][]
+  {\lstset{
+    frame=none,
+    linewidth=1.0\textwidth,
+    belowskip=-0.5em,
+    #1
+  }}{}
+\lstnewenvironment{mapleboxed}[1][]
+  {\lstset{
+    frame=shadowbox,
+    linewidth=1.0\textwidth,
+    belowskip=-0.5em,
+    #1
+  }}{}
+\lstnewenvironment{maplefigure}[1][]
+  {\lstset{
+    frame=none,
+    linewidth=1.0\textwidth,
+    aboveskip=-0.1em,
+    belowskip=-0.1em,
+    #1
+  }}{}
 
 % Fonts ------------------------------------------------------------------------
 \usepackage{lmodern}             % text font
@@ -56,6 +86,7 @@
 %\setallsansfonts[Scale=0.9]{Optima}          % sans-serif font (\textsf{})
 %\setallmonofonts[Scale=0.75]{JetBrains Mono} % mono spaced font (\texttt{})
 \usepackage{textgreek}           % to write greek letters in text mode
+\usepackage{fontawesome}         % to use icons in the document
 
 % Units ------------------------------------------------------------------------
 \usepackage{siunitx}             % write unit of measurements
@@ -87,11 +118,6 @@
 \renewcommand{\theadalign}{cl}
 \renewcommand{\cellalign}{cl}
 
-\usepackage{fontawesome}
-\newcommand{\mycheckmark}{\textcolor{mycolor5}{\faCheck}}
-\newcommand{\mycrossmark}{\textcolor{mycolor2}{\faTimes}}
-\newcommand{\mywarnmark}{\textcolor{mycolor3}{\faExclamationTriangle}}
-
 % Algorithms and code ----------------------------------------------------------
 \usepackage{algpseudocode}       % to write algorithms
 \usepackage{algorithm}           % to write algorithms
@@ -111,7 +137,21 @@
 \usepgfplotslibrary{external}    % load the externalization library
 \usetikzlibrary{external}        % use the externalization library
 %\tikzexternalize[mode=list and make, prefix=gfx/ext-tikz/]
+\usepgfplotslibrary{colorbrewer} % colorbrewer library
+\pgfplotsset{colormap/PuOr-4}    % colormap for the plots
+\pgfkeys{/pgf/number format/.cd,1000 sep={}} % no thousand separator in the plots
 \tikzexternalize[mode=convert with system call, prefix=figures/externalized/]
+
+% layers definition
+\pgfplotsset{
+  layers/my layer set/.define layer set={
+    main,
+    back,
+    middle,
+    front,
+  }{}
+}
+
 % include tikz images and set externalization filename
 \newcommand{\includetikz}[1]{%
   % substitute dots and slash in filename with underscores
@@ -210,6 +250,7 @@
 \newcommand{\eg}{\emph{e.g.}}
 \newcommand{\ie}{\emph{i.e.}}
 \newcommand{\SSI}[2]{\SI[per-mode=symbol]{#1}{#2}}
+\newcommand{\RSI}[3]{\lbrack\num{#1}{,}\ \num{#2}\rbrack\,\si[per-mode=symbol]{#3}}
 
 % Software programs
 \newcommand{\MapleSoft}{\textsc{Maplesoft}\textsuperscript{\textregistered}}
@@ -220,6 +261,13 @@
 \newcommand{\Simulink}{\textsc{Simulink}\textsuperscript{\textregistered}}
 \newcommand{\Mex}{\textsc{Mex}}
 \newcommand{\SFunction}{\textsc{S-Function}}
+\newcommand{\Axiom}{\textsc{Axiom}}
+\newcommand{\Derive}{\textsc{Derive}}
+\newcommand{\Macsyma}{\textsc{Macsyma}}
+\newcommand{\MuPAD}{\textsc{MuPAD}}
+\newcommand{\Reduce}{\textsc{Reduce}}
+\newcommand{\TrussMe}{\textsc{TrussMe-Fem}}
+\newcommand{\Ansys}{\textsc{Ansys}\textsuperscript{\textregistered}}
 
 % Miscellaneous libraries, languages and tools
 \newcommand{\cpp}{C++}
@@ -273,6 +321,11 @@
 \newcommand{\TMEasy}{\textsc{TMEasy}}
 \newcommand{\FTire}{\textsc{FTire}\textsuperscript{\textregistered}}
 \newcommand{\CDTire}{\textsc{CDTire}\textsuperscript{\textregistered}}
+
+% Goodlooking check, cross and warning marks
+\newcommand{\mycheckmark}{\textcolor{mycolor5}{\faCheck}}
+\newcommand{\mycrossmark}{\textcolor{mycolor2}{\faTimes}}
+\newcommand{\mywarnmark}{\textcolor{mycolor3}{\faExclamationTriangle}}
 
 % Mathematical symbols
 \newcommand{\pt}[1]{\ensuremath{\mathbf{#1}}}
@@ -342,6 +395,15 @@
 \newcommand{\TaMeTire}{\textsc{TaMeTire}\textsuperscript{\textregistered}}
 \newcommand{\Hoosier}{\textsc{Hoosier}\textsuperscript{\textregistered}}
 
+% Commands for the structural analysis
+\newcommand{\Je}{\mathbf{J}_{e}}
+\newcommand{\Ke}{\mathbf{K}_{e}}
+\newcommand{\Ne}{N_{e}}
+\newcommand{\Pe}{\mathbf{P}_{e}}
+\renewcommand{\Re}{\mathbf{R}_{e}}
+\newcommand{\Te}{\mathbf{T}_{e}}
+%\newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\newcommand*\circled[1]{{\large \textcircled{\small #1}}}
 
 % Matlab colors
 \definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}
@@ -455,6 +517,8 @@
   \acro{MF}{\textsc{Magic Formula}}
   \acro{DOF}{Degree of Freedom}
   \acro{RTF}{Real-Time Factor}
+  \acro{CAS}{Computer Algebra System}
+  \acro{SMS}{Symbolic Manipulation System}
 \end{acronym}
 
 % Mainmatter -------------------------------------------------------------------

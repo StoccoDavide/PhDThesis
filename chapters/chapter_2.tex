@@ -3,39 +3,227 @@
 \chapter{Symbolic Computation and Applications}
 \label{chap2:symbolic_computation}
 
-Il calcolo simbolico è particolarmente utile per risolvere problemi che coinvolgono manipolazioni simboliche di espressioni matematiche piuttosto che semplici valori numerici. Ecco alcuni esempi di problemi in cui il calcolo simbolico si rivela prezioso:
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-Derivazione e Integrazione Simbolica:
-Esempio 1: Calcolare la derivata di una funzione complessa, come ad esempio .
-Esempio 2: Eseguire l'integrazione simbolica di una funzione come
-Algebra Simbolica:
-Esempio 3: Semplificare espressioni algebriche comple
-Esempio 4: Risolvere sistemi di equazioni lineari o non lineari in forma simbolica.
-Equazioni Differenziali Ordinarie (EDO):
-Esempio 5: Risolvere un'equazione differenziale come
-Esempio 6: Trovare una soluzione generale per un sistema di EDO complesso.
-Matrici e Algebra Lineare:
-Esempio 7: Calcolare l'inversa di una matrice simbolica.
-Esempio 8: Trovare gli autovalori e gli autovettori di una matrice.
-Teoria dei Numeri:
-Esempio 9: Effettuare manipolazioni simboliche con espressioni che coinvolgono numeri irrazionali o complessi.
-Esempio 10: Sviluppare algoritmi simbolici per la fattorizzazione di numeri o espressioni.
+\section{Introduction to Computer Algebra}
+\label{chap2:sec:introduction}
 
+Mathematical scientists employ methodical approaches to model natural phenomena. This involves translating empirical observations and theoretical constructs into mathematical expressions consisting of numerical values, variables, functions, and operators. These expressions are then subjected to established methods of mathematical reasoning, where they are carefully manipulated or transformed to unveil novel insights into the studied phenomenon. This mathematical methodology has been integral to the scientific method in the physical sciences since the era of Galileo and Descartes. Following their legacy, Isaac Newton applied this approach to develop a systematic, quantitative framework for describing the motion of objects. Through mathematical reasoning, Newton uncovered the universal law of gravitation and formulated additional principles governing phenomena such as tidal motion and planetary orbits. Thus, the discipline of mechanics emerged, solidifying the practice of manipulating and transforming mathematical expressions as a fundamental tool for advancing our understanding of the physical universe.
 
-Chiarisco che l'analisi numerica solitamente coinvolge metodi computazionali basati su calcoli approssimati piuttosto che manipolazioni simboliche. Tuttavia, ci sono situazioni in cui il calcolo simbolico può essere incorporato nell'analisi numerica per migliorarne l'efficienza o risolvere specifici sotto-problemi. Ecco alcuni esempi:
+Over the past five decades, computers have evolved into indispensable tools for mathematical exploration, greatly expanding our capacity to tackle complex problems. Mathematicians frequently employ computers to generate numerical and graphical solutions for challenges that surpass manual capabilities. However, computers transcend mere arithmetic; fundamentally, they operate by manipulating symbols -- represented as binary digits (0s and 1s) -- in accordance with precise rules. Given this capability, it is natural to inquire about the feasibility of automating other facets of mathematical reasoning. Granted, expecting machines to formulate foundational axioms {\`a} la Newton or derive seminal theories from scratch is impractical. Nevertheless, a notable segment of mathematical reasoning -- specifically, the mechanical manipulation and analysis of mathematical expressions -- adapts well to algorithmic treatment. Presently, computer programs routinely execute tasks like simplifying algebraic expressions, integrating complex functions, solving differential equations precisely, and performing numerous other operations essential in applied mathematics, scientific research, and engineering practice.
 
-Analisi di Errore:
-Utilizzare il calcolo simbolico per derivare formule esatte per l'errore di approssimazione in un determinato metodo numerico, ad esempio, nell'approssimazione di una derivata o di un'integrale.
-Ottimizzazione di Algoritmi Numerici:
-Incorporare il calcolo simbolico per semplificare e ottimizzare passaggi critici in algoritmi numerici, ad esempio, nell'ottimizzazione di formule iterative o nella semplificazione di espressioni complesse all'interno di algoritmi.
-Generazione di Funzioni Approssimanti:
-Utilizzare il calcolo simbolico per derivare esattamente la forma chiusa di una funzione approssimante, ad esempio, attraverso metodi di interpolazione, semplificando così i calcoli numerici successivi.
-Stabilità Numerica:
-Analizzare la stabilità di un algoritmo numerico utilizzando il calcolo simbolico per esaminare il comportamento asintotico delle espressioni coinvolte nel processo numerico.
-Risoluzione di Problemi Lineari o Non-Lineari:
-Utilizzare tecniche di calcolo simbolico per semplificare le espressioni prima di applicare metodi numerici, riducendo così il numero di operazioni computazionali e migliorando l'efficienza computazionale.
-Rappresentazione Esatta di Numeri Irrazionali:
-Utilizzare il calcolo simbolico per rappresentare in modo esatto numeri irrazionali coinvolti in un problema numerico, evitando così errori di approssimazione.
-Analisi di Sensibilità:
-Utilizzare il calcolo simbolico per derivare espressioni analitiche per la sensibilità di una soluzione numerica rispetto alle variazioni nei parametri di input.
-In queste situazioni, il calcolo simbolico può essere un complemento utile all'analisi numerica, contribuendo a una migliore comprensione del problema e ottimizzando l'implementazione degli algoritmi computazionali.
+This chapter primarily focuses on advancing and applying algorithms and software designed to handle this mechanized aspect of mathematical reasoning. The interdisciplinary field at the intersection of mathematics and computer science dedicated to this pursuit is commonly referred to as \emph{computer algebra} or \emph{symbolic manipulation}.
+
+\subsection{Computer Algebra Systems and Languages}
+
+A \ac{CAS} or \ac{SMS} is software designed to execute symbolic mathematical operations. In \figurename~\ref{chap2:fig:maple_example}, we illustrate an interactive session with the \Maple{} computer algebra system, developed by \MapleSoft{}. The lines preceded by the prompt (\texttt{>}) represent user inputs entered at a computer workstation. Commands such as \texttt{factor}, \texttt{convert}, \texttt{compoly}, and \texttt{simplify} are examples of \emph{mathematical operators} available in the \Maple{} system. Upon receiving these commands, the program executes the corresponding mathematical operations and presents the outcomes using notation similar to conventional mathematical expressions.
+
+\begin{figure}
+  \centering
+  \Fbox{\begin{minipage}{1.0\textwidth}
+    \begin{maplefigure}
+> u1 := x^5-4*x^4-7*x^3-41*x^2-4*x+35;
+    \end{maplefigure}
+    \begin{equation*}
+      u1 := x^5 - 4x^4 - 7x^3 - 41x^2 - 4x + 35
+    \end{equation*}
+    \begin{maplefigure}
+> factor(u1);
+    \end{maplefigure}
+    \begin{equation*}
+      (x + 1)(x + 2x + 7)(x - 7x + 5)
+    \end{equation*}
+    \begin{maplefigure}
+> u2 := (x^4+7*x^2+3)/(x^5+x^3+x^2+1);
+    \end{maplefigure}
+    \begin{equation*}
+      u2 := \dfrac{x^4 + 7x^2 + 3}{x^5 + x^3 + x^2 + 1}
+    \end{equation*}
+    \begin{maplefigure}
+> convert(u2,parfrac,x);
+    \end{maplefigure}
+    \begin{equation*}
+    \end{equation*}
+    \begin{maplefigure}
+> u3 := x^6+9*x^5+30*x^4+45*x^3+35*x^2+24*x+10;
+    \end{maplefigure}
+    \begin{equation*}
+    \end{equation*}
+    \begin{maplefigure}
+> u4 := 1/(1/a+c/(a*b))+(a*b*c+a*c^2)/(b+c)^2;
+    \end{maplefigure}
+    \begin{equation*}
+    \end{equation*}
+    \begin{maplefigure}
+> simplify(u4);
+    \end{maplefigure}
+    \begin{equation*}
+    \end{equation*}
+    \begin{maplefigure}
+> u5 := (sin(x)+sin(3*x)+sin(5*x)+sin(7*x))/(cos(x)+cos(3*x)+cos(5*x)+cos(7*x))-tan(4*x);
+    \end{maplefigure}
+    \begin{equation*}
+    \end{equation*}
+    \begin{maplefigure}
+> simplify(u5);
+    \end{maplefigure}
+    \begin{equation*}
+    \end{equation*}
+  \end{minipage}}
+  \caption{Interactive dialogue with the \Maple{} system that shows some symbolic operations from algebra and trigonometry.}
+  \label{chap2:fig:maple_example1}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \Fbox{\begin{minipage}{1.0\textwidth}
+    \begin{maplefigure}
+> u6 := cos(2*x+3)/(x^2+1);
+    \end{maplefigure}
+    \begin{equation*}
+      u1 := \dfrac{\cos(2x + 3)}{x^2 + 1}
+    \end{equation*}
+    \begin{maplefigure}
+> diff(u6,x);
+    \end{maplefigure}
+    \begin{equation*}
+    \end{equation*}
+    \begin{maplefigure}
+> u7 := cos(x)/(sin(x)^2+3*sin(x)+4);
+    \end{maplefigure}
+    \begin{equation*}
+    \end{equation*}
+    \begin{maplefigure}
+> int(u7,x);
+    \end{maplefigure}
+    \begin{equation*}
+    \end{equation*}
+    \begin{maplefigure}
+> u8 := diff(y(x),x) + 3*y(x) = x^2+sin(x);
+    \end{maplefigure}
+    \begin{equation*}
+    \end{equation*}
+    \begin{maplefigure}
+> dsolve(u8,y(x));
+    \end{maplefigure}
+    \begin{equation*}
+    \end{equation*}
+  \end{minipage}}
+  \caption{An interactive dialogue with the \Maple{} system that shows some symbolic operations from calculus and differential equations.}
+  \label{chap2:fig:maple_example2}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \Fbox{\begin{minipage}{1.0\textwidth}
+    \begin{maplefigure}
+> TangentLine(x^2+5*x+6, x, 2);
+    \end{maplefigure}
+    \begin{equation*}
+      9x + 2
+    \end{equation*}
+  \end{minipage}}
+  \caption{The execution of the \texttt{TangentLine} procedure in the interactive mode of the \Maple{} system.}
+  \label{chap2:fig:maple_example4}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \Fbox{\begin{minipage}{1.0\textwidth}
+    \begin{maplefigure}
+TangentLine := proc(f, x, a)
+  local deriv, m, line;
+  deriv := diff(f, x);
+  m := subs(x=a, deriv);
+  line := expand(m*(x-a) + subs(x = a, f));
+  return line;
+end proc:
+    \end{maplefigure}
+  \end{minipage}}
+  \caption{A procedure in the \Maple{} language that obtains a formula for the tangent line.}
+  \label{chap2:fig:maple_example3}
+\end{figure}
+
+In \figurename~\ref{chap2:fig:maple_example1}, the initial two prompts involve assigning a polynomial to a variable, u1, using the ``'\texttt{:=}'' operator, followed by factoring it into irreducible factors over the rational numbers. (Here, none of the resulting polynomials can be further factored without introducing radicals.) Subsequently, prompts three and four involve inputting a rational expression and determining its partial fraction decomposition. In the subsequent two prompts, \Maple{}'s \texttt{compoly} command discerns that the polynomial u3 is composite.
+%
+\begin{equation*}
+  u3 = f(g(x)), \qquad f(x) = x + 10 + 8x + 3x, \qquad g(x) = 3x + x
+\end{equation*}
+%
+The procedure of expressing a polynomial as a composition of polynomials of lower degrees is termed polynomial decomposition. In the subsequent prompts, differentiation is performed using the prompt command, while the int command at the fourth prompt handles integration. Notably, the output of the int operator does not include the arbitrary constant of integration. Moving to the fifth prompt, a first-order differential equation is assigned to u7 (\Maple{} displays the derivative of an unknown function y(x) using the partial derivative symbol instead of ordinary derivative notation.), followed by a request to \Maple{} to solve the differential equation at the sixth prompt. The presence of the symbol C1 in the solution denotes \Maple{}'s inclusion of an arbitrary constant (\Maple{} includes an arbitrary constant in the solution of a differential equation but does not include the arbitrary constant for an anti-differentiation. Inconsistencies of this sort are commonplace with computer algebra software.).
+
+The term computer algebra language or symbolic programming language is used to denote the programming language utilized to interact with a \ac{CAS}. Most computer algebra systems offer both a programming mode and an interactive mode (as illustrated in \figurename{}s~\ref{chap2:fig:maple_example1} and~\ref{chap2:fig:maple_example2}). In the programming mode, mathematical operators like factor and simplify are combined with standard programming constructs such as assignment statements, loops, conditional statements, and subprograms to develop programs capable of solving more complex mathematical problems.
+
+To illustrate this concept, let us examine the task of determining the equation for the tangent line to the curve $y = f(x) = x^2 + 5x + 6$ at the point $x = 2$. Initially, we derive a general formula for the slope through differentiation. Subsequently, we substitute $x = 2$ into this expression to obtain the slope at that specific point, $m = \frac{dy}{dx}(2) = 2(2) + 5 = 9$. Using the point-slope form for a line, the equation for the tangent line is derived as $y = m(x - 2) + f(2) = 9(x - 2) + f(2) = 9x + 2 + 6 = 9x + 8$. The final formula is obtained by expanding the right side of this last equation.
+
+In \figurename~\ref{chap2:fig:maple_example3}, we present a generalized procedure, scripted in the \Maple{} computer algebra language, which replicates these computations. This procedure is designed to calculate the formula for the tangent line of any expression $f$ at the point $x = a$. Line 4 employs the operator diff for differentiation, while line 5 utilizes the operator subs for substitution. Additionally, the expand operator in line 6 is incorporated to streamline the output. Once this procedure is inputted into the \Maple{} system, it can be called upon from the system's interactive mode (refer to \figurename~\ref{chap2:fig:maple_example4}).
+
+\subsection{Commercial Computer Algebra Systems}
+
+Over the past 15 years, we have witnessed the emergence and widespread dissemination of several large-scale (yet user-friendly) computer algebra systems. Among the most notable are:
+%
+\begin{itemize}
+  \item \Axiom{}: A comprehensive \ac{CAS} initially developed at IBM under the moniker Scratchpad. Further details about \Axiom{} can be found in~\citet{jenks1992axiom}.
+  \item \Derive{}: A compact \ac{CAS} originally crafted by Soft Warehouse Inc. for personal computer use. \Derive{} has also been integrated into Texas Instruments Inc.'s TI-89 and TI-92 handheld calculators. More information about \Derive{} is available on the website \url{http://www.derive.com}.
+  \item \Macsyma{}: A robust \ac{CAS} initially conceived at M.I.T. during the late 1960s and 1970s. Various versions of the original \Macsyma{} system are currently in circulation. Additional insights into \Macsyma{} can be gleaned from~\citet{wester1999computer}.
+  \item \Maple{}: A highly sophisticated \ac{CAS} initially developed by the Symbolic Computation Group at the University of Waterloo (Canada) and presently distributed by Waterloo \Maple{} Inc. For more information about \Maple{}, consult~\citet{heck2003introduction} or visit the website \url{http://www.maplesoft.com}.
+  \item \Mathematica{}: An advanced \ac{CAS} created by Wolfram Research Inc. Further details about \Mathematica{} are provided in~\citet{wolfram2003mathematica} or on the website \url{http://www.wolfram.com}.
+  \item \MuPAD{}: A sizable \ac{CAS} developed by the University of Paderborn (Germany) and SciFace Software GmbH \& Co. KG. Refer to~\citet{creutzig2004mupad} or visit the website \url{http://www.mupad.com} for additional information about \MuPAD{}.
+  \item \Reduce{}: One of the earliest computer algebra systems, developed in the late 1960s and 1970s. Further information about \Reduce{} can be found in~\citet{rayna1987reduce} or on the website \url{http://www.uni-koeln.de/redude}.
+\end{itemize}
+%
+Each of these packages constitutes an integrated mathematics problem-solving system, featuring capabilities for exact symbolic computations (similar to those depicted in \figurename{}s~\ref{chap2:fig:maple_example1}, \ref{chap2:fig:maple_example2}, and~\ref{chap2:fig:maple_example3}), as well as some capacity for approximate numerical solutions of mathematical problems and high-quality graphics. The examples presented in this book primarily reference the computer algebra functionalities of \Maple{}, \Mathematica{}, and \MuPAD{} systems, given their wide availability and support for a programming style that closely aligns with the approach utilized here.
+
+\subsection{Mathematical Knowledge in Computer Algebra Systems}
+
+Computer algebra systems possess the capability to execute precise symbolic computations across various mathematical domains. Some of these capabilities include:
+%
+\begin{itemize}
+  \item \textbf{Arithmetic:} Performing unlimited precision rational number arithmetic, complex (rational number) arithmetic, transforming number bases, interval arithmetic, modulo arithmetic, integer operations (such as greatest common divisors, least common multiples, prime factorization), and combinatorial functions.
+  \item \textbf{Algebraic manipulation:} Simplification, expansion, factorization, and substitution operations.
+  \item \textbf{Polynomial operations:} Conducting structural operations on polynomials (such as determining degree and extracting coefficients), polynomial division, finding greatest common divisors, factorization, calculating resultants, polynomial decomposition, and simplification with respect to side relations.
+  \item \textbf{Equation solving:} Handling polynomial equations, some non-linear equations, systems of linear equations, systems of polynomial equations, and recurrence relations.
+  \item \textbf{Trigonometry:} Performing trigonometric expansion and reduction, and verifying identities.
+  \item \textbf{Calculus:} Computing derivatives, antiderivatives, definite integrals, limits, Taylor series, manipulating power series, summing series, and executing operations involving special functions of mathematical physics.
+  \item \textbf{Differential equations:} Solving ordinary differential equations, systems of differential equations, series solutions, solutions using Laplace transforms, and some partial differential equations.
+  \item \textbf{Advanced algebra:} Manipulating algebraic numbers, exploring group theory, and investigating Galois groups.
+  \item \textbf{Linear algebra and related topics:} Conducting matrix operations, and performing vector and tensor analysis.
+  \item \textbf{Code generation:} Translating formulas into conventional programming languages like FORTRAN and C, as well as mathematics word processing languages like LATEX.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\section{Purposes and Applications of Computer Algebra}
+
+\subsection{The Purpose of Applied Mathematics}
+
+In their captivating book ``'{Mathematics Applied to Deterministic Problems in the Natural Sciences}'' (\cite{li1998making}, SIAM, 1988, pages 5-7), Lin and Segel delineate the purpose of applied mathematics as follows:
+
+Applied mathematics aims to clarify scientific concepts and depict scientific phenomena using mathematical tools, fostering the advancement of mathematics through such endeavors. They discuss three fundamental aspects of this process concerning the resolution of scientific challenges:
+%
+\begin{enumerate}
+  \item[(\emph{i}).] Formulating scientific problems in mathematical terms.
+  \item[(\emph{ii}).] Solving the mathematical problems thus formulated.
+  \item[(\emph{iii}).] Interpreting the solutions and empirically verifying them in scientific contexts.
+\end{enumerate}
+%
+Furthermore, they highlight a closely intertwined aspect of this process:
+%
+\begin{enumerate}
+  \item[(\emph{iv}).] Generating scientifically pertinent new mathematics by fostering creation, generalization, abstraction, and axiomatic formulation.
+\end{enumerate}
+%
+In theory, computer algebra can facilitate steps (\emph{i}), (\emph{ii}), and (\emph{iv}) of this process. In practice, however, computer algebra primarily engages in step (\emph{ii}) and plays a comparatively minor role in steps (\emph{i}) and (\emph{iv}).
+
+\subsection{Applications of Computer Algebra}
+
+In the subsequent part of this section, we present four examples showcasing the application of computer algebra software in the problem-solving process. All of these examples focus on solving equations.
+
+\subsubsection{Solution of a linear system of equations}
+\subsubsection{Solution of cubic polynomial equations}
+\subsubsection{Solution of higher degree polynomial equations}
+\subsubsection{Solution of cubic polynomial equations}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
