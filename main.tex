@@ -17,11 +17,46 @@
 \usepackage{mathrsfs}            % math upper case letter fonts
 %\usepackage{scalerel}            % scale/stretch/shift an object to conform a second one
 %\usepackage{amsfonts}            % particular mathematical fonts
-%\usepackage{amsthm}              % to define theorems, lemmas, etc
+\usepackage{amsthm}              % to define theorems, lemmas, etc
+\usepackage{thmtools}            % to define theorems, lemmas, etc
 %\usepackage{mathrsfs}            % math upper case letter fonts
 %\usepackage{systeme}             % easy way to write systems of equations
 %\usepackage{accents}             % particular accents in math
 %\usepackage{commath}             % differential, partial differ., delimiters, etc
+
+\declaretheoremstyle[
+  headfont=\normalfont\bfseries,
+  notefont=\normalfont\bfseries\itshape,
+  bodyfont=\itshape,
+  numbered=unless unique,
+  spaceabove=1.0em plus 0.25em minus 0.25em,
+  qed={$\blacksquare$}, %\qedsymbol
+  spacebelow=1.0em plus 0.25em minus 0.25em,
+]{defstyle}
+
+\declaretheorem[
+  style=defstyle,
+  title=Definition,
+  refname={definition},
+  Refname={Definition}
+]{definition}
+
+\declaretheoremstyle[
+  headfont=\normalfont\bfseries,
+  notefont=\normalfont\bfseries\itshape,
+  bodyfont=\normalfont,
+  numbered=unless unique,
+  spaceabove=1.0em plus 0.25em minus 0.25em,
+  qed={$\blacksquare$}, %\qedsymbol
+  spacebelow=1.0em plus 0.25em minus 0.25em,
+]{exstyle}
+
+\declaretheorem[
+  style=exstyle,
+  title=Example,
+  refname={example},
+  Refname={Example}
+]{example}
 
 % Document settings ------------------------------------------------------------
 \usepackage{geometry}            % change margins of the document
@@ -79,14 +114,25 @@
 
 % Fonts ------------------------------------------------------------------------
 \usepackage{lmodern}             % text font
-%\usepackage{newtx}
 %\usepackage{mathspec}            % font selection for XeLaTeX
 %\defaultfontfeatures{Mapping=tex-text}       % to support TeX conventions
 %\setallmainfonts{Adobe Caslon Pro}           % normal document font
-%\setallsansfonts[Scale=0.9]{Optima}          % sans-serif font (\textsf{})
+%\setallsansfonts[Scale=1.0]{Montserrat}      % Optima % sans-serif font (\textsf{})
 %\setallmonofonts[Scale=0.75]{JetBrains Mono} % mono spaced font (\texttt{})
+\usepackage[it,bf]{titlesec}
+%\titleformat*{\chapter}{\center\bfseries\LARGE}
+\titleformat
+{\chapter}                       % command
+[display]                        % shape
+{\normalfont\center\Huge\bfseries}      % format
+{\chaptertitlename\ \thechapter\\[2.5ex]---} % label
+{2.5ex}                           % sep
+{\Huge}[\vspace{2ex}]  % before-code
+%\titleformat*{\section}{\normalfont\bfseries\Large}
+%\titleformat*{\section}{}
+%\titleformat*{\subsection}{}
 \usepackage{textgreek}           % to write greek letters in text mode
-\usepackage{fontawesome}         % to use icons in the document
+%\usepackage{fontawesome}         % to use icons in the document
 
 % Units ------------------------------------------------------------------------
 \usepackage{siunitx}             % write unit of measurements
@@ -167,7 +213,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Set custom margins for the document ------------------------------------------
-\newgeometry{top=2.5cm, bottom=2.0cm, left=2.0cm, right=2.0cm} % digital version
+\newgeometry{top=1.25in, bottom=1.0in, left=1.0in, right=1.0in} % digital version
 %\newgeometry{top=2.0cm, bottom=2.0cm, width=11cm, bindingoffset=12mm} % print version
 %headsep=0.25in, headheight=20pt, heightrounded
 
@@ -191,7 +237,6 @@
   {figures/chapter_5/}
   {figures/chapter_6/}
   {figures/chapter_7/}
-  {figures/chapter_8/}
   {figures/appendix_1/}
 }
 
@@ -249,6 +294,7 @@
 % General commands
 \newcommand{\eg}{\emph{e.g.}}
 \newcommand{\ie}{\emph{i.e.}}
+\newcommand{\pow}{\ensuremath{^{\wedge}}}
 \newcommand{\SSI}[2]{\SI[per-mode=symbol]{#1}{#2}}
 \newcommand{\RSI}[3]{\lbrack\num{#1}{,}\ \num{#2}\rbrack\,\si[per-mode=symbol]{#3}}
 
@@ -323,11 +369,12 @@
 \newcommand{\CDTire}{\textsc{CDTire}\textsuperscript{\textregistered}}
 
 % Goodlooking check, cross and warning marks
-\newcommand{\mycheckmark}{\textcolor{mycolor5}{\faCheck}}
-\newcommand{\mycrossmark}{\textcolor{mycolor2}{\faTimes}}
-\newcommand{\mywarnmark}{\textcolor{mycolor3}{\faExclamationTriangle}}
+%\newcommand{\mycheckmark}{\textcolor{mycolor5}{\faCheck}}
+%\newcommand{\mycrossmark}{\textcolor{mycolor2}{\faTimes}}
+%\newcommand{\mywarnmark}{\textcolor{mycolor3}{\faExclamationTriangle}}
 
 % Mathematical symbols
+\newcommand{\code}[1]{\texttt{#1}}
 \newcommand{\pt}[1]{\ensuremath{\mathbf{#1}}}
 \newcommand{\vt}[1]{\ensuremath{\vec{\pt{#1}}}}
 \newcommand{\et}[1]{\ensuremath{\hat{\pt{#1}}}}
@@ -455,6 +502,8 @@
 \vspace*{\fill}
 
 % Table of contents ------------------------------------------------------------
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
 \tableofcontents
 \restorestyles
 
@@ -480,7 +529,7 @@
   \acro{2D}{Two-Dimensional}
   \acro{3D}{Three-Dimensional}
   \acro{BSD}{Berkeley Software Distribution}
-  \acro{PC}{Personal Computer}
+  \acro{BC}{Boundary Condition}å
   \acro{ADAS}{Advanced Driver-Assistance Systems}
   \acro{RDF}{Road Data Format}
   \acro{HIL}{Hardware In the Loop}
@@ -518,21 +567,23 @@
   \acro{DOF}{Degree of Freedom}
   \acro{RTF}{Real-Time Factor}
   \acro{CAS}{Computer Algebra System}
+  \acro{SCAS}{Symbolic Computer Algebra System}
   \acro{SMS}{Symbolic Manipulation System}
+  \acro{MPL}{Mathematical Pseudo-Language}
+  \acro{CERN}{Conseil Europ{\'e}en pour la Recherche Nucl{\'e}aire}
 \end{acronym}
 
 % Mainmatter -------------------------------------------------------------------
 \include{chapters/chapter_1}
 \include{chapters/chapter_2}
 \include{chapters/chapter_3}
-\include{chapters/chapter_4}
-\include{chapters/chapter_5}
-\include{chapters/chapter_6}
-\include{chapters/chapter_7}
-\include{chapters/chapter_8}
-\begin{appendices}
-\include{appendices/appendix_1}
-\end{appendices}
+%\include{chapters/chapter_4}
+%\include{chapters/chapter_5}
+%\include{chapters/chapter_6}
+%\include{chapters/chapter_7}
+%\begin{appendices}
+%\include{appendices/appendix_1}
+%\end{appendices}
 
 % Bibliography -----------------------------------------------------------------
 \addcontentsline{toc}{chapter}{Bibliography}

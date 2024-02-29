@@ -1,229 +1,543 @@
 %!TEX root = ../main.tex
 
-\chapter{Symbolic Computation and Applications}
-\label{chap2:symbolic_computation}
+\chapter{Symbolic Linear Algebra}
+\label{chap2:chap:symbolic_linear_algebra}
 
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-
-\section{Introduction to Computer Algebra}
-\label{chap2:sec:introduction}
-
-Mathematical scientists employ methodical approaches to model natural phenomena. This involves translating empirical observations and theoretical constructs into mathematical expressions consisting of numerical values, variables, functions, and operators. These expressions are then subjected to established methods of mathematical reasoning, where they are carefully manipulated or transformed to unveil novel insights into the studied phenomenon. This mathematical methodology has been integral to the scientific method in the physical sciences since the era of Galileo and Descartes. Following their legacy, Isaac Newton applied this approach to develop a systematic, quantitative framework for describing the motion of objects. Through mathematical reasoning, Newton uncovered the universal law of gravitation and formulated additional principles governing phenomena such as tidal motion and planetary orbits. Thus, the discipline of mechanics emerged, solidifying the practice of manipulating and transforming mathematical expressions as a fundamental tool for advancing our understanding of the physical universe.
-
-Over the past five decades, computers have evolved into indispensable tools for mathematical exploration, greatly expanding our capacity to tackle complex problems. Mathematicians frequently employ computers to generate numerical and graphical solutions for challenges that surpass manual capabilities. However, computers transcend mere arithmetic; fundamentally, they operate by manipulating symbols -- represented as binary digits (0s and 1s) -- in accordance with precise rules. Given this capability, it is natural to inquire about the feasibility of automating other facets of mathematical reasoning. Granted, expecting machines to formulate foundational axioms {\`a} la Newton or derive seminal theories from scratch is impractical. Nevertheless, a notable segment of mathematical reasoning -- specifically, the mechanical manipulation and analysis of mathematical expressions -- adapts well to algorithmic treatment. Presently, computer programs routinely execute tasks like simplifying algebraic expressions, integrating complex functions, solving differential equations precisely, and performing numerous other operations essential in applied mathematics, scientific research, and engineering practice.
-
-This chapter primarily focuses on advancing and applying algorithms and software designed to handle this mechanized aspect of mathematical reasoning. The interdisciplinary field at the intersection of mathematics and computer science dedicated to this pursuit is commonly referred to as \emph{computer algebra} or \emph{symbolic manipulation}.
-
-\subsection{Computer Algebra Systems and Languages}
-
-A \ac{CAS} or \ac{SMS} is software designed to execute symbolic mathematical operations. In \figurename~\ref{chap2:fig:maple_example}, we illustrate an interactive session with the \Maple{} computer algebra system, developed by \MapleSoft{}. The lines preceded by the prompt (\texttt{>}) represent user inputs entered at a computer workstation. Commands such as \texttt{factor}, \texttt{convert}, \texttt{compoly}, and \texttt{simplify} are examples of \emph{mathematical operators} available in the \Maple{} system. Upon receiving these commands, the program executes the corresponding mathematical operations and presents the outcomes using notation similar to conventional mathematical expressions.
-
-\begin{figure}
-  \centering
-  \Fbox{\begin{minipage}{1.0\textwidth}
-    \begin{maplefigure}
-> u1 := x^5-4*x^4-7*x^3-41*x^2-4*x+35;
-    \end{maplefigure}
-    \begin{equation*}
-      u1 := x^5 - 4x^4 - 7x^3 - 41x^2 - 4x + 35
-    \end{equation*}
-    \begin{maplefigure}
-> factor(u1);
-    \end{maplefigure}
-    \begin{equation*}
-      (x + 1)(x + 2x + 7)(x - 7x + 5)
-    \end{equation*}
-    \begin{maplefigure}
-> u2 := (x^4+7*x^2+3)/(x^5+x^3+x^2+1);
-    \end{maplefigure}
-    \begin{equation*}
-      u2 := \dfrac{x^4 + 7x^2 + 3}{x^5 + x^3 + x^2 + 1}
-    \end{equation*}
-    \begin{maplefigure}
-> convert(u2,parfrac,x);
-    \end{maplefigure}
-    \begin{equation*}
-    \end{equation*}
-    \begin{maplefigure}
-> u3 := x^6+9*x^5+30*x^4+45*x^3+35*x^2+24*x+10;
-    \end{maplefigure}
-    \begin{equation*}
-    \end{equation*}
-    \begin{maplefigure}
-> u4 := 1/(1/a+c/(a*b))+(a*b*c+a*c^2)/(b+c)^2;
-    \end{maplefigure}
-    \begin{equation*}
-    \end{equation*}
-    \begin{maplefigure}
-> simplify(u4);
-    \end{maplefigure}
-    \begin{equation*}
-    \end{equation*}
-    \begin{maplefigure}
-> u5 := (sin(x)+sin(3*x)+sin(5*x)+sin(7*x))/(cos(x)+cos(3*x)+cos(5*x)+cos(7*x))-tan(4*x);
-    \end{maplefigure}
-    \begin{equation*}
-    \end{equation*}
-    \begin{maplefigure}
-> simplify(u5);
-    \end{maplefigure}
-    \begin{equation*}
-    \end{equation*}
-  \end{minipage}}
-  \caption{Interactive dialogue with the \Maple{} system that shows some symbolic operations from algebra and trigonometry.}
-  \label{chap2:fig:maple_example1}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \Fbox{\begin{minipage}{1.0\textwidth}
-    \begin{maplefigure}
-> u6 := cos(2*x+3)/(x^2+1);
-    \end{maplefigure}
-    \begin{equation*}
-      u1 := \dfrac{\cos(2x + 3)}{x^2 + 1}
-    \end{equation*}
-    \begin{maplefigure}
-> diff(u6,x);
-    \end{maplefigure}
-    \begin{equation*}
-    \end{equation*}
-    \begin{maplefigure}
-> u7 := cos(x)/(sin(x)^2+3*sin(x)+4);
-    \end{maplefigure}
-    \begin{equation*}
-    \end{equation*}
-    \begin{maplefigure}
-> int(u7,x);
-    \end{maplefigure}
-    \begin{equation*}
-    \end{equation*}
-    \begin{maplefigure}
-> u8 := diff(y(x),x) + 3*y(x) = x^2+sin(x);
-    \end{maplefigure}
-    \begin{equation*}
-    \end{equation*}
-    \begin{maplefigure}
-> dsolve(u8,y(x));
-    \end{maplefigure}
-    \begin{equation*}
-    \end{equation*}
-  \end{minipage}}
-  \caption{An interactive dialogue with the \Maple{} system that shows some symbolic operations from calculus and differential equations.}
-  \label{chap2:fig:maple_example2}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \Fbox{\begin{minipage}{1.0\textwidth}
-    \begin{maplefigure}
-> TangentLine(x^2+5*x+6, x, 2);
-    \end{maplefigure}
-    \begin{equation*}
-      9x + 2
-    \end{equation*}
-  \end{minipage}}
-  \caption{The execution of the \texttt{TangentLine} procedure in the interactive mode of the \Maple{} system.}
-  \label{chap2:fig:maple_example4}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \Fbox{\begin{minipage}{1.0\textwidth}
-    \begin{maplefigure}
-TangentLine := proc(f, x, a)
-  local deriv, m, line;
-  deriv := diff(f, x);
-  m := subs(x=a, deriv);
-  line := expand(m*(x-a) + subs(x = a, f));
-  return line;
-end proc:
-    \end{maplefigure}
-  \end{minipage}}
-  \caption{A procedure in the \Maple{} language that obtains a formula for the tangent line.}
-  \label{chap2:fig:maple_example3}
-\end{figure}
-
-In \figurename~\ref{chap2:fig:maple_example1}, the initial two prompts involve assigning a polynomial to a variable, u1, using the ``'\texttt{:=}'' operator, followed by factoring it into irreducible factors over the rational numbers. (Here, none of the resulting polynomials can be further factored without introducing radicals.) Subsequently, prompts three and four involve inputting a rational expression and determining its partial fraction decomposition. In the subsequent two prompts, \Maple{}'s \texttt{compoly} command discerns that the polynomial u3 is composite.
+\subsubsection*{Copyright Notice}
+Part of this chapter has been first published in
 %
-\begin{equation*}
-  u3 = f(g(x)), \qquad f(x) = x + 10 + 8x + 3x, \qquad g(x) = 3x + x
+\begin{center}
+  \begin{minipage}{0.9\textwidth}
+    \fullcite{stocco2024symbolic}
+  \end{minipage}
+\end{center}
+\begin{center}
+  \begin{minipage}{0.9\textwidth}
+    \fullcite{stocco2024matrix}
+  \end{minipage}
+\end{center}
+%
+by Springer and Elsevier, respectively. Reproduced with permission from Springer and Elsevier.
+
+\begin{center}
+  $\ast$~$\ast$~$\ast$
+\end{center}
+
+%Capitolo dove si descrive LEM e LAST perche si usa nelle DAE (riduzione indice) e TRUSS ME per superare limiti di MAPLE.
+%
+%La fattorizzazione simbolica di una matrice è un processo che consiste nel rappresentare una matrice come prodotto di altre matrici più semplici o speciali. Mentre il calcolo simbolico è spesso associato alla manipolazione di espressioni matematiche, in alcuni contesti può essere utile estenderlo all'analisi numerica, in particolare quando si tratta di risolvere sistemi di equazioni lineari.
+%
+%Ecco alcune ragioni per cui la fattorizzazione simbolica di una matrice può essere importante in analisi numerica:
+
+%Precisione nelle Operazioni Numeriche:
+%La fattorizzazione simbolica può fornire espressioni più semplici e precise per le matrici coinvolte in un problema numerico. Questo può ridurre la propagazione degli errori di arrotondamento durante le operazioni numeriche, migliorando così la precisione della soluzione numerica.
+%Ottimizzazione degli Algoritmi Numerici:
+%La conoscenza della struttura simbolica della matrice può consentire di progettare algoritmi numerici più efficienti. Ad esempio, si possono identificare sottoproblemi che possono essere risolti più rapidamente sfruttando la struttura particolare della matrice.
+%Analisi della Stabilità Numerica:
+%Nel contesto della risoluzione di sistemi lineari, la fattorizzazione simbolica può essere utilizzata per studiare la stabilità numerica degli algoritmi. Essa fornisce informazioni sulle caratteristiche strutturali della matrice che possono influenzare la stabilità degli algoritmi utilizzati.
+%Ottimizzazione della Complessità Computazionale:
+%La fattorizzazione simbolica può semplificare le espressioni coinvolte nei calcoli numerici, riducendo la complessità computazionale e migliorando l'efficienza degli algoritmi. Ciò è particolarmente rilevante quando si lavora con matrici sparse o con una struttura particolare.
+%Risoluzione Rapida di Sistemi Lineari Successivi:
+%In alcuni casi, la fattorizzazione simbolica può essere utilizzata per risolvere rapidamente sistemi lineari successivi con la stessa matrice coefficiente. Poiché la fattorizzazione può essere riutilizzata, si evita di ripetere costose operazioni di decomposizione numerica.
+%Comprendere la Struttura del Problema:
+%La rappresentazione simbolica della matrice fornisce una visione più chiara della struttura matematica del problema, agevolando la comprensione dei pattern e delle relazioni matematiche sottostanti.
+%
+%In sintesi, la fattorizzazione simbolica di una matrice può essere un utile strumento in analisi numerica per migliorare la precisione, l'efficienza e la stabilità degli algoritmi utilizzati nella risoluzione di sistemi lineari e in altri contesti matriciali.
+
+As mentioned earlier in the preceding chapter, symbolic computation stands out as a powerful tool for tackling complicated mathematical problems that involve intensive algebraic manipulations and calculus. In this chapter, we discuss the principal issue associated with symbolic computation, which is known as the expression swell phenomenon. However, we also discuss the strategies for mitigating the expression swell problem, notably through the utilization of hierarchical representation techniques. Subsequently, we address the solution of large linear systems of equations by employing matrix factorization. Practical implementation of matrix factorization, incorporating techniques for managing large expressions, is described and exemplified through the \LEM{} and \LAST{} packages. These two \Maple{} packages are specifically designed to provide a set of routines for robust symbolic linear algebra insensitive to expression swell. Nonetheless, they are the backbone of the most important finding reported in this thesis, \ie{}, the automated index reduction of \acp{DAE} (see chapter~\ref{chap2:daes}).
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\section{Expression Swell}
+\label{chap2:sec:expression_swell}
+
+Over the past four decades, \ac{CAS} have increasingly found applications in university teaching and research. The advantages of incorporating \ac{CAS} into teaching methodologies have been extensively documented. For instance, in \citet{stoutemyer1984radical}, general benefits of \ac{CAS} are outlined, while \citet{pavelle1985macsyma} provides numerous examples where \ac{CAS} quickly solves problems that were previously considered complicated or time-consuming to to tackle by hand. However, \citet{mitic1994pitfalls} highlight an essential precondition for the effective and successful \ac{CAS} utilization: users must be aware of potential pitfalls and limitations, across all mathematical proficiency levels. Besides software bugs, the primary source of performance deterioration of \acp{CAS} is the \emph{expression swelling}.
+
+The expression swell is a common phenomenon of exact computations in which the size of numbers and expressions involved in a calculation grows dramatically as the calculation progresses, thereby slowing down the execution. While symbolic calculation software like \Maple{} and \Mathematica{} can handle substantial symbolic expressions, the growth of expression size during manipulation severely degrades the \acp{CAS} performance, resulting in prohibitively long \ac{CPU} times. During symbolic manipulation, it is not uncommon to find computations that are executed just once; once a result is obtained, recalculating it becomes unnecessary. However, the time required to obtain a result is often unknown. Predicting the memory and \ac{CPU} time prerequisites for a given calculation poses challenges since the size of expressions generated during computation is known only after the computation is completed. For these reasons, expression swell consistently poses a challenge, emerging as a major source of \ac{CAS} faults. It manifests in two forms: \emph{inherent} expression swell and \emph{intermediate} expression swell, each of which is discussed in the following sections.
+
+\subsection{Inherent Expression Swell}
+
+Inherent expression swell occurs when a calculation generates large expressions as a result of the problem itself. For example, the solution of a large system of linear equations can lead to large expressions. In this case, the problem is the large number of variables and equations, and the large expressions are a natural consequence of the problem. This type of expression swell is difficult both to mitigate and to spot, as it can arise from any problem, without any specific pattern.
+%
+\begin{example}[Inherent expression swell]
+  As an example, consider the following Hankel matrix
+  \begin{equation*}
+    \left[\begin{array}{rrrrrrrrr}
+      -1 &  1 &  1 & -1 & -1 &  1 &  1 & -1 & -1 \\
+       1 &  1 & -1 & -1 &  1 &  1 & -1 & -1 &  1 \\
+       1 & -1 & -1 &  1 &  1 & -1 & -1 &  1 &  1 \\
+      -1 & -1 &  1 &  1 & -1 & -1 &  1 &  1 & -1 \\
+      -1 &  1 &  1 & -1 & -1 &  1 &  1 & -1 & -1 \\
+       1 &  1 & -1 & -1 &  1 &  1 & -1 & -1 &  1 \\
+       1 & -1 & -1 &  1 &  1 & -1 & -1 &  1 & -1 \\
+      -1 & -1 &  1 &  1 & -1 & -1 &  1 & -1 &  1 \\
+      -1 &  1 &  1 & -1 & -1 &  1 & -1 &  1 &  1
+    \end{array}\right]
+  \end{equation*}
+  %
+  which has the following characteristic polynomial
+  %
+  \begin{equation*}
+    \begin{aligned}
+      c(\lambda) &= \lambda^9 + \lambda^8 - 40\lambda^7 - 24\lambda^6 + 240\lambda^5+ 144\lambda^4 \\
+      &= \lambda^4 (\lambda + 6)(\lambda^4 - 5\lambda^3 - 10\lambda^2 + 36\lambda + 24)
+    \end{aligned}
+  \end{equation*}
+  %
+  The Hankel matrix has four zero eigenvalues $\lambda_{1,2,3,4} = 0$, one eigenvalue is $\lambda_5 = -6$, and the other four eigenvalues are roots of the seemingly simple-looking quartic polynomial
+  %
+  \begin{equation*}
+    \lambda^4 - 5\lambda^3 - 10\lambda^2 + 36\lambda + 24,
+  \end{equation*}
+  %
+  which are
+  %
+  \begin{equation*}
+    \begin{aligned}
+      \lambda_{6,7} &= \dfrac{5}{4} \pm \dfrac{\sqrt{3}}{12}\sqrt{{\dfrac{8a^{2}+155a+1856}{a}}} + \dfrac{\sqrt{6}}{12}\sqrt{{\dfrac{155a-4a^{2}-928}{a}} \pm {\dfrac{111\sqrt{3}}{\sqrt{{\dfrac{8a^{2}+155a+1856}{a}}}}}}, \\[0.2em]
+      \lambda_{8,9} &= \dfrac{5}{4} \pm \dfrac{\sqrt{3}}{12}\sqrt{{\dfrac{8a^{2}+155a+1856}{a}}} + \dfrac{\sqrt{6}}{12}\sqrt{{\dfrac{155a-4a^{2}-928}{a}} \pm {\dfrac{666\sqrt{3}}{\sqrt{{\dfrac{8a^{2}+155a+1856}{a}}}}}},
+    \end{aligned}
+  \end{equation*}
+  where $a = \sqrt[3]{3142+18i\sqrt{8071}}$
+\end{example}
+
+\subsection{Intermediate Expression Swell}
+
+Intermediate expression swell is an important special case of expression swell in which, during the middle stages of a calculation, intermediate expressions' size can grow substantially, along the way to a possibly and comparatively simple final results of the calculation.
+%
+\begin{example}[Intermediate expression swell]
+  Let us verify the Bianchi identity for a symmetric connection
+  %
+  \begin{equation*}
+    K^{\ell}_{j}{}_{hk;p} + K^{\ell}_{j}{}_{kp;j} + K^{\ell}_{j}{}_{ph;k} = 0
+  \end{equation*}
+  %
+  where $K$ is the Riemann curvature tensor.
+
+  Expanding the left-hand side in terms of Christoffel symbols of the second kind, one obtains
+  %
+  \begin{equation*}
+    \begin{aligned}
+      & -\Gamma_{\# 19}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 19}{ }_{\# 27} \Gamma_p{ }^{\# 27}{ }_k+\Gamma_j{ }^{\ell}{ }_{h, \# 25} \Gamma_p{ }^{\# 25}{ }_k+\Gamma_{\# 19}{ }^{\ell}{ }^{\# 22} \Gamma_j{ }^{\# 19}{ }_h \Gamma_p{ }^{\# 22}{ }_k-\Gamma_j{ }^{\ell}{ }_{\# 20, h} \Gamma_p{ }^{\# 20}{ }_k \\
+      & +\Gamma_j{ }^{\ell}{ }_{\# 18, k} \Gamma_p{ }^{\# 18}{ }_h+\Gamma_{\# 10}{ }_k \Gamma_j{ }^{\# 10}{ }_{\# 16} \Gamma_p{ }^{\# 16}{ }_h-\Gamma_{\# 10}{ }^{\ell}{ }_{\# 12} \Gamma_j{ }^{\# 10}{ }_k \Gamma_p{ }^{\# 12}{ }_h-\Gamma_j{ }^{\ell}{ }_{k, \# 11} \Gamma_p{ }^{\# 11}{ }_h \\
+      & +\Gamma_j{ }^{\ell}{ }_{\#, h} \Gamma_k{ }^{\# 9}{ }_p+\Gamma_{\# 1}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 1}{ }_{\# 7} \Gamma_k{ }^{\# 7}{ }_p-\Gamma_{\# 1}{ }_{\# 3} \Gamma_j{ }^{\# 1}{ }_h \Gamma_k{ }^{\# 3}{ }_p-\Gamma_j{ }^{\ell}{ }_{h, \# 2} \Gamma_k{ }^{\# 2}{ }_p+\Gamma_j{ }^{\ell}{ }_{p, \# 18} \Gamma_k{ }^{\# 18}{ }_h \\
+      & +\Gamma_{\# 10}{ }_{\# 15} \Gamma_j{ }^{\# 10}{ }_p \Gamma_k{ }^{\# 15}{ }_h-\Gamma_{\# 10}{ }_p{ }_p \Gamma_j{ }^{\# 10}{ }_{\# 13} \Gamma_k{ }^{\# 13}{ }_h-\Gamma_j{ }^{\ell}{ }_{\# 11, p} \Gamma_k{ }^{\# 11}{ }_h-\Gamma_h{ }^{\# 20}{ }_k \Gamma_j{ }^{\ell}{ }_{p, \# 20} \\
+      & +\Gamma_{\# 9}{ }^{\ell}, h{ }^{\ell} \Gamma_j{ }^{\# 9}{ }_p+\Gamma_{\# 1}{ }^{\ell}{ }_h \Gamma_{\# 7}{ }^{\# 1}{ }_k \Gamma_j{ }^{\# 7}{ }_p-\Gamma_{\# 1}{ }_k \Gamma_{\# 4}{ }^{\# 1}{ }_h \Gamma_j{ }^{\# 4}{ }_p+\Gamma_{\# 19}{ }_h \Gamma_{\# 27}{ }^{\# 19}{ }_k \Gamma_j{ }^{\# 27}{ }_p \\
+      & +\Gamma_{\# 20}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 20}{ }_{p, h}-\Gamma_{\# 2}{ }^{\ell}{ }_{h, k} \Gamma_j{ }_j^{\# 2}{ }_p+\Gamma_{\# 19}{ }_h{ }_h \Gamma_j{ }^{\# 19}{ }_{p, k}-\Gamma_{\# 19}{ }^{\ell}{ }_{\# 26} \Gamma_h{ }^{\# 26}{ }_k \Gamma_j{ }^{\# 19}{ }_p \\
+      & +\Gamma_{\# 19}{ }^{\# 26}{ }_h \Gamma_{\# 26}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 19}{ }_p-\Gamma_{\# 19}{ }^{\# 26}{ }_k \Gamma_{\# 26}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 19}{ }_p+\Gamma_{\# 19}{ }^{\ell}{ }_{h, k} \Gamma_j{ }^{\# 19}{ }_p-\Gamma_{\# 18}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 18}{ }_{p, k} \\
+      & -\Gamma_{\# 10}{ }^{\ell}{ }_k \Gamma_{\# 16}{ }^{\# 10}{ }_h \Gamma_j{ }^{\# 16}{ }_p-\Gamma_{\# 10}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 10}{ }_{p, h}+\Gamma_{\# 10}{ }^{\# 15}{ }_h \Gamma_{\# 15}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 10}{ }_p-\Gamma_{\# 10}{ }^{\# 15}{ }_k \Gamma_{\# 15}{ }_h{ }_h \Gamma_j{ }^{\# 10}{ }_p \\
+      & -\Gamma_{\# 10}{ }^{\ell}{ }_{k, h} \Gamma_j{ }^{\# 10}{ }_p+\Gamma_h{ }^{\# 9}{ }_p \Gamma_j{ }^{\ell}{ }_{k, \# 9}-\Gamma_{\# 9}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 9}{ }_{k, h}-\Gamma_{\# 1}{ }_h{ }_h \Gamma_{\# 7}{ }^{\# 1}{ }_p \Gamma_j{ }^{\# 7}{ }_k \\
+      & -\Gamma_{\# 19}{ }^{\ell}{ }_h \Gamma_{\# 27}{ }^{\# 19}{ }_p \Gamma_j{ }^{\# 27}{ }_k+\Gamma_{\# 25}{ }_{h, p}{ }^{\ell} \Gamma_j{ }^{\# 25}{ }_k+\Gamma_{\# 19}{ }_p{ }_p \Gamma_{\# 23}{ }^{\# 19}{ }_h \Gamma_j{ }^{\# 23}{ }_k-\Gamma_{\# 20}{ }_{p, h}{ }^{\ell} \Gamma_j{ }^{\# 20}{ }_k \\
+      & +\Gamma_{\# 10}{ }^{\ell}{ }_p \Gamma_{\# 13}{ }^{\# 10}{ }_h \Gamma_j \# 13{ }_k+\Gamma_{\# 11}{ }_h{ }_h \Gamma_j \# 11{ }_{k, p}+\Gamma_{\# 10}{ }_p \Gamma_j \Gamma^{\# 10}{ }_{k, h}-\Gamma_{\# 10}{ }^{\# 12}{ }_h \Gamma_{\# 12}{ }_p{ }_p \Gamma_j{ }^{\# 10}{ }_k \\
+      & +\Gamma_{\# 10}{ }^{\# 12}{ }_p \Gamma_{\# 12}{ }_h{ }_h \Gamma_j{ }^{\# 10}{ }_k+\Gamma_{\# 10}{ }^{\ell}{ }_{p, h} \Gamma_j{ }^{\# 10}{ }_k-\Gamma_{\# 1}{ }_h{ }_h \Gamma_j{ }^{\# 1}{ }_{k, p}+\Gamma_{\# 1}{ }_{\# 6} \Gamma_h{ }^{\# 6}{ }_p \Gamma_j{ }^{\# 1}{ }_k \\
+      & -\Gamma_{\# 1}{ }^{\# 6}{ }_h \Gamma_{\# 6}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 1}{ }_k+\Gamma_{\# 1}{ }^{\# 6}{ }_p \Gamma_{\# 6}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 1}{ }_k-\Gamma_{\# 1}{ }^{\ell}{ }_{h, p} \Gamma_j{ }^{\# 1}{ }_k+\Gamma_{\# 1}{ }^{\ell}{ }_k \Gamma_{\# 4}{ }^{\# 1}{ }_p \Gamma_j{ }^{\# 4}{ }_h \\
+      & -\Gamma_{\# 25}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 25}{ }_{h, p}-\Gamma_{\# 19}{ }^{\ell}{ }_p \Gamma_{\# 23}{ }^{\# 19}{ }_k \Gamma_j{ }^{\# 23}{ }_h+\Gamma_{\# 2}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 2}{ }_{h, k}-\Gamma_{\# 19}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 19}{ }_{h, k} \\
+      & +\Gamma_{\# 19}{ }^{\# 22}{ }_k \Gamma_{\# 22}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 19}{ }_h-\Gamma_{\# 19}{ }^{\# 22}{ }_p \Gamma_{\# 22}{ }_k{ }_k \Gamma_j{ }^{\# 19}{ }_h-\Gamma_{\# 19}{ }^{\ell}{ }_{p, k} \Gamma_j{ }^{\# 19}{ }_h+\Gamma_{\# 18}{ }^{\ell}{ }_{p, k} \Gamma_j{ }^{\# 18}{ }_h \\
+      & +\Gamma_{\# 10}{ }^{\ell}{ }_k \Gamma_{\# 16}{ }^{\# 10}{ }_p \Gamma_j{ }^{\# 16}{ }_h-\Gamma_{\# 10}{ }^{\ell}{ }_p \Gamma_{\# 13}{ }^{\# 10}{ }_k \Gamma_j{ }^{\# 13}{ }_h-\Gamma_{\# 11}{ }_{k, p}{ }^{\ell} \Gamma_j{ }^{\# 11}{ }_h+\Gamma_{\# 1}{ }_k{ }_k \Gamma_j{ }^{\# 1}{ }_{h, p} \\
+      & +\Gamma_{\# 1}{ }^{\# 3}{ }_k \Gamma_{\# 3}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 1}{ }_h-\Gamma_{\# 1}{ }^{\# 3}{ }_p \Gamma_{\# 3}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 1}{ }_h+\Gamma_{\# 1}{ }^{\ell}{ }_{k, p} \Gamma_j{ }^{\# 1}{ }_h-\Gamma_{\# 1}{ }_k{ }_k \Gamma_h{ }^{\# 4}{ }_p \Gamma_j{ }^{\# 1}{ }_{\# 4} \\
+      & +\Gamma_h{ }^{\# 25}{ }_k \Gamma_j{ }^{\ell}{ }^{25, p}+\Gamma_{\# 19}{ }_p{ }_p \Gamma_h{ }^{\# 23}{ }_k \Gamma_j{ }^{\# 19}{ }_{\# 23}-\Gamma_h{ }^{\# 2}{ }_p \Gamma_j{ }^{\ell}{ }_{\# 2, k}
+    \end{aligned}
 \end{equation*}
-%
-The procedure of expressing a polynomial as a composition of polynomials of lower degrees is termed polynomial decomposition. In the subsequent prompts, differentiation is performed using the prompt command, while the int command at the fourth prompt handles integration. Notably, the output of the int operator does not include the arbitrary constant of integration. Moving to the fifth prompt, a first-order differential equation is assigned to u7 (\Maple{} displays the derivative of an unknown function y(x) using the partial derivative symbol instead of ordinary derivative notation.), followed by a request to \Maple{} to solve the differential equation at the sixth prompt. The presence of the symbol C1 in the solution denotes \Maple{}'s inclusion of an arbitrary constant (\Maple{} includes an arbitrary constant in the solution of a differential equation but does not include the arbitrary constant for an anti-differentiation. Inconsistencies of this sort are commonplace with computer algebra software.).
+  %
+  This sum contains 72 terms, each of which is a product of 2 or 3 Christoffel symbols, for a total of 180 Christoffel symbols. However, upon simplifying this expression by consistently renaming the dummy indices, the simple result of zero is obtained, which verifies the identity.
+\end{example}
 
-The term computer algebra language or symbolic programming language is used to denote the programming language utilized to interact with a \ac{CAS}. Most computer algebra systems offer both a programming mode and an interactive mode (as illustrated in \figurename{}s~\ref{chap2:fig:maple_example1} and~\ref{chap2:fig:maple_example2}). In the programming mode, mathematical operators like factor and simplify are combined with standard programming constructs such as assignment statements, loops, conditional statements, and subprograms to develop programs capable of solving more complex mathematical problems.
+\subsection{Mitigation Strategies}
 
-To illustrate this concept, let us examine the task of determining the equation for the tangent line to the curve $y = f(x) = x^2 + 5x + 6$ at the point $x = 2$. Initially, we derive a general formula for the slope through differentiation. Subsequently, we substitute $x = 2$ into this expression to obtain the slope at that specific point, $m = \frac{dy}{dx}(2) = 2(2) + 5 = 9$. Using the point-slope form for a line, the equation for the tangent line is derived as $y = m(x - 2) + f(2) = 9(x - 2) + f(2) = 9x + 2 + 6 = 9x + 8$. The final formula is obtained by expanding the right side of this last equation.
-
-In \figurename~\ref{chap2:fig:maple_example3}, we present a generalized procedure, scripted in the \Maple{} computer algebra language, which replicates these computations. This procedure is designed to calculate the formula for the tangent line of any expression $f$ at the point $x = a$. Line 4 employs the operator diff for differentiation, while line 5 utilizes the operator subs for substitution. Additionally, the expand operator in line 6 is incorporated to streamline the output. Once this procedure is inputted into the \Maple{} system, it can be called upon from the system's interactive mode (refer to \figurename~\ref{chap2:fig:maple_example4}).
-
-\subsection{Commercial Computer Algebra Systems}
-
-Over the past 15 years, we have witnessed the emergence and widespread dissemination of several large-scale (yet user-friendly) computer algebra systems. Among the most notable are:
+Although memory space, rather than time, is the main factor limiting the use of computer algebra, symbolic operations will obviously take considerably longer time than their numerical counterparts. It should be borne in mind that, in the case of symbolic manipulations, the execution time is strongly dependent, once again, on the degree of complexity and size of the input. As mentioned earlier, the production of large expressions during the computation in the form of inherent but especially as intermediate expression swell is, as stated in \citet{noor1979computerized} a serious problem in symbolic computation and may be its ultimate limitation. There, it was anticipated that future symbolic manipulation systems would automatically carry out remedial actions to alleviate this problem such as
 %
 \begin{itemize}
-  \item \Axiom{}: A comprehensive \ac{CAS} initially developed at IBM under the moniker Scratchpad. Further details about \Axiom{} can be found in~\citet{jenks1992axiom}.
-  \item \Derive{}: A compact \ac{CAS} originally crafted by Soft Warehouse Inc. for personal computer use. \Derive{} has also been integrated into Texas Instruments Inc.'s TI-89 and TI-92 handheld calculators. More information about \Derive{} is available on the website \url{http://www.derive.com}.
-  \item \Macsyma{}: A robust \ac{CAS} initially conceived at M.I.T. during the late 1960s and 1970s. Various versions of the original \Macsyma{} system are currently in circulation. Additional insights into \Macsyma{} can be gleaned from~\citet{wester1999computer}.
-  \item \Maple{}: A highly sophisticated \ac{CAS} initially developed by the Symbolic Computation Group at the University of Waterloo (Canada) and presently distributed by Waterloo \Maple{} Inc. For more information about \Maple{}, consult~\citet{heck2003introduction} or visit the website \url{http://www.maplesoft.com}.
-  \item \Mathematica{}: An advanced \ac{CAS} created by Wolfram Research Inc. Further details about \Mathematica{} are provided in~\citet{wolfram2003mathematica} or on the website \url{http://www.wolfram.com}.
-  \item \MuPAD{}: A sizable \ac{CAS} developed by the University of Paderborn (Germany) and SciFace Software GmbH \& Co. KG. Refer to~\citet{creutzig2004mupad} or visit the website \url{http://www.mupad.com} for additional information about \MuPAD{}.
-  \item \Reduce{}: One of the earliest computer algebra systems, developed in the late 1960s and 1970s. Further information about \Reduce{} can be found in~\citet{rayna1987reduce} or on the website \url{http://www.uni-koeln.de/redude}.
+  \setlength\itemsep{0em}
+  \item recognition of common sub-expressions in an expression and renaming of them by a single parameter;
+  \item handling more expressions in a factored form rather than in an expanded form;
+  \item deferred expansion of a function or variable in an expression.
 \end{itemize}
 %
-Each of these packages constitutes an integrated mathematics problem-solving system, featuring capabilities for exact symbolic computations (similar to those depicted in \figurename{}s~\ref{chap2:fig:maple_example1}, \ref{chap2:fig:maple_example2}, and~\ref{chap2:fig:maple_example3}), as well as some capacity for approximate numerical solutions of mathematical problems and high-quality graphics. The examples presented in this book primarily reference the computer algebra functionalities of \Maple{}, \Mathematica{}, and \MuPAD{} systems, given their wide availability and support for a programming style that closely aligns with the approach utilized here.
+On the other hand, it is interesting that, while \citet{korncoff1979symbolic} also recognizes this problem by stating that special problem formulation techniques will have to be adopted in light of symbolic manipulation. \citeauthor{korncoff1979symbolic} place the onus of its solution (or, at least, alleviation) on the user rather than the system, saying that as the use of symbolic processors increases, users will have to acquire the skills and insight required to formulate problems to best optimize the function of a particular processor. Up to now, the problem of expression swell has not yet been solved consistently. However, as we will see in the next section, some strategies have been introduced recently to mitigate the problem.
 
-\subsection{Mathematical Knowledge in Computer Algebra Systems}
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-Computer algebra systems possess the capability to execute precise symbolic computations across various mathematical domains. Some of these capabilities include:
+\section{Hierarchical Representation}
+
+To mitigate the expression swell, one may use hierarchical representation techniques~\cite{carette2006linear, zhou2006hierarchical}.
+%
+\begin{definition}[Hierarchical Representation~\cite{zhou2007symbolic}]
+  A hierarchical representation over a generic domain $\mathbb{K}$ and a set of $n$ independent variables $\{x_1, \dots, x_n\}$ is an ordered list $[v_1, v_2, \dots, v_m]$ of $m$ symbols, together with an associated list $[d_1, d_2, \dots, d_m]$ of definitions of the symbols. For each $v_i$, with $i \geq 1$, the definition $d_i$ has the form $d_i = f_i(\sigma_{i,1}, \sigma_{i,2}, \dots, \sigma_{i,k_i})$ where $f_i \in \mathbb{K}[\sigma_{i,1}, \sigma_{i,2}, \dots, \sigma_{i,k_i}]$, and for each $\sigma_{i,j}$, is either a symbol or in $[v_1, v_2, \dots, v_m]$ or an expression in the independent variables.
+\end{definition}
+%
+Hence, the main idea behind this hierarchical representation tool is to \emph{veil} complicated expressions from the user by using auxiliary variables called \emph{veil variables} $[v_1, v_2, \dots, v_m]$, and to \emph{unveil} them by reapply their definitions $[v_1 = d_1, v_2 = d_2, \dots, v_m = d_m]$ only when it is strictly necessary. In other words, the veil variables are used to represent the complicated expressions in a compact form, while the actual size of the expressions is hidden in the veil variables.
+
+Despite the simplicity of the idea, the implementation of the hierarchical representation is not straightforward. The main difficulty is to choose the right moment to veil and unveil the veil variables. Indeed, the user must decide when to do it by experience, and this decision has neither theoretical background nor specific rules to follow. As a rule of thumb, the expression veiling should occur only when they become just too large for further calculations. As a result, a metric of expression complexity and size must be introduced to choose the right moment to veil and unveil the veil variables.
+
+\subsection{Expression Complexity Metric}
+
+Choosing the complexity and size boundaries between intermediate expressions appropriately is of utmost importance in order not to produce too much expression swelling, but also not to have too many veiling levels. Therefore, a metric for measuring expression proneness to swell must be introduced first. It is important to note that the concepts of expression complexity and size are not synonymous, yet, they are both closely related to the expression swell phenomenon. For these reasons, more than one measure to quantify the complexity and size of an expression could be given.
+
+There exist two main metrics to measure the complexity and size of an expression, each with its own advantages and disadvantages.
 %
 \begin{itemize}
-  \item \textbf{Arithmetic:} Performing unlimited precision rational number arithmetic, complex (rational number) arithmetic, transforming number bases, interval arithmetic, modulo arithmetic, integer operations (such as greatest common divisors, least common multiples, prime factorization), and combinatorial functions.
-  \item \textbf{Algebraic manipulation:} Simplification, expansion, factorization, and substitution operations.
-  \item \textbf{Polynomial operations:} Conducting structural operations on polynomials (such as determining degree and extracting coefficients), polynomial division, finding greatest common divisors, factorization, calculating resultants, polynomial decomposition, and simplification with respect to side relations.
-  \item \textbf{Equation solving:} Handling polynomial equations, some non-linear equations, systems of linear equations, systems of polynomial equations, and recurrence relations.
-  \item \textbf{Trigonometry:} Performing trigonometric expansion and reduction, and verifying identities.
-  \item \textbf{Calculus:} Computing derivatives, antiderivatives, definite integrals, limits, Taylor series, manipulating power series, summing series, and executing operations involving special functions of mathematical physics.
-  \item \textbf{Differential equations:} Solving ordinary differential equations, systems of differential equations, series solutions, solutions using Laplace transforms, and some partial differential equations.
-  \item \textbf{Advanced algebra:} Manipulating algebraic numbers, exploring group theory, and investigating Galois groups.
-  \item \textbf{Linear algebra and related topics:} Conducting matrix operations, and performing vector and tensor analysis.
-  \item \textbf{Code generation:} Translating formulas into conventional programming languages like FORTRAN and C, as well as mathematics word processing languages like LATEX.
+  \setlength\itemsep{0em}
+  \item The \emph{length} of an expression, in terms of the number of characters used to internally represent the expression. A possible measure of that exploit the length of an expression is the following
+  %
+  \begin{equation*}
+    N_\beta = \begin{cases}
+      \lfloor\log_{\beta}(|n|)\rfloor + 1 & n > 0 \\
+      0 & n = 0
+    \end{cases},
+  \end{equation*}
+  %
+  where $n \in \mathbb{Z}$ is a nonnegative integer representing the expression length, and $\beta \in \mathbb{N}$ is the base in which the length is measured.
+  Notably used in~\cite{carette2006linear, zhou2006hierarchical}, this metric is calculated through the \texttt{length} \Maple{} function. This metric is very helpful in understanding the amount of memory space required to store expressions, as well as the \ac{CPU} effort required to write, process, and read them. However, it does not provide any information about the operands and operations involved in the expression.
+  \item The \emph{computational cost} of an expression, calculated through the \texttt{cost} function of \texttt{codegen} package. This metric is somehow complementary to the previous one, and it provides insights into the computational cost of the expressions. Conversely, it does not provide any information about the amount of memory space required to store an expression.
 \end{itemize}
+%
+It is evident that it is not possible to use both metrics at the same time, as they are neither directly comparable nor convertible to each other. Hence, the choice of the metric to use is strictly dependent on the specific problem to solve.
 
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+Previous works~\cite{carette2006linear, zhou2006hierarchical} on symbolic linear algebra have shown that the hierarchical representation of expressions is applied to matrix factorization tasks, and it has been proven to be effective in mitigating the expression swell problem. Nonetheless, the \LULEM{} package~\cite{carette2006linear}, which implements large expression management strategies in \ac{LU} decomposition, significantly outperforms the \Maple{}'s built-in matrix factorization routines. Instead, throughout this thesis we use the computational cost. As demonstrated in the following example, the latter metric is insensitive to the number of characters used to represent the expression itself and guarantees better control of the final expression size, regardless of the variables' names. Nonetheless, the computational cost also provides us with a better prediction of both the computational effort and growth of the expression size during a given symbolic operation.
 
-\section{Purposes and Applications of Computer Algebra}
+\begin{example}[Expression size and complexity calculation]
+  Let us consider two algebraically equivalent expressions stored in \texttt{expr\_1} and \texttt{expr\_2} variables.
+  %
+  \begin{verbatim}
+> expr_1 := (x^2+y^2)^2/g(x)-z/f(x):
+> expr_2 := (x_tmp^2+y_tmp^2)^2/g_tmp(x)-z_tmp/f_tmp(x):
+  \end{verbatim}
+  %
+  If we respectively calculate the expression complexity calculation through the \texttt{length} and \texttt{codegen:-cost} functions we obtain the following results.
+  %
+  \begin{verbatim}
+> map(length, <expr_1, expr_2>);
+  \end{verbatim}
+  \begin{equation*}
+    \left[\begin{array}{c}
+      53 \\
+      73
+    \end{array}\right]
+  \end{equation*}
+  \begin{verbatim}
+> map(codegen:-cost, <expr_1, expr_2>);
+  \end{verbatim}
+  \begin{equation*}
+    \left[\begin{array}{c}
+      3\mathrm{multiplications} + 2\mathrm{additions} + 2\mathrm{divisions} + 2\mathrm{functions} \\
+      3\mathrm{multiplications} + 2\mathrm{additions} + 2\mathrm{divisions} + 2\mathrm{functions}
+    \end{array}\right]
+  \end{equation*}
+  %
+  As can be seen, the \texttt{length} function is sensitive to the characters that \Maple{} internally uses to represent the expression. Conversely, the \texttt{codegen}'s \texttt{cost} calculates the actual computational complexity of the two expressions and returns the same result.
+\end{example}
 
-\subsection{The Purpose of Applied Mathematics}
+\subsection{Large Expression Management}
 
-In their captivating book ``'{Mathematics Applied to Deterministic Problems in the Natural Sciences}'' (\cite{li1998making}, SIAM, 1988, pages 5-7), Lin and Segel delineate the purpose of applied mathematics as follows:
+There exist specific modules to perform large expression management tasks and help the user handle hierarchical representations~\cite{carette2006linear,zhou2007symbolic}. The \Maple{} module \texttt{LargeExpressions} already does this job. However, from the authors' perspective, it has some minor limitations given by the chosen user interface rather than the underlying idea or the adopted programming technique. For this reason, the authors have reinterpreted it to a new object-oriented \LEM{} package~\cite{lem}. The new version does not differ much from its original version, but it allows more effective control and straightforward use of the veiling variables. The object-oriented feature also allows for the creation of multiple instances of \LEM{} objects, giving the ability to sharply separate veiling variables that could lead to conflicts if improperly used. Here an example is given to briefly illustrate the capabilities of the large expression management technique and, particularly, of the \LEM{} module.
 
-Applied mathematics aims to clarify scientific concepts and depict scientific phenomena using mathematical tools, fostering the advancement of mathematics through such endeavors. They discuss three fundamental aspects of this process concerning the resolution of scientific challenges:
+\begin{example}[Large expression management with \LEM{}~\cite{lem}]
+  Let us consider a random polynomial \texttt{p} generated by the \texttt{randpoly} function.
+  %
+  \begin{verbatim}
+> p := randpoly([x,y,z], degree=3, dense):
+  \end{verbatim}
+  %
+  Then, we create a \LEM{} object instance and set the veiling label to \texttt{X}.
+  %
+  \begin{verbatim}
+> LEM_obj := Object(LEM):
+> LEM_obj:-SetVeilingLabel('X'):
+  \end{verbatim}
+  %
+  The expressions are veiled to get a more compact hierarchical representation.
+  %
+  \begin{verbatim}
+> p_X := collect(p, x, i -> LEM_obj:-Veil(i));
+  \end{verbatim}
+  \begin{equation*}
+    p\_X := -7x^4 + (2,y - 55z - 94)x^3 + X[1]x^2 - X[2]x
+  \end{equation*}
+  %
+  The veiling variables are stored in the \LEM{} object and can be used to unveil the expression whenever necessary.
+  %
+  \begin{verbatim}
+> <LEM_obj:-VeilList()>;
+  \end{verbatim}
+  \begin{equation*}
+    \left[\begin{array}{c}
+      X[1] = 87y^2 - 56yz - 62z^2 + 97z - 73 \\[0.2em]
+      X[2] = 4y^3 + 83y^2z - 62yz^2 + 44z^3 + 10y^2 + 82yz - 71z^2 - 80y + 17z + 75
+    \end{array}\right]
+  \end{equation*}
+  %
+  In addition to the few functions just presented, \LEM{} allows to customize the strategy and parameters used to control the veiling process. For further information on the \LEM{} package refer to the documentation in~\cite{lem}.
+\end{example}
+
+\subsection{Signature of a Hierarchical Representation}
+\label{chap2:sec:signature}
+
+In order to \emph{zero-test} for an expression in hierarchical representations, we use the probabilistic approach of \emph{signatures}~\cite{geddes1992algorithms}, which relies on the \emph{DeMillo-Lipton-Schwarz-Zippel lemma}~\cite{demillo1978probabilistic, schwartz1980fast, zippel1979probabilistic}. Signature functions verify the presence of equivalent expressions within thousands of sub-expressions through hashing techniques~\cite{char1984design, gonnet1984determining, gonnet1986results, monagan1994signature}. In \Maple{}, each expression is stored into the simplification table using its signature as a key. The signature of an expression is itself a hashing function, with one very important feature: equivalent expressions have identical signatures. In other words, the signature of an expression is a unique identifier that is computed from the expression itself.
+
+On the contrary of~\cite{carette2006linear, zhou2007symbolic}, we do not implement the signature function as a separate module. Instead, we employ the \Maple{}'s \texttt{signature} function to exploit the latest improvements in the symbolic computation engine. Given for granted that the signature function is a hashing function, it is possible to compute the define the signature of a hierarchical representation as follows.
+
+\begin{definition}[Signature of a Hierarchical Representation~\cite{zhou2007symbolic}]
+  Let $H$ be a hierarchical representation having $n$ independent variables $\{x_1, \dots, x_n\}$ given by lists of symbols $[v_1, v_2, \dots, v_m]$ and definitions $[d_1, d_2, \dots, d_m]$, where $v_i = f_i(\sigma_{i,1}, \sigma_{i,2}, \dots, \sigma_{i,k_i})$ and $\sigma_{i,j}$ is either an expression in the independent or hierarchy variables. Let $p$ be a prime number. The signature of $v_i$ is defined inductively as follows.
+  %
+  \begin{itemize}
+    \setlength\itemsep{0em}
+    \item We define$ s(v_i) = f_i(\delta_{i,j}, \dots, \delta_{i,k_i}) ~ \text{mod} ~ p$.
+    \item If $\sigma_{i,j}$ an expression in the independent variables only, then $\delta_{i,j} = s(\sigma_{i,j}, p)$.
+    \item If $\sigma_{i,j}$ an expression in $[v_1, v_2, \dots, v_i-1]$, then we necessarily have $i > 1$. Let $h_{i,j} \in [1, \dots, i-1]$ be such that $\sigma_{i,j} = v_{h_{i,j}}$, then $\delta_{i,j} = s(\sigma_{i,j}, p) = s(v_{h_{i,j}}, p)$ which is known by induction assumption.
+  \end{itemize}
+  %
+  The signature of $H$ is defined as $s(H) = [s(v_1), s(v_2), \dots, s(v_m)]$.
+\end{definition}
+
+The signature of the expression is computed before veiling an expression in hierarchical representation. This value then becomes the signature of the veiling symbol. When that symbol itself appears in an expression to be veiled, the signature of the symbol is used in the calculation of the new signature. In particular, it is not necessary to unveil any symbol in order to compute its signature. The main advantages of using such a technique are that it is fast, flexible, and can be adapted to different applications. Moreover, hierarchical representations can often lead to a more compact and elegant output, and the code can solve a wider class of problems and often ``reduces'' intermediate expression swell.
+
+\subsubsection{Extending Signatures Calculation}
+\label{chap2:sec:signature}
+
+Calculating the signature hashing function of any expression in polynomial time is not always possible. In particular, trigonometric functions can present an obstacle to the signature computation. However, it is possible to use ad hoc \emph{coordinate changes} to transform trigonometric expressions into polynomials of which the signature computation can be computed with standard techniques. Nonetheless, the transformation into polynomials may facilitate the expression simplification, hence leading to a more compact and less swelling-prone output. In particular, for many multi-body applications, the only independent variable is time. Depending on the modeling choices, such \ac{DAE} systems may be made of trigonometric polynomials of the angles between different components. As shown in~\cite{zhou2005implicit}, one common method to convert such systems to rational form is the transformation
+%
+\begin{equation}
+  \label{chap2:eq:zhou}
+  \cos(\theta) = x, \quad
+  \sin(\theta) = y,
+  \qquad \text{where} \qquad
+  x^2 + y^2 = 1.
+\end{equation}
+%
+which has the disadvantage that an additional constraint is introduced. Another useful change of coordinates is the Weierstra{\ss} transformation~\cite{cox1994ideals}
+%
+\begin{equation}
+  \label{chap2:eq:weierstrass}
+  \cos(\theta) = \dfrac{1 - u^2}{1 + u^2}, \quad
+  \sin(\theta) = \dfrac{2u}{1 + u^2},
+  \qquad \text{where} \qquad
+  u = \tan\left(\dfrac{\theta}{2}\right).
+\end{equation}
+%
+If one solves for $u$, then the usual problem regarding the choice of an appropriate branch for the inverse arises. Still, this transformation has the advantage that the number of variables remains the same, with no additional introduced constraint. Please notice that the signature computation used in this work is implemented within the \SIG{} sub-package of \LEM{}~\cite{lem}. The \SIG{} sub-package is an improved object-oriented version of the signature computation package present in \LULEM{}~\cite{carette2006linear}.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\section{Symbolic Matrix Factorization}
+\label{chap2:sec:last}
+
+As previously mentioned, matrix factorization is a widely employed technique for addressing linear systems. There are several types of decompositions, each with distinct properties and characteristics. In the context of purely numerical matrices, the practice aligns well with the theoretical foundations of the algorithm. However, when dealing with matrices consisting of either symbolic or mixed symbolic-numeric entries, the situation becomes more intricate~\cite{zhou2007symbolic}. In exact symbolic linear algebra scenarios, the cost of each operation during factorization can vary due to uncontrolled expression swell~\cite{zhou2006hierarchical}. Furthermore, the presence of symbolic values hinders the guarantee of numerical stability. Consequently, a key objective is to derive an output format that retains the symbolic structure of the input matrix and ensures numerical stability. Nonetheless, in symbolic linear algebra, much effort has been devoted to controlling the growth of expression size by developing. Very little work has been done on the guarantee of numerical stability. The main reason is that the techniques that are helpful for the numeric case are often unstable or impractical for the purely symbolic case, ending in the pivoting on small quantities and resulting instability.
+
+In this section, we will focus on the full-pivoting \ac{LU} and \ac{FFLU} decompositions, which are the fundamental techniques that will be used in the next chapters, both for the large linear system solution and \acp{DAE} index reduction. It is important to note that, the \ac{LU} and \ac{FFLU} are preferred in symbolic linear algebra over the QR and \ac{GJ}, as \ac{LU}-based decompositions involve simpler operations, thereby mitigating the issue of expression swell. Additionally, as we will see, employing the \ac{LU} factorization with a minimum degree pivoting strategy proves superior in reducing fill-in and reducing the subsequent numeric and symbolic computational cost.
+
+\subsection{The full-pivoting LU-Based Factorization}
+
+The full-pivoting \ac{LU} and \ac{FFLU} decompositions are widely used algorithms for solving linear systems with minimal computational effort. They are defined as follows.
+%
+\begin{definition}[Full-Pivoting \ac{LU} Decomposition]
+  Given a matrix $\m{A} \in \mathbb{R}^{m \times m}$, with $m \geq n$, the full-pivoting \ac{LU} decomposition is defined as the process of decomposing $\m{A}$ into the product of
+  %
+  \begin{itemize}
+    \setlength{\itemsep}{0.0em}
+    \item a $\m{L} \in \mathbb{R}^{m \times m}$ lower-triangular matrix with all diagonal entries equal to $1$;
+    \item a $\m{U} \in \mathbb{R}^{m \times n}$ upper-triangular matrix;
+    \item a $\m{P} \in \mathbb{R}^{m \times m}$ and a $\m{Q} \in \mathbb{R}^{n \times n}$ matrices for rows and columns permutation, respectively;
+  \end{itemize}
+  %
+  such that $\m{P}\m{A}\m{Q} = \m{L}\m{U}$.
+\end{definition}
+%
+\begin{definition}[Full-Pivoting \ac{FFLU} Decomposition]
+  Given a matrix $\m{A} \in \mathbb{R}^{m \times m}$, with $m \geq n$, the full-pivoting \ac{FFLU} decomposition is defined as the process of decomposing $\m{A}$ into the product of
+  %
+  \begin{itemize}
+    \setlength{\itemsep}{0.0em}
+    \item a lower-triangular matrix $\m{L} \in \mathbb{R}^{m \times m}$ with all diagonal entries equal to $1$;
+    \item a diagonal matrix $\m{D} \in \mathbb{R}^{m \times n}$;
+    \item a upper-triangular matrix $\m{U} \in \mathbb{R}^{m \times n}$;
+    \item a $\m{P} \in \mathbb{R}^{m \times m}$ and a $\m{Q} \in \mathbb{R}^{n \times n}$ matrices for rows and columns permutation, respectively;
+  \end{itemize}
+  %
+  such that $\m{P}\m{D}\m{A}\m{Q} = \m{L}\m{U}$.
+\end{definition}
+%
+Pivoting for \ac{LU} factorization is the process of systematically selecting pivots for Gaussian elimination during the \ac{LU} factorization of a matrix. The \ac{LU} factorization is closely related to Gaussian elimination, which is unstable in its pure form. To guarantee the elimination process goes to completion, we must ensure that there is a non-zero pivot at every step of the elimination process. This is the reason we need to pivot when computing \ac{LU} factorizations. But we can do more with pivoting than just making sure Gaussian elimination is completed. To ensure the numerical stability of the \ac{LU}, we need to consider that the domain of the entries of the matrix $\m{A}$ is not only the real number set but also the more generic symbolic domain. Hence, we need to consider the symbolic stability of the \ac{LU} factorization from two different perspectives: the numerical one and the symbolic one.
+
+\subsubsection{The LU Factorization from a Numerical Computation Standpoint}
+
+From a numerical perspective, we can reduce round-off errors during computation and improve the algorithm \emph{backward stability} by implementing the right pivoting strategy. Depending on the matrix $\m{A}$, some \ac{LU} decompositions may become numerically unstable if either numerically small pivots or symbolically zero pivots are used. Relatively small pivots cause instability because they operate very similar to zeros during Gaussian elimination. Through the process of pivoting, we can greatly reduce this instability by ensuring that we use the largest available entry as our pivot elements. This prevents large factors from appearing in the computed $\m{L}$ and $\m{U}$, which reduces round-off errors during computation. The following example illustrates the importance of pivoting in the \ac{LU} factorization.
+
+\begin{example}[Backward stability of \ac{LU} factorization]
+  When a calculation is undefined because of a division by zero, the same calculation will suffer numerical difficulties when there is a division by a non-zero number that is relatively small.
+  %
+  \begin{equation*}
+    \m{A} = \left[\begin{array}{cc}
+      10^{-20} & 1 \\
+      1 & 2
+    \end{array}\right]
+  \end{equation*}
+  %
+  When computing the factors L and U, the process does not fail in this case because there is no division by zero.
+  %
+  \begin{equation*}
+    \m{L} = \left[\begin{array}{cc}
+      1 & 0 \\
+      10^{20} & 1
+    \end{array}\right], \quad \m{U} = \left[\begin{array}{cc}
+      10^{-20} & 1 \\
+      0 & 2 - 10^{20}
+    \end{array}\right].
+  \end{equation*}
+  %
+  When these computations are performed in floating point arithmetic, the number $2 - 10^{-20}$ is not represented exactly but will be rounded to the nearest floating point number which we will say is $-10^{-20}$. This means that our matrices are now floating point matrices $\m{L}^\prime$ and $\m{U}^\prime$ where
+  %
+  %
+  \begin{equation*}
+    \m{L}^\prime = \left[\begin{array}{cc}
+      1 & 0 \\
+      10^{20} & 1
+    \end{array}\right], \quad \m{U}^\prime = \left[\begin{array}{cc}
+      10^{-20} & 1 \\
+      0 & -10^{20}
+    \end{array}\right].
+  \end{equation*}
+  %
+  The small change we made in $\m{U}$ to get $\m{U}^\prime$ shows its significance when we compute $\m{L}^\prime\m{U}^\prime$
+  %
+  \begin{equation*}
+    \m{L}^\prime\m{U}^\prime = \left[\begin{array}{cc}
+      10^{-20} & 1 \\
+      1 & 0
+    \end{array}\right] \neq \m{A},
+  \end{equation*}
+  %
+  thus when trying to solve a system such as $\m{A}\m{x} = \m{b}$ using the \ac{LU} factorization as the factors $\m{L}^\prime\m{U}^\prime$ suffer from a large error. This is a clear example of how the \ac{LU} factorization can be numerically unstable when small pivots are used.
+\end{example}
+
+After the \ac{LU} factorization of a sparse matrix $\m{A}$, it is common to observe that the joint non-zeroes pattern of $\m{L}$ and $\m{U}$ exhibit either equal or lower sparsity compared to the original non-zero pattern of $\m{A}$. The additional elements in $\m{L}$ and $\m{U}$ are known as the \emph{fill-in}. This phenomenon diminishes performance as the number of non-zero elements in the $\m{L}$ and $\m{U}$ factors is directly related to the number of operations required to solve a linear system using the \ac{LU} factorization. In other words, the more non-zero elements in the $\m{L}$ and $\m{U}$ factors, the more operations are required to solve a linear system. This is especially important when dealing with sparse matrices, where the number of non-zero elements in the $\m{L}$ and $\m{U}$ factors can be significantly reduced by using the right pivoting strategy. Indeed, specific reordering algorithms can be embedded in the pivoting strategy to minimize the fill-in of the factored matrix. These algorithms mainly include \emph{nested dissection}~\cite{george1973nested, lipton1979generalized} and \emph{minimum degree}~\cite{markowitz1957elimination, rose1970symmetric} techniques. The following example illustrates the importance of pivoting in reducing fill-in during the \ac{LU} factorization.
+
+\begin{example}[Fill-in reduction in \ac{LU} factorization]
+  Consider the \code{west0479} sparse unsymmetric matrix $\m{A} \in \mathbb{R}^{479 \times 479}$, having non-zero 1910 entries~\cite{matlab}. The sparsity pattern of the original matrix $\m{A}$ and the $\m{L}$ and $\m{U}$ factors with and without pivoting, using the minimum degree and nested dissection pivoting strategies, are shown in Figure~\ref{chap2:fig:sparsity_patterns}. As illustrated, the \ac{LU} factorization of $\m{A}$ with pivoting has significantly less fill-in than the \ac{LU} factorization of $\m{A}$ without pivoting, thus highlighting the relevance of pivoting in reducing fill-in during the \ac{LU} factorization.
+  %
+  \begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+      \centering
+      \includetikz{./figures/chapter_2/sparsity_original_matrix.tex}
+      \caption{Original sparsity pattern of matrix $\m{A}$ (1887 non-zero elements).}
+    \end{subfigure}%
+    \hfill%
+    \begin{subfigure}[t]{0.45\textwidth}
+      \centering
+      \includetikz{./figures/chapter_2/sparsity_lower_upper.tex}
+      \caption{Original sparsity pattern of non-pivoted $\m{L}$ and $\m{U}$ factors (15918 non-zero elements).}
+    \end{subfigure} \\[1.0em]
+    \begin{subfigure}[t]{0.45\textwidth}
+      \centering
+      \includetikz{./figures/chapter_2/sparsity_minimum_degree.tex}
+      \caption{Sparsity pattern of $\m{L}$ and $\m{U}$ factors using minimum degree pivoting (13316 non-zero elements).}
+    \end{subfigure}%
+    \hfill%
+    \begin{subfigure}[t]{0.45\textwidth}
+      \centering
+      \includetikz{./figures/chapter_2/sparsity_nested_dissection.tex}
+      \caption{Sparsity pattern of $\m{L}$ and $\m{U}$ factors using nested dissection pivoting (12216 non-zero elements).}
+    \end{subfigure}
+    \caption{Sparsity patterns of the original \code{west0479} matrix $\m{A} \in \mathbb{R}^{479 \times 479}$ and the $\m{L}$ and $\m{U}$ factors with and without pivoting, using the minimum degree and nested dissection pivoting strategies.}
+    \label{chap2:fig:sparsity_patterns}
+  \end{figure}
+\end{example}
+
+\subsubsection{The LU Factorization from a Symbolic Computation Standpoint}
+
+From a symbolic computation standpoint, \ie{}, when the entries of the matrix $\m{A}$ are not only real numbers but also symbolic expressions, the above considerations are not sufficient anymore. Indeed, in exact linear algebra, the cost of each operation during factorization can differ either for the fact that the expression size is not known a priori or for the uncontrolled expression swell~\cite{zhou2006hierarchical}. Moreover, numerical stability is not guaranteed due to the presence of undefined values. Therefore, an important goal is to obtain an output format that both maintains the symbolic structure of the input matrix and is also stable when numerically evaluated.
+
+Designing a pivoting strategy that is both numerically stable and symbolically viable in terms of expression growth is a challenging task. In this context, the main issue is that the choice of the pivot is not only related to the degrees of the matrix entries but also to the actual complexity of the expressions. Starting from the fill-in reduction, the minimum degree algorithm is preferred due to its ease of implementation. Conversely, the nested dissection is not yet considered as it involves working on the system's graph to identify graph separators, which is no easy task in the symbolic case. Secondly, the expression swell must be addressed both in terms of preventing the growth of the expression size and in terms of ensuring that the output symbolic code generated by the factorization is also numerically stable. The prevention of expression swell is achieved by the utilization of hierarchical representations with the aid of the \LEM{} package, which employs the computational cost metric to control the expression size. The numerical stability of the symbolic code is ensured by choosing pivots that are both good in terms of their degrees and their actual computation complexity.
+
+It is important to note that the expression may inevitably grow during the factorization process, thereby hindering the simplification of the expressions. This issue is mitigated by the \emph{zero-testing} capabilities of the previously presented signature functions, which are used to verify the presence of null expressions without the need for simplification. The zero-testing is a crucial detail in symbolic pivoting as it strongly improves the numerical stability as allows the detection of null expressions in a very efficient way. Other than the zero-testing, the \emph{Hybrid symbolic-numerical} or \emph{static pivoting approach} is also employed to validate the stability of symbolic code through random numerical evaluations. This approach may be computationally less efficient compared to the former method, but it yields satisfactory results. In other words, the ``choice of pivots is numerically good at most numerical specializations'' as emphasized in~\cite{giesbrecht2014symbolic}. However, signature-based zero-testing is preferred as it is a proven and effective technique in previous successful symbolic linear algebra works~\cite{carette2006linear, zhou2007symbolic}. It is worth noting that, to the authors' knowledge, there is still no well-established rule for determining whether a \emph{generic} expression is ``likely'' null. For this reason, this topic is still an open question.
+
+\subsection{An Improved Symbolic Pivoting Strategy}
+
+We have shown that a crucial detail of any \ac{LU}-based decomposition, either numerical or symbolic, is the pivoting strategy. This strategy hinges on two main considerations: the degrees of the elements within the matrix and the actual complexity of the expressions. From an operational standpoint, the pivoting process starts by arranging the elements in the matrix in descending order of their degrees. Then, the pivot of the least complexity is chosen. Sometimes these two features are conflicting. In such cases, the prioritization of the pivot with the lowest degree is preferred. It is important to notice that pivots consisting of numerical values take precedence over those with symbolic values, primarily due to their inherent minimum expression complexity. Throughout the pivoting process, the utilization of signatures is also employed whenever possible to confirm the presence of null expressions without the need for simplification. To summarize, the main steps of the pivoting strategy are the following.
 %
 \begin{enumerate}
-  \item[(\emph{i}).] Formulating scientific problems in mathematical terms.
-  \item[(\emph{ii}).] Solving the mathematical problems thus formulated.
-  \item[(\emph{iii}).] Interpreting the solutions and empirically verifying them in scientific contexts.
+  \setlength{\itemsep}{0.0em}
+  \item The degree for each of the system matrix's entries is calculated.
+  \item The pivots are sorted by degree and a permutation is generated.
+  \item The pivots are iterated in the order of the permutation and a candidate pivot is selected at each step.
+  \item The candidate pivot is checked for null expressions with the aid of signatures.
+  \item If the candidate pivot signature is not null, the expression is simplified and their complexity is calculated.
+  \item If the candidate pivot is numeric, its numerical value is calculated, otherwise, it is set to infinity.
+  \item The candidate pivot with the lowest complexity or largest absolute numeric value is selected as the best pivot and returned.
 \end{enumerate}
 %
-Furthermore, they highlight a closely intertwined aspect of this process:
-%
-\begin{enumerate}
-  \item[(\emph{iv}).] Generating scientifically pertinent new mathematics by fostering creation, generalization, abstraction, and axiomatic formulation.
-\end{enumerate}
-%
-In theory, computer algebra can facilitate steps (\emph{i}), (\emph{ii}), and (\emph{iv}) of this process. In practice, however, computer algebra primarily engages in step (\emph{ii}) and plays a comparatively minor role in steps (\emph{i}) and (\emph{iv}).
+A detailed description of the developed symbolic pivoting strategy is presented in Algorithm~\ref{chap2:alg:pivoting_strategy}.
 
-\subsection{Applications of Computer Algebra}
+\begin{algorithm}[htb]
+  \caption{Symbolic Pivoting Strategy.}
+  \label{chap2:alg:pivoting_strategy}
+  \begin{algorithmic}[1]
+    \State \textbf{Require:} A $n \times m$ matrix $\m{A}$.
+    \State \phantom{\textbf{Require:}} The $k$-th pivoting stage.
+    \Procedure{SymbolicPivoting}{$\m{A}$, $k$} \Comment{Symbolic pivoting procedure for the $k$-th pivot}
+    \State $\m{d}^r, \, \m{d}^c \gets \text{ComputeDegrees}(\m{A})$ \Comment{Calculate the row and column degrees of $\m{A}$}
+    \For{$i$ \textbf{from} $k$ \textbf{to} $n$} \Comment{Iterate over the rows}
+      \For{$j$ \textbf{from} $k$ \textbf{to} $m$} \Comment{Iterate over the columns}
+        \State $D_{ij} \gets \infty$ \Comment{Set the combined degree matrix to infinity}
+        \IfThen{$A_{ij} \neq 0$}
+        {$D_{ij} \gets d^r_{i} \, \max(0, \, d^c_j-1) + d^c_j \, \max(0, \, d^r_i-1)$} \Comment{Compute the combined degree}
+      \EndFor
+    \EndFor
+    \State $\mathcal{P} \gets \text{Sort}(\m{D})$ \Comment{Find the permutation that sorts the pivots list by degree cost}
+    \State $q, \, l \gets \, 0, \, 0$ \Comment{Initialize the temporary pivot row and column indices}
+    \State $p, \, p_c, \, p_n \gets \infty, \, \infty, \, \infty$ \Comment{Initialize the temporary pivot value, complexity and numerical value}
+    \For{\textbf{all} $(i, j)$ \textbf{in} $\mathcal{P}$} \Comment{Iterate on the permutation set}
+      \IfThen{$p_c \neq \infty$ \textbf{and} $D_{ij} > D_{ql}$}{\textbf{break}} \Comment{No more good pivots to check}
+      \State $t \gets A_{ij}$ \Comment{Get the pivot value}
+      \IfThen{$\text{Signature}(t) = 0$}{\textbf{continue}} \Comment{Skip the next pivot}
+      \State $t \gets \text{Simplify}(t)$ \Comment{Try to simplify the pivot expression}
+      \State $t_c \gets \text{ExpressionComplexity}(t)$ \Comment{Calculate the computational complexity of the pivot}
+      \State $t_n \gets \infty$ \Comment{Set the default numerical value of the pivot to infinity}
+      \IfThen{$t$ is numeric}{$t_n \gets \max(1, \, \mathrm{abs}(t))$} \Comment{Set the numerical value of the pivot}
+      \If{$t_c < p_c$ \textbf{or} ($t_c = p_c$ \textbf{and} $t_n > p_n$)} \Comment{If the pivot is better than the current one}
+        \State $q, \, l \gets i, \, j$ \Comment{Update the best pivot row and column indices}
+        \State $p, \, p_c, \, p_n \gets t, \, t_c, \, t_n$ \Comment{Update the best pivot value, complexity and numerical value}
+      \EndIf
+    \EndFor \\
+    \Return $p, \, q, \, l$ \Comment{The $k$-th pivot and its position}
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
 
-In the subsequent part of this section, we present four examples showcasing the application of computer algebra software in the problem-solving process. All of these examples focus on solving equations.
+\subsection{Linear Algebra Symbolic Toolbox}
 
-\subsubsection{Solution of a linear system of equations}
-\subsubsection{Solution of cubic polynomial equations}
-\subsubsection{Solution of higher degree polynomial equations}
-\subsubsection{Solution of cubic polynomial equations}
+The considerations just made are the basis of the \LAST{} package~\cite{last}. This package is a \Maple{} toolbox for symbolic linear algebra. It is based on the original works in~\cite{carette2006linear,zhou2008fraction} and offers a set of routines for symbolic full-pivoting \ac{LU}, a \ac{FFLU}, QR decomposition, and \ac{GJ} factorizations. The package \LAST{} is designed to be used in conjunction with the \LEM{} package~\cite{lem} to limit the expression swell.
 
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+An important aspect of \ac{LU}-based decompositions is the pivoting strategy. In the \LAST{} package, the pivoting process is developed to take into account the aforementioned aspects of expression swell and numerical stability. In particular, the pivots are chosen based on the degree of the elements of the system matrix and the actual complexity of the expressions. The elements of the system matrix are sorted in descending order of their degree and the least complex element is chosen as the pivot. Pivots with numeric values are preferred over pivots with symbolic values due to their inherent numerical stability. During the pivoting procedure, whenever possible, signatures are also exploited to verify the presence of null expressions. Here a simple example is given to briefly illustrate the usage of the \LAST{} package.
+
+\begin{example}[Symbolic linear system solving with \LAST{}~\cite{last}]
+  Let us consider a simple linear system of equations in the form $\m{A}\mx = \m{b}$ and initialize them as follows.
+  %
+  \begin{verbatim}
+> A := Matrix(3, symbol='a'):
+> B := Vector(3, symbol='b'):
+  \end{verbatim}
+  %
+  Then we create a \LAST{} object and initialize the built-in \LEM{} object with label \texttt{V}.
+  %
+  \begin{verbatim}
+> LAST_obj := Object(LAST):
+> LAST_obj:-InitLEM('V');
+  \end{verbatim}
+  %
+  To solve the linear system with \LAST{} it is first necessary to perform one of the available decompositions, \emph{i.e.}, \texttt{LU}, \texttt{FFLU}, \texttt{QR}, or \texttt{GJ}. The intermediate results of the decomposition are internally stored in the \LAST{} object and are available on demand. Once the decomposition is performed, the solution of the linear system can be obtained by calling the \texttt{SolveLinearSystem} routine.
+  %
+  \begin{verbatim}
+> LAST_obj:-LU(A):
+> LAST_obj:-SolveLinearSystem(B)^%T;
+  \end{verbatim}
+  \begin{equation*}
+    \left[\begin{array}{ccc}
+      -\dfrac{V_{4}}{a_{1,1}}, &
+      \dfrac{V_{3}a_{1,1}}{a_{2,2}a_{1,1}-a_{2,1}a_{1,2}}, &
+      \dfrac{V_{2}}{V_{1}}
+    \end{array}\right]
+  \end{equation*}
+  %
+  It must be noticed that in this example the size of the system is chosen to be small for the sake of simplicity. In practice, the \LAST{} package is designed to be used with large systems of equations. For further information on the \LAST{} package refer to the documentation in~\cite{last}.
+\end{example}

@@ -3,7 +3,7 @@
 \chapter{Tire Physical Modeling}
 \label{chap4:tire_physical_model}
 
-\subsubsection{Copyright Notice}
+\subsubsection*{Copyright Notice}
 Part of this chapter has been first published in
 %
 \begin{center}
@@ -836,6 +836,7 @@ The tire model presented in this paper is designed to be implemented in a straig
 Instabilities of parabolic carcass tire models are not a comprehensively treated topic, with the only two analyses being found in~\citet{pacejka1971highway} and in~\citet{dehoogh2005implementing}. Although the present model is robust in ordinary and heavy-duty operating ranges, in its development the authors encountered instabilities that have not been addressed nor directly mentioned in the literature and that have been consistently resolved with the strategies described below.
 %
 \begin{enumerate}
+  \setlength{\itemsep}{0.0em}
   \item The first issue is \emph{big carcass deformations} caused by low stiffness or extreme vertical loads, which can result in unrealistic solutions. To address this problem, we saturated the deformation of the tire carcass by properly introducing a bottoming effect.
   \item The second issue is the \emph{transition to full-slide} regime, which can cause significant changes in the Jacobian $\vt{J}_\pt{G}$ and possible oscillations around the solution. However, the adoption of proper nonlinear solvers can avoid this issue.
 \end{enumerate}

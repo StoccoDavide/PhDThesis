@@ -3,7 +3,7 @@
 \chapter{\Acme{}: A Small 3D Geometry Library}
 \label{app1:acme}
 
-\subsubsection{Copyright Notice}
+\subsubsection*{Copyright Notice}
 Part of this chapter has been first published in
 %
 \begin{center}
@@ -59,7 +59,7 @@ Comprehensive documentation is available on the provided website, encompassing b
 \paragraph{Data Types}
 \Acme{} supports a limited number of geometrical entities, carefully chosen to maintain the library's essential nature for efficiency and easy maintenance. The chosen classes specifically describe and manipulate virtual ground surfaces and tires. While the library is intentionally kept minimal, it is extensible according to the needs of end-users. The geometric entities are systematically organized into classes, each being within the \Acme{} namespace and publicly inheriting from the virtual superclass \Entity{}. The derived classes, representing the homonyms geometric entities are \Point{}, \Line{}, \Ray{}, \Plane{}, \Segment{}, \Triangle{}, \Disk{}, and \Ball{}, are integral components of the library. In \figurename{}~\ref{app1:fig:acme_entities}, a representation of all \Acme{} basic \Entity{} objects is shown. A concise mathematical description of each data type in the software follows.
 
-\begin{figure*}[!ht]
+\begin{figure}[!ht]
   \centering
   \def\svgwidth{9cm}
   \input{./figures/appendix_1/acme_entities_1.pdf_tex} \\[1.0em]
@@ -67,7 +67,7 @@ Comprehensive documentation is available on the provided website, encompassing b
   \input{./figures/appendix_1/acme_entities_2.pdf_tex}
   \caption{Representation of all \Acme{} basic \Entity{} objects.}
   \label{app1:acme_entities}
-\end{figure*}
+\end{figure}
 
 \paragraph{\Point{}}
 In the \ac{3D} Euclidean space, a point represents an exact location. A point $\pt{p} \in \mathbb{R}^3$ is represented by an ordered triplet of coordinates

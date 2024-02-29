@@ -3,10 +3,550 @@
 \chapter{Introduction}
 \label{chap1:introduction}
 
-L'analisi numerica è una disciplina che si occupa dello sviluppo e dell'applicazione di metodi computazionali per risolvere problemi matematici attraverso l'uso di algoritmi e tecniche numeriche. Le sue origini risalgono ai tempi antichi, quando le prime società umane iniziarono a sviluppare metodi approssimati per risolvere equazioni e misurare grandezze. Tuttavia, il vero impulso per l'analisi numerica si è verificato con l'avvento delle macchine calcolatrici e dei computer nel XX secolo.
+%L'analisi numerica è una disciplina che si occupa dello sviluppo e dell'applicazione di metodi computazionali per risolvere problemi matematici attraverso l'uso di algoritmi e tecniche numeriche. Le sue origini risalgono ai tempi antichi, quando le prime società umane iniziarono a sviluppare metodi approssimati per risolvere equazioni e misurare grandezze. Tuttavia, il vero impulso per l'analisi numerica si è verificato con l'avvento delle macchine calcolatrici e dei computer nel XX secolo.
+%
+%Nel corso del tempo, con l'aumentare della complessità dei problemi scientifici e ingegneristici, è diventato evidente che era necessario sviluppare approcci più sofisticati per risolvere equazioni differenziali, integrali e altri problemi matematici. Il lavoro pionieristico di matematici come John von Neumann e Alonzo Church ha contribuito allo sviluppo di metodi numerici fondamentali, tra cui l'approssimazione di funzioni, l'integrazione numerica e la risoluzione di sistemi di equazioni lineari e non lineari.
+%
+%Con l'avanzare della tecnologia informatica, è emersa una nuova branca dell'analisi numerica nota come calcolo simbolico. Questo approccio si distingue per la manipolazione simbolica delle espressioni matematiche, consentendo la rappresentazione e la manipolazione di variabili simboliche anziché numeriche. Il calcolo simbolico ha trovato applicazioni in diverse discipline, dalla matematica pura all'ingegneria, fornendo strumenti potenti per la semplificazione di formule, la derivazione simbolica e la risoluzione simbolica di equazioni.
+%
+%Il calcolo simbolico e l'analisi numerica, dunque, collaborano per offrire soluzioni complete a una vasta gamma di problemi matematici e scientifici. Mentre l'analisi numerica si concentra sull'approccio computazionale e approssimativo, il calcolo simbolico offre precisione attraverso la manipolazione simbolica delle espressioni matematiche, portando a una combinazione sinergica di potenti strumenti per l'indagine matematica e scientifica.
 
-Nel corso del tempo, con l'aumentare della complessità dei problemi scientifici e ingegneristici, è diventato evidente che era necessario sviluppare approcci più sofisticati per risolvere equazioni differenziali, integrali e altri problemi matematici. Il lavoro pionieristico di matematici come John von Neumann e Alonzo Church ha contribuito allo sviluppo di metodi numerici fondamentali, tra cui l'approssimazione di funzioni, l'integrazione numerica e la risoluzione di sistemi di equazioni lineari e non lineari.
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-Con l'avanzare della tecnologia informatica, è emersa una nuova branca dell'analisi numerica nota come calcolo simbolico. Questo approccio si distingue per la manipolazione simbolica delle espressioni matematiche, consentendo la rappresentazione e la manipolazione di variabili simboliche anziché numeriche. Il calcolo simbolico ha trovato applicazioni in diverse discipline, dalla matematica pura all'ingegneria, fornendo strumenti potenti per la semplificazione di formule, la derivazione simbolica e la risoluzione simbolica di equazioni.
+\section{Introduction to Computer Algebra}
+\label{chap1:sec:cas}
 
-Il calcolo simbolico e l'analisi numerica, dunque, collaborano per offrire soluzioni complete a una vasta gamma di problemi matematici e scientifici. Mentre l'analisi numerica si concentra sull'approccio computazionale e approssimativo, il calcolo simbolico offre precisione attraverso la manipolazione simbolica delle espressioni matematiche, portando a una combinazione sinergica di potenti strumenti per l'indagine matematica e scientifica.
+Mathematical scientists employ methodical approaches to model natural phenomena. This involves translating empirical observations and theoretical constructs into mathematical expressions consisting of numerical values, variables, functions, and operators. These expressions are then subjected to established methods of mathematical reasoning, where they are carefully manipulated or transformed to unveil novel insights into the studied phenomenon. This mathematical methodology has been integral to the scientific method in the physical sciences since the era of Galileo and Descartes. Following their legacy, Isaac Newton applied this approach to develop a systematic, quantitative framework for describing the motion of objects. Through mathematical reasoning, Newton uncovered the universal law of gravitation and formulated additional principles governing phenomena such as tidal motion and planetary orbits. Thus, the discipline of mechanics emerged, solidifying the practice of manipulating and transforming mathematical expressions as a fundamental tool for advancing our understanding of the physical universe.
+
+Over the past five decades, computers have evolved into indispensable tools for mathematical exploration, greatly expanding our capacity to tackle complex problems. Mathematicians frequently employ computers to generate numerical and graphical solutions for challenges that surpass manual capabilities. However, computers go beyond simple arithmetic; fundamentally, they operate by manipulating symbols -- represented as binary digits (0s and 1s) -- in accordance with precise rules. Given this capability, it is natural to wonder about the possibility of automating other aspects of mathematical reasoning. While it is unrealistic to expect machines to create foundational axioms like Newton or develop groundbreaking theories from scratch, there's a significant area of mathematical reasoning that lends itself well to algorithmic treatment, and more specifically to the mechanical manipulation and analysis of mathematical expressions. Currently, computer programs routinely handle tasks such as simplifying algebraic expressions, integrating complex functions, accurately solving differential equations, and performing many other operations crucial in applied mathematics, scientific research, and engineering.
+
+This chapter primarily focuses on advancing and applying algorithms and software designed to handle this automatized aspect of mathematical reasoning. The interdisciplinary field at the intersection of mathematics and computer science dedicated to this pursuit is commonly referred to as \emph{computer algebra}, \emph{symbolic manipulation} or \emph{symbolic computation}.
+
+\subsection{Computer Algebra Systems and Languages}
+
+A \ac{CAS}, \ac{SCAS}, or \ac{SMS} is software designed to execute symbolic mathematical operations. In \figurename~\ref{chap1:fig:maple_example}, we illustrate an interactive session with the \Maple{} computer algebra system, developed by \MapleSoft{}. The lines preceded by the prompt (\code{>}) represent user inputs entered at a computer workstation. Commands such as \code{factor}, \code{convert}, \code{compoly}, and \code{simplify} are examples of \emph{mathematical operators} available in the \Maple{} system. Upon receiving these commands, the program executes the corresponding mathematical operations and presents the outcomes using notation similar to conventional mathematical expressions.
+
+\begin{figure}
+  \centering
+  \Fbox{\begin{minipage}{1.0\textwidth}
+    \begin{maplefigure}
+> p1 := x^5 - 4x^4 - 6x^3 - 5x^2 - 4x + 35;
+    \end{maplefigure}
+    \begin{equation*}
+      p1 := x^5 - 4x^4 - 6x^3 - 5x^2 - 4x + 35
+    \end{equation*}
+    \begin{maplefigure}
+> factor(p1);
+    \end{maplefigure}
+    \begin{equation*}
+      (x + 1)(x^2 - 7x + 5)(x^2 + 2x + 7)
+    \end{equation*}
+    \begin{maplefigure}
+> p2 := (x^4+6*x^2+3)/(x^5+x^3+x^2+1);
+    \end{maplefigure}
+    \begin{equation*}
+      p2 := \dfrac{x^4 + 7x^2 + 3}{x^5 + x^3 + x^2 + 1}
+    \end{equation*}
+    \begin{maplefigure}
+> convert(p2, parfrac, x);
+    \end{maplefigure}
+    \begin{equation*}
+      \dfrac{5}{3x+3} + \dfrac{-x-1}{x^2+1} + \dfrac{x+7}{3x^2-3x+3}
+    \end{equation*}
+    \begin{maplefigure}
+> p3 := x^6+9*x^5+30*x^4+5*x^3+35*x^2+4*x+10;
+    \end{maplefigure}
+    \begin{equation*}
+      p3 := x^6 + 9x^5 + 30x^4 + 5x^3 + 35x^2 + 4x + 10
+    \end{equation*}
+    \begin{maplefigure}
+> p4 := 1/(1/a+c/(a*b))+(a*b*c+a*c^2)/(b+c)^2;
+    \end{maplefigure}
+    \begin{equation*}
+      \dfrac{1}{\dfrac{1}{a} + \dfrac{c}{ab}} + \dfrac{abc+ac^2}{(b+c)^2}
+    \end{equation*}
+    \begin{maplefigure}
+> simplify(p4);
+    \end{maplefigure}
+    \begin{equation*}
+      a
+    \end{equation*}
+    \begin{maplefigure}
+> p5 := (sin(x)+sin(3*x)+sin(5*x)+sin(7*x))/(cos(x)+cos(3*x)+cos(5*x)+cos(7*x))-tan(4*x);
+    \end{maplefigure}
+    \begin{equation*}
+      \dfrac{\sin(x) + \sin(3x) + \sin(5x) + \sin(7x)}{\cos(x) + \cos(3x) + \cos(5x) + \cos(7x)} - \tan(4x)
+    \end{equation*}
+    \begin{maplefigure}
+> simplify(p5);
+    \end{maplefigure}
+    \begin{equation*}
+      0
+    \end{equation*}
+  \end{minipage}}
+  \caption{Interactive dialogue with the \Maple{} system that shows some symbolic operations from algebra and trigonometry.}
+  \label{chap1:fig:maple_example1}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \Fbox{\begin{minipage}{1.0\textwidth}
+    \begin{maplefigure}
+> p6 := cos(4*x+3)/(x^2+1);
+    \end{maplefigure}
+    \begin{equation*}
+      p6 := \dfrac{\cos(4x + 3)}{x^2 + 1}
+    \end{equation*}
+    \begin{maplefigure}
+> diff(p6,x);
+    \end{maplefigure}
+    \begin{equation*}
+      -\dfrac{4\sin(4x + 3)}{x^2 + 1} - \dfrac{2x\cos(4x + 3)}{(x^2 + 1)^2}
+    \end{equation*}
+    \begin{maplefigure}
+> p7 := cos(x)/(sin(x)^2+6*sin(x)+4);
+    \end{maplefigure}
+    \begin{equation*}
+      p7 := \dfrac{\cos(x)}{\sin(x)^2 + 6\sin(x) + 4}
+    \end{equation*}
+    \begin{maplefigure}
+> int(p7,x);
+    \end{maplefigure}
+    \begin{equation*}
+      -\dfrac{\sqrt{5}}{5}\text{arctanh}\left(\dfrac{(2\sin(x) + 6)\sqrt{5}}{10}\right)
+    \end{equation*}
+    \begin{maplefigure}
+> p8 := diff(y(x),x) + 3*y(x) = x^2+sin(x);
+    \end{maplefigure}
+    \begin{equation*}
+      \dfrac{\mathrm{d}}{\mathrm{d}x}y(x) + 3y(x) = x^2 + \sin(x)
+    \end{equation*}
+    \begin{maplefigure}
+> dsolve(p8,y(x));
+    \end{maplefigure}
+    \begin{equation*}
+      y(x) = \dfrac{1}{3}x^2 - \dfrac{2}{9}x + \dfrac{2}{27} - \dfrac{\cos(x)}{10} + \dfrac{3\sin(x)}{10} + \mathrm{e}^{-3x}\_C1
+    \end{equation*}
+  \end{minipage}}
+  \caption{An interactive dialogue with the \Maple{} system that shows some symbolic operations from calculus and differential equations.}
+  \label{chap1:fig:maple_example2}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \Fbox{\begin{minipage}{1.0\textwidth}
+    \begin{maplefigure}
+> TangentLine(x^2+5*x+6, x, 2);
+    \end{maplefigure}
+    \begin{equation*}
+      9x + 2
+    \end{equation*}
+  \end{minipage}}
+  \caption{The execution of the \code{TangentLine} procedure in the interactive mode of the \Maple{} system.}
+  \label{chap1:fig:maple_example4}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \Fbox{\begin{minipage}{1.0\textwidth}
+    \begin{maplefigure}
+TangentLine := proc(f, x, a)
+  local m, l;
+  m := subs(x=a,  diff(f, x));
+  l := expand(m*(x-a) + subs(x=a, f));
+  return l;
+end proc:
+    \end{maplefigure}
+  \end{minipage}}
+  \caption{A procedure in the \Maple{} language that obtains a formula for the tangent line.}
+  \label{chap1:fig:maple_example3}
+\end{figure}
+
+In \figurename~\ref{chap1:fig:maple_example1}, the initial two prompts involve assigning a polynomial to a variable, u1, using the ``'\code{:=}'' operator, followed by factoring it into irreducible factors over the rational numbers. (Here, none of the resulting polynomials can be further factored without introducing radicals.) Subsequently, prompts three and four involve inputting a rational expression and determining its partial fraction decomposition. In the subsequent two prompts, \Maple{}'s \code{compoly} command discerns that the polynomial u3 is composite.
+%
+\begin{equation*}
+  u3 = f(g(x)), \qquad f(x) = x + 10 + 8x + 3x, \qquad g(x) = 3x + x
+\end{equation*}
+%
+The procedure of expressing a polynomial as a composition of polynomials of lower degrees is termed polynomial decomposition. In the subsequent prompts, differentiation is performed using the prompt command, while the int command at the fourth prompt handles integration. Notably, the output of the int operator does not include the arbitrary constant of integration. Moving to the fifth prompt, a first-order differential equation is assigned to u7 (\Maple{} displays the derivative of an unknown function $y(x)$ using the partial derivative symbol instead of ordinary derivative notation.), followed by a request to \Maple{} to solve the differential equation at the sixth prompt. The presence of the symbol C1 in the solution denotes \Maple{}'s inclusion of an arbitrary constant (\Maple{} includes an arbitrary constant in the solution of a differential equation but does not include the arbitrary constant for an anti-differentiation. Inconsistencies of this sort are commonplace with computer algebra software.).
+
+The term computer algebra language or symbolic programming language is used to denote the programming language utilized to interact with a \ac{CAS}. Most \acp{CAS} offer both a programming mode and an interactive mode (as illustrated in \figurename{}s~\ref{chap1:fig:maple_example1} and~\ref{chap1:fig:maple_example2}). In the programming mode, mathematical operators like factor and simplify are combined with standard programming constructs such as assignment statements, loops, conditional statements, and subprograms to develop programs capable of solving more complex mathematical problems.
+
+To illustrate this concept, let us examine the task of determining the equation for the tangent line to the curve
+%
+\begin{equation*}
+  y = f(x) = x^2 + 5x + 6
+\end{equation*}
+%
+at the point $x = 2$. Initially, we derive a general formula for the slope through differentiation. Subsequently, we substitute $x = 2$ into this expression to obtain the slope at that specific point,
+%
+\begin{equation*}
+  m = \dfrac{dy}{dx}(2) = 9.
+\end{equation*}
+%
+Using the point-slope form for a line, the equation for the tangent line is derived as
+%
+\begin{equation*}
+  \begin{aligned}
+    \begin{split}
+      y = m(x - 2) + f(2) &= 9(x - 2) + f(2) \\
+      &= 9x + 8.
+    \end{split}
+  \end{aligned}
+\end{equation*}
+%
+The final formula is obtained by expanding the right side of this last equation.
+
+In \figurename~\ref{chap1:fig:maple_example3}, we present a generalized procedure, scripted in the \Maple{} computer algebra language, which replicates these computations. This procedure is designed to calculate the formula for the tangent line of any expression $f$ at the point $x = a$. The procedure employs the operator \code{diff} for differentiation, as well as the operator \code{subs} for substitution. Additionally, the \code{expand} operator is incorporated to streamline the output. Once this procedure is inputted into the \Maple{} system, it can be called upon from the system's interactive mode as in \figurename~\ref{chap1:fig:maple_example4}.
+
+\subsection{Commercial Computer Algebra Systems}
+
+Over the past 15 years, we have witnessed the development and widespread dissemination of several large-scale (yet user-friendly) \acp{CAS}. Among the most notable are:
+%
+\begin{itemize}
+  \setlength{\itemsep}{0.0em}
+  \item \Axiom{}: A comprehensive \ac{CAS} developed during the 1970s at IBM under the name of Scratchpad, later sold to the Numerical Algorithms Group (NAG) in England and became the \Axiom{} commercial system. NAG withdrew it from the market 2001 and released it as free software. Further details about \Axiom{} can be found in~\citet{jenks1992axiom}.
+  \item \Derive{}: A compact \ac{CAS} originally crafted by Soft Warehouse Inc. for personal computer use. \Derive{} has also been integrated into Texas Instruments Inc.'s TI-89 and TI-92 handheld calculators. More information about \Derive{} is available online, yet the software is no longer actively maintained.
+  \item \Macsyma{}: A robust \ac{CAS} initially conceived at the Massachusetts Institute of Technology during the late 1960s and 1970s. Various versions of the original \Macsyma{} system are currently in circulation. Additional insights into \Macsyma{} can be gleaned from~\citet{wester1999computer}.
+  \item \Maple{}: A highly sophisticated \ac{CAS} initially developed by the Symbolic Computation Group at the University of Waterloo (Canada) and presently distributed by Waterloo \Maple{} Inc. For more information about \Maple{}, refer to~\citet{heck2003introduction} or visit the website~\cite{maple}.
+  \item \Mathematica{}: An advanced \ac{CAS} created by Wolfram Research Inc. Further details about \Mathematica{} are provided in~\citet{wolfram2003mathematica} or on the website~\cite{mathematica}.
+  \item \MuPAD{}: A sizable \ac{CAS} developed by the University of Paderborn (Germany) and SciFace Software GmbH \& Co. KG. Refer to~\citet{creutzig2004mupad}. Later versions of \MuPAD{} are distributed by MathWorks Inc. and currently constitute the \Matlab{} \ac{CAS}.
+  \item \Reduce{}: One of the earliest \acp{CAS}, developed in the late 1960s and 1970s. Further information about \Reduce{} can be found in~\citet{rayna1987reduce}.
+\end{itemize}
+%
+Specialized \acp{CAS} are also available for specific mathematical domains, such as the system developed for physics applications from the 1970s onward. These include, but are not limited to:
+%
+\begin{itemize}
+  \setlength{\itemsep}{0.0em}
+  \item \textsc{Trigman}~\cite{jeffreys1972trigman} and \textsc{Trip}~\cite{gastineau2011trip}, developed in 1972 for manipulates Poisson series (trigonometric series with polynomial coefficients);
+  \item \textsc{Schoonschip}~\cite{strubbe1974presentation}, introduced in 1971 for quantum physics applications at \ac{CERN};
+  \item \textsc{Camal}~\cite{bourne1972camal} presented in 1972 for celestial mechanics and the general theory of relativity
+  \item \textsc{Sheep}~\cite{frick1977computer} first released in 1977 for the general theory of relativity.
+\end{itemize}
+%
+Each of these software packages constitutes an integrated mathematics problem-solving system, featuring capabilities for exact symbolic computations (similar to those depicted in \figurename{}s~\ref{chap1:fig:maple_example1}, \ref{chap1:fig:maple_example2}, and~\ref{chap1:fig:maple_example3}), as well as some capacity for approximate numerical solutions of mathematical problems and high-quality graphics. The examples presented in this book primarily reference the computer algebra functionalities of \Maple{}, \Mathematica{}, and \MuPAD{} systems, given their wide availability and support for a programming style that closely aligns with the approach utilized here.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\section{Elementary Concepts of Computer Algebra}
+
+% FIXME: The following text is a placeholder. It needs to be revised and expanded.
+This section introduces a language that serves as a common framework for describing the ideas, instances, and procedures of computer algebra throughout the \ac{CAS} software packages. This language, termed \ac{MPL}, is elucidated in Sections 2.1 and 2.2, where we delineate the structure of an \ac{MPL} mathematical expression and delve into the transformations that occur during the evaluation process. In Section 2.3, we delve into basic \ac{MPL} programs, offering a case study to illustrate these concepts. Finally, in Section 2.4, we explore \ac{MPL} lists and sets, which provide means to represent collections of mathematical expressions.
+
+\subsection{Mathematical Knowledge in Computer Algebra Systems}
+
+\acp{CAS} possess the capability to execute precise symbolic computations across various mathematical domains. Some of these capabilities include:
+%
+\begin{itemize}
+  \setlength{\itemsep}{0.0em}
+  \item \textbf{Arithmetic:} Performing unlimited precision rational number arithmetic, complex (rational number) arithmetic, transforming number bases, interval arithmetic, modulo arithmetic, integer operations (such as greatest common divisors, least common multiples, prime factorization), and combinatorial functions.
+  \item \textbf{Algebraic manipulation:} Simplification, expansion, factorization, and substitution operations.
+  \item \textbf{Polynomial operations:} Conducting structural operations on polynomials (such as determining degree and extracting coefficients), polynomial division, finding greatest common divisors, factorization, calculating resultants, polynomial decomposition, and simplification with respect to side relations.
+  \item \textbf{Equation solving:} Handling polynomial equations, some non-linear equations, systems of linear equations, systems of polynomial equations, and recurrence relations.
+  \item \textbf{Trigonometry:} Performing trigonometric expansion and reduction, and verifying identities.
+  \item \textbf{Calculus:} Computing derivatives, antiderivatives, definite integrals, limits, Taylor series, manipulating power series, summing series, and executing operations involving special functions of mathematical physics.
+  \item \textbf{Differential equations:} Solving ordinary differential equations, systems of differential equations, series solutions, solutions using Laplace transforms, and some partial differential equations.
+  \item \textbf{Advanced algebra:} Manipulating algebraic numbers, exploring group theory, and investigating Galois groups.
+  \item \textbf{Linear algebra and related topics:} Conducting matrix operations, and performing vector and tensor analysis.
+  \item \textbf{Code generation:} Translating formulas into conventional programming languages like FORTRAN and C, as well as mathematics word processing languages like \LaTeX{}.
+\end{itemize}
+
+\subsection{Mathematical Pseudo-Language}
+
+\ac{MPL} serves as a symbolic framework for elucidating concepts, examples, and algorithms of computer algebra. It is worth noting that \ac{MPL} is not an implemented \ac{CAS} language but rather a tool to bridge various \ac{CAS} languages. While similar in spirit to real computer algebra languages, \ac{MPL} adopts a less formal approach, blending mathematical symbolism with English for clarity. Despite its simplicity, \ac{MPL} effectively communicates complex ideas in symbolic computation.
+
+The introduction of \ac{MPL} offers several advantages. Firstly, amidst the multitude of \ac{CAS} systems available, \ac{MPL} provides a neutral ground for discussing symbolic computation concepts without being bound by the specifics of any single language. Additionally, \ac{MPL} facilitates the evaluation and comparison of different \ac{CAS} systems and languages, enabling readers to implement \ac{MPL} concepts in real software alongside their preferred \ac{CAS} systems. This approach not only reinforces understanding but also highlights both similarities and subtle differences between \ac{MPL} and real \ac{CAS} languages.
+
+\subsubsection{Mathematical Expressions}
+
+\ac{MPL} mathematical expressions incorporate the following symbols and operators:
+%
+\begin{itemize}
+  \setlength{\itemsep}{0.0em}
+  \item Integers and fractions, employing infinite precision rational number arithmetic.
+  \item Identifiers, functioning both as programming variables, representing computation results and as mathematical symbols, representing indeterminates (or variables) in mathematical expressions.
+  \item Algebraic operators: $+$, $-$, $*$, $/$, $\pow$ (power), and $!$ (factorial). Notice that the $*$ operator is usually omitted, and raised exponents are used for powers, following ordinary mathematical notation.
+  \item Function forms, used for mathematical functions (\eg{}, $\sin(x)$, $\exp(x)$, $\arctan(x)$), mathematical operators (\eg{}, $\text{expand}(u)$, $\text{factor}(u)$, $\text{Integral}(u,x)$), and undefined functions (\eg{}, $f(x)$, $g(x,y)$).
+  \item Relational operators: $=$, $\neq$, $<$, $\leq$, $>$, and $\geq$, along with logical constants \textbf{true} and \textbf{false}, and logical operators and, or, and not.
+  \item Finite sets of expressions, employing set operations $\cup$, $\cap$, $\sim$ (set difference), and $\in$ (set membership). As per mathematical convention, sets do not contain duplicate elements, and their contents are order-independent (\eg{}, ${a, b} = {b, a}$).
+  \item Finite lists of expressions, represented using brackets $[$ and $]$ (\eg{}, $[1, x, x^2]$). The empty list, containing no expressions, is denoted by $[~]$. Lists may contain duplicate elements, and the order of elements matters (\eg{}, $[a, b] \neq [b, a]$).
+\end{itemize}
+%
+The \ac{MPL} set and list operators, alongside their counterparts in \acp{CAS}, are illustrated in Figure 1.1.
+
+\ac{MPL} mathematical expressions serve two (somewhat overlapping) roles: as program statements, representing computational steps in a program, and as data objects processed by program statements.
+
+\subsubsection{Assignments, Functions, and Procedures}
+
+The \ac{MPL} assignment operator is denoted by a colon followed by an equal sign ($:=$), and an assignment statement takes the form $f:=u$, where $u$ represents a mathematical expression.
+
+A function in \ac{MPL} is defined as $f(x_1, \dots, x_l):=u$, where $x_1, \dots, x_l$ forms a sequence of symbols known as formal parameters, and $u$ is a mathematical expression. \ac{MPL} procedures expand on the function concept to include mathematical operators defined by a sequence of statements. The general format of a \ac{MPL} procedure is outlined in Figure 1.2. Functions and procedures are called using an expression of the form $f(a_1, \dots, a_l) $, where $a_1, \dots, a_l$ constitutes a sequence of mathematical expressions termed actual parameters.
+
+To advocate for a programming approach applicable across all languages, we adhere to the following conventions regarding the utilization of local variables and formal parameters within a procedure:
+%
+\begin{itemize}
+  \setlength{\itemsep}{0.0em}
+  \item Initialized local variable cannot be used as a symbol in a mathematical expression. In scenarios necessitating a local (uninitialized) mathematical symbol, we either pass the symbol through the parameter list or employ a global symbol.
+  \item Formal parameters exclusively serve to transmit data into a procedure and are not employed as local variables or to convey data from a procedure. In cases requiring the return of more than one expression from a procedure, we return a set or list of expressions.
+\end{itemize}
+
+\subsubsection{Decision and Iteration Structures}
+
+\ac{MPL} offers three decision structures: the \textbf{if} structure, the \textbf{if-else} structure, which accommodates two alternatives, and the multi-branch decision structure, enabling a sequence of alternatives.
+
+\ac{MPL} incorporates two iteration structures for the repeated evaluation of a sequence of statements: the \textbf{while} structure and the \textbf{for} structure. Certain procedures in our context may feature \textbf{for} loops that include a Return statement. In such cases, we intend for both the loop and the procedure to terminate upon encountering the Return statement.
+
+\subsection{Automatic Simplification and Expression Structure}
+
+During the evaluation process, \acp{CAS} employ fundamental simplification rules from algebra and trigonometry to streamline expressions and render them in a standardized form. This process is termed automatic simplification. For instance,
+
+\begin{equation*}
+\sqrt{x}+2x+\dfrac{y}{y^2}+z^0+\sin\left(\dfrac{\pi}{4}\right) \rightarrow 3x+y^3+1+\dfrac{2}{2}
+\end{equation*}
+
+where the expression on the right side of the arrow represents the automatically simplified form post-evaluation.
+
+In \ac{MPL} (as in any \ac{CAS}), all expressions within dialogues and computer programs are subject to automatic simplification. This entails that all input operands for mathematical operators undergo automatic simplification before the operators are applied and that the result obtained from evaluating an expression is presented in an automatically simplified form.
+
+\subsubsection{Expression Structure}
+
+Understanding the structure of an expression involves grasping the relationships between the operators and operands constituting the expression. Given that mathematical expressions serve as data objects in computer algebra programming, comprehending this structure is vital.
+
+An expression tree serves as a visual representation of this structure. For instance, the expression $c+d \cdot x \pow 2$ is depicted by the expression tree in Figure 1.4. The operator situated at the root of the tree is termed the main operator of the expression. This term underscores that $c+d \cdot x \pow 2$ is perceived as a sum with two operands: $c$ and $d \cdot x \pow 2$.
+
+\subsubsection{Algebraic Expressions}
+
+Algebraic expressions are crafted using integers, symbols, function forms, and algebraic operators ($+$, $-$, $*$, $/$, $\pow$, and $!$). For instance, $x^2+\cos(x)+f(x,y,z)$ is an algebraic expression, whereas $[a,b,c]$ and $x + y = 2$ are not. During the evaluation process, the structure of these expressions is modified to conform to a form where the algebraic operators adhere to certain properties:
+%
+\begin{itemize}
+  \setlength{\itemsep}{0.0em}
+  \item The operator $+$ is an $n$-ary infix operator with two or more operands, and none of its operands is a sum. Moreover, at most one operand of $+$ is an integer or fraction.
+  \item The operator $*$ is an $n$-ary infix operator with two or more operands, and none of its operands is a product. Additionally, at most one operand of $*$ is an integer or fraction, and when an integer or fraction is an operand of a product, it is the first operand.
+  \item Unary and binary subtraction operators are not present in simplified expressions. Unary differences are expressed as products (\eg{}, $-x$ is represented as $(-1)*x$), and binary differences are represented as sums (\eg{}, $a - b$ is represented as $a+(-1)*b$).
+  \item The binary operator $/$ does not appear in simplified expressions. Quotients are represented either as products (\eg{}, $a/b$ is represented as $a*b^{-1}$), powers (\eg{}, $1/a\pow2$ is represented as $a^{-2}$), or numerical fractions (described below).
+  \item A quotient representing a fraction $c/d$, where $c$ and $d \neq 0$ are integers, is depicted by an expression tree with the symbol \textit{fraction} as the root, $c$ as the first operand, and $d$ as the second operand.
+  \item For $u = v^n$, where $n$ is an integer, the expression $v$ is not an integer, fraction, product, or power (\eg{}, $(x^2)^3 \rightarrow x^6$).
+  \item The operand of $!$ is not a non-negative integer (\eg{}, $3! \rightarrow 6$).
+\end{itemize}
+
+Figure 1.5 displays the expression trees for the expression $-x*y/3$ and its simplified form $((-1)/3)*x*y$. It is noticeable that in the simplified form, the operator $*$ is an $n$-ary operator with three operands, the $-$ is part of the integer $-1$, and the fraction $(-1)/3$ has the main operator \textit{fraction}.
+
+The structure of algebraic expressions is extensively described in~\cite{cohen2002computer, cohen2003omputer}. Non-algebraic expressions encompass relational and logical expressions, lists, and sets. The structure of these expressions in a particular \ac{CAS} can be determined using the primitive operators outlined in Figure 1.6.
+
+\subsubsection{Primitive Operators for Simplified Mathematical Expressions}
+
+\ac{MPL} employs four primitive operators to access the structure of expressions and to construct expressions:
+%
+\begin{itemize}
+  \setlength{\itemsep}{0.0em}
+  \item $\text{Kind}(u)$: This operator returns the type of expression (\eg{}, symbol, integer, fraction, $+$, $*$, $\pow$, $!$, $=$, $<$, $\leq$, $>$, $\geq$, $\neq$, \textbf{and}, \textbf{or}, \textbf{not}, set, list, and function names). For example, $\text{Kind}(m*x+b) \rightarrow +$.
+  \item $\text{Number of operands}(u)$: This operator returns the number of operands of the main operator of $u$. For example, $\text{Number of operands}(a*x+b*x+c) \rightarrow 3$.
+  \item $\text{Operand}(u,i)$: This operator returns the $i$th operand of the main operator of $u$. For example, $\text{Operand}(m*x+b,2) \rightarrow b$.
+  \item $\text{Construct}(f,L)$: Let $f$ be an operator ($+$, $*$, $=$, etc.) or a symbol, and let $L = [a, b, \dots, c]$ be a list of expressions. This operator returns an expression with the main operator $f$ and operands $a$, $b, \dots, c$. For example, $\text{Construct}(+, [a, b, c]) \rightarrow a + b + c$.
+\end{itemize}
+
+The primitive operators in \acp{CAS} are provided in Figure 1.6(a). Although \Mathematica{} has an operator that constructs expressions, \Maple{} and \MuPAD{} do not. However, in both of these languages, the operation can be simulated with a procedure.
+
+\subsubsection{Structure-Based Operators}
+
+A complete sub-expression of an automatically simplified expression $u$ is either the expression $u$ itself or an operand of some operator in $u$. In terms of expression trees, the complete sub-expressions of $u$ are either the expression tree for $u$ or one of its sub-trees. For example, for $a*(1+b+c)$, the expression $1+b+c$ is a complete sub-expression while $1+b$ is not.
+
+The next two \ac{MPL} operators rely solely on the structure of an expression:
+%
+\begin{itemize}
+  \setlength{\itemsep}{0.0em}
+  \item $\text{Free of}(u, t)$: Let $u$ and $t$ (the target) be mathematical expressions. This operator returns \textbf{false} when $t$ is identical to some complete sub-expression of $u$, and otherwise returns \textbf{true}. For example,
+  \begin{equation*}
+    \text{Free of}((a+b)c, a+b) \rightarrow \textbf{false}.
+  \end{equation*}
+  \item $\text{Substitute}(u, t = r)$: Let $u$, $t$, and $r$ be mathematical expressions. This operator forms a new expression with each occurrence of the target expression $t$ in $u$ replaced by the replacement expression $r$. The substitution occurs whenever $t$ is structurally identical to a complete sub-expression of $u$. For example,
+  \begin{equation*}
+    \text{Substitute}((a+b)c, a+b=x) \rightarrow xc.
+  \end{equation*}
+\end{itemize}
+%
+The operators in \acp{CAS}s that closely resemble \ac{MPL}'s structure-based operators are outlined in Figure 1.6(b).
+
+\subsubsection{The Map Operator}
+
+The Map operator offers another method to apply an operator to all operands of the main operator of an expression. Let $u$ be a mathematical expression with $n = \text{Number of operands}(u) \geq 1$, and let $F(x)$ and $G(x,y,\dots,z)$ be operators. The \ac{MPL} Map operator comes in two forms: $\text{Map}(F,u)$ and $\text{Map}(G,u,y,\dots,z)$.
+%
+\begin{itemize}
+  \setlength{\itemsep}{0.0em}
+  \item The statement $\text{Map}(F, u)$ returns a new expression with main operator $\text{Kind}(u)$ and operands
+  \begin{equation*}
+    F(\text{Operand}(u, 1)), \ldots, F (\text{Operand}(u, n)).
+  \end{equation*}
+  \item The statement $\text{Map}(G,u,y,\dots,z)$ yields an expression with main operator $\text{Kind}(u)$ and operands
+  \begin{equation*}
+    G(\text{Operand}(u,1),y,\dots,z), \ldots, G(\text{Operand}(u,n),y,\dots,z).
+  \end{equation*}
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\section{Purposes and Applications of Computer Algebra}
+
+\subsection{The Purpose of Applied Mathematics}
+
+In their influential work ``{Mathematics Applied to Deterministic Problems in the Natural Sciences}'' (\cite{li1998making}, SIAM, 1988, pages 5-7), Lin and Segel delineate the objectives of applied mathematics:
+
+Applied mathematics aims to clarify scientific concepts and depict scientific phenomena using mathematical tools, fostering the advancement of mathematics through such endeavors. They discuss three fundamental aspects of this process concerning the resolution of scientific challenges:
+%
+\begin{enumerate}
+  \setlength{\itemsep}{0.0em}
+  \item Formulating scientific problems in mathematical terms, which involves translating real-world scientific problems into mathematical language, enabling the application of mathematical tools for analysis and solution.
+  \item Solving the mathematical problems thus formulated using appropriate mathematical techniques, ranging from algebraic manipulation to differential equations and numerical methods.
+  \item Interpreting the solutions and empirically verifying them in the context of the original scientific problem and validated through empirical observation or experimentation.
+\end{enumerate}
+%
+The authors of~\cite{li1998making}, also emphasize the interconnected nature of this process:
+%
+\begin{enumerate}
+  \setlength{\itemsep}{0.0em}
+  \item Generating scientifically relevant new mathematics by engaging in the formulation, generalization, abstraction, and axiomatic formulation of mathematical concepts and methods, applied mathematics contributes to the development of new mathematical theories and techniques that are pertinent to scientific inquiry.
+\end{enumerate}
+%
+While \acp{CAS} theoretically have the potential to facilitate steps (1), (2), and (4) of this process, in practice, they primarily focus on step (2), \ie{}, the actual solving of mathematical problems. Their role in steps (1) and (4) is comparatively limited, serving more as tools for computation rather than for the conceptualization or creation of new mathematics.
+
+\subsection{Applications of Computer Algebra}
+
+\ac{CAS} have found widespread application across various domains due to their ability to manipulate mathematical expressions symbolically. In scientific research, \acp{CAS} are invaluable tools for performing complex calculations, solving equations, and verifying mathematical identities, especially in cases where the calculations are too complex or tedious to be performed by hand. In the subsequent part of this section, we present some examples showcasing the application of computer algebra software in the problem-solving process. All of these are simple examples that are only meant to illustrate the capabilities of \acp{CAS}.
+
+\subsubsection{Solution of a Linear System of Equations}
+
+Suppose we have the following system of equations
+%
+\begin{equation*}
+  \begin{bmatrix}
+    a_{11} & a_{12} & a_{13} & a_{14} \\
+    a_{21} & a_{22} & a_{23} & a_{24} \\
+    a_{31} & a_{32} & a_{33} & a_{34} \\
+    a_{41} & a_{42} & a_{43} & a_{44}
+  \end{bmatrix} \begin{bmatrix}
+    x_1 \\ x_2 \\ x_3 \\ x_4
+  \end{bmatrix} = \begin{bmatrix}
+    b_1 \\ b_2 \\ b_3 \\ b_4
+  \end{bmatrix}
+\end{equation*}
+%
+We want to find the symbolic solution for $x$ and $y$. We can use \Maple{} \ac{CAS} to solve this system symbolically.
+
+\begin{mapleinline}
+# Define the system of equations
+> eq1 := 3*x + 2*y = 10;
+> eq2 := 4*x - 5*y = 20;
+
+# Solve the system symbolically
+> sol := solve({eq1, eq2}, {x, y});
+\end{mapleinline}
+
+In this code, we first define the system of equations \texttt{eq1} and \texttt{eq2}. We then use the \texttt{solve} function to find the symbolic solution for $x$ and $y$ and store the symbolic solution in the variable \texttt{sol}.
+
+\subsubsection{Optimization of a Multivariable Function}
+
+Let us consider a more complex example involving a multivariable function. We minimize the Rosenbrock function, which is a commonly used test function for optimization algorithms.
+
+\begin{mapleinline}
+# Define the Rosenbrock function
+> rosenbrock := (x, y) -> (1 - x)^2 + 100 * (y - x^2)^2;
+
+# Use optimization package to minimize the Rosenbrock function
+> sol := Optimization:-Minimize(rosenbrock(x, y), {x = -2 .. 2, y = -1 .. 3});
+\end{mapleinline}
+
+In this example, we define the Rosenbrock function $f(x,y) = (1-x)^2 + 100(y-x^2)^2$, and then use \Maple{}'s optimization function \code{Optimization:-Minimize} to find the minimum value and the corresponding point of $(x,y)$. The result, stored in the variable \texttt{sol}, gives us the minimum value of the function and its corresponding point at which it occurs (the minimum point is $f(x, y) = 0$ at $(x,y) = (1,1)$).
+
+\subsubsection{Solution of Ordinary Differential Equations}
+
+\acp{CAS} can also be used to obtain closed-form solutions of \acp{ODE}. For example, consider the following second-order \ac{ODE} representing a ball bouncing on a flat surface with a coefficient of restitution of $7/10$. The \ac{ODE} is given by
+%
+\begin{equation*}
+  \begin{cases}
+    y^{\prime\prime}(t) = -\dfrac{981}{100} \\[0.1em]
+    y(0) = 5, \quad y^{\prime}(0) = 0 \\[0.1em]
+    \mathrm{WhenEvent}(y(t) = 0, y'(t) = -\dfrac{7}{10}y'(t))
+  \end{cases}
+  \quad \text{with} \qquad t \in [0, 5].
+\end{equation*}
+%
+We can use \Mathematica{} to solve this \ac{ODE} symbolically and obtain the closed-form solution for $y(t)$
+%
+\begin{equation}
+  y(t) = \begin{cases}
+    5-\dfrac{981}{200}t^2 &
+      0\leq t\leq \dfrac{10 \sqrt{\dfrac{10}{109}}}{3} \\[0.1em]
+    \dfrac{3}{200} \left(-327 t^2+34 \sqrt{1090} t-800\right) &
+      \dfrac{10\sqrt{\dfrac{10}{109}}}{3}<t\leq 8 \sqrt{\dfrac{10}{109}} \\[0.1em]
+    \dfrac{3 \left(-1635 t^2+289 \sqrt{1090} t-13520\right)}{1000} &
+      8\sqrt{\dfrac{10}{109}}<t\leq \dfrac{169 \sqrt{\dfrac{2}{545}}}{3} \\[0.1em]
+    \dfrac{-49050 t^2+11169 \sqrt{1090} t-687154}{10000} &
+      \dfrac{169\sqrt{\dfrac{2}{545}}}{3}<t\leq \dfrac{2033}{15 \sqrt{1090}} \\[0.1em]
+    \dfrac{3 \left(-817500 t^2+215305 \sqrt{1090} t-15404041\right)}{500000} &
+      \dfrac{2033}{15\sqrt{1090}}<t\leq \dfrac{7577}{50 \sqrt{1090}} \\[0.1em]
+    \dfrac{3 \left(-81750000 t^2+23571350 \sqrt{1090} t-1849674509\right)}{50000000} &
+      \dfrac{7577}{50 \sqrt{1090}}<t\leq \dfrac{244117}{1500 \sqrt{1090}} \\[0.1em]
+    \dfrac{-24525000000 t^2+7499983500 \sqrt{1090} t-624651217823}{5000000000} &
+      \dfrac{244117}{1500 \sqrt{1090}}<t\leq 5
+    \end{cases}
+\end{equation}
+
+Even more complex \acp{ODE} can be solved using \acp{CAS} for design optimization, control systems, and other engineering applications. For example, \Mathematica{} can find the symbolic solution for a proportional-derivative controller keeping the position of a moving mass $x(t)$ constant through the control input $u(t)$, given by
+%
+\begin{equation}
+  \begin{cases}
+    x^{\prime\prime}(t) + = u(t) \\[0.1em]
+    x(0) = x^{\prime}(0) = 0 \\[0.1em]
+    u(0) = 1 \\[0.1em]
+    \mathrm{WhenEvent}(\mathrm{mod}(t, \tau) = 0, u(t) = (1 - x(t) - x^{\prime}(t)))
+  \end{cases}
+  \quad \text{with} \qquad t \in [0, 15].
+\end{equation}
+%
+The solution for $x(t)$ and $u(t)$ is respectively given by
+%
+\begin{equation}
+  x(t) = \begin{cases}
+    \dfrac{t^2}{2} & 0\leq t\leq 1 \\[0.1em]
+    \dfrac{1}{4} \left(-t^2+6 t-3\right) & 1<t\leq 2 \\[0.1em]
+    -\dfrac{3 t^2}{8}+2 t-\dfrac{5}{4} & 2<t\leq 3 \\[0.1em]
+    \dfrac{1}{16} \left(-t^2+2 t+25\right) & 3<t\leq 4 \\[0.1em]
+    \dfrac{1}{32} \left(5 t^2-52 t+162\right) & 4<t\leq 5 \\[0.1em]
+    \dfrac{1}{64} \left(7 t^2-74 t+249\right) & 5<t\leq 6 \\[0.1em]
+    \dfrac{1}{128} \left(-3 t^2+56 t-114\right) & 6<t\leq 7 \\[0.1em]
+    \dfrac{1}{256} \left(-17 t^2+266 t-767\right) & 7<t\leq 8 \\[0.1em]
+    \dfrac{1}{512} \left(-11 t^2+164 t-62\right) & 8<t\leq 9 \\[0.1em]
+    \dfrac{23 t^2-482 t+3521}{1024} & 9<t\leq 10 \\[0.1em]
+    \dfrac{45 t^2-944 t+6942}{2048} & 10<t\leq 11 \\[0.1em]
+    \dfrac{-t^2+114 t+2873}{4096} & 11<t\leq 12 \\[0.1em]
+    \dfrac{-91 t^2+2364 t-7070}{8192} & 12<t\leq 13 \\[0.1em]
+    \dfrac{-89 t^2+2310 t+1577}{16384} & 13<t\leq 14 \\[0.1em]
+    \dfrac{93 t^2-2968 t+56270}{32768} & 14<t\leq 15
+  \end{cases},
+  \quad \text{and} \quad u(t) = \begin{cases}
+    1 & 0\leq t\leq 1 \\[0.1em]
+    -\dfrac{1}{2} & 1<t\leq 2 \\[0.1em]
+    -\dfrac{3}{4} & 2<t\leq 3 \\[0.1em]
+    -\dfrac{1}{8} & 3<t\leq 4 \\[0.1em]
+    \dfrac{5}{16} & 4<t\leq 5 \\[0.1em]
+    \dfrac{7}{32} & 5<t\leq 6 \\[0.1em]
+    -\dfrac{3}{64} & 6<t\leq 7 \\[0.1em]
+    -\dfrac{17}{128} & 7<t\leq 8 \\[0.1em]
+    -\dfrac{11}{256} & 8<t\leq 9 \\[0.1em]
+    \dfrac{23}{512} & 9<t\leq 10 \\[0.1em]
+    \dfrac{45}{1024} & 10<t\leq 11 \\[0.1em]
+    -\dfrac{1}{2048} & 11<t\leq 12 \\[0.1em]
+    -\dfrac{91}{4096} & 12<t\leq 13 \\[0.1em]
+    -\dfrac{89}{8192} & 13<t\leq 14 \\[0.1em]
+    \dfrac{93}{16384} & 14<t\leq 15
+  \end{cases}.
+\end{equation}
+
+\subsubsection{Solution for Partial Differential Equations}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
