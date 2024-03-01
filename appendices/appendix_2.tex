@@ -379,7 +379,7 @@ The workflow of the algorithm is highly streamlined. It is divided into three ma
 
 The initialization of the \Shell{} object is done by passing a \Shape{} object and the number of ribs $n$ as input parameters. Firstly, the \Shape{} object is used to reconstruct the tire's external shape; then the \Rib{} objects are instantiated by discretizing the tire into $n$ ribs.
 
-\begin{algorithm}
+\begin{breakablealgorithm}
   \caption{Initialization of a \Shell{} object.}
   \label{chap3:alg::shell}
   \begin{algorithmic}[1]
@@ -398,13 +398,13 @@ The initialization of the \Shell{} object is done by passing a \Shape{} object a
       \State \textbf{store} $\sett{S}, \, B, \, F$ \Comment{Store the data in class members}
       \EndFunction
   \end{algorithmic}
-\end{algorithm}
+\end{breakablealgorithm}
 
 \paragraph*{Algorithm~\ref{chap3:alg::mesh}}
 
 The \Mesh{} object is initialized by passing a Road Data Format or Wavefront OBJ extension file containing the triangles' vertices and faces as input. The file is first parsed to instantiate the mesh \TriangleGround{} objects and then used to build the \AabbTree{}, which will later be used to accelerate the intersection process as well as the calculation of contact parameters.
 
-\begin{algorithm}
+\begin{breakablealgorithm}
   \caption{Initialization of a \Mesh{} object.}
   \label{chap3:alg::mesh}
   \begin{algorithmic}[1]
@@ -428,13 +428,13 @@ The \Mesh{} object is initialized by passing a Road Data Format or Wavefront OBJ
       \State \textbf{store} $\sett{M}, \, T$ \Comment{Store the data in class members}
     \EndFunction
   \end{algorithmic}
-\end{algorithm}
+\end{breakablealgorithm}
 
 \paragraph*{Algorithm~\ref{chap3:alg::intersection}}
 
 The contact parameters are calculated by intersecting the \Shell{} object and the \Mesh{} object. This is done by calling the ``setup'' method of the \Shell{} object. Firstly, this method intersects the mesh's \AabbTree{} with the tire's \Aabb{} and returns a list of triangles that are potentially intersecting the tire. Then, the tire ribs are intersected with the triangles and the contact parameters are calculated as described in Section~\ref{chap3:Model}.
 
-\begin{algorithm}
+\begin{breakablealgorithm}
   \caption{Contact parameters calculation.}
   \label{chap3:alg::intersection}
   \begin{algorithmic}[1]
@@ -464,7 +464,7 @@ The contact parameters are calculated by intersecting the \Shell{} object and th
       \State \textbf{return} $A, \, V, \, \pt{P}, \, \et{n}, \, \lambda$ \Comment{The contact parameters}
     \EndFunction
   \end{algorithmic}
-\end{algorithm}
+\end{breakablealgorithm}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 

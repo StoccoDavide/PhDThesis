@@ -51,7 +51,7 @@ As mentioned earlier in the preceding chapter, symbolic computation stands out a
 \section{Expression Swell}
 \label{chap2:sec:expression_swell}
 
-Over the past four decades, \ac{CAS} have increasingly found applications in university teaching and research. The advantages of incorporating \ac{CAS} into teaching methodologies have been extensively documented. For instance, in \citet{stoutemyer1984radical}, general benefits of \ac{CAS} are outlined, while \citet{pavelle1985macsyma} provides numerous examples where \ac{CAS} quickly solves problems that were previously considered complicated or time-consuming to to tackle by hand. However, \citet{mitic1994pitfalls} highlight an essential precondition for the effective and successful \ac{CAS} utilization: users must be aware of potential pitfalls and limitations, across all mathematical proficiency levels. Besides software bugs, the primary source of performance deterioration of \acp{CAS} is the \emph{expression swelling}.
+Over the past four decades, \ac{CAS} have increasingly found applications in university teaching and research. The advantages of incorporating \ac{CAS} into teaching methodologies have been extensively documented. For instance, in \citet{stoutemyer1984radical}, general benefits of \ac{CAS} are outlined, while \citet{pavelle1985macsyma} provides numerous examples where \ac{CAS} quickly solves problems that were previously considered complicated or time-consuming to tackle by hand. However, \citet{mitic1994pitfalls} highlight an essential precondition for the effective and successful \ac{CAS} utilization: users must be aware of potential pitfalls and limitations, across all mathematical proficiency levels. Besides software bugs, the primary source of performance deterioration of \acp{CAS} is the \emph{expression swelling}.
 
 The expression swell is a common phenomenon of exact computations in which the size of numbers and expressions involved in a calculation grows dramatically as the calculation progresses, thereby slowing down the execution. While symbolic calculation software like \Maple{} and \Mathematica{} can handle substantial symbolic expressions, the growth of expression size during manipulation severely degrades the \acp{CAS} performance, resulting in prohibitively long \ac{CPU} times. During symbolic manipulation, it is not uncommon to find computations that are executed just once; once a result is obtained, recalculating it becomes unnecessary. However, the time required to obtain a result is often unknown. Predicting the memory and \ac{CPU} time prerequisites for a given calculation poses challenges since the size of expressions generated during computation is known only after the computation is completed. For these reasons, expression swell consistently poses a challenge, emerging as a major source of \ac{CAS} faults. It manifests in two forms: \emph{inherent} expression swell and \emph{intermediate} expression swell, each of which is discussed in the following sections.
 
@@ -165,7 +165,29 @@ To mitigate the expression swell, one may use hierarchical representation techni
   A hierarchical representation over a generic domain $\mathbb{K}$ and a set of $n$ independent variables $\{x_1, \dots, x_n\}$ is an ordered list $[v_1, v_2, \dots, v_m]$ of $m$ symbols, together with an associated list $[d_1, d_2, \dots, d_m]$ of definitions of the symbols. For each $v_i$, with $i \geq 1$, the definition $d_i$ has the form $d_i = f_i(\sigma_{i,1}, \sigma_{i,2}, \dots, \sigma_{i,k_i})$ where $f_i \in \mathbb{K}[\sigma_{i,1}, \sigma_{i,2}, \dots, \sigma_{i,k_i}]$, and for each $\sigma_{i,j}$, is either a symbol or in $[v_1, v_2, \dots, v_m]$ or an expression in the independent variables.
 \end{definition}
 %
-Hence, the main idea behind this hierarchical representation tool is to \emph{veil} complicated expressions from the user by using auxiliary variables called \emph{veil variables} $[v_1, v_2, \dots, v_m]$, and to \emph{unveil} them by reapply their definitions $[v_1 = d_1, v_2 = d_2, \dots, v_m = d_m]$ only when it is strictly necessary. In other words, the veil variables are used to represent the complicated expressions in a compact form, while the actual size of the expressions is hidden in the veil variables.
+Hence, the main idea behind this hierarchical representation tool is to \emph{veil} complicated expressions from the user by using auxiliary variables called \emph{veil variables} $[v_1, v_2, \dots, v_m]$, and to \emph{unveil} them by reapply their definitions $[v_1 = d_1, v_2 = d_2, \dots, v_m = d_m]$ only when it is strictly necessary. In other words, the veil variables are used to represent the complicated expressions in a compact form, while the actual size of the expressions is hidden in the veil variables. Algorithms~\ref{chap2:alg:veil} and~\ref{chap2:alg:unveil} describe the veiling procedure, which is the core of the hierarchical representation technique.
+
+\begin{breakablealgorithm}
+  \caption{Veil an expression.}
+  \label{chap2:alg:veil}
+  \begin{algorithmic}[1]
+    \State \textbf{Require:} An expression $e$, and the optional expression dependencies $\m{x}$
+    \Procedure{Veil}{$e$} \Comment{Veil an expression}
+    \State $c \gets \mathrm{Normalizer}(e)$ \Comment{Transform $e$ into factored normal form}
+    \If{$\mathrm{ExpressionCost}(e) > m$} \Comment{Check if $c$ complexity is above the threshold $m$}
+      \State \textbf{return} $c$ \Comment{Return the expression in factored normal form}
+    \EndIf
+    \State $i \gets \mathrm{IntegerContent}(e)$ \Comment{Retrive the integer content without sign}
+    \State $s \gets \mathrm{Sign}(c)$ \Comment{Store the symbolic sign of $c$}
+    \If{$si = c$} \Comment{Check if the expression is a constant}
+      \State \textbf{return} $c$ \Comment{Return the expression in factored normal form}
+    \Else
+      \State $v \gets \mathrm{StoreVeil}(sc/i)$ \Comment{Store the veiled expression and return the veiling symbol}
+      \State \textbf{return} $siv(\m{x})$ \Comment{Return the veiled expression with its dependencies}
+    \EndIf
+    \EndProcedure
+  \end{algorithmic}
+\end{breakablealgorithm}
 
 Despite the simplicity of the idea, the implementation of the hierarchical representation is not straightforward. The main difficulty is to choose the right moment to veil and unveil the veil variables. Indeed, the user must decide when to do it by experience, and this decision has neither theoretical background nor specific rules to follow. As a rule of thumb, the expression veiling should occur only when they become just too large for further calculations. As a result, a metric of expression complexity and size must be introduced to choose the right moment to veil and unveil the veil variables.
 
@@ -177,7 +199,7 @@ There exist two main metrics to measure the complexity and size of an expression
 %
 \begin{itemize}
   \setlength\itemsep{0em}
-  \item The \emph{length} of an expression, in terms of the number of characters used to internally represent the expression. A possible measure of that exploit the length of an expression is the following
+  \item The \emph{length} of an expression, in terms of the number of characters used to internally represent the expression. A possible measure that exploits the length of an expression is the following
   %
   \begin{equation*}
     N_\beta = \begin{cases}
@@ -272,7 +294,7 @@ There exist specific modules to perform large expression management tasks and he
 \subsection{Signature of a Hierarchical Representation}
 \label{chap2:sec:signature}
 
-In order to \emph{zero-test} for an expression in hierarchical representations, we use the probabilistic approach of \emph{signatures}~\cite{geddes1992algorithms}, which relies on the \emph{DeMillo-Lipton-Schwarz-Zippel lemma}~\cite{demillo1978probabilistic, schwartz1980fast, zippel1979probabilistic}. Signature functions verify the presence of equivalent expressions within thousands of sub-expressions through hashing techniques~\cite{char1984design, gonnet1984determining, gonnet1986results, monagan1994signature}. In \Maple{}, each expression is stored into the simplification table using its signature as a key. The signature of an expression is itself a hashing function, with one very important feature: equivalent expressions have identical signatures. In other words, the signature of an expression is a unique identifier that is computed from the expression itself.
+In order to \emph{zero-test} for an expression in hierarchical representations, we use the probabilistic approach of \emph{signatures}~\cite{geddes1992algorithms}, which relies on the \emph{DeMillo-Lipton-Schwarz-Zippel lemma}~\cite{demillo1978probabilistic, schwartz1980fast, zippel1979probabilistic}. Signature functions verify the presence of equivalent expressions within thousands of sub-expressions through hashing techniques~\cite{char1984design, gonnet1984determining, gonnet1986results, monagan1994signature}. In \Maple{}, each expression is stored in the simplification table using its signature as a key. The signature of an expression is itself a hashing function, with one very important feature: equivalent expressions have identical signatures. In other words, the signature of an expression is a unique identifier that is computed from the expression itself.
 
 On the contrary of~\cite{carette2006linear, zhou2007symbolic}, we do not implement the signature function as a separate module. Instead, we employ the \Maple{}'s \texttt{signature} function to exploit the latest improvements in the symbolic computation engine. Given for granted that the signature function is a hashing function, it is possible to compute the define the signature of a hierarchical representation as follows.
 
@@ -281,7 +303,7 @@ On the contrary of~\cite{carette2006linear, zhou2007symbolic}, we do not impleme
   %
   \begin{itemize}
     \setlength\itemsep{0em}
-    \item We define$ s(v_i) = f_i(\delta_{i,j}, \dots, \delta_{i,k_i}) ~ \text{mod} ~ p$.
+    \item We define$ s(v_i) = f_i(\delta_{i,j}, \dots, \delta_{i,k_i}) ~ \mathrm{mod} ~ p$.
     \item If $\sigma_{i,j}$ an expression in the independent variables only, then $\delta_{i,j} = s(\sigma_{i,j}, p)$.
     \item If $\sigma_{i,j}$ an expression in $[v_1, v_2, \dots, v_i-1]$, then we necessarily have $i > 1$. Let $h_{i,j} \in [1, \dots, i-1]$ be such that $\sigma_{i,j} = v_{h_{i,j}}$, then $\delta_{i,j} = s(\sigma_{i,j}, p) = s(v_{h_{i,j}}, p)$ which is known by induction assumption.
   \end{itemize}
@@ -330,7 +352,7 @@ In this section, we will focus on the full-pivoting \ac{LU} and \ac{FFLU} decomp
 The full-pivoting \ac{LU} and \ac{FFLU} decompositions are widely used algorithms for solving linear systems with minimal computational effort. They are defined as follows.
 %
 \begin{definition}[Full-Pivoting \ac{LU} Decomposition]
-  Given a matrix $\m{A} \in \mathbb{R}^{m \times m}$, with $m \geq n$, the full-pivoting \ac{LU} decomposition is defined as the process of decomposing $\m{A}$ into the product of
+  Given a matrix $\m{A} \in \mathbb{R}^{m \times n}$, with $m \geq n$, the full-pivoting \ac{LU} decomposition is defined as the process of decomposing $\m{A}$ into the product of
   %
   \begin{itemize}
     \setlength{\itemsep}{0.0em}
@@ -343,7 +365,7 @@ The full-pivoting \ac{LU} and \ac{FFLU} decompositions are widely used algorithm
 \end{definition}
 %
 \begin{definition}[Full-Pivoting \ac{FFLU} Decomposition]
-  Given a matrix $\m{A} \in \mathbb{R}^{m \times m}$, with $m \geq n$, the full-pivoting \ac{FFLU} decomposition is defined as the process of decomposing $\m{A}$ into the product of
+  Given a matrix $\m{A} \in \mathbb{R}^{m \times n}$, with $m \geq n$, the full-pivoting \ac{FFLU} decomposition is defined as the process of decomposing $\m{A}$ into the product of
   %
   \begin{itemize}
     \setlength{\itemsep}{0.0em}
@@ -414,7 +436,7 @@ After the \ac{LU} factorization of a sparse matrix $\m{A}$, it is common to obse
 \begin{example}[Fill-in reduction in \ac{LU} factorization]
   Consider the \code{west0479} sparse unsymmetric matrix $\m{A} \in \mathbb{R}^{479 \times 479}$, having non-zero 1910 entries~\cite{matlab}. The sparsity pattern of the original matrix $\m{A}$ and the $\m{L}$ and $\m{U}$ factors with and without pivoting, using the minimum degree and nested dissection pivoting strategies, are shown in Figure~\ref{chap2:fig:sparsity_patterns}. As illustrated, the \ac{LU} factorization of $\m{A}$ with pivoting has significantly less fill-in than the \ac{LU} factorization of $\m{A}$ without pivoting, thus highlighting the relevance of pivoting in reducing fill-in during the \ac{LU} factorization.
   %
-  \begin{figure}[H]
+  \begin{figure}[!htb] % FIXME should be [H]
     \centering
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
@@ -425,7 +447,7 @@ After the \ac{LU} factorization of a sparse matrix $\m{A}$, it is common to obse
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
       \includetikz{./figures/chapter_2/sparsity_lower_upper.tex}
-      \caption{Original sparsity pattern of non-pivoted $\m{L}$ and $\m{U}$ factors (15918 non-zero elements).}
+      \caption{Sparsity pattern of $\m{L}$ and $\m{U}$ factors using standard pivoting (15918 non-zero elements).}
     \end{subfigure} \\[1.0em]
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
@@ -449,7 +471,134 @@ From a symbolic computation standpoint, \ie{}, when the entries of the matrix $\
 
 Designing a pivoting strategy that is both numerically stable and symbolically viable in terms of expression growth is a challenging task. In this context, the main issue is that the choice of the pivot is not only related to the degrees of the matrix entries but also to the actual complexity of the expressions. Starting from the fill-in reduction, the minimum degree algorithm is preferred due to its ease of implementation. Conversely, the nested dissection is not yet considered as it involves working on the system's graph to identify graph separators, which is no easy task in the symbolic case. Secondly, the expression swell must be addressed both in terms of preventing the growth of the expression size and in terms of ensuring that the output symbolic code generated by the factorization is also numerically stable. The prevention of expression swell is achieved by the utilization of hierarchical representations with the aid of the \LEM{} package, which employs the computational cost metric to control the expression size. The numerical stability of the symbolic code is ensured by choosing pivots that are both good in terms of their degrees and their actual computation complexity.
 
-It is important to note that the expression may inevitably grow during the factorization process, thereby hindering the simplification of the expressions. This issue is mitigated by the \emph{zero-testing} capabilities of the previously presented signature functions, which are used to verify the presence of null expressions without the need for simplification. The zero-testing is a crucial detail in symbolic pivoting as it strongly improves the numerical stability as allows the detection of null expressions in a very efficient way. Other than the zero-testing, the \emph{Hybrid symbolic-numerical} or \emph{static pivoting approach} is also employed to validate the stability of symbolic code through random numerical evaluations. This approach may be computationally less efficient compared to the former method, but it yields satisfactory results. In other words, the ``choice of pivots is numerically good at most numerical specializations'' as emphasized in~\cite{giesbrecht2014symbolic}. However, signature-based zero-testing is preferred as it is a proven and effective technique in previous successful symbolic linear algebra works~\cite{carette2006linear, zhou2007symbolic}. It is worth noting that, to the authors' knowledge, there is still no well-established rule for determining whether a \emph{generic} expression is ``likely'' null. For this reason, this topic is still an open question.
+It is important to note that the expression may inevitably grow during the factorization process, thereby hindering the simplification of the expressions. This issue is mitigated by the \emph{zero-testing} capabilities of the previously presented signature functions, which are used to verify the presence of null expressions without the need for simplification. The zero-testing is a crucial detail in symbolic pivoting as it strongly improves numerical stability allowing for the detection of null expressions in a very efficient way. Other than the zero-testing, the \emph{Hybrid symbolic-numerical} or \emph{static pivoting approach} is also employed to validate the stability of symbolic code through random numerical evaluations. This approach may be computationally less efficient compared to the former method, but it yields satisfactory results. In other words, the ``choice of pivots is numerically good at most numerical specializations'' as emphasized in~\cite{giesbrecht2014symbolic}. However, signature-based zero-testing is preferred as it is a proven and effective technique in previous successful symbolic linear algebra works~\cite{carette2006linear, zhou2007symbolic}. It is worth noting that, to the authors' knowledge, there is still no well-established rule for determining whether a \emph{generic} expression is ``likely'' null. For this reason, this topic is still an open question.
+
+\begin{breakablealgorithm}
+  \caption{Symbolic \ac{LU} Factorization.}
+  \label{chap2:alg:lu}
+  \begin{algorithmic}[1]
+    \State \textbf{Require:} A $m \times n$ matrix $\m{A}$.
+    \Procedure{LU}{$\m{A}, \, k$} \Comment{Symbolic full-pivoting \ac{LU} procedure}
+    \State $\m{M} \gets \m{A}$ \Comment{Initialize the matrix $\m{M}$}
+    \State $rnk \gets \min(m, \, n)$ \Comment{Initialize the rank of $\m{M}$}
+    \For{$k$ \textbf{from} $1$ \textbf{to} $rnk$} \Comment{Perform Gaussian elimination}
+      \State $p, \, q, \, l \gets \mathrm{SymbolicPivoting}(\m{M}, \, k)$ \Comment{Find the best pivot for the $k$-th step}
+      \If{$p = 0$} \Comment{Check for null pivot}
+        \State $rnk \gets k-1$ \Comment{The rank of $\m{M}$ is $k-1$}
+        \State \textbf{break} \Comment{The matrix is singular};
+      \EndIf
+      \State $\m{r}_k, \, \m{c}_k \gets \, q, \, l$ \Comment{Store the pivot row and column indices}
+      \State $\m{M} \gets \mathrm{SwapRows}(\m{M}, \, k, \, q)$ \Comment{Swap the $k$-th and $q$-th rows}
+      \State $\m{M} \gets \mathrm{SwapColumns}(\m{M}, \, k, \, l)$ \Comment{Swap the $k$-th and $l$-th columns}
+      \For{$i$ \textbf{from} $k+1$ \textbf{to} $m$} \Comment{Compute the $k$-th column of $\m{L}$}
+        \State $M_{kk} \gets \mathrm{Veil}(M_{kk})$ \Comment{Veil the $k$-th pivot}
+        \State $M_{ik} \gets \mathrm{Veil}(\mathrm{Normalizer}(M_{ik}/M_{kk}))$ \Comment{Normalize the $k$-th pivot}
+        \For{$j$ \textbf{from} $k+1$ \textbf{to} $n$} \Comment{Compute the $k$-th row of $\m{U}$}
+          \State $M_{ij} \gets \mathrm{Veil}(\mathrm{Normalizer}(M_{ij} - M_{ik}M_{kj}))$ \Comment{Finalize the Schur complement}
+        \EndFor
+      \EndFor
+    \EndFor
+    \State $\m{P}, \, \m{Q} \gets \mathrm{PermutationMatrices}(\m{r}, \, \m{c})$ \Comment{Compute the permutation matrices}
+    \State $\m{L} \gets \mathrm{LowerTriangular}(\m{M})$ \Comment{Extract the lower-triangular part of $\m{M}$}
+    \State $\m{U} \gets \mathrm{UpperTriangular}(\m{M})$ \Comment{Extract the upper-triangular part of $\m{M}$}
+    \State \textbf{return} $\m{L}, \, \m{U}, \, \m{P}, \, \m{Q}, \, \m{r}, \, \m{c}, \, rnk$ \Comment{Return the factors and the rank of $\m{A}$}
+    \EndProcedure
+  \end{algorithmic}
+\end{breakablealgorithm}
+
+\begin{breakablealgorithm}
+  \caption{Solve a square linear system $\m{A}\m{x} = \m{b}$ using the \ac{LU} factorization.}
+  \label{chap2:alg:solve_lu}
+  \begin{algorithmic}[1]
+    \State \textbf{Require:} The \ac{LU} factors $\m{L}$, $\m{U}$, $\m{P}$, $\m{Q}$, and a vector $\m{b}$.
+    \Procedure{SolveLU}{$\m{L}, \, \m{U}, \, \m{P}, \, \m{Q}, \, \m{b}$} \Comment{Solve the linear system $\m{A}\m{x} = \m{b}$}
+    \State $\m{y} \gets \m{P}\m{b}$ \Comment{Apply the permutation matrix $\m{P}$ to the vector $\m{b}$}
+    \State $m, \, n \gets \mathrm{Size}(\m{L})$ \Comment{Get the size of $\m{L}$}
+    \For{$i$ \textbf{from} $2$ \textbf{to} $m$} \Comment{Solve $\m{L}\m{y} = \m{P}\m{b}$}
+      \State $y_i \gets \mathrm{Veil}\left(y_i - \displaystyle\sum_{j=1}^{i-1} L_{ij}y_j \right)$ \Comment{Perform forward substitution}
+    \EndFor
+    \State $x_n \gets \mathrm{Veil}(y_n/U_{nn})$ \Comment{Perform the first backward substitution}
+    \For{$i$ \textbf{from} $n-1$ \textbf{to} $1$} \Comment{Solve $\m{U}\m{x} = \m{y}$}
+      \State $x_i \gets \mathrm{Veil}\left(y_i - {\displaystyle\sum_{j=i+1}^{n}} U_{ij}x_j\right)$ \Comment{Perform backward substitution}
+      \State $x_i \gets \mathrm{Veil}(x_i/U_{ii})$
+    \EndFor
+    \State $\m{x} \gets \m{Q}^\top\m{x}$ \Comment{Apply the permutation matrix $\m{Q}^\top$ to the solution $\m{x}$}
+    \EndProcedure
+  \end{algorithmic}
+\end{breakablealgorithm}
+
+\begin{breakablealgorithm}
+  \caption{Symbolic \ac{FFLU} Factorization.}
+  \label{chap2:alg:fflu}
+  \begin{algorithmic}[1]
+    \State \textbf{Require:} A $m \times n$ matrix $\m{A}$.
+    \Procedure{LU}{$\m{A}, \, k$} \Comment{Symbolic full-pivoting \ac{FFLU} procedure}
+    \State $\m{M} \gets \m{A}$ \Comment{Initialize the matrix $\m{M}$}
+    \State $rnk \gets \min(m, \, n)$ \Comment{Initialize the rank of $\m{M}$}
+    \For{$k$ \textbf{from} $1$ \textbf{to} $rnk$} \Comment{Perform Gaussian elimination}
+      \State $p, \, q, \, l \gets \mathrm{SymbolicPivoting}(\m{M}, \, k)$ \Comment{Find the best pivot for the $k$-th step}
+      \If{$p = 0$} \Comment{Check for null pivot}
+        \State $rnk \gets k-1$ \Comment{The rank of $\m{M}$ is $k-1$}
+        \State \textbf{break} \Comment{The matrix is singular};
+      \EndIf
+      \State $\m{r}_k, \, \m{c}_k \gets \, q, \, l$ \Comment{Store the pivot row and column indices}
+      \State $\m{M} \gets \mathrm{SwapRows}(\m{M}, \, k, \, q)$ \Comment{Swap the $k$-th and $q$-th rows}
+      \State $\m{M} \gets \mathrm{SwapColumns}(\m{M}, \, k, \, l)$ \Comment{Swap the $k$-th and $l$-th columns}
+      \State $\m{D}_{kk} \gets M_{kk}$ \Comment{Veil the $k$-th pivot}
+      \For{$i$ \textbf{from} $k+1$ \textbf{to} $m$} \Comment{Compute the $k$-th column of $\m{L}$}
+        \For{$j$ \textbf{from} $k+1$ \textbf{to} $n$} \Comment{Compute the $k$-th row of $\m{U}$}
+          \State $M_{ij} \gets M_{kk}M_{ij} - M_{ik}M_{kj}$ \Comment{Pertorm the ``division-free'' elimination}
+          \State $M_{ij} \gets \mathrm{Veil}(\mathrm{Simplify}(M_{ij}))$ \Comment{Veil the simplified expression}
+        \EndFor
+      \EndFor
+    \EndFor
+    \State $\m{P}, \, \m{Q} \gets \mathrm{PermutationMatrices}(\m{r}, \, \m{c})$ \Comment{Compute the permutation matrices}
+    \State $\m{L} \gets \mathrm{LowerTriangular}(\m{M})$ \Comment{Extract the lower-triangular part of $\m{M}$}
+    \State $\m{U} \gets \mathrm{UpperTriangular}(\m{M})$ \Comment{Extract the upper-triangular part of $\m{M}$}
+    \State \textbf{return} $\m{L}, \, \m{U}, \, \m{D}, \, \m{P}, \, \m{Q}, \, \m{r}, \, \m{c}, \, rnk$ \Comment{Return the factors and the rank of $\m{A}$}
+    \EndProcedure
+  \end{algorithmic}
+\end{breakablealgorithm}
+
+\begin{breakablealgorithm}
+  \caption{Solve a square linear system $\m{A}\m{x} = \m{b}$ using the \ac{FFLU} factorization.}
+  \label{chap2:alg:solve_fflu}
+  \begin{algorithmic}[1]
+    \State \textbf{Require:} The \ac{FFLU} factors $\m{L}$, $\m{U}$, $\m{D}$, $\m{P}$, $\m{Q}$, and a vector $\m{b}$.
+    \Procedure{SolveFFLU}{$\m{L}, \, \m{U}, \, \m{D}, \, \m{P}, \, \m{Q}, \, \m{b}$} \Comment{Solve the linear system $\m{A}\m{x} = \m{b}$}
+    \State $\m{y} \gets \m{P}\m{b}$ \Comment{Apply the permutation matrix $\m{P}$ to the vector $\m{b}$}
+    \State $m, \, n \gets \mathrm{Size}(\m{L})$ \Comment{Get the size of $\m{L}$}
+    \For{$i$ \textbf{from} $1$ \textbf{to} $m-1$} \Comment{Solve $\m{L}\m{y} = \m{P}\m{b}$}
+      \State $y_i \gets \mathrm{Veil}\left(D_{ii}y_{i} - {\displaystyle\sum_{j=i+1}^{m}} L_{ij}y_j\right)$ \Comment{Perform forward substitution}
+    \EndFor
+    \State $x_n \gets \mathrm{Veil}(y_n/U_{nn})$ \Comment{Perform the first backward substitution}
+    \For{$i$ \textbf{from} $n-1$ \textbf{to} $1$} \Comment{Solve $\m{U}\m{x} = \m{y}$}
+      \State $x_i \gets \mathrm{Veil}\left(y_i - {\displaystyle\sum_{j=i+1}^{n}} U_{ij}x_j\right)$ \Comment{Perform backward substitution}
+      \State $x_i \gets \mathrm{Veil}(x_i/U_{ii})$
+    \EndFor
+    \State $\m{x} \gets \m{Q}^\top\m{x}$ \Comment{Apply the permutation matrix $\m{Q}^\top$ to the solution $\m{x}$}
+    \EndProcedure
+  \end{algorithmic}
+\end{breakablealgorithm}
+
+\begin{breakablealgorithm}
+  \caption{Compute permutation matrices $\m{P}$ and $\m{Q}$.}
+  \label{chap2:alg:permutation_matrices}
+  \begin{algorithmic}[1]
+    \State \textbf{Require:} The pivot row and column indices $\m{r}$ and $\m{c}$.
+    \Procedure{PermutationMatrices}{$\m{r}, \, \m{c}$} \Comment{Compute the permutation matrices}
+    \State $m, \, n \gets \mathrm{Size}(\m{r}), \, \mathrm{Size}(\m{c})$ \Comment{Retrieve the size of the permutation matrices}
+    \State $\m{P}, \, \m{Q} \gets \mathrm{Identity}(m), \, \mathrm{Identity}(n)$ \Comment{Initialize the permutation matrices}
+    \For{$i$ \textbf{from} $1$ \textbf{to} $m$} \Comment{Build the rows permutation matrix}
+      \State $\m{P} \gets \mathrm{SwapRows}(\m{P}, \, i, \, r_i)$ \Comment{Swap the $i$-th and $r_i$-th rows}
+    \EndFor
+    \For{$i$ \textbf{from} $1$ \textbf{to} $n$} \Comment{Build the columns permutation matrix}
+      \State $\m{Q} \gets \mathrm{SwapColumns}(\m{Q}, \, i, \, c_i)$ \Comment{Swap the $i$-th and $c_i$-th columns}
+    \EndFor
+    \State \textbf{return} $\m{P}, \, \m{Q}$ \Comment{Return permutation matrices}
+    \EndProcedure
+  \end{algorithmic}
+\end{breakablealgorithm}
 
 \subsection{An Improved Symbolic Pivoting Strategy}
 
@@ -468,30 +617,30 @@ We have shown that a crucial detail of any \ac{LU}-based decomposition, either n
 %
 A detailed description of the developed symbolic pivoting strategy is presented in Algorithm~\ref{chap2:alg:pivoting_strategy}.
 
-\begin{algorithm}[htb]
-  \caption{Symbolic Pivoting Strategy.}
+\begin{breakablealgorithm}
+  \caption{Symbolic Full-Pivoting Strategy.}
   \label{chap2:alg:pivoting_strategy}
   \begin{algorithmic}[1]
-    \State \textbf{Require:} A $n \times m$ matrix $\m{A}$.
+    \State \textbf{Require:} A $m \times n$ matrix $\m{A}$.
     \State \phantom{\textbf{Require:}} The $k$-th pivoting stage.
     \Procedure{SymbolicPivoting}{$\m{A}$, $k$} \Comment{Symbolic pivoting procedure for the $k$-th pivot}
-    \State $\m{d}^r, \, \m{d}^c \gets \text{ComputeDegrees}(\m{A})$ \Comment{Calculate the row and column degrees of $\m{A}$}
-    \For{$i$ \textbf{from} $k$ \textbf{to} $n$} \Comment{Iterate over the rows}
-      \For{$j$ \textbf{from} $k$ \textbf{to} $m$} \Comment{Iterate over the columns}
+    \State $\m{d}^r, \, \m{d}^c \gets \mathrm{ComputeDegrees}(\m{A})$ \Comment{Calculate the row and column degrees of $\m{A}$}
+    \For{$i$ \textbf{from} $k$ \textbf{to} $m$} \Comment{Iterate over the rows}
+      \For{$j$ \textbf{from} $k$ \textbf{to} $n$} \Comment{Iterate over the columns}
         \State $D_{ij} \gets \infty$ \Comment{Set the combined degree matrix to infinity}
         \IfThen{$A_{ij} \neq 0$}
         {$D_{ij} \gets d^r_{i} \, \max(0, \, d^c_j-1) + d^c_j \, \max(0, \, d^r_i-1)$} \Comment{Compute the combined degree}
       \EndFor
     \EndFor
-    \State $\mathcal{P} \gets \text{Sort}(\m{D})$ \Comment{Find the permutation that sorts the pivots list by degree cost}
+    \State $\mathcal{P} \gets \mathrm{Sort}(\m{D})$ \Comment{Find the permutation that sorts the pivots list by degree cost}
     \State $q, \, l \gets \, 0, \, 0$ \Comment{Initialize the temporary pivot row and column indices}
     \State $p, \, p_c, \, p_n \gets \infty, \, \infty, \, \infty$ \Comment{Initialize the temporary pivot value, complexity and numerical value}
     \For{\textbf{all} $(i, j)$ \textbf{in} $\mathcal{P}$} \Comment{Iterate on the permutation set}
       \IfThen{$p_c \neq \infty$ \textbf{and} $D_{ij} > D_{ql}$}{\textbf{break}} \Comment{No more good pivots to check}
       \State $t \gets A_{ij}$ \Comment{Get the pivot value}
-      \IfThen{$\text{Signature}(t) = 0$}{\textbf{continue}} \Comment{Skip the next pivot}
-      \State $t \gets \text{Simplify}(t)$ \Comment{Try to simplify the pivot expression}
-      \State $t_c \gets \text{ExpressionComplexity}(t)$ \Comment{Calculate the computational complexity of the pivot}
+      \IfThen{$\mathrm{Signature}(t) = 0$}{\textbf{continue}} \Comment{Skip the next pivot}
+      \State $t \gets \mathrm{Simplify}(t)$ \Comment{Try to simplify the pivot expression}
+      \State $t_c \gets \mathrm{ExpressionComplexity}(t)$ \Comment{Calculate the computational complexity of the pivot}
       \State $t_n \gets \infty$ \Comment{Set the default numerical value of the pivot to infinity}
       \IfThen{$t$ is numeric}{$t_n \gets \max(1, \, \mathrm{abs}(t))$} \Comment{Set the numerical value of the pivot}
       \If{$t_c < p_c$ \textbf{or} ($t_c = p_c$ \textbf{and} $t_n > p_n$)} \Comment{If the pivot is better than the current one}
@@ -502,7 +651,29 @@ A detailed description of the developed symbolic pivoting strategy is presented 
     \Return $p, \, q, \, l$ \Comment{The $k$-th pivot and its position}
     \EndProcedure
   \end{algorithmic}
-\end{algorithm}
+\end{breakablealgorithm}
+
+\begin{breakablealgorithm}
+  \caption{Matrix Degrees Computation.}
+  \label{chap2:alg:compute_degrees}
+  \begin{algorithmic}[1]
+    \State \textbf{Require:} A $m \times n$ matrix $\m{A}$.
+    \Procedure{ComputeDegrees}{$\m{A}$} \Comment{Compute the row and column degrees of $\m{A}$}
+    \State $\m{d}^r, \, \m{d}^c \gets \mathrm{ZerosVector}(m), \, \mathrm{ZerosVector}(n)$ \Comment{Initialize degree vectors}
+    \For{$i$ \textbf{from} $1$ \textbf{to} $m$} \Comment{Iterate over the rows}
+      \For{$j$ \textbf{from} $1$ \textbf{to} $n$} \Comment{Iterate over the columns}
+        \IfThen{$A_{ij} \neq 0$}{$d^r_i \gets d^r_i + 1$} \Comment{Increment the row degree}
+      \EndFor
+    \EndFor
+    \For{$j$ \textbf{from} $1$ \textbf{to} $n$} \Comment{Iterate over the columns}
+      \For{$i$ \textbf{from} $1$ \textbf{to} $m$} \Comment{Iterate over the rows}
+        \IfThen{$A_{ij} \neq 0$}{$d^c_j \gets d^c_j + 1$} \Comment{Increment the column degree}
+      \EndFor
+    \EndFor
+    \Return $\m{d}^r, \, \m{d}^c$ \Comment{Return the row and column degrees of $\m{A}$}
+    \EndProcedure
+  \end{algorithmic}
+\end{breakablealgorithm}
 
 \subsection{Linear Algebra Symbolic Toolbox}
 

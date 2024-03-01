@@ -171,7 +171,7 @@ There are plenty of possible tree structures. Some of them are suitable for a mo
 
 The \AabbTree{} implemented in the \Acme{} library is directly derived from the one presented in~\cite{frego2019pointcoloud, bertolazzi2020efficient} and has been extended from the \ac{2D} to the \ac{3D} case. For this extension, the \ac{AABB} tree construction algorithm is modified as in Algorithm~\ref{app1:alg:acme_aabbtree_construction}.
 
-\begin{algorithm}[!ht]
+\begin{breakablealgorithm}
   \caption{Axis-aligned bounding box tree construction procedure.}
   \label{app1:acme_aabbtree_construction}
   \begin{algorithmic}
@@ -211,7 +211,7 @@ The \AabbTree{} implemented in the \Acme{} library is directly derived from the 
       \EndIf
     \EndFunction
   \end{algorithmic}
-\end{algorithm}
+\end{breakablealgorithm}
 
 \subsection{Basic Intersection Algorithms}
 
