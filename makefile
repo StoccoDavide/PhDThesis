@@ -1,6 +1,6 @@
 # Makefile for the thesis
 
-LATEX  = xelatex
+LATEX  = pdflatex
 BIBTEX = biber
 SOURCE = main
 FLAGS  = -enable-write18 -synctex=1 -interaction=nonstopmode -file-line-error
@@ -15,7 +15,11 @@ bib: main.tex bibliography.bib
 pdf_shell_escape: main.tex
 	$(LATEX) -shell-escape $(FLAGS) -output-directory=$(OUTDIR) $(SOURCE).tex
 
-all: pdf bib pdf pdf
+all:
+	make pdf
+	make bib
+	make pdf
+	make pdf
 
 final: pdf_shell_escape bib pdf_shell_escape pdf_shell_escape
 
