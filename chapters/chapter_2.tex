@@ -62,7 +62,7 @@ Inherent expression swell occurs when a calculation generates large expressions 
 \begin{example}[Inherent expression swell]
   As an example, consider the following Hankel matrix
   \begin{equation*}
-    \left[\begin{array}{rrrrrrrrr}
+    \begin{bmatrix}
       -1 &  1 &  1 & -1 & -1 &  1 &  1 & -1 & -1 \\
        1 &  1 & -1 & -1 &  1 &  1 & -1 & -1 &  1 \\
        1 & -1 & -1 &  1 &  1 & -1 & -1 &  1 &  1 \\
@@ -72,7 +72,7 @@ Inherent expression swell occurs when a calculation generates large expressions 
        1 & -1 & -1 &  1 &  1 & -1 & -1 &  1 & -1 \\
       -1 & -1 &  1 &  1 & -1 & -1 &  1 & -1 &  1 \\
       -1 &  1 &  1 & -1 & -1 &  1 & -1 &  1 &  1
-    \end{array}\right]
+    \end{bmatrix}
   \end{equation*}
   %
   which has the following characteristic polynomial
@@ -209,8 +209,8 @@ There exist two main metrics to measure the complexity and size of an expression
   \end{equation*}
   %
   where $n \in \mathbb{Z}$ is a nonnegative integer representing the expression length, and $\beta \in \mathbb{N}$ is the base in which the length is measured.
-  Notably used in~\cite{carette2006linear, zhou2006hierarchical}, this metric is calculated through the \texttt{length} \Maple{} function. This metric is very helpful in understanding the amount of memory space required to store expressions, as well as the \ac{CPU} effort required to write, process, and read them. However, it does not provide any information about the operands and operations involved in the expression.
-  \item The \emph{computational cost} of an expression, calculated through the \texttt{cost} function of \texttt{codegen} package. This metric is somehow complementary to the previous one, and it provides insights into the computational cost of the expressions. Conversely, it does not provide any information about the amount of memory space required to store an expression.
+  Notably used in~\cite{carette2006linear, zhou2006hierarchical}, this metric is calculated through the \code{length} \Maple{} function. This metric is very helpful in understanding the amount of memory space required to store expressions, as well as the \ac{CPU} effort required to write, process, and read them. However, it does not provide any information about the operands and operations involved in the expression.
+  \item The \emph{computational cost} of an expression, calculated through the \code{cost} function of \code{codegen} package. This metric is somehow complementary to the previous one, and it provides insights into the computational cost of the expressions. Conversely, it does not provide any information about the amount of memory space required to store an expression.
 \end{itemize}
 %
 It is evident that it is not possible to use both metrics at the same time, as they are neither directly comparable nor convertible to each other. Hence, the choice of the metric to use is strictly dependent on the specific problem to solve.
@@ -218,74 +218,74 @@ It is evident that it is not possible to use both metrics at the same time, as t
 Previous works~\cite{carette2006linear, zhou2006hierarchical} on symbolic linear algebra have shown that the hierarchical representation of expressions is applied to matrix factorization tasks, and it has been proven to be effective in mitigating the expression swell problem. Nonetheless, the \LULEM{} package~\cite{carette2006linear}, which implements large expression management strategies in \ac{LU} decomposition, significantly outperforms the \Maple{}'s built-in matrix factorization routines. Instead, throughout this thesis we use the computational cost. As demonstrated in the following example, the latter metric is insensitive to the number of characters used to represent the expression itself and guarantees better control of the final expression size, regardless of the variables' names. Nonetheless, the computational cost also provides us with a better prediction of both the computational effort and growth of the expression size during a given symbolic operation.
 
 \begin{example}[Expression size and complexity calculation]
-  Let us consider two algebraically equivalent expressions stored in \texttt{expr\_1} and \texttt{expr\_2} variables.
+  Let us consider two algebraically equivalent expressions stored in \code{expr\_1} and \code{expr\_2} variables.
   %
-  \begin{verbatim}
+  \begin{mapleinline}
 > expr_1 := (x^2+y^2)^2/g(x)-z/f(x):
 > expr_2 := (x_tmp^2+y_tmp^2)^2/g_tmp(x)-z_tmp/f_tmp(x):
-  \end{verbatim}
+  \end{mapleinline}
   %
-  If we respectively calculate the expression complexity calculation through the \texttt{length} and \texttt{codegen:-cost} functions we obtain the following results.
+  If we respectively calculate the expression complexity calculation through the \code{length} and \code{codegen:-cost} functions we obtain the following results.
   %
-  \begin{verbatim}
+  \begin{mapleinline}
 > map(length, <expr_1, expr_2>);
-  \end{verbatim}
+  \end{mapleinline}
   \begin{equation*}
-    \left[\begin{array}{c}
+    \begin{bmatrix}
       53 \\
       73
-    \end{array}\right]
+    \end{bmatrix}
   \end{equation*}
-  \begin{verbatim}
+  \begin{mapleinline}
 > map(codegen:-cost, <expr_1, expr_2>);
-  \end{verbatim}
+  \end{mapleinline}
   \begin{equation*}
-    \left[\begin{array}{c}
+    \begin{bmatrix}
       3\mathrm{multiplications} + 2\mathrm{additions} + 2\mathrm{divisions} + 2\mathrm{functions} \\
       3\mathrm{multiplications} + 2\mathrm{additions} + 2\mathrm{divisions} + 2\mathrm{functions}
-    \end{array}\right]
+    \end{bmatrix}
   \end{equation*}
   %
-  As can be seen, the \texttt{length} function is sensitive to the characters that \Maple{} internally uses to represent the expression. Conversely, the \texttt{codegen}'s \texttt{cost} calculates the actual computational complexity of the two expressions and returns the same result.
+  As can be seen, the \code{length} function is sensitive to the characters that \Maple{} internally uses to represent the expression. Conversely, the \code{codegen}'s \code{cost} calculates the actual computational complexity of the two expressions and returns the same result.
 \end{example}
 
 \subsection{Large Expression Management}
 
-There exist specific modules to perform large expression management tasks and help the user handle hierarchical representations~\cite{carette2006linear,zhou2007symbolic}. The \Maple{} module \texttt{LargeExpressions} already does this job. However, from the authors' perspective, it has some minor limitations given by the chosen user interface rather than the underlying idea or the adopted programming technique. For this reason, the authors have reinterpreted it to a new object-oriented \LEM{} package~\cite{lem}. The new version does not differ much from its original version, but it allows more effective control and straightforward use of the veiling variables. The object-oriented feature also allows for the creation of multiple instances of \LEM{} objects, giving the ability to sharply separate veiling variables that could lead to conflicts if improperly used. Here an example is given to briefly illustrate the capabilities of the large expression management technique and, particularly, of the \LEM{} module.
+There exist specific modules to perform large expression management tasks and help the user handle hierarchical representations~\cite{carette2006linear,zhou2007symbolic}. The \Maple{} module \code{LargeExpressions} already does this job. However, from the authors' perspective, it has some minor limitations given by the chosen user interface rather than the underlying idea or the adopted programming technique. For this reason, the authors have reinterpreted it to a new object-oriented \LEM{} package~\cite{lem}. The new version does not differ much from its original version, but it allows more effective control and straightforward use of the veiling variables. The object-oriented feature also allows for the creation of multiple instances of \LEM{} objects, giving the ability to sharply separate veiling variables that could lead to conflicts if improperly used. Here an example is given to briefly illustrate the capabilities of the large expression management technique and, particularly, of the \LEM{} module.
 
 \begin{example}[Large expression management with \LEM{}~\cite{lem}]
-  Let us consider a random polynomial \texttt{p} generated by the \texttt{randpoly} function.
+  Let us consider a random polynomial \code{p} generated by the \code{randpoly} function.
   %
-  \begin{verbatim}
+  \begin{mapleinline}
 > p := randpoly([x,y,z], degree=3, dense):
-  \end{verbatim}
+  \end{mapleinline}
   %
-  Then, we create a \LEM{} object instance and set the veiling label to \texttt{X}.
+  Then, we create a \LEM{} object instance and set the veiling label to \code{X}.
   %
-  \begin{verbatim}
+  \begin{mapleinline}
 > LEM_obj := Object(LEM):
 > LEM_obj:-SetVeilingLabel('X'):
-  \end{verbatim}
+  \end{mapleinline}
   %
   The expressions are veiled to get a more compact hierarchical representation.
   %
-  \begin{verbatim}
+  \begin{mapleinline}
 > p_X := collect(p, x, i -> LEM_obj:-Veil(i));
-  \end{verbatim}
+  \end{mapleinline}
   \begin{equation*}
     p\_X := -7x^4 + (2,y - 55z - 94)x^3 + X[1]x^2 - X[2]x
   \end{equation*}
   %
   The veiling variables are stored in the \LEM{} object and can be used to unveil the expression whenever necessary.
   %
-  \begin{verbatim}
+  \begin{mapleinline}
 > <LEM_obj:-VeilList()>;
-  \end{verbatim}
+  \end{mapleinline}
   \begin{equation*}
-    \left[\begin{array}{c}
+    \begin{bmatrix}
       X[1] = 87y^2 - 56yz - 62z^2 + 97z - 73 \\[0.2em]
       X[2] = 4y^3 + 83y^2z - 62yz^2 + 44z^3 + 10y^2 + 82yz - 71z^2 - 80y + 17z + 75
-    \end{array}\right]
+    \end{bmatrix}
   \end{equation*}
   %
   In addition to the few functions just presented, \LEM{} allows to customize the strategy and parameters used to control the veiling process. For further information on the \LEM{} package refer to the documentation in~\cite{lem}.
@@ -296,7 +296,7 @@ There exist specific modules to perform large expression management tasks and he
 
 In order to \emph{zero-test} for an expression in hierarchical representations, we use the probabilistic approach of \emph{signatures}~\cite{geddes1992algorithms}, which relies on the \emph{DeMillo-Lipton-Schwarz-Zippel lemma}~\cite{demillo1978probabilistic, schwartz1980fast, zippel1979probabilistic}. Signature functions verify the presence of equivalent expressions within thousands of sub-expressions through hashing techniques~\cite{char1984design, gonnet1984determining, gonnet1986results, monagan1994signature}. In \Maple{}, each expression is stored in the simplification table using its signature as a key. The signature of an expression is itself a hashing function, with one very important feature: equivalent expressions have identical signatures. In other words, the signature of an expression is a unique identifier that is computed from the expression itself.
 
-On the contrary of~\cite{carette2006linear, zhou2007symbolic}, we do not implement the signature function as a separate module. Instead, we employ the \Maple{}'s \texttt{signature} function to exploit the latest improvements in the symbolic computation engine. Given for granted that the signature function is a hashing function, it is possible to compute the define the signature of a hierarchical representation as follows.
+On the contrary of~\cite{carette2006linear, zhou2007symbolic}, we do not implement the signature function as a separate module. Instead, we employ the \Maple{}'s \code{signature} function to exploit the latest improvements in the symbolic computation engine. Given for granted that the signature function is a hashing function, it is possible to compute the define the signature of a hierarchical representation as follows.
 
 \begin{definition}[Signature of a Hierarchical Representation~\cite{zhou2007symbolic}]
   Let $H$ be a hierarchical representation having $n$ independent variables $\{x_1, \dots, x_n\}$ given by lists of symbols $[v_1, v_2, \dots, v_m]$ and definitions $[d_1, d_2, \dots, d_m]$, where $v_i = f_i(\sigma_{i,1}, \sigma_{i,2}, \dots, \sigma_{i,k_i})$ and $\sigma_{i,j}$ is either an expression in the independent or hierarchy variables. Let $p$ be a prime number. The signature of $v_i$ is defined inductively as follows.
@@ -345,9 +345,9 @@ If one solves for $u$, then the usual problem regarding the choice of an appropr
 
 As previously mentioned, matrix factorization is a widely employed technique for addressing linear systems. There are several types of decompositions, each with distinct properties and characteristics. In the context of purely numerical matrices, the practice aligns well with the theoretical foundations of the algorithm. However, when dealing with matrices consisting of either symbolic or mixed symbolic-numeric entries, the situation becomes more intricate~\cite{zhou2007symbolic}. In exact symbolic linear algebra scenarios, the cost of each operation during factorization can vary due to uncontrolled expression swell~\cite{zhou2006hierarchical}. Furthermore, the presence of symbolic values hinders the guarantee of numerical stability. Consequently, a key objective is to derive an output format that retains the symbolic structure of the input matrix and ensures numerical stability. Nonetheless, in symbolic linear algebra, much effort has been devoted to controlling the growth of expression size by developing. Very little work has been done on the guarantee of numerical stability. The main reason is that the techniques that are helpful for the numeric case are often unstable or impractical for the purely symbolic case, ending in the pivoting on small quantities and resulting instability.
 
-In this section, we will focus on the full-pivoting \ac{LU} and \ac{FFLU} decompositions, which are the fundamental techniques that will be used in the next chapters, both for the large linear system solution and \acp{DAE} index reduction. It is important to note that, the \ac{LU} and \ac{FFLU} are preferred in symbolic linear algebra over the QR and \ac{GJ}, as \ac{LU}-based decompositions involve simpler operations, thereby mitigating the issue of expression swell. Additionally, as we will see, employing the \ac{LU} factorization with a minimum degree pivoting strategy proves superior in reducing fill-in and reducing the subsequent numeric and symbolic computational cost.
+In this section, we will focus on the full-pivoting \ac{LU} and \ac{FFLU} decompositions, which are the fundamental techniques that will be used in the next chapters, both for the large linear system solution and \acp{DAE} index reduction. It is important to note that, the \ac{LU} and \ac{FFLU} are preferred in symbolic linear algebra over the QR and \ac{GJ}, as \ac{LU} decomposition involves simpler operations, thereby mitigating the issue of expression swell. Additionally, as we will see, employing the \ac{LU} factorization with a minimum degree pivoting strategy proves superior in reducing fill-in and reducing the subsequent numeric and symbolic computational cost.
 
-\subsection{The full-pivoting LU-Based Factorization}
+\subsection{The Full-Pivoting Lower-Upper Factorization}
 
 The full-pivoting \ac{LU} and \ac{FFLU} decompositions are widely used algorithms for solving linear systems with minimal computational effort. They are defined as follows.
 %
@@ -388,44 +388,44 @@ From a numerical perspective, we can reduce round-off errors during computation 
   When a calculation is undefined because of a division by zero, the same calculation will suffer numerical difficulties when there is a division by a non-zero number that is relatively small.
   %
   \begin{equation*}
-    \m{A} = \left[\begin{array}{cc}
+    \m{A} = \begin{bmatrix}
       10^{-20} & 1 \\
       1 & 2
-    \end{array}\right]
+    \end{bmatrix}
   \end{equation*}
   %
   When computing the factors L and U, the process does not fail in this case because there is no division by zero.
   %
   \begin{equation*}
-    \m{L} = \left[\begin{array}{cc}
+    \m{L} = \begin{bmatrix}
       1 & 0 \\
       10^{20} & 1
-    \end{array}\right], \quad \m{U} = \left[\begin{array}{cc}
+    \end{bmatrix}, \quad \m{U} = \begin{bmatrix}
       10^{-20} & 1 \\
       0 & 2 - 10^{20}
-    \end{array}\right].
+    \end{bmatrix}.
   \end{equation*}
   %
   When these computations are performed in floating point arithmetic, the number $2 - 10^{-20}$ is not represented exactly but will be rounded to the nearest floating point number which we will say is $-10^{-20}$. This means that our matrices are now floating point matrices $\m{L}^\prime$ and $\m{U}^\prime$ where
   %
   %
   \begin{equation*}
-    \m{L}^\prime = \left[\begin{array}{cc}
+    \m{L}^\prime = \begin{bmatrix}
       1 & 0 \\
       10^{20} & 1
-    \end{array}\right], \quad \m{U}^\prime = \left[\begin{array}{cc}
+    \end{bmatrix}, \quad \m{U}^\prime = \begin{bmatrix}
       10^{-20} & 1 \\
       0 & -10^{20}
-    \end{array}\right].
+    \end{bmatrix}.
   \end{equation*}
   %
   The small change we made in $\m{U}$ to get $\m{U}^\prime$ shows its significance when we compute $\m{L}^\prime\m{U}^\prime$
   %
   \begin{equation*}
-    \m{L}^\prime\m{U}^\prime = \left[\begin{array}{cc}
+    \m{L}^\prime\m{U}^\prime = \begin{bmatrix}
       10^{-20} & 1 \\
       1 & 0
-    \end{array}\right] \neq \m{A},
+    \end{bmatrix} \neq \m{A},
   \end{equation*}
   %
   thus when trying to solve a system such as $\m{A}\m{x} = \m{b}$ using the \ac{LU} factorization as the factors $\m{L}^\prime\m{U}^\prime$ suffer from a large error. This is a clear example of how the \ac{LU} factorization can be numerically unstable when small pivots are used.
@@ -436,7 +436,7 @@ After the \ac{LU} factorization of a sparse matrix $\m{A}$, it is common to obse
 \begin{example}[Fill-in reduction in \ac{LU} factorization]
   Consider the \code{west0479} sparse unsymmetric matrix $\m{A} \in \mathbb{R}^{479 \times 479}$, having non-zero 1910 entries~\cite{matlab}. The sparsity pattern of the original matrix $\m{A}$ and the $\m{L}$ and $\m{U}$ factors with and without pivoting, using the minimum degree and nested dissection pivoting strategies, are shown in Figure~\ref{chap2:fig:sparsity_patterns}. As illustrated, the \ac{LU} factorization of $\m{A}$ with pivoting has significantly less fill-in than the \ac{LU} factorization of $\m{A}$ without pivoting, thus highlighting the relevance of pivoting in reducing fill-in during the \ac{LU} factorization.
   %
-  \begin{figure}[!htb] % FIXME should be [H]
+  \begin{figure}[!htb] % FIXME should be[H]
     \centering
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
@@ -602,7 +602,7 @@ It is important to note that the expression may inevitably grow during the facto
 
 \subsection{An Improved Symbolic Pivoting Strategy}
 
-We have shown that a crucial detail of any \ac{LU}-based decomposition, either numerical or symbolic, is the pivoting strategy. This strategy hinges on two main considerations: the degrees of the elements within the matrix and the actual complexity of the expressions. From an operational standpoint, the pivoting process starts by arranging the elements in the matrix in descending order of their degrees. Then, the pivot of the least complexity is chosen. Sometimes these two features are conflicting. In such cases, the prioritization of the pivot with the lowest degree is preferred. It is important to notice that pivots consisting of numerical values take precedence over those with symbolic values, primarily due to their inherent minimum expression complexity. Throughout the pivoting process, the utilization of signatures is also employed whenever possible to confirm the presence of null expressions without the need for simplification. To summarize, the main steps of the pivoting strategy are the following.
+We have shown that a crucial detail of both \ac{LU} and \ac{FFLU} decomposition, either numerical or symbolic, is the pivoting strategy. This strategy hinges on two main considerations: the degrees of the elements within the matrix and the actual complexity of the expressions. From an operational standpoint, the pivoting process starts by arranging the elements in the matrix in descending order of their degrees. Then, the pivot of the least complexity is chosen. Sometimes these two features are conflicting. In such cases, the prioritization of the pivot with the lowest degree is preferred. It is important to notice that pivots consisting of numerical values take precedence over those with symbolic values, primarily due to their inherent minimum expression complexity. Throughout the pivoting process, the utilization of signatures is also employed whenever possible to confirm the presence of null expressions without the need for simplification. To summarize, the main steps of the pivoting strategy are the following.
 %
 \begin{enumerate}
   \setlength{\itemsep}{0.0em}
@@ -640,7 +640,7 @@ A detailed description of the developed symbolic pivoting strategy is presented 
       \State $t \gets A_{ij}$ \Comment{Get the pivot value}
       \IfThen{$\mathrm{Signature}(t) = 0$}{\textbf{continue}} \Comment{Skip the next pivot}
       \State $t \gets \mathrm{Simplify}(t)$ \Comment{Try to simplify the pivot expression}
-      \State $t_c \gets \mathrm{ExpressionComplexity}(t)$ \Comment{Calculate the computational complexity of the pivot}
+      \State $t_c \gets \mathrm{ExpressionComplexity}(t)$ \Comment{Calculate the computational cost of the pivot}
       \State $t_n \gets \infty$ \Comment{Set the default numerical value of the pivot to infinity}
       \IfThen{$t$ is numeric}{$t_n \gets \max(1, \, \mathrm{abs}(t))$} \Comment{Set the numerical value of the pivot}
       \If{$t_c < p_c$ \textbf{or} ($t_c = p_c$ \textbf{and} $t_n > p_n$)} \Comment{If the pivot is better than the current one}
@@ -679,36 +679,93 @@ A detailed description of the developed symbolic pivoting strategy is presented 
 
 The considerations just made are the basis of the \LAST{} package~\cite{last}. This package is a \Maple{} toolbox for symbolic linear algebra. It is based on the original works in~\cite{carette2006linear,zhou2008fraction} and offers a set of routines for symbolic full-pivoting \ac{LU}, a \ac{FFLU}, QR decomposition, and \ac{GJ} factorizations. The package \LAST{} is designed to be used in conjunction with the \LEM{} package~\cite{lem} to limit the expression swell.
 
-An important aspect of \ac{LU}-based decompositions is the pivoting strategy. In the \LAST{} package, the pivoting process is developed to take into account the aforementioned aspects of expression swell and numerical stability. In particular, the pivots are chosen based on the degree of the elements of the system matrix and the actual complexity of the expressions. The elements of the system matrix are sorted in descending order of their degree and the least complex element is chosen as the pivot. Pivots with numeric values are preferred over pivots with symbolic values due to their inherent numerical stability. During the pivoting procedure, whenever possible, signatures are also exploited to verify the presence of null expressions. Here a simple example is given to briefly illustrate the usage of the \LAST{} package.
+An important aspect of \ac{LU} decomposition is the pivoting strategy. In the \LAST{} package, the pivoting process is developed to take into account the aforementioned aspects of expression swell and numerical stability. In particular, the pivots are chosen based on the degree of the elements of the system matrix and the actual complexity of the expressions. The elements of the system matrix are sorted in descending order of their degree and the least complex element is chosen as the pivot. Pivots with numeric values are preferred over pivots with symbolic values due to their inherent numerical stability. During the pivoting procedure, whenever possible, signatures are also exploited to verify the presence of null expressions. Here a simple example is given to briefly illustrate the usage of the \LAST{} package.
 
 \begin{example}[Symbolic linear system solving with \LAST{}~\cite{last}]
   Let us consider a simple linear system of equations in the form $\m{A}\mx = \m{b}$ and initialize them as follows.
   %
-  \begin{verbatim}
+  \begin{mapleinline}
 > A := Matrix(3, symbol='a'):
 > B := Vector(3, symbol='b'):
-  \end{verbatim}
+  \end{mapleinline}
   %
-  Then we create a \LAST{} object and initialize the built-in \LEM{} object with label \texttt{V}.
+  Then we create a \LAST{} object and initialize the built-in \LEM{} object with label \code{V}.
   %
-  \begin{verbatim}
+  \begin{mapleinline}
 > LAST_obj := Object(LAST):
 > LAST_obj:-InitLEM('V');
-  \end{verbatim}
+  \end{mapleinline}
   %
-  To solve the linear system with \LAST{} it is first necessary to perform one of the available decompositions, \emph{i.e.}, \texttt{LU}, \texttt{FFLU}, \texttt{QR}, or \texttt{GJ}. The intermediate results of the decomposition are internally stored in the \LAST{} object and are available on demand. Once the decomposition is performed, the solution of the linear system can be obtained by calling the \texttt{SolveLinearSystem} routine.
+  To solve the linear system with \LAST{} it is first necessary to perform one of the available decompositions, \emph{i.e.}, \ac{LU}, \ac{FFLU}, QR, or \ac{GJ}. The intermediate results of the decomposition are internally stored in the \LAST{} object and are available on demand. Once the decomposition is performed, the solution of the linear system can be obtained by calling the \code{GetResults} routine.
   %
-  \begin{verbatim}
+  \begin{mapleinline}
 > LAST_obj:-LU(A):
-> LAST_obj:-SolveLinearSystem(B)^%T;
-  \end{verbatim}
+> 'L' = LAST_obj:-GetResults("L"),    'U' = LAST_obj:-GetResults("U");
+  'r' = LAST_obj:-GetResults("r")^%T, 'c' = LAST_obj:-GetResults("c")^%T;
+  \end{mapleinline}
   \begin{equation*}
-    \left[\begin{array}{ccc}
-      -\dfrac{V_{4}}{a_{1,1}}, &
-      \dfrac{V_{3}a_{1,1}}{a_{2,2}a_{1,1}-a_{2,1}a_{1,2}}, &
-      \dfrac{V_{2}}{V_{1}}
-    \end{array}\right]
+    L = \begin{bmatrix}
+      1 & 0 & 0 \\
+      -\dfrac{a_{2,1}}{a_{1,1}} & 1 & 0 \\
+      -\dfrac{a_{2,1}}{a_{1,1}} & \dfrac{V_{2}}{V_{1}} & 1
+    \end{bmatrix}, ~
+    U = \begin{bmatrix}
+      a_{1,1} & a_{1,2} & a_{1,3} \\
+      0 & V_{1} & V_{3} \\
+      0 & 0 & V_{5}
+    \end{bmatrix}
+  \end{equation*}
+  \begin{equation*}
+    r = \begin{bmatrix}
+      1, & 2, & 3
+    \end{bmatrix}, ~
+    c = \begin{bmatrix}
+      1, & 2, & 3
+    \end{bmatrix}
   \end{equation*}
   %
+  where \code{r} and \code{c} are the row and column permutation vectors, respectively. Pivots chosen during the decomposition are also stored in the \LAST{} object and are available on demand
+  %
+  \begin{mapleinline}
+> LAST_obj:-GetResults("pivots")
+  \end{mapleinline}
+  \begin{equation*}
+    \begin{bmatrix}
+      a_{1,1}, & V_{1}, & V_{5}
+    \end{bmatrix}
+  \end{equation*}
+  %
+  The \LAST{} package also provides a routine to solve the linear system directly without the need to call the \code{GetResults} routine. This routine is called \code{SolveLinearSystem} and it is used as follows.
+  %
+  \begin{mapleinline}
+> LAST_obj:-SolveLinearSystem(B)^%T;
+  \end{mapleinline}
+  \begin{equation*}
+    \begin{bmatrix}
+      -\dfrac{V_{9}}{a_{1,1}}, &
+      -\dfrac{V_{8}}{V_{1}}, &
+      \dfrac{V_{7}}{V_{5}}
+    \end{bmatrix}
+  \end{equation*}
+  %
+  \begin{mapleinline}
+> LEM_obj := LAST_obj:-GetLEM(LAST_obj);
+> <LEM_obj:-VeilList(LEM_obj)>;
+  \end{mapleinline}
+  \begin{equation*}
+    \begin{bmatrix}
+      V_{1} = \dfrac{a_{2,2}a_{1,1}-a_{2,1}a_{1,2}}{a_{1,1}} \\
+      V_{2} = \dfrac{a_{3,2}a_{1,1}-a_{3,1}a_{1,2}}{a_{1,1}} \\
+      V_{3} = \dfrac{a_{2,3}a_{1,1}-a_{2,1}a_{1,3}}{a_{1,1}} \\
+      V_{4} = \dfrac{a_{3,3}a_{1,1}-a_{3,1}a_{1,3}}{a_{1,1}} \\
+      V_{5} = \dfrac{V_{4}V_{1}-V_{2}V_{3}}{V_{1}} \\
+      V_{6} = \dfrac{b_{2}a_{1,1}-a_{2,1}b_{1}}{a_{1,1}} \\
+      V_{7} = \dfrac{b_{3}a_{1,1}V_{1}-a_{3,1}b_{1}V_{1}-V_{2}V_{6}a_{1,1}}{a_{1,1}V_{1}} \\
+      V_{8} = \dfrac{V_{3}V_{7}-V_{6}V_{5}}{V_{5}} \\
+      V_{9} = \dfrac{b_{1}V_{1}V_{5}-a_{1,3}V_{7}V_{1}+a_{1,2}V_{8}V_{5}}{V_{1}V_{5}}
+    \end{bmatrix}
+  \end{equation*}
+  %
+
   It must be noticed that in this example the size of the system is chosen to be small for the sake of simplicity. In practice, the \LAST{} package is designed to be used with large systems of equations. For further information on the \LAST{} package refer to the documentation in~\cite{last}.
 \end{example}

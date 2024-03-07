@@ -1,0 +1,53 @@
+{\scriptsize
+\setlength{\tabcolsep}{0.0pt}
+\setlength{\LTleft}{0.0cm}
+\setlength{\LTright}{0.0cm}
+\setlength{\LTcapwidth}{\textwidth}
+\centering\begin{longtable}{cccc}
+  \caption[
+    Expression complexity encountered throughout the index reduction algorithm with hierarchical representation of the test \ac{DAE} systems.
+  ]{
+    Expression complexity encountered throughout the index reduction algorithm with hierarchical representation of the test \ac{DAE} systems. The studied systems are those that suffered from strong expression complexity growth during the index reduction process (see Table~\ref{chap3:tab:complexity}). \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, $\cd$ = divisions, and $\cd$ = veiling variables. Expressions preceded by the $\star$ symbol could not be simplified within \SI{100}{\second} of \ac{CPU} time in the \Maple{} environment.
+  }
+  \label{chap3:tab:complexity_veil}
+  \endfirsthead
+  \endhead
+  %
+  \multicolumn{4}{c}{\textbf{8.~~Robotic Arm~\cite{pryce1998solving}}} \\
+  \toprule
+  \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 125\cf + 19\cd + 56\cm + 64\ca$ \quad $\mh = 0$ \quad $\mv = 0$} \\
+  \midrule
+  \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+  \midrule
+  %Index-5 \acp{DAE} & $0$ & $66\cf + 3\cd + 50\cm + 35\ca$ & $16\cf + 12\ca$ & $0$ \\
+  %Index-4 \acp{DAE} & $0$ & $66\cf + 3\cd + 50\cm + 35\ca$ & $24\cf + 6\cm + 14\ca$ & $0$ \\
+  %Index-3 \acp{DAE} & $0$ & $66\cf + 3\cd + 50\cm + 35\ca$ & $162\cf + 2\cd + 138\cm + 114\ca$ & $0$ \\
+  %Index-2 \acp{DAE} & $14\cf + 2\cd + 6\cm + 6\ca$ & $66\cf + 3\cd + 51\cm + 35\ca$ & $1\cm$ & $1240\cf + 6\cd + 1276\cm + 872\ca$ \\
+  %Index-1 \acp{DAE} & $1\ca$ & $66\cf + 3\cd + 51\cm + 35\ca$ & $9\cf + 2\cd + 8\cm + 5\ca$ & $8363\cf + 24\cd + 9408\cm + 6049\ca$ \\
+  %Index-0 \acp{DAE} & $\star (8.3\cf + 7.1\cm + 2.3\ca)\cdot10^{7} + 58\cd$ & $(2.4\cf + 2.0\cm + 0.9\ca)\cdot10^{6} + 8\cd$ & $0$ \\
+  \midrule
+  \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\star \mF = (8.6\cf + 7.3\cm + 2.4\ca)\cdot10^{7} + 66\cd$ \quad $\star \mh = (6.5\cf + 5.6\cm + 1.8\ca)\cdot10^{6} + 7\cd$ \quad $\mv = 0$} \\
+  \bottomrule \\[-0.1em]
+  %
+  \multicolumn{4}{c}{\textbf{9c.~~4-Pendula~\cite{nedialkov2008solvingIII}}} \\
+  \toprule
+  \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 67\cf + 31\cm + 31\ca$ \quad $\mh = 0$ \quad $\mv = 0$} \\
+  \midrule
+  \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+  \midrule
+  Index-9 \acp{DAE} & $0$                   & $24\cf + 16\cm + 4\ca$ & $14\cf + 30\cm + 14\ca$ \\ % $0$
+  Index-8 \acp{DAE} & $3\cf + 15\cm + 3\ca$ & $36\cf + 28\cm + 7\ca$ & $4\cf + 4\cm + 1\ca$ \\ % $0$
+  Index-7 \acp{DAE} & $3\cf + 15\cm + 3\ca$ & $36\cf + 28\cm + 7\ca$ & $7\cf + 12\cm + 4\ca$ \\ % $0$
+  Index-6 \acp{DAE} & $3\cf + 15\cm + 3\ca$ & $36\cf + 28\cm + 7\ca$ & $18\cf + 2\cd + 30\cm + 9\ca$ \\ % $0$
+  Index-5 \acp{DAE} & $3\cf + 15\cm + 3\ca$ & $36\cf + 28\cm + 7\ca$ & $1\cm + 1\cv$ \\ % $118\cf + 2\cd + 283\cm + 72\ca$
+  Index-4 \acp{DAE} & $3\cf + 15\cm + 3\ca$ & $36\cf + 28\cm + 7\ca$ & $1\cm + 1\cv$ \\ % $950\cf + 15\cd + 2014\cm + 542\ca + 3\cv$
+  Index-3 \acp{DAE} & $3\cf + 15\cm + 3\ca$ & $36\cf + 28\cm + 7\ca$ & $1\cm + 1\cv$ \\ % $6587\cf + 70\cd + 14105\cm + 3486\ca + 27\cv$
+  Index-2 \acp{DAE} & $3\cf + 15\cm + 3\ca$ & $36\cf + 28\cm + 7\ca$ & $1\cm + 1\cv$ \\ % $60782\cf + 158\cd + 141845\cm + 34432\ca + 95\cv$
+  %Index-1 \acp{DAE} & $3\cf + 15\cm + 3\ca$ & $36\cf + 28\cm + 7\ca$ & $\star (3.0\cf + 14.9\cm + 0.4\ca)\cdot10^{6} + 4\cd$ \\
+  %Index-0 \acp{DAE} & $\star (3.0\cf + 14.7\cm + 0.4\ca)\cdot10^{7} + 92\cd$ & $7\cf + 28\cm + 36\ca$ & $0$ \\
+  \midrule
+  \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{
+  $\star \mF = (3.0\cf + 14.7\cm + 0.4\ca)\cdot10^{7} + 92\cd$ \quad $\star \mh = (3.1\cf + 15.1\cm + 0.5\ca)\cdot10^{6} + 18\cd$} \\
+  \bottomrule
+  %
+\end{longtable}}

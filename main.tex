@@ -58,6 +58,10 @@
   Refname={Example}
 ]{example}
 
+\renewenvironment{bmatrix}
+  {\left[\hspace{-.75\arraycolsep}\array{*{\value{MaxMatrixCols}}{c}}}
+  {\endarray\hspace{-.75\arraycolsep}\right]}
+
 % Document settings ------------------------------------------------------------
 \usepackage{geometry}            % change margins of the document
 \usepackage{acronym}             % to define abbreviations
@@ -75,8 +79,8 @@
 \usepackage[final]{microtype}    % improves the spacing between words and letters
 \usepackage[toc, page]{appendix} % to create appendices
 \usepackage[english]{babel}      % useful to interpret the language of the document
-\usepackage[utf8]{inputenc}      % to correctly write accented letter and other symbols
 \usepackage[T1]{fontenc}         % to write correctly in Italian
+\usepackage[utf8]{inputenc}      % to correctly write accented letter and other symbols
 %\usepackage[latin1]{inputenc}    % codec input useful to write docs in Italian
 %\usepackage[normalem]{ulem}      % underline command which will break over line ends
 \usepackage{listings}            % to include code in the document
@@ -93,12 +97,13 @@
   {\lstset{
     frame=none,
     linewidth=1.0\textwidth,
-    belowskip=-0.5em,
+    aboveskip=0.25em,
+    belowskip=0.25em,
     #1
   }}{}
 \lstnewenvironment{mapleboxed}[1][]
   {\lstset{
-    frame=shadowbox,
+    frame=tbrl,
     linewidth=1.0\textwidth,
     belowskip=-0.5em,
     #1
@@ -113,14 +118,15 @@
   }}{}
 
 % Fonts ------------------------------------------------------------------------
-\usepackage{lmodern}             % text font
+\usepackage{lmodern}              % text font
+%\usepackage{newpxtext}             % text font
+%\usepackage{newpxmath}             % text font
 %\usepackage{mathspec}            % font selection for XeLaTeX
 %\defaultfontfeatures{Mapping=tex-text}       % to support TeX conventions
 %\setallmainfonts{Adobe Caslon Pro}           % normal document font
 %\setallsansfonts[Scale=1.0]{Montserrat}      % Optima % sans-serif font (\textsf{})
 %\setallmonofonts[Scale=0.75]{JetBrains Mono} % mono spaced font (\texttt{})
 \usepackage[it,bf]{titlesec}
-%\titleformat*{\chapter}{\center\bfseries\LARGE}
 \titleformat
 {\chapter}                       % command
 [display]                        % shape
@@ -128,11 +134,8 @@
 {\chaptertitlename\ \thechapter\\[2.5ex]---} % label
 {2.5ex}                           % sep
 {\Huge}[\vspace{2ex}]  % before-code
-%\titleformat*{\section}{\normalfont\bfseries\Large}
-%\titleformat*{\section}{}
-%\titleformat*{\subsection}{}
 \usepackage{textgreek}           % to write greek letters in text mode
-%\usepackage{fontawesome}         % to use icons in the document
+\usepackage{fontawesome5}         % to use icons in the document
 
 % Units ------------------------------------------------------------------------
 \usepackage{siunitx}             % write unit of measurements
@@ -140,14 +143,11 @@
 % Citations --------------------------------------------------------------------
 \usepackage{hyperref}            % generate hyper-reference links in the pdf document
 \usepackage{cleveref}            % to reference equations, figures, tables, etc
-%\usepackage{cite}               % lists of numerical citations and representation issues
-%\usepackage{authblk}            % to define authors footstep
 
 % Figures and tables -----------------------------------------------------------
 \usepackage{graphicx}            % advanced package to load figures
 \usepackage{booktabs}            % enhance table quality: midrule, toprule, etc
 \usepackage{tabularx}            % to create tables with a fixed width
-\usepackage{array}               % array and tabular environments
 \usepackage{float}               % improve the interface to define figs and tables
 \usepackage{multirow}            % multi rows cells in a table
 \usepackage{longtable}           % long tables
@@ -156,10 +156,6 @@
 \usepackage{caption}             % to customize the captions in floating environments
 \usepackage{subcaption}          % again used to customize the captions
 \usepackage{overpic}             % to put text over a figure
-%\usepackage{subfig}              % generating subfigures
-%\usepackage{background}          % to put a background image in the document
-%\usepackage{ctable}              % alignement of folats objects
-%\usepackage{graphics}            % base package to load figures
 \newcolumntype{Y}{>{\centering\arraybackslash}X}
 \renewcommand{\theadalign}{cl}
 \renewcommand{\cellalign}{cl}
@@ -178,6 +174,7 @@
 \newenvironment{breakablealgorithm}
   {% \begin{breakablealgorithm}
     \begin{center}
+      \small
       \refstepcounter{algorithm}% New algorithm
       \hrule height.8pt depth0pt \kern2pt% \@fs@pre for \@fs@ruled
       \renewcommand{\caption}[2][\relax]{% Make a new \caption
@@ -234,7 +231,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Set custom margins for the document ------------------------------------------
-\newgeometry{top=1.25in, bottom=1.0in, left=1.0in, right=1.0in} % digital version
+\newgeometry{top=2.5cm, bottom=2.0cm, left=2.0cm, right=2.0cm} % digital version
 %\newgeometry{top=2.0cm, bottom=2.0cm, width=11cm, bindingoffset=12mm} % print version
 %headsep=0.25in, headheight=20pt, heightrounded
 
@@ -255,10 +252,10 @@
   {figures/chapter_2/}
   {figures/chapter_3/}
   {figures/chapter_4/}
-  {figures/chapter_5/}
-  {figures/chapter_6/}
-  {figures/chapter_7/}
   {figures/appendix_1/}
+  {figures/appendix_2/}
+  {figures/appendix_3/}
+  {figures/appendix_4/}
 }
 
 % Insert a date ----------------------------------------------------------------
@@ -267,14 +264,10 @@
 % Bibliography -----------------------------------------------------------------
 \PassOptionsToPackage{%
   backend=biber, bibencoding=utf8, % instead of bibtex
-  %backend=bibtex8,bibencoding=ascii, %
   language=auto, %
   style=numeric-comp, %
-  %style=authoryear-comp, % Author 1999, 2010
-  %bibstyle=authoryear, dashed=false, % dashed: substitute rep. author with ---
   sorting=none, % sorted by appearance
   maxbibnames=10, % default: 3, et al.
-  %backref=true, %
   natbib=true, % natbib compatibility mode (\citep and \citet still work)
 }{biblatex}
 \usepackage{biblatex} % to display bibliography
@@ -343,7 +336,7 @@
 \newcommand{\LEM}{LEM}
 \newcommand{\SIG}{SIG}
 \newcommand{\LAST}{LAST}
-\newcommand{\LULEM}{\texttt{LULEM}}
+\newcommand{\LULEM}{\textsc{LULEM}}
 \newcommand{\Indigo}{\textsc{Indigo}}
 \newcommand{\Doxygen}{\textsc{Doxygen}}
 \newcommand{\Sphinx}{\textsc{Sphinx}}
@@ -356,7 +349,7 @@
 \newcommand{\MatrixBase}{\textsc{MatrixBase}}
 
 % Acme namespace and classes
-\newcommand{\Acme}{ACME}
+\newcommand{\Acme}{\textsc{Acme}}
 \newcommand{\Entity}{\textsc{Entity}}
 \newcommand{\Entities}{\textsc{Entities}}
 \newcommand{\Point}{\textsc{Point}}
@@ -368,8 +361,8 @@
 \newcommand{\Disk}{\textsc{Disk}}
 \newcommand{\Ball}{\textsc{Ball}}
 \newcommand{\Collection}{\textsc{Collection}}
-\newcommand{\Aabb}{\ac{AABB}}
-\newcommand{\AabbTree}{\ac{AABB}\textsc{tree}}
+\newcommand{\Aabb}{\textsc{AABB}}
+\newcommand{\AabbTree}{\textsc{AABBtree}}
 
 % Enve namespace and classes
 \newcommand{\Enve}{\textsc{Enve}}
@@ -390,9 +383,9 @@
 \newcommand{\CDTire}{\textsc{CDTire}\textsuperscript{\textregistered}}
 
 % Goodlooking check, cross and warning marks
-%\newcommand{\mycheckmark}{\textcolor{mycolor5}{\faCheck}}
-%\newcommand{\mycrossmark}{\textcolor{mycolor2}{\faTimes}}
-%\newcommand{\mywarnmark}{\textcolor{mycolor3}{\faExclamationTriangle}}
+\newcommand{\mycheckmark}{\textcolor{mycolor5}{\faCheck}}
+\newcommand{\mycrossmark}{\textcolor{mycolor2}{\faTimes}}
+\newcommand{\mywarnmark}{\textcolor{mycolor3}{\faExclamationTriangle}}
 
 % Mathematical symbols
 \newcommand{\code}[1]{\texttt{#1}}
@@ -413,7 +406,6 @@
 \newcommand{\mE}{\ensuremath{\m{E}(\mx, t)}}
 \newcommand{\mg}{\ensuremath{\m{g}(\mx, t)}}
 \newcommand{\ma}{\ensuremath{\m{a}(\mx, t)}}
-\newcommand{\mv}{\ensuremath{\m{v}(\mx, t)}}
 \newcommand{\mA}{\ensuremath{\m{A}(\mx, t)}}
 \newcommand{\mN}{\ensuremath{\m{N}(\mx, t)}}
 \newcommand{\mK}{\ensuremath{\m{K}(\mx, t)}}
@@ -428,21 +420,31 @@
 \newcommand{\mgd}{\ensuremath{\m{g}_{\m{a}}(\mx, t)}}
 \newcommand{\mF}{\ensuremath{\m{F}(\mx, \mxp, t)}}
 \newcommand{\mh}{\ensuremath{\m{h}(\mx, t)}}
-\newcommand{\mV}{\ensuremath{\m{v}(\mx, t)}}
 
-\newcommand{\mq}{\ensuremath{\m{q}}}
-\newcommand{\mqd}{\ensuremath{\m{{q}^{\prime}}}}
-\newcommand{\mqdd}{\ensuremath{\m{{q}^{\prime\prime}}}}
-\newcommand{\ml}{\ensuremath{\boldsymbol{\lambda}}}
+\newcommand{\mv}{\ensuremath{\m{v}(\mx, t)}}
+\newcommand{\mEv}{\ensuremath{\m{E}(\mx, \m{v}, t)}}
+\newcommand{\mgv}{\ensuremath{\m{g}(\mx, \m{v}, t)}}
+\newcommand{\mav}{\ensuremath{\m{a}(\mx, \m{v}, t)}}
+\newcommand{\mvv}{\ensuremath{\m{v}(\mx, \m{v}, t)}}
+\newcommand{\mAv}{\ensuremath{\m{A}(\mx, \m{v}, t)}}
+\newcommand{\mNv}{\ensuremath{\m{N}(\mx, \m{v}, t)}}
+\newcommand{\mKv}{\ensuremath{\m{K}(\mx, \m{v}, t)}}
+\newcommand{\mLv}{\ensuremath{\m{L}(\mx, \m{v}, t)}}
+\newcommand{\mUv}{\ensuremath{\m{U}(\mx, \m{v}, t)}}
+\newcommand{\mMv}{\ensuremath{\m{M}(\mx, \m{v}, t)}}
+\newcommand{\mbv}{\ensuremath{\m{b}(\mx, \m{v}, t)}}
+\newcommand{\mAdv}{\ensuremath{\m{E}_{\m{a}}(\mx, \m{v}, t)}}
+\newcommand{\mgdv}{\ensuremath{\m{g}_{\m{a}}(\mx, \m{v}, t)}}
+\newcommand{\mFv}{\ensuremath{\m{F}(\mx, \mxp, \m{v}, t)}}
+\newcommand{\mhv}{\ensuremath{\m{h}(\mx, \m{v}, t)}}
 
 \newcommand{\cf}{\ensuremath{\,\mathrm{f}}}
 \newcommand{\cm}{\ensuremath{\,\mathrm{m}}}
 \newcommand{\cd}{\ensuremath{\,\mathrm{d}}}
 \newcommand{\ca}{\ensuremath{\,\mathrm{a}}}
+\newcommand{\cv}{\ensuremath{\,\mathrm{v}}}
 
-
-
-\newcommand{\eqdef}{\mathrel{\overset{\makebox[0pt]{\mbox{\normalfont\tiny def}}}{=}}}
+\newcommand{\eqdef}{\mathrel{\overset{\mathrm{def}}{=}}}
 \newcommand{\bfell}{\ensuremath{\mathcal{L}}}
 \newcommand{\huvec}{\ensuremath{\hat{\mathbf{n}}}}
 \newcommand{\euvec}{\ensuremath{\hat{\mathbf{e}}}}
@@ -560,6 +562,7 @@
   \acro{MB}{Multibody}
   \acro{FEM}{Finite Element Method}
   \acro{FE}{Finite Element}
+  \acro{DE}{Discrete Element}
   \acro{FEA}{Finite Element Analysis}
   \acro{SRT}{Soft Real-Time}
   \acro{HRT}{Hard Real-Time}
@@ -592,23 +595,25 @@
   \acro{SMS}{Symbolic Manipulation System}
   \acro{MPL}{Mathematical Pseudo-Language}
   \acro{CERN}{Conseil Europ{\'e}en pour la Recherche Nucl{\'e}aire}
+  \acro{RMS}{Root Mean Square}
+  \acro{TIRF}{Tire Research Facility}
+  \acro{FSAE TTC}{Formula SAE Tire Test Consortium}
 \end{acronym}
 
 % Mainmatter -------------------------------------------------------------------
 \include{chapters/chapter_1}
 \include{chapters/chapter_2}
 \include{chapters/chapter_3}
-%\include{chapters/chapter_4}
-%\include{chapters/chapter_5}
-%\include{chapters/chapter_6}
-%\include{chapters/chapter_7}
-%\begin{appendices}
-%\include{appendices/appendix_1}
-%\end{appendices}
+\include{chapters/chapter_4}
+\begin{appendices}
+\include{appendices/appendix_1}
+\include{appendices/appendix_2}
+\include{appendices/appendix_3}
+\include{appendices/appendix_4}
+\end{appendices}
 
 % Bibliography -----------------------------------------------------------------
 \addcontentsline{toc}{chapter}{Bibliography}
-\nocite{*}
 \DeclareFieldFormat{doi}{%
   \textsc{Doi}\addcolon\space%
   \ifhyperref{%
@@ -623,7 +628,7 @@
 
 % Acknowledgments --------------------------------------------------------------
 \addcontentsline{toc}{chapter}{Acknowledgments (Ringraziamenti)}
-\include{acknowledgments/acknowledgments}
+%\include{acknowledgments/acknowledgments}
 
 \end{document}
 

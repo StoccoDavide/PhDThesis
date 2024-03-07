@@ -1,18 +1,37 @@
 %!TEX root = ../main.tex
 
 \chapter{Symbolic-Numerical Analysis and Solution of Structures}
-\label{chap5:chap:symbolic_structural_analysis}
+\label{app4:chap:symbolic_structural_analysis}
 
-Understanding how structures react to external forces and imposed displacements relies heavily on structural mechanics. Typically, structural analysis is carried out numerically using the direct stiffness method, a finite element method implementation known for solving large systems of equations. However, this method's principles can also be applied symbolically or in a hybrid symbolic-numerical manner for structural analysis. This dual approach is valuable for reducing computational load, as symbolic solutions can be simplified and translated into efficient code for simulations. Moreover, symbolic direct stiffness methods facilitate model reduction, enabling the creation of smaller-scale models for faster simulations. Despite its advantages, symbolic computation has limitations, particularly in solving large linear systems of equations, which can be computationally intensive and may exceed software capabilities. This paper introduces \TrussMe{}, a toolbox built on the direct stiffness method, harnessing symbolic computation from \Maple{} and numerical capabilities from \Matlab{} for structural analysis. The toolbox facilitates both symbolic and hybrid symbolic-numerical analyses, streamlining code generation for efficient simulations. To address challenges in solving large linear systems symbolically, \TrussMe{} incorporates novel routines for symbolic matrix factorization, employing hierarchical representation for managing large expressions. Optionally, the toolbox integrates with \LEM{} and \LAST{}, open-source \Maple{} packages, enhancing its symbolic computation capabilities.
+Part of this chapter reports preliminary results from~\cite{stocco2024trussme, larcher2024symbolic}
+%
+\begin{center}
+  \begin{minipage}{0.9\textwidth}
+    \fullcite{stocco2024trussme}
+  \end{minipage}
+\end{center}
+\begin{center}
+  \begin{minipage}{0.9\textwidth}
+    \fullcite{larcher2024symbolic}
+  \end{minipage}
+\end{center}
+%
+that are currently under review. The content of this chapter has been adapted to fit the format of this thesis, as well as not to violate future publication copyright agreements.
+
+\begin{center}
+  $\ast$~$\ast$~$\ast$
+\end{center}
+
+Understanding how structures react to external forces and imposed displacements relies heavily on structural mechanics. Typically, structural analysis is carried out numerically using the direct stiffness method, a finite element method implementation known for solving large systems of equations. However, this method's principles can also be applied symbolically or in a hybrid symbolic-numerical manner for structural analysis. This dual approach is valuable for reducing computational load, as symbolic solutions can be simplified and translated into efficient code for simulations. Moreover, symbolic direct stiffness methods facilitate model reduction, enabling the creation of smaller-scale models for faster simulations. Despite its advantages, symbolic computation has limitations, particularly in solving large linear systems of equations, which can be computationally intensive and may exceed software capabilities. This chapter introduces \TrussMe{}, a toolbox built on the direct stiffness method, harnessing symbolic computation from \Maple{} and numerical capabilities from \Matlab{} for structural analysis. The toolbox facilitates both symbolic and hybrid symbolic-numerical analyses, streamlining code generation for efficient simulations. To address challenges in solving large linear systems symbolically, \TrussMe{} incorporates novel routines for symbolic matrix factorization, employing hierarchical representation for managing large expressions. Optionally, the toolbox integrates with \LEM{} and \LAST{}, open-source \Maple{} packages, enhancing its symbolic computation capabilities.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-\section{Introduction}
-\label{chap5:sec:introduction}
+\section{Introduction to Symbolic Structural Analysis}
+\label{app4:sec:introduction}
 
 Structural mechanics is foundational in engineering for predicting system behavior under external forces. Achieving optimal performance in mechanical systems requires refining analytical processes to ensure precision and reliability, especially with the increasing adoption of complex structures. Structural analysis typically involves evaluating deformations and internal reactions under specified boundary conditions (\acp{BC}), such as applied loads and displacements. Accurately predicting these responses is crucial for identifying critical areas and optimizing performance during the design process. Moreover, it is essential for simulating dynamic behavior during the simulation phase.
 
-Traditionally, deformation and internal reaction analysis are performed numerically using the Finite Element Method (\ac{FEM}), which was introduced in the mid-20th century and is now widely utilized for analyzing complex structures with relative ease \cite{felippa2001historical}. It's important to note that \ac{FEM} is a general concept based on discretizing structures into finite elements, leading to multiple implementation approaches with varying performance and capabilities across software platforms. Specifically, the \ac{FEM} implementation used in this work is the \ac{DSM}, introduced by Turner in 1959 \cite{turner1959direct} and further refined in 1964 \cite{turner1964further}. DSM involves assembling stiffness matrices of individual elements into a global stiffness matrix, which is then used to solve equations relating node displacements and rotations to internal and external forces and moments. \acp{BC} are enforced by appropriately modifying the global stiffness matrix, force, and displacement vectors. Consequently, DSM is a versatile method applicable to various structures, including trusses, beams, frames, and plates.
+Traditionally, deformation and internal reaction analysis are performed numerically using the Finite Element Method (\ac{FEM}), which was introduced in the mid-20th century and is now widely utilized for analyzing complex structures with relative ease \cite{felippa2001historical}. It's important to note that \ac{FEM} is a general concept based on discretizing structures into finite elements, leading to multiple implementation approaches with varying performance and capabilities across software platforms. Specifically, the \ac{FEM} implementation used in this chapter is the \ac{DSM}, introduced by Turner in 1959 \cite{turner1959direct} and further refined in 1964 \cite{turner1964further}. DSM involves assembling stiffness matrices of individual elements into a global stiffness matrix, which is then used to solve equations relating node displacements and rotations to internal and external forces and moments. \acp{BC} are enforced by appropriately modifying the global stiffness matrix, force, and displacement vectors. Consequently, DSM is a versatile method applicable to various structures, including trusses, beams, frames, and plates.
 
 The drive to optimize product performance while minimizing design and production costs necessitates parametric studies and optimization techniques. However, traditional numeric design optimization brings complexities, requiring numerous simulations and substantial computational resources. In response, symbolic computation emerges as a valuable alternative. While the \ac{DSM} is typically associated with numerically solving large equation systems, its theoretical underpinning enables symbolic or hybrid symbolic-numerical structural analysis. Symbolic solutions provide crucial derivatives of the solution concerning structural parameters, essential for optimization. Additionally, symbolic approaches facilitate lean code generation, exploiting expression simplification for efficient simulations. Symbolic \ac{DSM} also aids model reduction by deriving smaller models to reduce simulation time. Despite its advantages, symbolic computation poses challenges, particularly in solving large linear equation systems due to software limitations \cite{carette2006linear, zhou2007symbolic}.
 
@@ -20,25 +39,27 @@ Symbolic computation in structural analysis has been explored in literature \cit
 
 The absence of a symbolic analysis and solution package for structures within the \Maple{} environment spurred the development of this toolbox\footnote{It is worth noting that, unlike \Maple{}, \Mathematica{} features a pre-existing suite of packages tailored for symbolic analysis of elastic structural elements, known as the \emph{Structural Mechanics} package~\cite{structuralmechanics}.}. Specifically, the authors' necessity for a tool to symbolically represent, solve, and generate code for modeling, simulating, and optimizing compliant mechanisms prompted the creation of \TrussMe{}. Leveraging the symbolic computation capabilities of \Maple{} and the numerical prowess of \Matlab{}, this toolbox constructs a framework for symbolic-numerical analysis and solution of structures. Grounded in the aforementioned \ac{DSM}, the solution method enables modeling, analysis, and resolution of structures. Depending on the symbolic kernel's capabilities, available computation time, and problem complexity, the symbolic solution can manifest either symbolically in closed form or numerically. In either scenario, a \Matlab{} class is generated to efficiently assess the symbolic solution or solve the problem numerically. Throughout code generation, model inputs and class internal data are meticulously mapped to the generated code. Particular emphasis is placed on the symbolic solution of linear equation systems stemming from the \ac{DSM}. Novel symbolic routines, extending both built-in \Maple{} routines and prior works such as \cite{carette2006linear, zhou2007symbolic}, are introduced to conduct symbolic matrix factorization (\LAST{}~\cite{last}) with hierarchical representation of large expressions (\LEM{}~\cite{lem}). This expansion broadens the applicability of symbolic solution to larger structures previously deemed infeasible. The toolbox, named \TrussMe{}, along with its optional dependencies, is released as open-source software under the BSD 3-clause license~\cite{trussme}.
 
-The paper's structure is as follows: Following the introduction (Section~\ref{chap5:sec:introduction}), we offer a concise overview of the \ac{DSM} and the solution method utilized by the toolbox (Section~\ref{chap5:sec:solution_method}). Section~\ref{chap5:sec:software_description} delineates the toolbox's implementation, dependencies, and usage. An illustrative example of the toolbox's application to optimization, modeling, and simulation of a complex mechanism is presented in Section~\ref{chap5:sec:example_applications}. Finally, concluding remarks are provided in Section~\ref{chap5:sec:conclusion}.
+%The chapter's structure is as follows: Following the introduction (Section~\ref{app4:sec:introduction}), we offer a concise overview of the \ac{DSM} and the solution method utilized by the toolbox (Section~\ref{app4:sec:solution_method}). Section~\ref{app4:sec:software_description} delineates the toolbox's implementation, dependencies, and usage. An illustrative example of the toolbox's application to optimization, modeling, and simulation of a complex mechanism is presented in Section~\ref{app4:sec:example_applications}. Finally, concluding remarks are provided in Section~\ref{app4:sec:conclusion}.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
 \section{The Direct Stiffness Method}
-\label{chap5:sec:solution_method}
+\label{app4:sec:solution_method}
 
 The forthcoming elucidation of the solution method is indispensable for grasping the toolbox implementation and is not intended to offer an exhaustive review of the \ac{DSM}. For a more thorough understanding of \ac{DSM} theory, please consult~\cite{turner1959direct, turner1964further, logan2002first, hutton2004fundamentals}. As delineated in~\cite{samuelsson2006history}, \ac{DSM} furnishes a systematic approach to analyzing statically determinate and indeterminate structures. The structural analysis problem can be formulated as follows: given a structure subjected to external loads and/or prescribed displacements, determine the displacements and rotations of the nodes, along with the internal forces and moments within the elements. These displacements and rotations of nodes are termed Degrees of Freedom (\acp{DOF}). The relationship between \acp{DOF} and the forces and moments acting on the structure—both internal and external—is encapsulated in the system of equations
 %
 \begin{equation}
-  \label{chap5:eq:system}
+  \label{app4:eq:system}
   \mathbf{K}^{n} \, \mathbf{d}^{n} = \mathbf{f}^{n}.
 \end{equation}
 %
-Here, $\mathbf{K}^{n} \in \mathbb{R}^{N \times N}$ represents the stiffness matrix, $\mathbf{d}^{n} \in \mathbb{R}^{N}$ denotes the displacement vector, $\mathbf{f}^{n} \in \mathbb{R}^{N}$ signifies the force vector, and $N$ signifies the number of Degrees of Freedom (\acp{DOF}) of the structure. The superscript $n$ indicates that these quantities are expressed in the nodes' reference frames. Subsequent sections briefly outline the derivation of the components of the system of equations~\eqref{chap5:eq:system}. Furthermore, the toolbox's solution method for effectively handling the system of equations is elucidated.
+Here, $\mathbf{K}^{n} \in \mathbb{R}^{N \times N}$ represents the stiffness matrix, $\mathbf{d}^{n} \in \mathbb{R}^{N}$ denotes the displacement vector, $\mathbf{f}^{n} \in \mathbb{R}^{N}$ signifies the force vector, and $N$ signifies the number of Degrees of Freedom (\acp{DOF}) of the structure. The superscript $n$ indicates that these quantities are expressed in the nodes' reference frames. Subsequent sections briefly outline the derivation of the components of the system of equations~\eqref{app4:eq:system}. Furthermore, the toolbox's solution method for effectively handling the system of equations is elucidated.
 
 \subsection{Element Stiffness Matrix}
 
-To derive the global stiffness matrix $\mathbf{K}^{n}$ in~\eqref{chap5:eq:system}, we must initially define the stiffness matrix $\Ke \in \mathbb{R}^{\Ne \times \Ne}$ for individual elements $e \in \mathcal{E}$, which connect a subset of the structure's nodes. Here, $\mathcal{E}$ denotes the set of elements in the structure, and $\Ne$ signifies the number of Degrees of Freedom (\acp{DOF}) of the element. Unless specified otherwise, the matrix $\Ke$ is always assumed to be expressed in the element reference frame. Stiffness matrices are derived from various theories, such as the Euler-Bernoulli and the Timoshenko-Ehrenfest beam theories, the plane stress theory, etc.~\cite{hutton2004fundamentals}. However, describing the derivation of such matrices $\Ke$ is beyond the scope of this work, and they are assumed to be known.
+To derive the global stiffness matrix $\mathbf{K}^{n}$ in~\eqref{app4:eq:system}, we must initially define the stiffness matrix $\Ke \in \mathbb{R}^{\Ne \times \Ne}$ for individual elements $e \in \mathcal{E}$, which connect a subset of the structure's nodes. Here, $\mathcal{E}$ denotes the set of elements in the structure, and $\Ne$ signifies the number of Degrees of Freedom (\acp{DOF}) of the element. Unless specified otherwise, the matrix $\Ke$ is always assumed to be expressed in the element reference frame. Stiffness matrices are derived from various theories, such as the Euler-Bernoulli and the Timoshenko-Ehrenfest beam theories, the plane stress theory, etc.~\cite{hutton2004fundamentals}. However, describing the derivation of such matrices $\Ke$ is beyond our scope,
+%of this work,
+and they are assumed to be known.
 
 \subsection{Element Stiffness Matrix Condensation}
 
@@ -62,7 +83,7 @@ It's important to apply condensation to each element of the structure as needed.
 The global stiffness matrix $\mathbf{K}^{g}$ is constructed by aggregating the stiffness contributions from individual elements of the structure. The superscript $g$ signifies that these quantities are expressed in the global reference frame. To achieve this, the element's stiffness matrix $\Ke^{g}$ is initially derived by transforming $\Ke$ from the element reference frame to the global reference frame as follows
 %
 \begin{equation}
-  \label{chap5:eq:element_stiffness_matrix}
+  \label{app4:eq:element_stiffness_matrix}
   \Ke^{g} = \Te^\top \, \Ke \, \Te \text{,} \qquad \text{where} \qquad \Te = \left[\,\begin{matrix}
     \Re    & \ldots & 0 \\[0.25em]
     \vdots & \ddots & \vdots \\[0.25em]
@@ -79,7 +100,7 @@ Note that $\Re$ represents the rotation matrix from the $e$-th element reference
 %
 where $\mathcal{E}$ is the set of elements of the structure.
 
-Following this transformation, we arrive at the linear system of equations~\eqref{chap5:eq:system} expressed in the global reference frame, denoted as $\mathbf{K}^{g} \, \mathbf{d}^{g} = \mathbf{f}^{g}$, where $\mathbf{d}^{g}$ and $\mathbf{f}^{g}$ represent the displacement and force vectors in the global reference frame, respectively. However, boundary conditions (\acp{BC}) for displacements and forces are typically applied in the nodes' reference frames. Consequently, to account for this, the system of equations~\eqref{chap5:eq:system} must be adjusted by incorporating the nodes' rotations $\mathbf{Q}_{i}$ with respect to the global reference frame, which are consolidated in the block diagonal matrix $\mathbf{Q}$. This adjustment allows us to express the system~\eqref{chap5:eq:system} as
+Following this transformation, we arrive at the linear system of equations~\eqref{app4:eq:system} expressed in the global reference frame, denoted as $\mathbf{K}^{g} \, \mathbf{d}^{g} = \mathbf{f}^{g}$, where $\mathbf{d}^{g}$ and $\mathbf{f}^{g}$ represent the displacement and force vectors in the global reference frame, respectively. However, boundary conditions (\acp{BC}) for displacements and forces are typically applied in the nodes' reference frames. Consequently, to account for this, the system of equations~\eqref{app4:eq:system} must be adjusted by incorporating the nodes' rotations $\mathbf{Q}_{i}$ with respect to the global reference frame, which are consolidated in the block diagonal matrix $\mathbf{Q}$. This adjustment allows us to express the system~\eqref{app4:eq:system} as
 %
 \begin{equation}
   \underbrace{\mathbf{Q} \, \mathbf{K}^{g} \, \mathbf{Q}^\top}_{\displaystyle\mathbf{K}^{n}} \, \underbrace{\mathbf{Q} \, \mathbf{d}^{g}}_{\displaystyle\mathbf{d}^{n}} = \underbrace{\mathbf{Q} \, \mathbf{f}^{g}}_{\displaystyle\mathbf{f}^{n}} \text{,} \qquad \text{where} \qquad \mathbf{Q} = \left[\,\begin{matrix}
@@ -101,10 +122,10 @@ To construct the nodal force vector $\mathbf{f}^{n}$ and displacement vector $\m
 
 \subsection{Linear System Partitioning and Solution}
 
-To solve the system of equations~\eqref{chap5:eq:system}, it's beneficial to split it into two distinct sets of equations: the first set is solved for the free displacements $\mathbf{d}^{n}_{f}$, while the second set is solved for the reaction (internal) forces $\mathbf{f}^{n}_{s}$. This division is accomplished by rearranging and partitioning the stiffness matrix $\mathbf{K}^{n}$ into four submatrices $\mathbf{K}^{n}_{ff}$, $\mathbf{K}^{n}_{fs}$, $\mathbf{K}^{n}_{sf}$, and $\mathbf{K}^{n}_{ss}$, where the subscripts $f$ and $s$ denote the free and specified (or subject to \acp{BC}) Degrees of Freedom (\acp{DOF}), respectively. Similarly, the displacement and force vectors are partitioned accordingly, e.g., $\mathbf{d}^{n}_{f}$, $\mathbf{d}^{n}_{s}$, and $\mathbf{f}^{n}_{f}$, $\mathbf{f}^{n}_{s}$. Subsequently, the system of equations~\eqref{chap5:eq:system} can be expressed as
+To solve the system of equations~\eqref{app4:eq:system}, it's beneficial to split it into two distinct sets of equations: the first set is solved for the free displacements $\mathbf{d}^{n}_{f}$, while the second set is solved for the reaction (internal) forces $\mathbf{f}^{n}_{s}$. This division is accomplished by rearranging and partitioning the stiffness matrix $\mathbf{K}^{n}$ into four submatrices $\mathbf{K}^{n}_{ff}$, $\mathbf{K}^{n}_{fs}$, $\mathbf{K}^{n}_{sf}$, and $\mathbf{K}^{n}_{ss}$, where the subscripts $f$ and $s$ denote the free and specified (or subject to \acp{BC}) Degrees of Freedom (\acp{DOF}), respectively. Similarly, the displacement and force vectors are partitioned accordingly, e.g., $\mathbf{d}^{n}_{f}$, $\mathbf{d}^{n}_{s}$, and $\mathbf{f}^{n}_{f}$, $\mathbf{f}^{n}_{s}$. Subsequently, the system of equations~\eqref{app4:eq:system} can be expressed as
 %
 \begin{equation}
-    \label{chap5:eq:macrofe}
+    \label{app4:eq:macrofe}
     \underbrace{\left[\,\begin{matrix}
       \mathbf{K}^{n}_{ff} & \mathbf{K}^{n}_{fs} \\[0.5em]
       \mathbf{K}^{n}_{sf} & \mathbf{K}^{n}_{ss}
@@ -117,27 +138,27 @@ To solve the system of equations~\eqref{chap5:eq:system}, it's beneficial to spl
     \end{matrix}\,\right]}_{\displaystyle \mathbf{P}^{n} \, \mathbf{f}^{n}} \text{,}
 \end{equation}
 %
-where $\mathbf{P}^{n}$ denotes the permutation matrix responsible for rearranging the rows and columns of the stiffness matrix $\mathbf{K}^{n}$. It's noteworthy that the vector $\mathbf{f}^{n}{r}$ is introduced to conveniently represent the forces and moments applied to the nodes' Degrees of Freedom (\acp{DOF}) that are also subject to boundary conditions (\acp{BC}). This vector is henceforth referred to as the "remainder" force vector. The linear system~\eqref{chap5:eq:macrofe} is subsequently solved for the unknowns $\mathbf{d}^{n}{f}$ and $\mathbf{f}^{n}_{s}$ through the following operations
+where $\mathbf{P}^{n}$ denotes the permutation matrix responsible for rearranging the rows and columns of the stiffness matrix $\mathbf{K}^{n}$. It's noteworthy that the vector $\mathbf{f}^{n}{r}$ is introduced to conveniently represent the forces and moments applied to the nodes' Degrees of Freedom (\acp{DOF}) that are also subject to boundary conditions (\acp{BC}). This vector is henceforth referred to as the "remainder" force vector. The linear system~\eqref{app4:eq:macrofe} is subsequently solved for the unknowns $\mathbf{d}^{n}{f}$ and $\mathbf{f}^{n}_{s}$ through the following operations
 %
 \begin{subequations}
-  \label{chap5:eq:macrosol}
+  \label{app4:eq:macrosol}
   \begin{align}
-    \textrm{[solve for $\mathbf{d}^{n}_{f}$]} \qquad &\mathbf{K}^{n}_{ff}\mathbf{d}^{n}_{f} = \mathbf{f}^{n}_{f} - \mathbf{K}^{n}_{fs}\,\mathbf{d}^{n}_{s} \label{chap5:eq:macrodf} \text{,} \\
-    \textrm{[compute $\mathbf{f}^{n}_{s}$]} \qquad &\mathbf{f}^{n}_{s} = \mathbf{K}^{n}_{sf}\,\mathbf{d}^{n}_{f} + \mathbf{K}^{n}_{ss}\,\mathbf{d}^{n}_{s} - \mathbf{f}^{n}_{r} \text{.} \label{chap5:eq:macrosolfs}
+    \textrm{[solve for $\mathbf{d}^{n}_{f}$]} \qquad &\mathbf{K}^{n}_{ff}\mathbf{d}^{n}_{f} = \mathbf{f}^{n}_{f} - \mathbf{K}^{n}_{fs}\,\mathbf{d}^{n}_{s} \label{app4:eq:macrodf} \text{,} \\
+    \textrm{[compute $\mathbf{f}^{n}_{s}$]} \qquad &\mathbf{f}^{n}_{s} = \mathbf{K}^{n}_{sf}\,\mathbf{d}^{n}_{f} + \mathbf{K}^{n}_{ss}\,\mathbf{d}^{n}_{s} - \mathbf{f}^{n}_{r} \text{.} \label{app4:eq:macrosolfs}
   \end{align}
 \end{subequations}
 %
-As will be elucidated later, obtaining a symbolic solution for~\eqref{chap5:eq:macrodf} isn't always feasible due to limitations in software capabilities. In such instances, the numerical solution involves performing a numerical factorization of the $\mathbf{K}^{n}_{ff}$ matrix and evaluating both~\eqref{chap5:eq:macrodf} and~\eqref{chap5:eq:macrosolfs}. If one's sole interest lies in the free displacements $\mathbf{d}^{n}_{f}$ and not in the specified forces (or support reactions) $\mathbf{f}^{n}_{f}$, it suffices to compute the solution for~\eqref{chap5:eq:macrodf} only.
+As will be elucidated later, obtaining a symbolic solution for~\eqref{app4:eq:macrodf} isn't always feasible due to limitations in software capabilities. In such instances, the numerical solution involves performing a numerical factorization of the $\mathbf{K}^{n}_{ff}$ matrix and evaluating both~\eqref{app4:eq:macrodf} and~\eqref{app4:eq:macrosolfs}. If one's sole interest lies in the free displacements $\mathbf{d}^{n}_{f}$ and not in the specified forces (or support reactions) $\mathbf{f}^{n}_{f}$, it suffices to compute the solution for~\eqref{app4:eq:macrodf} only.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
 \section{Software Description}
-\label{chap5:sec:software_description}
+\label{app4:sec:software_description}
 
 This section outlines the implementation of the \TrussMe{} toolbox, which comprises two main components: the symbolic and numerical parts. The symbolic component, developed in \Maple{}, facilitates the symbolic analysis of the structure. Conversely, the numerical component, developed in \Matlab{}, is utilized for numerically evaluating the symbolic expressions generated earlier. Each component is elucidated in detail, accompanied by usage examples.
 
 \subsection{The Symbolic Computation in \Maple{}}
-\label{chap5:subsec:symbolic_computation}
+\label{app4:subsec:symbolic_computation}
 
 As previously stated, the \TrussMe{} package serves as a symbolic implementation of the \ac{DSM} method for assembling and solving structures. The package's interface is designed with the philosophy of offering users a collection of user-friendly functions that can be seamlessly combined to conduct structural analysis. \TrussMe{} is structured to be employed in a step-by-step manner. Users are prompted to define the nodes, elements, and loads of the structure, followed by the generation of the structure's model. To accomplish this, the following procedure is recommended.
 %
@@ -147,20 +168,20 @@ As previously stated, the \TrussMe{} package serves as a symbolic implementation
   \item \textbf{Material Definition}: Define the materials used in the structure, providing information such as name, Young's modulus, Poisson's ratio, and density.
   \item \textbf{Element Definition}: Define the elements connecting the nodes, specifying their names, node connections, reference frames, material properties, and cross-section details. Available element types include spring, rod, beam, or a generic element which serves as a base class for custom element definitions with user-defined stiffness matrices.
   \item \textbf{Load Definition}: Specify the loads acting on the structure, including their names, application nodes, and magnitudes.
-  \item[5a.] \textbf{Model Generation}: Combine the defined nodes, elements, and loads to create a unified model of the structure. This model encapsulates components such as the global stiffness matrix, load vector, displacement vector, and permutation matrix used to reorder the system of equations in the form~\eqref{chap5:eq:macrofe}.
-  \item[5b.] \textbf{Optional: Solvability Check}: Analyze the generated Finite Element (FE) model to ascertain if the structure retains under-constrained \acp{DOF}. This step involves automatically checking the solvability of the system of equations~\eqref{chap5:eq:macrodf}. If the system is singular but solvable, indicating zero entries in the stiffness matrix and load vector corresponding to under-constrained \acp{DOF}, the \TrussMe{} package can identify and address this issue, issuing a warning message to notify the user.
+  \item[5a.] \textbf{Model Generation}: Combine the defined nodes, elements, and loads to create a unified model of the structure. This model encapsulates components such as the global stiffness matrix, load vector, displacement vector, and permutation matrix used to reorder the system of equations in the form~\eqref{app4:eq:macrofe}.
+  \item[5b.] \textbf{Optional: Solvability Check}: Analyze the generated Finite Element (FE) model to ascertain if the structure retains under-constrained \acp{DOF}. This step involves automatically checking the solvability of the system of equations~\eqref{app4:eq:macrodf}. If the system is singular but solvable, indicating zero entries in the stiffness matrix and load vector corresponding to under-constrained \acp{DOF}, the \TrussMe{} package can identify and address this issue, issuing a warning message to notify the user.
   \item[6.] \textbf{System Solution}: Solve the system of equations to obtain the solution in symbolic form. If a closed-form solution is unavailable or if numerical evaluation is desired, the code-generation process can be employed to obtain the solution in numerical form.
 \end{enumerate}
 
-\subsubsection*{\TrussMe{} Symbolic Computation Usage Example}
+\subsubsection{Symbolic Computation Usage Example}
 
-Consider the depicted simple structure illustrated in Figure~\ref{chap5:fig:usage_example}. This structure comprises three nodes ($N_1$, $N_2$, $N_3$) interconnected by two elements ($E_1$, $E_1$). Nodes $N_1$ and $N_3$ are fully constrained in all Degrees of Freedom (\acp{DOF}), while node $N_2$ serves as a hinge connecting the two elements. A vertical load $F$ is applied at node $N_2$. Both elements are beams characterized by a cross-section $A$ and moment of inertia $I_z$, and are constructed from a material featuring Young's modulus $E$.
+Consider the depicted simple structure illustrated in Figure~\ref{app4:fig:usage_example}. This structure comprises three nodes ($N_1$, $N_2$, $N_3$) interconnected by two elements ($E_1$, $E_1$). Nodes $N_1$ and $N_3$ are fully constrained in all Degrees of Freedom (\acp{DOF}), while node $N_2$ serves as a hinge connecting the two elements. A vertical load $F$ is applied at node $N_2$. Both elements are beams characterized by a cross-section $A$ and moment of inertia $I_z$, and are constructed from a material featuring Young's modulus $E$.
 
-\begin{figure}[!ht]
+\begin{figure}[htb]
   \centering
-  \includegraphics[width=0.7\textwidth]{./figures/chapter_5/usage_example.eps}
+  \includegraphics[width=0.7\textwidth]{./figures/appendix_4/usage_example.eps}
   \caption{Simple structure used to demonstrate the usage of the \TrussMe{} package.}
-  \label{chap5:fig:usage_example}
+  \label{app4:fig:usage_example}
 \end{figure}
 
 To describe the structure in \TrussMe{}, we begin by defining the nodes. The \texttt{MakeNode} function is utilized for this purpose
@@ -206,7 +227,7 @@ Subsequently, the \ac{FE} model of the structure can be generated using the \tex
 > SolveFEM(fem, use_LEM=false, use_LAST=false):
 \end{verbatim}
 %
-When using the \texttt{tryhard} flag, the solvability check described in step (5b) of the list above is activated. If the \LEM{} and \LAST{} packages are preferred for solving the linear system of equations, the \texttt{use_LEM} and \texttt{use_LAST} flags must be set to \texttt{true}. In such cases, the solution may be obtained in a veiled form. To reveal the solution, the \texttt{use_LEM} flag must be set to \texttt{false}. Once the linear system of equations is solved, the solution is stored in the \texttt{fem} table.
+When using the \texttt{tryhard} flag, the solvability check described in step (5b) of the list above is activated. If the \LEM{} and \LAST{} packages are preferred for solving the linear system of equations, the \texttt{use\_LEM} and \texttt{use\_LAST} flags must be set to \texttt{true}. In such cases, the solution may be obtained in a veiled form. To reveal the solution, the \texttt{use\_LEM} flag must be set to \texttt{false}. Once the linear system of equations is solved, the solution is stored in the \texttt{fem} table.
 %
 \begin{verbatim}
 > f = fem["f"]^%T; d = fem["d"]^%T;
@@ -222,7 +243,7 @@ When using the \texttt{tryhard} flag, the solvability check described in step (5
   \end{matrix}
 \end{equation*}
 %
-To enhance performance, the \TrussMe{} package is designed to complement the \LEM{} and \LAST{} packages, which help manage expression expansion during the symbolic solution procedure. Detailed instructions on utilizing these packages can be found in Section~\ref{chap5:sec:lem} and~\ref{chap5:sec:last}, as well as in their respective documentation~\cite{lem2023source, last}. If both libraries are unavailable, the toolbox defaults to utilizing the linear algebra routines built into \Maple{}.
+To enhance performance, the \TrussMe{} package is designed to complement the \LEM{} and \LAST{} packages, which help manage expression expansion during the symbolic solution procedure. Detailed instructions on utilizing these packages can be found in Section~\ref{app4:sec:lem} and~\ref{app4:sec:last}, as well as in their respective documentation~\cite{lem, last}. If both libraries are unavailable, the toolbox defaults to utilizing the linear algebra routines built into \Maple{}.
 
 In cases where no symbolic solution is attainable or if the user prefers to assess the solution numerically, the \texttt{GenerateMatlabCode} function can be employed.
 %
@@ -232,12 +253,12 @@ In cases where no symbolic solution is attainable or if the user prefers to asse
     L_2=1.0]);
 \end{verbatim}
 %
-This function creates the \texttt{FemClass.m} file in the \texttt{./dir/} directory, which contains a class definition of the aforementioned \ac{FE} model. During the code generation process, users can establish default class properties in the \texttt{data} field and variable parameters in the \texttt{vars} field. The latter are intended to represent parameters that may vary during the structure analysis, such as the load magnitude $P$. Further insights into the generated class and its application are elaborated in Section~\ref{chap5:subsec:numerical_computation}.
+This function creates the \texttt{FemClass.m} file in the \texttt{./dir/} directory, which contains a class definition of the aforementioned \ac{FE} model. During the code generation process, users can establish default class properties in the \texttt{data} field and variable parameters in the \texttt{vars} field. The latter are intended to represent parameters that may vary during the structure analysis, such as the load magnitude $P$. Further insights into the generated class and its application are elaborated in Section~\ref{app4:subsec:numerical_computation}.
 
 \subsection{The Numerical Computation in \Matlab{}}
-\label{chap5:subsec:numerical_computation}
+\label{app4:subsec:numerical_computation}
 
-Since the symbolic solution of~\eqref{chap5:eq:macrodf} may not always be feasible, users have the option to employ a numerical solution. This involves numerically factorizing the $\mathbf{K}^{n}_{ff}$ matrix and evaluating~\eqref{chap5:eq:macrosol}. The numerical solution can be achieved within the \Maple{} environment through variable substitution or in \Matlab{} post the code generation process. In the latter scenario, the \TrussMe{} \Matlab{} toolbox comes into play. This toolbox is built upon the \texttt{TrussMe.System} base class, which is utilized to define the components of~\eqref{chap5:eq:macrosol} and to establish a unified framework that can be leveraged by inherited classes. Within this abstract class, various methods are present, including several virtual methods that need to be implemented in the inherited classes: \\[0.5em]
+Since the symbolic solution of~\eqref{app4:eq:macrodf} may not always be feasible, users have the option to employ a numerical solution. This involves numerically factorizing the $\mathbf{K}^{n}_{ff}$ matrix and evaluating~\eqref{app4:eq:macrosol}. The numerical solution can be achieved within the \Maple{} environment through variable substitution or in \Matlab{} post the code generation process. In the latter scenario, the \TrussMe{} \Matlab{} toolbox comes into play. This toolbox is built upon the \texttt{TrussMe.System} base class, which is utilized to define the components of~\eqref{app4:eq:macrosol} and to establish a unified framework that can be leveraged by inherited classes. Within this abstract class, various methods are present, including several virtual methods that need to be implemented in the inherited classes: \\[0.5em]
 %
 \begin{minipage}[t]{0.49\textwidth}
   \begin{itemize}
@@ -267,7 +288,7 @@ Since the symbolic solution of~\eqref{chap5:eq:macrodf} may not always be feasib
 %
 where (*) denotes that the functionality is accessible only when the symbolic solution of the system is available; otherwise, an empty vector is returned.
 
-\subsubsection*{\TrussMe{} Numerical Computation Usage Example}
+\subsubsection{Numerical Computation Usage Example}
 
 The \TrussMe{} \Matlab{} toolbox serves to numerically assess the problem's solution. Utilizing the toolbox is straightforward, particularly when the code is generated using the \TrussMe{} \Maple{} package. Suppose we have generated the \texttt{FemClass.m} file through the \TrussMe{} \Maple{} package; this file encompasses the class definition of the structure. To employ the generated class, we first instantiate it.
 %
@@ -292,7 +313,7 @@ Following instantiation, we can manipulate the internal data values either by se
 >>> data = fem.get_data();
 \end{verbatim}
 %
-Once instantiated, we can acquire the components of the system of equations~\eqref{chap5:eq:macrosol} through the following methods.
+Once instantiated, we can acquire the components of the system of equations~\eqref{app4:eq:macrosol} through the following methods.
 %
 \begin{verbatim}
 >>> x = [1000];
@@ -301,7 +322,7 @@ Once instantiated, we can acquire the components of the system of equations~\eqr
 >>> f = fem.f(x,v);
 \end{verbatim}
 %
-It's worth noting that the vector \texttt{x} encompasses the system's parameters, such as the load value $P$ of \SSI{1000}{\newton}, while the vector \texttt{v} holds the values of the veiling variables that might have been retained during the symbolic solution computation as per \ref{chap5:sec:lem} and \ref{chap5:sec:last}. In cases where the symbolic solution is unavailable, numerical computation becomes an alternative.
+It's worth noting that the vector \texttt{x} encompasses the system's parameters, such as the load value $P$ of \SSI{1000}{\newton}, while the vector \texttt{v} holds the values of the veiling variables that might have been retained during the symbolic solution computation as per \ref{app4:sec:lem} and \ref{app4:sec:last}. In cases where the symbolic solution is unavailable, numerical computation becomes an alternative.
 %
 \begin{verbatim}
 >>> x = [1000];
@@ -310,80 +331,80 @@ It's worth noting that the vector \texttt{x} encompasses the system's parameters
 >>> f = fem.compute_f(x,v);
 \end{verbatim}
 %
-The least squares solution can also be acquired by incorporating the tolerance value and maximum number of iterations into the \texttt{compute_d} and \texttt{compute_f} methods, such as \texttt{fem.compute_f(x,v,tol,iter)}. Alternative numerical solution methods, relying on constrained minimization of energy functional, can be utilized to solve the system of equations~\eqref{chap5:eq:macrosol}~\cite{hutton2004fundamentals}. However, these methods are not currently integrated into the \TrussMe{} \Matlab{} toolbox.
+The least squares solution can also be acquired by incorporating the tolerance value and maximum number of iterations into the \texttt{compute\_d} and \texttt{compute\_f} methods, such as \texttt{fem.compute\_f(x,v,tol,iter)}. Alternative numerical solution methods, relying on constrained minimization of energy functional, can be utilized to solve the system of equations~\eqref{app4:eq:macrosol}~\cite{hutton2004fundamentals}. However, these methods are not currently integrated into the \TrussMe{} \Matlab{} toolbox.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
 \section{Example Applications}
-\label{chap5:sec:example_applications}
+\label{app4:sec:example_applications}
 
-In this section, we briefly showcase two example applications of the \TrussMe{} toolbox. All examples revolve around the rear left double wishbone suspension of the Formula SAE \emph{E-Agle Trento Racing Team} (\emph{University of Trento}) vehicle~\citep{eagle}. The suspension system is depicted in Figure~\ref{chap5:fig:suspension}. On the left side, a rendering of the system is shown along with the names of its main components, while on the right side, a schematic representation of the suspension system is presented. In the subsequent paragraphs, we delve into how the \TrussMe{} toolbox can facilitate the design optimization of the suspension system and effectively incorporate the kinematics and compliance of the suspension system through model reduction. The outcomes obtained using the \TrussMe{} toolbox are validated against results obtained from the commercial software \Ansys{}. For a comprehensive analysis of the results from the example applications, please refer to~\cite{larcher2024symbolic}.
+In this section, we briefly showcase two example applications of the \TrussMe{} toolbox. All examples revolve around the rear left double wishbone suspension of the Formula SAE \emph{E-Agle Trento Racing Team} (\emph{University of Trento}) vehicle~\citep{eagle}. The suspension system is depicted in Figure~\ref{app4:fig:suspension}. On the left side, a rendering of the system is shown along with the names of its main components, while on the right side, a schematic representation of the suspension system is presented. In the subsequent paragraphs, we delve into how the \TrussMe{} toolbox can facilitate the design optimization of the suspension system and effectively incorporate the kinematics and compliance of the suspension system through model reduction. The outcomes obtained using the \TrussMe{} toolbox are validated against results obtained from the commercial software \Ansys{}. For a comprehensive analysis of the results from the example applications, please refer to~\cite{larcher2024symbolic}.
 
 Before delving into the example applications, it's essential to clarify the workflow involving the \TrussMe{} package. In this scenario, the \TrussMe{} package is utilized to symbolically assemble the structure and simplify the expressions of its linear system components. Subsequently, the symbolic code is exported into a \Matlab{} class, where internal data and input parameters of the system are specified. This \Matlab{} class is then employed to numerically evaluate the solution of the problem within the \Simulink{} environment. This approach becomes necessary due to the significant slowdown of the symbolic kernel caused by the size and complexity of the resulting linear system.
 
-\begin{figure}[!ht]
+\begin{figure}[htb]
   \centering
-  \includegraphics[width=0.5\textwidth, trim={2cm 2cm 2.5cm 2cm}, clip]{./figures/chapter_5/rendering.eps}
-  \includegraphics[width=0.4\textwidth]{./figures/chapter_5/constraints.eps}
+  \includegraphics[width=0.5\textwidth, trim={2cm 2cm 2.5cm 2cm}, clip]{./figures/appendix_4/rendering.eps}
+  \includegraphics[width=0.4\textwidth]{./figures/appendix_4/constraints.eps}
   \caption{Rendering and schematic representation of the rear left double wishbone suspension. The spherical and cylindrical constraints are respectively represented by the symbols \circled{S} and \circled{C}.}
-  \label{chap5:fig:suspension}
+  \label{app4:fig:suspension}
 \end{figure}
 
 \subsection{Design Optimization}
 
-Mechanisms involving motion are prevalent in engineering applications. Typically, the design of such mechanisms assumes rigid bodies. However, in certain instances, the flexibility of the mechanism can significantly impact its performance. Optimization emerges as a potent tool for designing structures with optimal performance. The \TrussMe{} toolbox facilitates shape optimization aimed at reducing the compliance of the mechanism and minimizing internal forces. Specifically, the presented optimizations aim to minimize both the wheel compliance hub angle $\theta_z$ and the tie rod axial force $F_a$ by varying the $x$- and $z$- coordinates of the hard point connecting the tie rod to the chassis, referred to as point $P_5$ according to~\cite{larcher2024symbolic}. The results of these optimizations are depicted in Figure~\ref{chap5:fig:optimization}. These optimization demonstrations underscore that the current design does not represent the optimal solution in terms of minimum tie rod axial force and minimum wheel compliance hub angle. Optimum conditions are attained through a combination of values indicated by the green point. It's noteworthy that these optimization examples serve solely as a proof of concept for the model's parametric characteristics. In a real-world scenario, a multi-objective optimization considering compliance, structural analysis, and kinematic characteristics of the suspension would be imperative.
+Mechanisms involving motion are prevalent in engineering applications. Typically, the design of such mechanisms assumes rigid bodies. However, in certain instances, the flexibility of the mechanism can significantly impact its performance. Optimization emerges as a potent tool for designing structures with optimal performance. The \TrussMe{} toolbox facilitates shape optimization aimed at reducing the compliance of the mechanism and minimizing internal forces. Specifically, the presented optimizations aim to minimize both the wheel compliance hub angle $\theta_z$ and the tie rod axial force $F_a$ by varying the $x$- and $z$- coordinates of the hard point connecting the tie rod to the chassis, referred to as point $P_5$ according to~\cite{larcher2024symbolic}. The results of these optimizations are depicted in Figure~\ref{app4:fig:optimization}. These optimization demonstrations underscore that the current design does not represent the optimal solution in terms of minimum tie rod axial force and minimum wheel compliance hub angle. Optimum conditions are attained through a combination of values indicated by the green point. It's noteworthy that these optimization examples serve solely as a proof of concept for the model's parametric characteristics. In a real-world scenario, a multi-objective optimization considering compliance, structural analysis, and kinematic characteristics of the suspension would be imperative.
 
-\begin{figure}[!ht]
+\begin{figure}[htb]
   \centering
     \begin{subfigure}[t]{0.49\textwidth}
-    \small{\includetikz{./figures/chapter_5/optimization_hub_angle.tex}}
+    \small{\includetikz{./figures/appendix_4/optimization_hub_angle.tex}}
     \caption{Wheel hub compliance angle $\theta_z$ dependency from the $x$- and $z$- coordinates of the $P_5$ hard point.}
-    \label{chap5:fig:variation_theta_z}
+    \label{app4:fig:variation_theta_z}
   \end{subfigure}
   \hfill
   \begin{subfigure}[t]{0.49\textwidth}
     \centering
-    \small{\includetikz{./figures/chapter_5/optimization_tie_force.tex}}
+    \small{\includetikz{./figures/appendix_4/optimization_tie_force.tex}}
     \caption{Tie rod axial force $F_a$ dependency from the $x$- and $z$- coordinates of the $P_5$ hard point.}
-    \label{chap5:fig:variation_force_tie}
+    \label{app4:fig:variation_force_tie}
   \end{subfigure}
   \caption{Optimization is conducted on the coordinates of point $P_5$, specifically its $x$- and $z$-coordinates, with the aim of minimizing both the wheel compliance hub angle $\theta_z$ and the tie rod axial force $F_a$. The experiments are conducted under the application of a constant torque $M_z$ of \SI{0.4}{\kilo\newton\meter}. \emph{Marks legend:} {\color{mycolor2}\raisebox{-.15pt}{\Large$\bullet$}} current design, {\color{mycolor5}\raisebox{-.15pt}{\Large$\bullet$}} optimality condition.}
-  \label{chap5:fig:optimization}
+  \label{app4:fig:optimization}
 \end{figure}
 
 \begin{figure}[htp!]
   \centering
-  \small{\includetikz{./figures/chapter_5/suspension_static_deformations.tex}}
+  \small{\includetikz{./figures/appendix_4/suspension_static_deformations.tex}}
   \caption{The figure illustrates a comparison of displacements and rotations of the wheel carrier reference frame about the $x$-, $y$-, and $z$-axes for various loads applied at the wheel hub. The results are obtained using both the \TrussMe{} toolbox (\emph{lines}) and the \Ansys{} finite element analysis software (\emph{dots}). On the left-hand side of the figure, forces are applied while torques are null, whereas on the right-hand side, torques are applied while forces are null.}
-  \label{chap5:fig:suspension_static_results}
+  \label{app4:fig:suspension_static_results}
 \end{figure}
 
-\begin{figure}[!ht]
+\begin{figure}[htb]
   \centering
   \begin{minipage}[c]{0.575\linewidth}
-    \small{\includetikz{./figures/chapter_5/suspension_dynamic_deformations.tex}}
+    \small{\includetikz{./figures/appendix_4/suspension_dynamic_deformations.tex}}
   \end{minipage}
   \begin{minipage}[c]{0.125\linewidth}
     \vspace{-2.5em}
     \begin{center}
-      \includegraphics[width=1.0\linewidth]{./figures/chapter_5/mode1.png} \\ \small{$f_1 = \SSI{7.6}{\hertz}$} \\[0.8in]
-      \includegraphics[width=1.0\linewidth]{./figures/chapter_5/mode2.png} \\ \small{$f_2 = \SSI{88.5}{\hertz}$} \\[0.8in]
-      \includegraphics[width=1.0\linewidth]{./figures/chapter_5/mode3.png} \\ \small{$f_3 = \SSI{159.7}{\hertz}$} \\
+      \includegraphics[width=1.0\linewidth]{./figures/appendix_4/mode1.png} \\ \small{$f_1 = \SSI{7.6}{\hertz}$} \\[0.8in]
+      \includegraphics[width=1.0\linewidth]{./figures/appendix_4/mode2.png} \\ \small{$f_2 = \SSI{88.5}{\hertz}$} \\[0.8in]
+      \includegraphics[width=1.0\linewidth]{./figures/appendix_4/mode3.png} \\ \small{$f_3 = \SSI{159.7}{\hertz}$} \\
     \end{center}
   \end{minipage}
   \caption{Frequency response analysis of the suspension model is conducted, with tests performed under the equilibrium between the suspension system and a vertical force of \SI{500}{\newton} applied at the wheel hub. Frequency responses are assessed by applying input forces/torques at the wheel hub in the form of a linear chirp spanning frequencies from \SIrange{0}{200}{\hertz}, with a constant amplitude of \SI{5}{\newton}/\SI{5}{\newton\meter}. Adjacent to the Bode plots, on the right-hand side, the first three modal shapes of the suspension are depicted along with their corresponding frequencies. \emph{Legend:} {\color{mycolor1}$\blacksquare$} \Simulink{} multi-body simulation with full compliance dynamics contribution, {\color{mycolor2}$\blacksquare$} \Simulink{} multi-body with steady-state compliance contribution, {\color{mycolor3}$\blacksquare$} \Ansys{} \ac{FE} modal analysis.}
-  \label{chap5:fig:suspension_dynamic_results}
+  \label{app4:fig:suspension_dynamic_results}
 \end{figure}
 
 \subsection{Efficient Simulation of Parametric Mechanisms Using Model Reduction}
 
-This example application explores the inclusion of suspension compliance in vehicle simulation using a hybrid symbolic-numerical approach. This methodology facilitates easy generalization and real-time modification of model parameters without the need for code regeneration. The suspension's dynamic characteristics are modeled through a system of differential-algebraic equations, integrated using methods described in~\cite{larcher2024symbolic}. Depending on the modeling approach, suspension pick-up points' positions and tire force at the hub are extracted either through semi-analytical solutions or numerical integration. These are then utilized to calculate the suspension's compliance characteristics. The compliance contribution can be incorporated into the overall suspension system displacement as either a \emph{steady-state} or \emph{full dynamic} contribution~\cite{larcher2024symbolic}. The former approach reduces computational costs, while the latter yields accurate simulations at a higher computational expense. Results from this approach are compared with simulation data from commercial software \Ansys{}, showing good agreement under both static (\figurename{}\ref{chap5:fig:suspension_static_results}) and dynamic conditions (\figurename{}\ref{chap5:fig:suspension_dynamic_results}).
+This example application explores the inclusion of suspension compliance in vehicle simulation using a hybrid symbolic-numerical approach. This methodology facilitates easy generalization and real-time modification of model parameters without the need for code regeneration. The suspension's dynamic characteristics are modeled through a system of differential-algebraic equations, integrated using methods described in~\cite{larcher2024symbolic}. Depending on the modeling approach, suspension pick-up points' positions and tire force at the hub are extracted either through semi-analytical solutions or numerical integration. These are then utilized to calculate the suspension's compliance characteristics. The compliance contribution can be incorporated into the overall suspension system displacement as either a \emph{steady-state} or \emph{full dynamic} contribution~\cite{larcher2024symbolic}. The former approach reduces computational costs, while the latter yields accurate simulations at a higher computational expense. Results from this approach are compared with simulation data from commercial software \Ansys{}, showing good agreement under both static (\figurename{}\ref{app4:fig:suspension_static_results}) and dynamic conditions (\figurename{}\ref{app4:fig:suspension_dynamic_results}).
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-\section{Conclusions}
-\label{chap5:sec:conclusion}
+%\section{Conclusions}
+%\label{app4:sec:conclusion}
 
-This paper introduces the \TrussMe{} toolbox, a symbolic-numerical toolbox for structural analysis. Based on the \ac{DSM}, it proves valuable for modeling, simulating, and optimizing structures. The toolbox comprises two parts: a symbolic manipulation component implemented as a \Maple{} package, responsible for assembling and simplifying linear systems of equations. Symbolic code is exported to a \Matlab{} class via code generation. The numerical component, implemented in \Matlab{}, evaluates the problem solution numerically if a symbolic solution is unavailable. Validation of the \TrussMe{} toolbox is demonstrated through two example applications. Additionally, difficulties in computing the symbolic solution of linear systems are mitigated by optional tools like \LEM{}\cite{lem} and \LAST{}\cite{last} \Maple{} packages, which are presented for use alongside the \TrussMe{} toolbox.
+%This chapter introduces the \TrussMe{} toolbox, a symbolic-numerical toolbox for structural analysis. Based on the \ac{DSM}, it proves valuable for modeling, simulating, and optimizing structures. The toolbox comprises two parts: a symbolic manipulation component implemented as a \Maple{} package, responsible for assembling and simplifying linear systems of equations. Symbolic code is exported to a \Matlab{} class via code generation. The numerical component, implemented in \Matlab{}, evaluates the problem solution numerically if a symbolic solution is unavailable. Validation of the \TrussMe{} toolbox is demonstrated through two example applications. Additionally, difficulties in computing the symbolic solution of linear systems are mitigated by optional tools like \LEM{}\cite{lem} and \LAST{}\cite{last} \Maple{} packages, which are presented for use alongside the \TrussMe{} toolbox.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
