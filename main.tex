@@ -77,7 +77,7 @@
 \usepackage{soul}                % to strike-through text
 \usepackage{tcolorbox}           % create a colored box wrapping the text
 \usepackage[final]{microtype}    % improves the spacing between words and letters
-\usepackage[toc, page]{appendix} % to create appendices
+\usepackage[toc]{appendix}       % to create appendices
 \usepackage[english]{babel}      % useful to interpret the language of the document
 \usepackage[T1]{fontenc}         % to write correctly in Italian
 \usepackage[utf8]{inputenc}      % to correctly write accented letter and other symbols
@@ -118,22 +118,25 @@
   }}{}
 
 % Fonts ------------------------------------------------------------------------
-\usepackage{lmodern}              % text font
-%\usepackage{newpxtext}             % text font
-%\usepackage{newpxmath}             % text font
-%\usepackage{mathspec}            % font selection for XeLaTeX
-%\defaultfontfeatures{Mapping=tex-text}       % to support TeX conventions
-%\setallmainfonts{Adobe Caslon Pro}           % normal document font
-%\setallsansfonts[Scale=1.0]{Montserrat}      % Optima % sans-serif font (\textsf{})
-%\setallmonofonts[Scale=0.75]{JetBrains Mono} % mono spaced font (\texttt{})
-\usepackage[it,bf]{titlesec}
+%\usepackage{lmodern}             % text font
+\usepackage{mathspec}            % font selection for XeLaTeX
+\defaultfontfeatures{Mapping=tex-text}       % to support TeX conventions
+\setallmainfonts{Adobe Caslon Pro}           % normal document font
+\setallsansfonts[Scale=1.0]{HvDTrial Brandon Grotesque}      % Optima % sans-serif font (\textsf{})
+\setallmonofonts[Scale=0.75]{JetBrains Mono} % mono spaced font (\texttt{})
+\usepackage[sf,bf]{titlesec}     % to customize the titles of the document
 \titleformat
 {\chapter}                       % command
 [display]                        % shape
-{\normalfont\center\Huge\bfseries}      % format
-{\chaptertitlename\ \thechapter\\[2.5ex]---} % label
-{2.5ex}                           % sep
-{\Huge}[\vspace{2ex}]  % before-code
+{\sffamily\center\Huge\bfseries}      % format
+{\MakeUppercase{\chaptertitlename}\quad\MakeUppercase{\thechapter}\\[0.5ex]$\cdot\cdot\cdot$} % label
+{0.5ex}                           % sep
+{\Huge\MakeUppercase}[\vspace{2ex}]  % before-code
+\titleformat*{\section}{\sffamily\Large\bfseries\MakeUppercase}
+\titleformat*{\subsection}{\sffamily\large\bfseries\MakeUppercase}
+\titleformat*{\subsubsection}{\sffamily\bfseries\MakeUppercase}
+\titleformat*{\paragraph}{\sffamily\bfseries\MakeUppercase}
+\titleformat*{\subparagraph}{\sffamily\bfseries\MakeUppercase}
 \usepackage{textgreek}           % to write greek letters in text mode
 \usepackage{fontawesome5}         % to use icons in the document
 
@@ -236,7 +239,7 @@
 %headsep=0.25in, headheight=20pt, heightrounded
 
 % Write 10^0 instead of 1 (requires 'siunitx') ---------------------------------
-\sisetup{retain-zero-exponent=false}
+\sisetup{retain-zero-exponent=false, parse-numbers=false, per-mode=symbol}
 
 % Modify layout of command SIrange (requires 'siunitx') ------------------------
 \sisetup{range-phrase = \text{ -- }}
@@ -244,6 +247,11 @@
 % Set the indent length to zero ------------------------------------------------
 \setlength\parindent{0pt}
 \setlength\itemsep{0pt}
+
+% Set new units (not present in the 'siunitx' package) -------------------------
+\DeclareSIUnit\feet{ft}
+\DeclareSIUnit\foot{ft}
+\DeclareSIUnit\slugs{slugs}
 
 % Set the path of the figure files ---------------------------------------------
 \graphicspath{
@@ -309,8 +317,9 @@
 \newcommand{\eg}{\emph{e.g.}}
 \newcommand{\ie}{\emph{i.e.}}
 \newcommand{\pow}{\ensuremath{^{\wedge}}}
-\newcommand{\SSI}[2]{\SI[per-mode=symbol]{#1}{#2}}
-\newcommand{\RSI}[3]{\lbrack\num{#1}{,}\ \num{#2}\rbrack\,\si[per-mode=symbol]{#3}}
+\newcommand{\USI}[1]{\unit{#1}}
+\newcommand{\SSI}[2]{\SI{#1}{#2}}
+\newcommand{\RSI}[3]{\lbrack\num{#1}{,}\ \num{#2}\rbrack\,\USI{#3}}
 
 % Software programs
 \newcommand{\MapleSoft}{\textsc{Maplesoft}\textsuperscript{\textregistered}}
@@ -548,68 +557,80 @@
 \addcontentsline{toc}{chapter}{List of Abbreviations}
 \chapter*{List of Abbreviations}
 \markboth{LIST OF ABBREVIATIONS}{}
-\begin{acronym}[XXXXXX]
-  \acro{2D}{Two-Dimensional}
-  \acro{3D}{Three-Dimensional}
-  \acro{BSD}{Berkeley Software Distribution}
-  \acro{BC}{Boundary Condition}å
-  \acro{ADAS}{Advanced Driver-Assistance Systems}
-  \acro{RDF}{Road Data Format}
-  \acro{HIL}{Hardware In the Loop}
-  \acro{SIL}{Software In the Loop}
-  \acro{DIL}{Driver In the Loop}
-  \acro{MBS}{Multibody System}
-  \acro{MB}{Multibody}
-  \acro{FEM}{Finite Element Method}
-  \acro{FE}{Finite Element}
-  \acro{DE}{Discrete Element}
-  \acro{FEA}{Finite Element Analysis}
-  \acro{SRT}{Soft Real-Time}
-  \acro{HRT}{Hard Real-Time}
-  \acro{RT}{Real-Time}
-  \acro{ODE}{Ordinary Differential Equation}
-  \acro{DAE}{Differential Algebraic Equation}
-  \acro{BLAS}{Basic Linear Algebra Subprograms}
-  \acro{LAPACK}{Linear Algebra PACKage}
-  \acro{DSM}{Direct Stiffness Method}
-  \acro{SA}{Structural Analysis}
-  \acro{LU}{Lower-Upper}
-  \acro{FFLU}{Fraction-Free Lower-Upper}
-  \acro{GJ}{Gauss-Jordan}
-  \acro{RTF}{Real-Time Factor}
-  \acro{API}{Application Programming Interface}
-  \acro{GUI}{Graphical User Interface}
-  \acro{CPU}{Central Processing Unit}
-  \acro{GPU}{Graphics Processing Unit}
-  \acro{RAM}{Random Access Memory}
-  \acro{AABB}{Axis-Aligned Bounding Box}
-  \acro{BVH}{Bounding Volume Hierarchy}
-  \acro{BVP}{Bounding Volume Primitive}
-  \acro{OS}{Operative System}
-  \acro{UHD}{Ultra High Definition}
-  \acro{MF}{\textsc{Magic Formula}}
-  \acro{DOF}{Degree of Freedom}
-  \acro{RTF}{Real-Time Factor}
-  \acro{CAS}{Computer Algebra System}
-  \acro{SCAS}{Symbolic Computer Algebra System}
-  \acro{SMS}{Symbolic Manipulation System}
-  \acro{MPL}{Mathematical Pseudo-Language}
-  \acro{CERN}{Conseil Europ{\'e}en pour la Recherche Nucl{\'e}aire}
-  \acro{RMS}{Root Mean Square}
-  \acro{TIRF}{Tire Research Facility}
-  \acro{FSAE TTC}{Formula SAE Tire Test Consortium}
-\end{acronym}
+\begin{multicols}{2}
+  \begin{acronym}[XXXXXX]
+    \setlength{\itemsep}{-0.5em}
+    \acro{OC}{Optimal Control}
+    \acro{OCP}{Optimal Control Problem}
+    \acro{TPBVP}{Two-Point Boundary Value Problem}
+    \acro{NASA}{National Aeronautics and Space Administration}
+    \acro{2D}{Two-Dimensional}
+    \acro{3D}{Three-Dimensional}
+    \acro{BSD}{Berkeley Software Distribution}
+    \acro{BC}{Boundary Condition}å
+    \acro{ADAS}{Advanced Driver-Assistance Systems}
+    \acro{RDF}{Road Data Format}
+    \acro{HIL}{Hardware In the Loop}
+    \acro{SIL}{Software In the Loop}
+    \acro{DIL}{Driver In the Loop}
+    \acro{MBS}{Multi-body System}
+    \acro{MB}{Multi-body}
+    \acro{FEM}{Finite Element Method}
+    \acro{FE}{Finite Element}
+    \acro{DE}{Discrete Element}
+    \acro{FEA}{Finite Element Analysis}
+    \acro{SRT}{Soft Real-Time}
+    \acro{HRT}{Hard Real-Time}
+    \acro{RT}{Real-Time}
+    \acro{MB}{Multi-body}
+    \acro{MBD}{Multi-body Dynamics}
+    \acro{ODE}{Ordinary Differential Equation}
+    \acro{DAE}{Differential Algebraic Equation}
+    \acro{BLAS}{Basic Linear Algebra Subprograms}
+    \acro{LAPACK}{Linear Algebra PACKage}
+    \acro{DSM}{Direct Stiffness Method}
+    \acro{SA}{Structural Analysis}
+    \acro{LU}{Lower-Upper}
+    \acro{FFLU}{Fraction-Free Lower-Upper}
+    \acro{GJ}{Gauss-Jordan}
+    \acro{RTF}{Real-Time Factor}
+    \acro{API}{Application Programming Interface}
+    \acro{GUI}{Graphical User Interface}
+    \acro{CPU}{Central Processing Unit}
+    \acro{GPU}{Graphics Processing Unit}
+    \acro{RAM}{Random Access Memory}
+    \acro{AABB}{Axis-Aligned Bounding Box}
+    \acro{BVH}{Bounding Volume Hierarchy}
+    \acro{BVP}{Bounding Volume Primitive}
+    \acro{OS}{Operative System}
+    \acro{UHD}{Ultra High Definition}
+    \acro{MF}{\textsc{Magic Formula}}
+    \acro{DOF}{Degree of Freedom}
+    \acro{RTF}{Real-Time Factor}
+    \acro{CAS}{Computer Algebra System}
+    \acro{SCAS}{Symbolic Computer Algebra System}
+    \acro{SMS}{Symbolic Manipulation System}
+    \acro{MPL}{Mathematical Pseudo-Language}
+    \acro{CERN}{Conseil Europ{\'e}en pour la Recherche Nucl{\'e}aire}
+    \acro{RMS}{Root Mean Square}
+    \acro{TIRF}{Tire Research Facility}
+    \acro{SAE}{Society of Automotive Engineers}
+    \acro{FSAE}{Formula SAE}
+    \acro{TTC}{Tire Test Consortium}
+    \acro{TPPC}{Trajectory Prescribed Path Control}
+  \end{acronym}
+\end{multicols}
 
 % Mainmatter -------------------------------------------------------------------
-\include{chapters/chapter_1}
-\include{chapters/chapter_2}
+%\include{chapters/chapter_1}
+%\include{chapters/chapter_2}
 \include{chapters/chapter_3}
 \include{chapters/chapter_4}
 \begin{appendices}
 \include{appendices/appendix_1}
-\include{appendices/appendix_2}
-\include{appendices/appendix_3}
-\include{appendices/appendix_4}
+%\include{appendices/appendix_2}
+%\include{appendices/appendix_3}
+%\include{appendices/appendix_4}
 \end{appendices}
 
 % Bibliography -----------------------------------------------------------------

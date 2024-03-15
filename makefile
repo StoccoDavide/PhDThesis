@@ -29,14 +29,14 @@ dir:
 	mkdir -p out/acknowledgements
 	mkdir -p out/appendices
 	mkdir -p out/chapters
-	mkdir -p out/figures/appendix_1
 	mkdir -p out/figures/chapter_1
 	mkdir -p out/figures/chapter_2
 	mkdir -p out/figures/chapter_3
 	mkdir -p out/figures/chapter_4
-	mkdir -p out/figures/chapter_5
-	mkdir -p out/figures/chapter_6
-	mkdir -p out/figures/chapter_7
+	mkdir -p out/figures/appendix_1
+	mkdir -p out/figures/appendix_2
+	mkdir -p out/figures/appendix_3
+	mkdir -p out/figures/appendix_4
 	mkdir -p out/figures/externalized
 	mkdir -p out/figures/frontmatter
 	mkdir -p out/frontmatter
