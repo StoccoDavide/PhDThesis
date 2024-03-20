@@ -15,5 +15,6 @@
 *.synctex.gz(busy)
 *-eps-converted-to.pdf
 *main.pdf
+*autosave.ipe
 figures/externalized/
 out/

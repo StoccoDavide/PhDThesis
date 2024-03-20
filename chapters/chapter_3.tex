@@ -283,7 +283,7 @@ Within this Section, we present the step-by-step results of the index reduction 
   \end{bmatrix},
 \end{equation}
 %
-with states $\mx = [x_{1}, \, x_{2}, \, x_{3}]^\top$ and initial conditions $\mx_{0} = [-1, \, 0, \, 1]^\top$. Notice that the analytical solution of this problem is $\mx_{exact} = [\sin(t) - 2\cos(t), \, 2\sin(t), \, \cos(t)]^\top$. The index reduction algorithm is applied to the \ac{DAE} system~\eqref{chap3:eq:index_3} and the step-by-step results for the matrices $\mE$, $\mg$, and $\ma$ are reported here below.
+with states $\mx = [x_{1}, \, x_{2}, \, x_{3}]^\top$ and initial conditions $\mx_{0} = [-1, \, 0, \, 1]^\top$. Notice that the analytical solution of this problem is $\mx_\text{exact} = [\sin(t) - 2\cos(t), \, 2\sin(t), \, \cos(t)]^\top$. The index reduction algorithm is applied to the \ac{DAE} system~\eqref{chap3:eq:index_3} and the step-by-step results for the matrices $\mE$, $\mg$, and $\ma$ are reported here below.
 %
 \begin{equation*}
   \begin{array}{l}
@@ -356,7 +356,28 @@ The final form of the system is an index-0 \acp{DAE} system is then
   \end{bmatrix}.
 \end{equation}
 %
-Although the just presented example is not so complex and relevant for a real validation of the algorithm, it is useful to demonstrate the step-by-step results of the index reduction algorithm. Furthermore, the expression complexities encountered throughout the index reduction algorithm applied to the Index-3 problem are reported below in \tablename{}~\ref{chap3:tab:complexity}.
+Although the just presented example is not so complex and relevant for a real validation of the algorithm, it is useful to demonstrate the step-by-step results of the index reduction algorithm. Furthermore, the expression complexities encountered throughout the index reduction algorithm applied to the Index-3 problem are reported below in \tablename{}~\ref{chap3:tab:index_3}.
+
+\begin{table}
+  \caption{Expression complexity encountered throughout the index reduction of the index-3 step-by-step example problem~\cite{mathematica} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \label{chap3:tab:index_3}
+  \centering
+  {\footnotesize\begin{tabular}{cccc}
+    \multicolumn{4}{c}{\textbf{Index-3 \acp{DAE}~\cite{mathematica}}} \\
+    \toprule
+    \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 10\cf + 5\ca$ \quad $\mh = 0$} \\
+    \midrule
+    \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+    \midrule
+    Index-3 \acp{DAE} & $0$ & $4\cf + 2\ca$ & $2\cf + 1\ca$ \\
+    Index-2 \acp{DAE} & $0$ & $4\cf + 2\ca$ & $2\cf + 1\cm + 1\ca$ \\
+    Index-1 \acp{DAE} & $0$ & $4\cf + 2\ca$ & $3\cf + 1\cm + 1\ca$ \\
+    Index-0 \acp{DAE} & $0$ & $6\cf + 1\cm + 3\ca$ & $0$ \\
+    \midrule
+    \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 12\cf + 1\cm + 6\ca$ \quad $\mh = 7\cf + 2\cm + 4\ca$} \\
+    \bottomrule
+    \end{tabular}}
+\end{table}
 
 \subsection{Acknowledging some Algorithm Limitations}
 
@@ -525,10 +546,10 @@ The solver returns the solution of the system in the form of multiple outputs: \
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-\section{Symbolic-Numerical Examples}
+\section{Proofing the Symbolic-Numeric Scheme}
 \label{chap3:sec:examples}
 
-In this section, we showcase examples of high-index \ac{DAE} systems, which range in a wide spectrum, encompassing physical systems, engineering applications, as well as ``artificial'' \ac{DAE} systems with specific properties. These examples are employed to demonstrate the capabilities of the proposed index reduction algorithm. In particular, the following test cases are presented.
+In this section, we showcase an example of high-index \ac{DAE} systems, which range in a wide spectrum, encompassing physical systems, engineering applications, as well as ``artificial'' \ac{DAE} systems with specific properties. These examples are employed to demonstrate the capabilities of the proposed index reduction algorithm. In particular, the following test cases are presented.
 %
 \begin{enumerate}
   \setlength{\itemsep}{0.0em}
@@ -552,13 +573,6 @@ Examples 1 and 2 are accurately showcased in Sections~\ref{chap3:sec:step_by_ste
 
 To demonstrate the capabilities of the proposed index reduction algorithm, we first consider the examples from a symbolic computation perspective. In particular, we consider the computational cost of the expressions generated during the presented procedure. The compactness of the expressions generated during the index reduction algorithm is a crucial aspect, as it ensures that limited computational overhead is introduced in the numerical integration of the reduced-index system, as well as in the projection of the solution on the hidden constraints. For each reduction stage of the examples considered, the computational cost is reported in \tablename{}~\ref{chap3:tab:complexity}. Notice that the computational costs of expressions that could not be simplified by \Maple{} within \SI{100}{\second} of CPU time are reported with a $\star$ symbol preceding them. The tests are performed on a \SI{2.6}{\giga\hertz} 6-Core Intel\textsuperscript{\textregistered} Core\textsuperscript{\textregistered} i7 computer.
 
-The presented algorithm can successfully reduce the index of all the example \ac{DAE} systems here considered. The computational cost of the expressions generated during the index reduction procedure is comparable to the original \ac{DAE} system in most of the tests. However, it is important to highlight that in examples 7, 8 and 9c some of the expressions generated during the index reduction procedure are significantly more complex than the original \ac{DAE} system. In these cases, the \Maple{} symbolic computation kernel is not able to perform the simplification within \SI{100}{\second} of CPU time and the raw expressions are kept in the following reduction steps. As a consequence, the computational cost inherently increases throughout the following reduction steps. The \ac{DAE} systems that are hard to simplify are those having a matrix $\mA$ that is strongly dependent on the state variables $\mx$ or equivalently that retains complicated divisions in the vector $\mb$. In these cases, the computational cost of the vector $\ma$ increases significantly due to successive and repeated differentiation and symbolic factorization. The trigonometric identities provided by Weierstra{\ss}~\eqref{chap3:eq:weierstrass} or~\eqref{chap3:eq:zhou} can be used to obtain polynomial expressions and improve the detection of symbolic eliminations (see~\ref{chap3:sec:signature}). However, the use of such trigonometric identities does not typically lead to a significant improvement in the computational cost of the expressions generated during the index reduction procedure as the polynomial expressions obtained are hard to simplify as well.
-
-Another aspect that is important to mention is the sudden increase in computational complexity of the expressions generated in the last reduction step. Even if this increase is not critical to the correct index reduction as the presented algorithm is robust to expression swell, it does undermine the numerical efficiency of the final \ac{DAE} system. This highlights the need for further research on expression swell mitigation techniques in symbolic computation (see~\ref{chap3:sec:lem}), as well as the need to use integrators that can handle index-1 or even index-2 \acp{DAE}.
-
-\input{./chapters/chapter_3_table_complexity.tex}
-
-\input{./chapters/chapter_3_table_complexity_veil.tex}
 
 \subsection{Numerical Integration of the Reduced-Index System}
 \label{chap3:sec:numerical_integration}
@@ -567,7 +581,7 @@ To demonstrate the numerical stability of the reduced-index system, we consider 
 %
 \begin{equation}
   \label{chap3:eq:torus_solution}
-  \mx_{exact} = \begin{bmatrix}
+  \mx_\text{exact} = \begin{bmatrix}
     x_{1} \\ x_{2} \\ x_{3}
   \end{bmatrix} = \begin{bmatrix}
     (\rho \cos(2\pi - t) + r) \cos(t) \\
@@ -591,7 +605,28 @@ The initial value problem is defined as follows
   \end{bmatrix},
 \end{equation}
 %
-with $c = 1 - {r} / {(x_{1}^2 + x_{2}^2)^{1/2}}$, states $\mx = [x_{1}, \, x_{2}, \, x_{3}, \, u_{1}, \, u_{2}, \, u_{3}, \, \lambda]^{\top}$, initial conditions $\mx_{0} = [15, \, 0, \, 0, \, 0, \, 15, \, -5, \, \lambda]^{\top}$, and parameters $\rho = 5$ and $r = 10$. The index reduction algorithm is applied to the \ac{DAE} system and reduced to index-0. The expressions' complexity of the step-by-step results are reported in \tablename{}~\ref{chap3:tab:complexity}.
+with $c = 1 - {r} / {(x_{1}^2 + x_{2}^2)^{1/2}}$, states $\mx = [x_{1}, \, x_{2}, \, x_{3}, \, u_{1}, \, u_{2}, \, u_{3}, \, \lambda]^{\top}$, initial conditions $\mx_{0} = [15, \, 0, \, 0, \, 0, \, 15, \, -5, \, \lambda]^{\top}$, and parameters $\rho = 5$ and $r = 10$. The index reduction algorithm is applied to the \ac{DAE} system and reduced to index-0. The expressions' complexity of the step-by-step results are reported in \tablename{}~\ref{chap3:tab:torus}.
+
+\begin{table}
+  \caption{Expression complexity encountered throughout the index reduction of the robotic arm problem~\cite{brenan1995numerical} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \label{chap3:tab:torus}
+  \centering
+  {\footnotesize\begin{tabular}{cccc}
+    \multicolumn{4}{c}{\textbf{Particle Motion~\cite{campbell1995constraint}}} \\
+    \toprule
+    \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 47\cf + 30\cm + 23\ca$ \quad $\mh = 0$} \\
+    \midrule
+    \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+    \midrule
+    Index-3 \acp{DAE} & $0$ & $39\cf + 36\cm + 13\ca$ & $7\cf + 10\cm + 6\ca$ \\
+    Index-2 \acp{DAE} & $0$ & $39\cf + 36\cm + 13\ca$ & $22\cf + 20\cm + 8\ca$ \\
+    Index-1 \acp{DAE} & $0$ & $39\cf + 36\cm + 13\ca$ & $68\cf + 72\cm + 33\ca$ \\
+    Index-0 \acp{DAE} & $388\cf + 424\cm + 180\ca$ & $79\cf + 77\cm + 26\ca$ & $0$ \\
+    \midrule
+    \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 258\cf + 239\cm + 109\ca$ \quad $\mh = 97\cf + 102\cm + 47\ca$} \\
+    \bottomrule
+    \end{tabular}}
+\end{table}
 
 The numerical integration of the reduced-index system is performed through Implicit Euler, RadauIIA3, and RadauIIA5 Runge-Kutta methods. To respect the invariants during the integration the \emph{standard projection} method is applied \cite{hairer2000symmetric}. This method consists of projecting the solution $\mx$ of the numerically integrated system onto the invariants on the hidden constraints $\mh = \m{0}$, which is equivalent to the constrained minimization
 %
@@ -601,45 +636,24 @@ The numerical integration of the reduced-index system is performed through Impli
     \mh = \m{0}.
 \end{equation}
 %
-To verify that the projection is performed correctly and does not affect the order of the Runge-Kutta method, numerical integration is performed in the interval $t \in [0, \, 2\pi]$ seconds with different integration time steps $\Delta t$. The error of the numerical integration $\varepsilon = \| \, \mx - \mx_{exact} \, \|_{\infty}$ is reported in \figurename~\ref{chap3:fig:torus_order}. As can be seen, the implemented projection preserves the order of the method for all the integration time steps. It is important to highlight that to obtain such results the absolute error tolerances of the integrator and the projection are both set to $\varepsilon = 10^{-10}$. The same tolerances are used in the numerical integration of the reduced-index system in the interval $t \in [0, \, 400\pi]$ seconds with step $\Delta t = 0.025$ seconds. The results are reported in \figurename~\ref{chap3:fig:torus_integration}, where Implicit Euler, RadauIIA3, and RadauIIA5 Runge-Kutta methods are employed, and the projection on the hidden constraints $\mh$ is performed. The effect of the projection is highlighted on the bottom left plot.
+To verify that the projection is performed correctly and does not affect the order of the Runge-Kutta method, numerical integration is performed in the interval $t \in [0, \, 2\pi]$ seconds with different integration time steps $\Delta t$. The error of the numerical integration $\varepsilon = \| \, \mx - \mx_\text{exact} \, \|_{\infty}$ is reported in \figurename~\ref{chap3:fig:torus_order}. As can be seen, the implemented projection preserves the order of the method for all the integration time steps. It is important to highlight that to obtain such results the absolute error tolerances of the integrator and the projection are both set to $\varepsilon = 10^{-10}$. The same tolerances are used in the numerical integration of the reduced-index system in the interval $t \in [0, \, 400\pi]$ seconds with step $\Delta t = 0.025$ seconds. The results are reported in \figurename~\ref{chap3:fig:torus_integration}, where Implicit Euler, RadauIIA3, and RadauIIA5 Runge-Kutta methods are employed, and the projection on the hidden constraints $\mh$ is performed. The effect of the projection is highlighted on the bottom left plot.
 
 \begin{figure}
   \centering
-  \includetikz{./figures/chapter_3/torus_order.tex}
-  \includetikz{./figures/chapter_3/torus_hidden.tex}
-  \caption[
-    Numerical integration error of the \acp{DAE}~\eqref{chap3:eq:torus} over different integration time steps, along with the computed order of the method.
-  ]{
-    Numerical integration error $\varepsilon = \| \, \mx - \mx_{exact} \, \|_{\infty}$ of the \acp{DAE}~\eqref{chap3:eq:torus} over different integration time steps $\Delta t$, along with the computed order of the method (left). The projection on the hidden constraints is performed and the invariants violation $\| \, \mh \, \|_{\infty}$ is reported (right). Notice that the implemented projection preserves the order of the method for all the integration time steps. The tests are performed in the interval $t \in [0, \, 2\pi]$ seconds, using Implicit Euler, RadauIIA3, and RadauIIA5 Runge-Kutta methods.
-  }
+  \includetikz{figures/chapter_3/torus_order.tex}
+  \includetikz{figures/chapter_3/torus_hidden.tex}
+  \caption{Numerical integration error $\varepsilon = \| \, \mx - \mx_\text{exact} \, \|_{\infty}$ of the \acp{DAE}~\eqref{chap3:eq:torus} over different integration time steps $\Delta t$, along with the computed order of the method (left). The projection on the hidden constraints is performed and the invariants violation $\| \, \mh \, \|_{\infty}$ is reported (right). Notice that the implemented projection preserves the order of the method for all the integration time steps. The tests are performed in the interval $t \in [0, \, 2\pi]$ seconds, using Implicit Euler, RadauIIA3, and RadauIIA5 Runge-Kutta methods.}
   \label{chap3:fig:torus_order}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includetikz{./figures/chapter_3/torus_implicit_euler.tex}
-  \includetikz{./figures/chapter_3/torus_radauiia3.tex}
-  \includetikz{./figures/chapter_3/torus_radauiia5.tex}
-  \includetikz{./figures/chapter_3/torus_radauiia5_noproj.tex}
-  \caption[
-    Numerically integrated solution of the \acp{DAE}~\eqref{chap3:eq:torus} using Implicit Euler, RadauIIA3, and RadauIIA5 Runge-Kutta methods.
-  ]{
-    Numerically integrated solution of the \acp{DAE}~\eqref{chap3:eq:torus} in the interval $t \in [0, \, 400\pi]$ seconds, with step $\Delta t = 0.025$ seconds, using Implicit Euler (top left), RadauIIA3 (top right), and RadauIIA5 (bottom left and right) Runge-Kutta methods. The first three plots show the numerical integration of the reduced-index system with projection on the hidden constraints $\mh$ produced by the index reduction algorithm. On the bottom right plot, the numerical integration of the reduced-index system is performed without projection on the manifold $\mh$ and substantial drift is observed.
-  }
+  \includetikz{figures/chapter_3/torus_implicit_euler.tex}
+  \includetikz{figures/chapter_3/torus_radauiia3.tex}
+  \includetikz{figures/chapter_3/torus_radauiia5.tex}
+  \includetikz{figures/chapter_3/torus_radauiia5_noproj.tex}
+  \caption{Numerically integrated solution of the \acp{DAE}~\eqref{chap3:eq:torus} in the interval $t \in [0, \, 400\pi]$ seconds, with step $\Delta t = 0.025$ seconds, using Implicit Euler (top left), RadauIIA3 (top right), and RadauIIA5 (bottom left and right) Runge-Kutta methods. The first three plots show the numerical integration of the reduced-index system with projection on the hidden constraints $\mh$ produced by the index reduction algorithm. On the bottom right plot, the numerical integration of the reduced-index system is performed without projection on the manifold $\mh$ and substantial drift is observed.}
   \label{chap3:fig:torus_integration}
 \end{figure}
-
-The numerical integration for the remaining examples is also carried out, with outcomes detailed in \tablename{}~\ref{chap3:tab:numerical_integration}. This table reports the performance comparison between the joint index reduction algorithm and numerical integration schemes offered by \Maple{} and those of \Indigo{}. To ensure a fair comparison, both \Maple{} and \Indigo{} utilize the Runge-Kutta-Fehlberg 4(5) method for numerical integration of the \ac{DAE} system. Identical error tolerances are applied, with a relative tolerance of $10^{-6}$ and an absolute tolerance of $10^{-7}$. The results illustrate that the \Indigo{}'s index reduction algorithm implementation effectively generates numerically stable reduced-index \acp{DAE}, ensuring consistent integration across examples. However, exceptions arise in examples 8, 9b, and 9c. In example 8, \Maple{} fails to generate code for the reduced-index system within the expected time frame, thus the integration is not performed. This is due to the complexity of the expressions generated during the index reduction procedure, which overloads the \Maple{}'s \texttt{CodeGeneration} package. Conversely, in examples 9b and 9c the integration of the reduced-index system is successfully performed using the non-default implicit RadauIIA5 method. Nonetheless, \Maple{}'s \texttt{dsolve} exceeded the function evaluations limit during the numerical integration of example 4 and fails in examples 5, 7, 8, 9b, and 9c due to either system's stiffness or high index.
-
-It is important to highlight that during the numerical integration, the symbolic code is not regenerated by updating the index reduction. Therefore, for some numerical values of states and parameters, the \acp{DAE} system structure may change, leading to numerical instability. While this does pose a potential issue, it is worth noting that we have not encountered instability in the integration process, proving that the presented pivoting strategy is effective.
-
-\input{./chapters/chapter_3_table_integration.tex}
-
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-
-%\section{Conclusions}
-%\label{chap3:sec:conclusions}
-
-%In this paper, we presented a methodology for the automatic index reduction of \ac{DAE} systems. The index reduction algorithm is based on the separation of the system into differential and algebraic parts with the help of symbolic linear algebra, \ie{}, \ac{LU} matrix factorization. Symbolic-numerical examples are presented to detail the capabilities of the proposed index reduction algorithm. The results show that the presented algorithm is capable of consistently reducing high-index \ac{DAE} systems to index-0 \acp{DAE}. The computational cost of the expressions generated during the index reduction procedure is comparable to the original \ac{DAE} system in most of the examples. However, the \Maple{} symbolic computation kernel is not always able to perform the simplification in some cases. As a consequence, the expression complexity increases significantly throughout the left reduction steps. Still, the presented algorithm can successfully reduce the index of the \ac{DAE} system. Yet, the numerical efficiency of the final \ac{DAE} system is undermined by the inherent increase in computational complexity of the expressions generated in the last reduction steps. This highlights the need for future research on the inclusion of large expression management techniques in the symbolic index reduction algorithm to limit expression swell, as well as to augment the \ac{DAE} system and obtain a more compact representation of the expressions generated during the index reduction procedure. Despite this, the reduced-index systems are proven to retain good numerical stability during the integration process. A comparison between the joint index reduction algorithm and numerical integration schemes offered by \Maple{} with those of \Indigo{} demonstrates the effectiveness of the proposed methodology and software implementation.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %

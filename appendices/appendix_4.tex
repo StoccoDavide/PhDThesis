@@ -1,7 +1,7 @@
 %!TEX root = ../main.tex
 
 \chapter{Symbolic-Numerical Analysis and Solution of Structures}
-\label{app4:chap:symbolic_structural_analysis}
+\label{app4:chap:trussme}
 
 Part of this chapter reports preliminary results from~\cite{stocco2024trussme, larcher2024symbolic}
 %
@@ -357,14 +357,14 @@ Mechanisms involving motion are prevalent in engineering applications. Typically
 \begin{figure}[htb]
   \centering
     \begin{subfigure}[t]{0.49\textwidth}
-    \small{\includetikz{./figures/appendix_4/optimization_hub_angle.tex}}
+    \small{\includetikz{figures/appendix_4/optimization_hub_angle.tex}}
     \caption{Wheel hub compliance angle $\theta_z$ dependency from the $x$- and $z$- coordinates of the $P_5$ hard point.}
     \label{app4:fig:variation_theta_z}
   \end{subfigure}
   \hfill
   \begin{subfigure}[t]{0.49\textwidth}
     \centering
-    \small{\includetikz{./figures/appendix_4/optimization_tie_force.tex}}
+    \small{\includetikz{figures/appendix_4/optimization_tie_force.tex}}
     \caption{Tie rod axial force $F_a$ dependency from the $x$- and $z$- coordinates of the $P_5$ hard point.}
     \label{app4:fig:variation_force_tie}
   \end{subfigure}
@@ -374,31 +374,14 @@ Mechanisms involving motion are prevalent in engineering applications. Typically
 
 \begin{figure}[htp!]
   \centering
-  \small{\includetikz{./figures/appendix_4/suspension_static_deformations.tex}}
+  \small{\includetikz{figures/appendix_4/suspension_static_deformations.tex}}
   \caption{The figure illustrates a comparison of displacements and rotations of the wheel carrier reference frame about the $x$-, $y$-, and $z$-axes for various loads applied at the wheel hub. The results are obtained using both the \TrussMe{} toolbox (\emph{lines}) and the \Ansys{} finite element analysis software (\emph{dots}). On the left-hand side of the figure, forces are applied while torques are null, whereas on the right-hand side, torques are applied while forces are null.}
   \label{app4:fig:suspension_static_results}
 \end{figure}
 
-\begin{figure}[htb]
-  \centering
-  \begin{minipage}[c]{0.575\linewidth}
-    \small{\includetikz{./figures/appendix_4/suspension_dynamic_deformations.tex}}
-  \end{minipage}
-  \begin{minipage}[c]{0.125\linewidth}
-    \vspace{-2.5em}
-    \begin{center}
-      \includegraphics[width=1.0\linewidth]{./figures/appendix_4/mode1.png} \\ \small{$f_1 = \SSI{7.6}{\hertz}$} \\[0.8in]
-      \includegraphics[width=1.0\linewidth]{./figures/appendix_4/mode2.png} \\ \small{$f_2 = \SSI{88.5}{\hertz}$} \\[0.8in]
-      \includegraphics[width=1.0\linewidth]{./figures/appendix_4/mode3.png} \\ \small{$f_3 = \SSI{159.7}{\hertz}$} \\
-    \end{center}
-  \end{minipage}
-  \caption{Frequency response analysis of the suspension model is conducted, with tests performed under the equilibrium between the suspension system and a vertical force of \SI{500}{\newton} applied at the wheel hub. Frequency responses are assessed by applying input forces/torques at the wheel hub in the form of a linear chirp spanning frequencies from \SIrange{0}{200}{\hertz}, with a constant amplitude of \SI{5}{\newton}/\SI{5}{\newton\meter}. Adjacent to the Bode plots, on the right-hand side, the first three modal shapes of the suspension are depicted along with their corresponding frequencies. \emph{Legend:} {\color{mycolor1}$\blacksquare$} \Simulink{} multi-body simulation with full compliance dynamics contribution, {\color{mycolor2}$\blacksquare$} \Simulink{} multi-body with steady-state compliance contribution, {\color{mycolor3}$\blacksquare$} \Ansys{} \ac{FE} modal analysis.}
-  \label{app4:fig:suspension_dynamic_results}
-\end{figure}
-
 \subsection{Efficient Simulation of Parametric Mechanisms Using Model Reduction}
 
-This example application explores the inclusion of suspension compliance in vehicle simulation using a hybrid symbolic-numerical approach. This methodology facilitates easy generalization and real-time modification of model parameters without the need for code regeneration. The suspension's dynamic characteristics are modeled through a system of differential-algebraic equations, integrated using methods described in~\cite{larcher2024symbolic}. Depending on the modeling approach, suspension pick-up points' positions and tire force at the hub are extracted either through semi-analytical solutions or numerical integration. These are then utilized to calculate the suspension's compliance characteristics. The compliance contribution can be incorporated into the overall suspension system displacement as either a \emph{steady-state} or \emph{full dynamic} contribution~\cite{larcher2024symbolic}. The former approach reduces computational costs, while the latter yields accurate simulations at a higher computational expense. Results from this approach are compared with simulation data from commercial software \Ansys{}, showing good agreement under both static (\figurename{}\ref{app4:fig:suspension_static_results}) and dynamic conditions (\figurename{}\ref{app4:fig:suspension_dynamic_results}).
+This example application explores the inclusion of suspension compliance in vehicle simulation using a hybrid symbolic-numerical approach. This methodology facilitates easy generalization and real-time modification of model parameters without the need for code regeneration. The suspension's dynamic characteristics are modeled through a system of differential-algebraic equations, integrated using methods described in~\cite{larcher2024symbolic}. Depending on the modeling approach, suspension pick-up points' positions and tire force at the hub are extracted either through semi-analytical solutions or numerical integration. These are then utilized to calculate the suspension's compliance characteristics. The compliance contribution can be incorporated into the overall suspension system displacement as either a \emph{steady-state} or \emph{full dynamic} contribution~\cite{larcher2024symbolic}. The former approach reduces computational costs, while the latter yields accurate simulations at a higher computational expense. Results from this approach are compared with simulation data from commercial software \Ansys{}, showing good agreement under both static (\figurename{}~\ref{app4:fig:suspension_static_results}) and dynamic conditions (\figurename{}~\ref{chap4:fig:suspension_dynamic_results}).
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 

@@ -11,6 +11,7 @@
 
 % Maths ------------------------------------------------------------------------
 \usepackage{amsmath}             % principal package for serious mathematical typesetting
+\usepackage{empheq}              % emphasize equations
 \usepackage{mathtools}           % improved version of amsmath
 \usepackage{amssymb}             % particular mathematical symbols
 \usepackage{bm}                  % bold math formula, similar to '\mathbf'
@@ -77,7 +78,7 @@
 \usepackage{soul}                % to strike-through text
 \usepackage{tcolorbox}           % create a colored box wrapping the text
 \usepackage[final]{microtype}    % improves the spacing between words and letters
-\usepackage[toc]{appendix}       % to create appendices
+\usepackage{appendix}       % to create appendices
 \usepackage[english]{babel}      % useful to interpret the language of the document
 \usepackage[T1]{fontenc}         % to write correctly in Italian
 \usepackage[utf8]{inputenc}      % to correctly write accented letter and other symbols
@@ -93,6 +94,7 @@
   columns=fullflexible,
   keepspaces=false
 }
+
 \lstnewenvironment{mapleinline}[1][]
   {\lstset{
     frame=none,
@@ -121,7 +123,7 @@
 %\usepackage{lmodern}             % text font
 \usepackage{mathspec}            % font selection for XeLaTeX
 \defaultfontfeatures{Mapping=tex-text}       % to support TeX conventions
-\setallmainfonts{Adobe Caslon Pro}           % normal document font
+\setallmainfonts[Numbers={Lining,Proportional}]{Adobe Caslon Pro}           % normal document font
 \setallsansfonts[Scale=1.0]{HvDTrial Brandon Grotesque}      % Optima % sans-serif font (\textsf{})
 \setallmonofonts[Scale=0.75]{JetBrains Mono} % mono spaced font (\texttt{})
 \usepackage[sf,bf]{titlesec}     % to customize the titles of the document
@@ -144,7 +146,15 @@
 \usepackage{siunitx}             % write unit of measurements
 
 % Citations --------------------------------------------------------------------
-\usepackage{hyperref}            % generate hyper-reference links in the pdf document
+
+\definecolor{blue_ncs}{rgb}{0.0, 0.53, 0.74}
+\usepackage[
+  colorlinks  = true,
+  linkcolor   = black,
+  urlcolor    = blue_ncs,
+  citecolor   = blue_ncs,
+  anchorcolor = black
+]{hyperref}                      % generate hyper-reference links in the pdf document
 \usepackage{cleveref}            % to reference equations, figures, tables, etc
 
 % Figures and tables -----------------------------------------------------------
@@ -198,16 +208,33 @@
 % TikZ and PGFPlots ------------------------------------------------------------
 \usepackage{tikz}                % to draw figures
 \usepackage{pgfplots}            % external TikZ/PGF plots support
-\usepgfplotslibrary{fillbetween} % fill the area between two curves
-\pgfplotsset{compat=newest}      % compatibility mode
-\pgfplotsset{plot coordinates/math parser=false} % to avoid math parser
+\pgfplotsset{compat=1.18}        % compatibility mode
+%\pgfplotsset{plot coordinates/math parser=false} % to avoid math parser
+%\pgfplotsset{/pgf/number format/assume math mode=true}
 \usepgfplotslibrary{external}    % load the externalization library
 \usetikzlibrary{external}        % use the externalization library
-%\tikzexternalize[mode=list and make, prefix=gfx/ext-tikz/]
+\tikzexternalize[mode=convert with system call, prefix=figures/externalized/]
+\usepgfplotslibrary{fillbetween} % fill the area between two curves
 \usepgfplotslibrary{colorbrewer} % colorbrewer library
 \pgfplotsset{colormap/PuOr-4}    % colormap for the plots
-\pgfkeys{/pgf/number format/.cd,1000 sep={}} % no thousand separator in the plots
-\tikzexternalize[mode=convert with system call, prefix=figures/externalized/]
+\pgfkeys{/pgf/number format/.cd, 1000 sep={}} % no thousand separator in the plots
+
+\makeatletter
+  \tikzset{%
+    external/system call={%
+        xelatex %
+        \tikzexternalcheckshellescape %
+        -halt-on-error %
+        -interaction=batchmode %
+        -output-directory="out" %
+        -jobname "\image" %
+        "\texsource"%
+    },
+    /pgf/images/include external/.code={%
+        \includegraphics{out/#1}%
+    },%
+  }
+\makeatother
 
 % layers definition
 \pgfplotsset{
@@ -493,6 +520,25 @@
 \definecolor{mycolor6}{rgb}{0.30100,0.74500,0.93300}
 \definecolor{mycolor7}{rgb}{0.63500,0.07800,0.18400}
 
+% Dynafit Low Tech colors
+\definecolor{dlt_purple}{RGB}{71, 34, 121}
+\definecolor{dlt_yellow}{RGB}{200, 209, 6}
+\definecolor{dlt_pink}{RGB}{224, 36, 125}
+
+% Tricks to fix the DOI link in the bibliography
+\makeatletter
+  \DeclareMathSymbol{0}{\mathalpha}{\eu@DigitsArabic@symfont}{`0}
+  \DeclareMathSymbol{1}{\mathalpha}{\eu@DigitsArabic@symfont}{`1}
+  \DeclareMathSymbol{2}{\mathalpha}{\eu@DigitsArabic@symfont}{`2}
+  \DeclareMathSymbol{3}{\mathalpha}{\eu@DigitsArabic@symfont}{`3}
+  \DeclareMathSymbol{4}{\mathalpha}{\eu@DigitsArabic@symfont}{`4}
+  \DeclareMathSymbol{5}{\mathalpha}{\eu@DigitsArabic@symfont}{`5}
+  \DeclareMathSymbol{6}{\mathalpha}{\eu@DigitsArabic@symfont}{`6}
+  \DeclareMathSymbol{7}{\mathalpha}{\eu@DigitsArabic@symfont}{`7}
+  \DeclareMathSymbol{8}{\mathalpha}{\eu@DigitsArabic@symfont}{`8}
+  \DeclareMathSymbol{9}{\mathalpha}{\eu@DigitsArabic@symfont}{`9}
+\makeatother
+
 % Pages numbering --------------------------------------------------------------
 \makeatletter
 \newcommand*{\emptystyles}{% remove page style
@@ -539,18 +585,6 @@
 \tableofcontents
 \restorestyles
 
-% List of figures --------------------------------------------------------------
-\cleardoublepage
-\phantomsection
-\addcontentsline{toc}{chapter}{\listfigurename}
-\listoffigures
-
-% List of tables ---------------------------------------------------------------
-\cleardoublepage
-\phantomsection
-\addcontentsline{toc}{chapter}{\listtablename}
-\listoftables
-
 % List of abbreviations --------------------------------------------------------
 \cleardoublepage
 \phantomsection
@@ -562,7 +596,7 @@
     \setlength{\itemsep}{-0.5em}
     \acro{OC}{Optimal Control}
     \acro{OCP}{Optimal Control Problem}
-    \acro{TPBVP}{Two-Point Boundary Value Problem}
+    \acro{TP-BVP}{Two-Point Boundary Value Problem}
     \acro{NASA}{National Aeronautics and Space Administration}
     \acro{2D}{Two-Dimensional}
     \acro{3D}{Three-Dimensional}
@@ -585,7 +619,7 @@
     \acro{MB}{Multi-body}
     \acro{MBD}{Multi-body Dynamics}
     \acro{ODE}{Ordinary Differential Equation}
-    \acro{DAE}{Differential Algebraic Equation}
+    \acro{DAE}{Differential-Algebraic Equation}
     \acro{BLAS}{Basic Linear Algebra Subprograms}
     \acro{LAPACK}{Linear Algebra PACKage}
     \acro{DSM}{Direct Stiffness Method}
@@ -626,12 +660,12 @@
 %\include{chapters/chapter_2}
 \include{chapters/chapter_3}
 \include{chapters/chapter_4}
-\begin{appendices}
-\include{appendices/appendix_1}
+%\begin{appendices}
+%\include{appendices/appendix_1}
 %\include{appendices/appendix_2}
 %\include{appendices/appendix_3}
-%\include{appendices/appendix_4}
-\end{appendices}
+\include{appendices/appendix_4}
+%\end{appendices}
 
 % Bibliography -----------------------------------------------------------------
 \addcontentsline{toc}{chapter}{Bibliography}

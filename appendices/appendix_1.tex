@@ -139,7 +139,7 @@ The \Collection{} object consists of a vector of \SharedPointer{} to \Entity{} t
   \centering
   \def\svgwidth{9cm}
   \input{./figures/appendix_1/acme_collection.pdf_tex}
-  \caption[Example \Collection{} objects bounded in two different \Aabb{}s.]{Example \Collection{} objects bounded in two different \Aabb{}s. The two \Aabb{} objects are then bounded in a master \Aabb{} depicted in red.}
+  \caption{Example \Collection{} objects bounded in two different \Aabb{}s. The two \Aabb{} objects are then bounded in a master \Aabb{} depicted in red.}
   \label{app1:fig:acme_collection}
 \end{figure}
 
@@ -242,7 +242,7 @@ The \Acme{} geometry library consists of a \cpp{} core and a \Matlab{} \Mex{} wr
     Coplanarity   & $-$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $-$ \\
     \bottomrule
   \end{tabular}
-  \caption[Geometrical conditions tests that can be performed through \Acme{} library.]{Geometrical conditions tests that can be performed through \Acme{} library. \emph{Legend}: $\bullet$ available test, and $-$ not available test.}
+  \caption{Geometrical conditions tests that can be performed through \Acme{} library. \emph{Legend}: $\bullet$ available test, and $-$ not available test.}
   \label{app1:tab:acme_conditions}
 \end{table}
 
@@ -270,7 +270,7 @@ The \Acme{} geometry library consists of a \cpp{} core and a \Matlab{} \Mex{} wr
     \Ball{}     & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $-$       & $-$       & $-$       \\
     \bottomrule
   \end{tabular}
-  \caption[Geometrical intersection tests that can be performed through \Acme{} library.]{Geometrical intersection tests that can be performed through \Acme{} library. \emph{Legend}: $\bullet$ intersection can be always performed, $\circ$ intersection can be performed only if entities are not coplanar, and $-$ intersection can not be performed.}
+  \caption{Geometrical intersection tests that can be performed through \Acme{} library. \emph{Legend}: $\bullet$ intersection can be always performed, $\circ$ intersection can be performed only if entities are not coplanar, and $-$ intersection can not be performed.}
   \label{app1:tab:acme_intersections}
 \end{table}
 
@@ -301,7 +301,7 @@ Table~\ref{app1:tab:acme_timing} presents a comparison of timing performances be
     \Segment{}-\Triangle{}  & \num{15}   & \num{0.568}  & \num{13.8} & \num{0.247}  & \num{1.1} \\
     \bottomrule
   \end{tabular}
-  \caption[Timing performance comparison between \CGAL{} and \Acme{} libraries.]{Timing performance comparison between \CGAL{} and \Acme{} libraries. The test consists of $10^5$ intersections between randomly created objects. Notice that intersections are only made between types of geometric entities common to the two libraries. \emph{Legend}: $\mu$ average intersection run-time, and $\sigma^2$ intersection run-time variance.}
+  \caption{Timing performance comparison between \CGAL{} and \Acme{} libraries. The test consists of $10^5$ intersections between randomly created objects. Notice that intersections are only made between types of geometric entities common to the two libraries. \emph{Legend}: $\mu$ average intersection run-time, and $\sigma^2$ intersection run-time variance.}
   \label{app1:tab:acme_timing}
 \end{table}
 
@@ -314,8 +314,8 @@ Table~\ref{app1:tab:acme_timing} presents a comparison of timing performances be
 
 \begin{figure}[htb]
   \centering
-  \includetikz{./figures/appendix_1/acme_example.tex}
-  \caption[Visualization of the example problem.]{Visualization of the example problem, which is obtained through the last 6 lines of the \Matlab{} example code.}
+  \includetikz{figures/appendix_1/acme_example.tex}
+  \caption{Visualization of the example problem, which is obtained through the last 6 lines of the \Matlab{} example code.}
   \label{app1:fig:acme_example}
 \end{figure}
 
@@ -397,7 +397,7 @@ e1.plot(f1, 'green');
 %  \centering
 %  \def\svgwidth{9cm}
 %  \input{./figures/appendix_1/acme_tire.pdf_tex}
-%  \caption[Example illustrating the intersection between a tire and ground.]{Example illustrating the intersection between a tire and ground. In the image, the ground mesh is composed of numerous custom-modified \Triangle{} objects, while the tire is represented as a sequence of appropriately shaped and spaced \Disk{} instances, commonly referred to as \emph{ribs}. The shape of each rib is derived directly from a specialized tire profile function (see Chapter~\ref{app1:chap:enve}).}
+%  \caption{Example illustrating the intersection between a tire and ground. In the image, the ground mesh is composed of numerous custom-modified \Triangle{} objects, while the tire is represented as a sequence of appropriately shaped and spaced \Disk{} instances, commonly referred to as \emph{ribs}. The shape of each rib is derived directly from a specialized tire profile function (see Chapter~\ref{app1:chap:enve}).}
 %  \label{app1:fig:acme_tire}
 %\end{figure}
 
