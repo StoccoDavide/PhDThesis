@@ -3,26 +3,6 @@
 \chapter[DAEs Index Reduction and Numerical Solution]{Differential-Algebraic Equations Index Reduction and Numerical Solution}
 \label{chap3:daes}
 
-\subsubsection*{Copyright Notice}
-Part of this chapter has been first published in
-%
-\begin{center}
-  \begin{minipage}{0.9\textwidth}
-    \fullcite{stocco2024symbolic}
-  \end{minipage}
-\end{center}
-\begin{center}
-  \begin{minipage}{0.9\textwidth}
-    \fullcite{stocco2024matrix}
-  \end{minipage}
-\end{center}
-%
-by Springer and Elsevier, respectively. Reproduced with permission from Springer and Elsevier.
-
-\begin{center}
-  $\ast$~$\ast$~$\ast$
-\end{center}
-
 We present an algorithm for the index reduction of first-order differential-algebraic equations. The proposed approach can be applied to generic differential-algebraic equations and exploits neither a priori knowledge nor ad hoc techniques to leverage the specific formulation of the system. The index reduction is performed only by using symbolic manipulation and linear algebra techniques. It is based on the successive separation of the differential and algebraic equations of the system and the subsequent differentiation of the algebraic part. Improved symbolic matrix factorization is used to perform the differential-algebraic equations partitioning, ensure numerical stability, and limit the expression swell of the reduced-index system. The effectiveness of the algorithm is validated through symbolic-numerical examples on a wide range of systems, including physical systems, engineering applications, and ``artificial'' differential-algebraic equations with specific properties. The proposed symbolic index reduction algorithm is implemented in \Maple{} as part of an open-source library.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %

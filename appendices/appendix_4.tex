@@ -1,26 +1,7 @@
 %!TEX root = ../main.tex
 
 \chapter{Symbolic-Numerical Analysis and Solution of Structures}
-\label{app4:chap:trussme}
-
-Part of this chapter reports preliminary results from~\cite{stocco2024trussme, larcher2024symbolic}
-%
-\begin{center}
-  \begin{minipage}{0.9\textwidth}
-    \fullcite{stocco2024trussme}
-  \end{minipage}
-\end{center}
-\begin{center}
-  \begin{minipage}{0.9\textwidth}
-    \fullcite{larcher2024symbolic}
-  \end{minipage}
-\end{center}
-%
-that are currently under review. The content of this chapter has been adapted to fit the format of this thesis, as well as not to violate future publication copyright agreements.
-
-\begin{center}
-  $\ast$~$\ast$~$\ast$
-\end{center}
+\label{app4:trussme}
 
 Understanding how structures react to external forces and imposed displacements relies heavily on structural mechanics. Typically, structural analysis is carried out numerically using the direct stiffness method, a finite element method implementation known for solving large systems of equations. However, this method's principles can also be applied symbolically or in a hybrid symbolic-numerical manner for structural analysis. This dual approach is valuable for reducing computational load, as symbolic solutions can be simplified and translated into efficient code for simulations. Moreover, symbolic direct stiffness methods facilitate model reduction, enabling the creation of smaller-scale models for faster simulations. Despite its advantages, symbolic computation has limitations, particularly in solving large linear systems of equations, which can be computationally intensive and may exceed software capabilities. This chapter introduces \TrussMe{}, a toolbox built on the direct stiffness method, harnessing symbolic computation from \Maple{} and numerical capabilities from \Matlab{} for structural analysis. The toolbox facilitates both symbolic and hybrid symbolic-numerical analyses, streamlining code generation for efficient simulations. To address challenges in solving large linear systems symbolically, \TrussMe{} incorporates novel routines for symbolic matrix factorization, employing hierarchical representation for managing large expressions. Optionally, the toolbox integrates with \LEM{} and \LAST{}, open-source \Maple{} packages, enhancing its symbolic computation capabilities.
 

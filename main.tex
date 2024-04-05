@@ -63,6 +63,14 @@
   {\left[\hspace{-.75\arraycolsep}\array{*{\value{MaxMatrixCols}}{c}}}
   {\endarray\hspace{-.75\arraycolsep}\right]}
 
+\renewenvironment{cases}%
+  {\left\{
+    \begin{array}{@{}l@{\;}lr@{}}
+  }%
+  {\end{array}
+    \hspace{-.75\arraycolsep}\right.
+  }
+
 % Document settings ------------------------------------------------------------
 \usepackage{geometry}            % change margins of the document
 \usepackage{acronym}             % to define abbreviations
@@ -261,7 +269,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Set custom margins for the document ------------------------------------------
-\newgeometry{top=2.5cm, bottom=2.0cm, left=2.0cm, right=2.0cm} % digital version
+\newgeometry{top=1.25in, bottom=1.0in, left=1.0in, right=1.0in} % digital version
 %\newgeometry{top=2.0cm, bottom=2.0cm, width=11cm, bindingoffset=12mm} % print version
 %headsep=0.25in, headheight=20pt, heightrounded
 
@@ -354,6 +362,9 @@
 \newcommand{\Wolfram}{\textsc{Wolfram}}
 \newcommand{\Mathematica}{\textsc{Mathematica}\textsuperscript{\textregistered}}
 \newcommand{\Matlab}{\textsc{Matlab}\textsuperscript{\textregistered}}
+\newcommand{\Modelica}{\textsc{Modelica}}
+\newcommand{\OpenModelica}{\textsc{OpenModelica}}
+\newcommand{\ModelingToolkit}{\textsc{ModelingToolkit}}
 \newcommand{\Simulink}{\textsc{Simulink}\textsuperscript{\textregistered}}
 \newcommand{\Mex}{\textsc{Mex}}
 \newcommand{\SFunction}{\textsc{S-Function}}
@@ -366,7 +377,10 @@
 \newcommand{\Ansys}{\textsc{Ansys}\textsuperscript{\textregistered}}
 
 % Miscellaneous libraries, languages and tools
-\newcommand{\cpp}{C++}
+\newcommand{\cc}{C}
+\newcommand{\cpp}{\cc{}++}
+\newcommand{\Fortran}{\textsc{Fortran}}
+\newcommand{\Python}{\textsc{Python}}
 \newcommand{\html}{HTML}
 \newcommand{\CGAL}{CGAL}
 \newcommand{\LEM}{LEM}
@@ -567,8 +581,31 @@
 \thispagestyle{empty}
 \newpage
 
-% Copyrigth --------------------------------------------------------------------
+% Copyright --------------------------------------------------------------------
+\subsection*{Copyright Notice}
+%
+The content of this thesis is the result of the author's original research work. Permission to include the following previously published material in the thesis has been obtained from the respective publishers. The works are cited in the bibliography and are listed below in chronological order of publication.
+%
+\begin{itemize}
+  %\setlength{\itemsep}{0.0em}
+  \item \fullcite{stocco2021acme}
+  \item \fullcite{stocco2024symbolic}
+  \item \fullcite{stocco2024matrix}
+\end{itemize}
+
+\subsection*{Unpublished Material}
+%
+The thesis contains material that is currently under review for publication. The material has not yet been published previously, a short adapted version of the content is provided in the thesis. The works are cited in the bibliography and are listed below in chronological order of submission.
+%
+\begin{itemize}
+  %\setlength{\itemsep}{0.0em}
+  \item \fullcite{stocco2024novel}
+  \item \fullcite{stocco2024physical}
+  \item \fullcite{stocco2024trussme}
+\end{itemize}
+
 \vspace*{\fill}
+
 \begin{center}
   Copyright \textcopyright{} 2024 Davide Stocco \\
 \end{center}
@@ -595,7 +632,9 @@
   \begin{acronym}[XXXXXX]
     \setlength{\itemsep}{-0.5em}
     \acro{OC}{Optimal Control}
+    \acro{AD}{Automatic Differentiation}
     \acro{OCP}{Optimal Control Problem}
+    \acro{SVD}{Singular Value Decomposition}
     \acro{TP-BVP}{Two-Point Boundary Value Problem}
     \acro{NASA}{National Aeronautics and Space Administration}
     \acro{2D}{Two-Dimensional}
@@ -620,6 +659,8 @@
     \acro{MBD}{Multi-body Dynamics}
     \acro{ODE}{Ordinary Differential Equation}
     \acro{DAE}{Differential-Algebraic Equation}
+    \acro{PDE}{Partial Differential Equation}
+    \acro{PDAE}{Partial Differential-Algebraic Equation}
     \acro{BLAS}{Basic Linear Algebra Subprograms}
     \acro{LAPACK}{Linear Algebra PACKage}
     \acro{DSM}{Direct Stiffness Method}
@@ -642,8 +683,6 @@
     \acro{DOF}{Degree of Freedom}
     \acro{RTF}{Real-Time Factor}
     \acro{CAS}{Computer Algebra System}
-    \acro{SCAS}{Symbolic Computer Algebra System}
-    \acro{SMS}{Symbolic Manipulation System}
     \acro{MPL}{Mathematical Pseudo-Language}
     \acro{CERN}{Conseil Europ{\'e}en pour la Recherche Nucl{\'e}aire}
     \acro{RMS}{Root Mean Square}
@@ -655,12 +694,14 @@
     \acro{BDF}{Backward Differentiation Formula}
     \acro{IVP}{Initial Value Problem}
     \acro{MIT}{Massachusetts Institute of Technology}
+    \acro{SUNDIALS}{SUite of Nonlinear and DIfferential-ALgebraic equation Solvers}
+    \acro{LLNL}{Lawrence Livermore National Laboratory}
   \end{acronym}
 \end{multicols}
 
 % Mainmatter -------------------------------------------------------------------
 \include{chapters/chapter_1}
-%\include{chapters/chapter_2}
+\include{chapters/chapter_2}
 %\include{chapters/chapter_3}
 %\include{chapters/chapter_4}
 %\begin{appendices}

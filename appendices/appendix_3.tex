@@ -1,22 +1,7 @@
 %!TEX root = ../main.tex
 
 \chapter{Tire Physical Modeling}
-\label{app3:tire_physical_model}
-
-\subsubsection*{Copyright Notice}
-Part of this chapter has been first published in
-%
-\begin{center}
-  \begin{minipage}{0.9\textwidth}
-    \fullcite{stocco2024physical}
-  \end{minipage}
-\end{center}
-%
-by Elsevier. Reproduced with permission from Elsevier.
-
-\begin{center}
-  $\ast$~$\ast$~$\ast$
-\end{center}
+\label{app3:tirex}
 
 We present a novel tire brush model with carcass flexibility, primarily designed for real-time applications while preserving the physical significance of its parameters. The tire's geometry is discretized and represented using a series of ribs, each intersecting the local road surface independently. The carcass in-plane fore-aft displacement, in-plane deflection, and out-of-plane sidewall torsion are approximated through a second-order polynomial. Forces and torques originating from the tire-road contact area are described using brush mechanics. Notably, the kinematics of the bristles are directly linked to carcass deformation. Extensive effort is dedicated to understanding the possible sources of instability, as well as describing and implementing a robust numerical scheme to effectively solve the non-linear system of equations arising from the modeling. Numerical performance results are provided to demonstrate the suitability of the presented model for demanding hard real-time simulations.   Validation of the model here presented is carried out by fitting experimental data and comparing it with the state-of-the-art \MagicFormulae{} model, proving its reliability and accuracy in reproducing tire behavior.
 

@@ -6,11 +6,11 @@
 The resolution of dynamical systems stands as a fundamental challenge in fields like applied mathematics, engineering, and the physical sciences. These systems, serving as mathematical representations, describe how a system evolves, offering insights into phenomena ranging from celestial motion to electrical circuit dynamics. Resolving dynamical systems involves determining the system's state at each time point, considering its initial conditions and the governing equations of motion. This process is critical for comprehending complex system behavior and forecasting future evolution. However, in many cases, solving dynamical systems often requires sophisticated algorithms and high-performance computing resources due to their inherent complexity.
 
 
-Typically, dynamical systems are described by \acp{ODE}, \acp{DAE}, or \acp{PDE}. While the solution of \acp{ODE} and \acp{PDE} has been extensively studied and is well understood, the solution of \acp{DAE} (and \acp{PDAE}) poses more challenges due to the presence of algebraic constraints. Specifically, \ac{DAE} systems are a generalization of \acp{ODE} that involve both differential and algebraic equations. Over the last century, new modeling techniques have been developed to describe complex systems, leading to the formulation of \acp{DAE}. These equations are preferred for modeling systems with constraints, like mechanical systems, electrical circuits, and chemical processes, due to their simplicity and ability to describe system behavior. However, solving \acp{DAE} is more complex than \acp{ODE}, mainly because of the presence of algebraic constraints that require to be satisfied at each time point. For this reason, specialized algorithms are needed to solve \acp{DAE} accurately and efficiently. In this chapter, we offer an overview of \ac{DAE} system and their solution methods. Moreover, we will introduce a novel approach to address this challenge, highlighting the crucial role of computer algebra in the process.
+Typically, dynamical systems are described by \acp{ODE}, \acp{DAE}, or \acp{PDE}. While the solution of \acp{ODE} and \acp{PDE} has been extensively studied and is well understood, the solution of \acp{DAE} (and \acp{PDAE}) poses more challenges due to the presence of algebraic constraints. Specifically, \ac{DAE} systems are a generalization of \acp{ODE} that involve both differential and algebraic equations. Over the last century, new modeling techniques have been developed to describe complex systems, leading to the formulation of \acp{DAE}. These equations are preferred for modeling systems with constraints, like mechanical systems, electrical circuits, and chemical processes, due to their simplicity and ability to describe system behavior. However, solving \acp{DAE} is more complex than \acp{ODE}, mainly because of the presence of algebraic constraints that require to be satisfied at each time point. For this reason, specialized algorithms are needed to solve \acp{DAE} accurately and efficiently. In this chapter, we offer an overview of \ac{DAE} system and their solution methods. Moreover, we will introduce a novel approach to address this challenge, highlighting the crucial role of symbolic computation in the process.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-\section{Introduction to Differential-Algebraic Equations}
+\section{Differential-Algebraic Equations}
 
 A system of equations involving one or more unknown functions and their derivatives is referred to as a \acp{DAE}. In its general form, a first-order \ac{DAE} system is expressed as
 %
@@ -19,29 +19,29 @@ A system of equations involving one or more unknown functions and their derivati
   \label{chap1:eq:dae}
 \end{equation}
 %
-where $\m{x} = \m{x}(t)$ denotes the vector of unknown functions and $\m{F} = \m{F}(\m{x}, \m{x}^{\prime}, t)$ consists of $n$ components, denoted as $x_i$ and $F_i$, respectively, for $i = 1, 2, \dots, n$. The term ``\ac{DAE}'' is typically used when the highest derivative $\m{x}^{\prime}$ cannot be explicitly solved in terms of the other variables $\m{x}$ and $t$ within the algebraic relationship represented by~\eqref{chap1:eq:dae}. Notably, the Jacobian $\m{JF}_{\m{x}^{\prime}}$ along a specific solution of the \ac{DAE} might become singular. Systems of equations like~\eqref{chap1:eq:dae} are also known as \emph{implicit} systems. Depending on the context, a \ac{DAE} may represent either an \ac{IVP}, where $\m{x}$ is specified at the initial time ($x(t_0) = x_0$), or a \ac{BVP}, where the solution adheres to $n$ two-point boundary conditions $g(x(t_0), x(t_f)) = 0$.
+where $\m{x}(t) = \m{x}$ denotes the vector of unknown functions and $\m{F}(\m{x}, \m{x}^{\prime}, t) = \m{F}$ consists of $n$ components. Notice the components of $\m{x}$ and $\m{F}$ are denoted as $x_i$ and $F_i$, respectively, for $i = 1, 2, \dots, n$. The term ``\ac{DAE}'' is typically used when the highest derivative $\m{x}^{\prime}$ cannot be explicitly solved in terms of the other variables $\m{x}$ and $t$ within the algebraic relationship represented by~\eqref{chap1:eq:dae}. Notably, the Jacobian $\m{JF}_{\m{x}^{\prime}}$ along a specific solution of the \ac{DAE} might become singular. Systems of equations like~\eqref{chap1:eq:dae} are also known as \emph{implicit} systems. Depending on the context, a \ac{DAE} may represent either an \ac{IVP}, where $\m{x}$ is specified at the initial time (\eg{}, $x(t_0) = x_0$), or a \ac{BVP}, where the solution adheres to $n$ two-point boundary conditions (\eg{}, $g(x(t_0), x(t_f)) = 0$).
 
 The solution approach for a \ac{DAE} depends on its structural characteristics. A significant category of \acp{DAE} encountered in practical applications is the semi-explicit \ac{DAE}, represented as
 %
 \begin{equation}
   \begin{cases}
-    \m{y}^{\prime} = \m{f}(\m{y}, \m{z}, t) \\
-    \m{0} = \m{g}(\m{y}, \m{z}, t)
+    \m{x}^{\prime} = \m{f}(\m{x}, \m{z}, t) \\
+    \m{0} = \m{g}(\m{x}, \m{z}, t)
   \end{cases} \, \text{,}
   \label{chap1:eq:semiexplicit_dae}
 \end{equation}
 %
-where $\m{0} = \m{g}(\m{y}, \m{z}, t)$ denotes the \emph{algebraic constraints}. An example of a \ac{DAE} system of the form~\eqref{chap1:eq:semiexplicit_dae} is the simple pendulum, where the motion of a mass at the end of a rod is constrained to a fixed length. In the Cartesian coordinates, the system is described by a set of \acp{DAE} that can be transformed into a classical \ac{ODE} for a pendulum.
+where $\m{0} = \m{g}(\m{x}, \m{z}, t)$ denotes the \emph{algebraic constraints}. An example of a \ac{DAE} system of the form~\eqref{chap1:eq:semiexplicit_dae} is the simple pendulum, where the motion of a mass at the end of a rod is constrained to a fixed length. In the Cartesian coordinates, the system is described by a set of \acp{DAE} that can be transformed into a classical \ac{ODE} for a pendulum.
 %
 \begin{example}[The Simple Pendulum]
   Consider a straightforward example involving the motion of a pendulum in Cartesian coordinates (see Figure 1). Let the position and velocity coordinates of the mass $m$ at the end of the rod be $(x, y)$ and $(x^{\prime}, y^{\prime}) = (u, v)$ respectively, with the angle between the rod and the vertical axis denoted as $\theta$. The position of the mass is given by $x = \ell\sin{\theta}$ and $y = \ell\cos{\theta}$, where $\ell$ represents the length of the pendulum. The Euler-Lagrange equations yield the following first-order semi-explicit \ac{DAE} system
   %
   \begin{equation*}
     \begin{cases}
-      x^{\prime} = u \\
-      y^{\prime} = v \\
-      u^{\prime} = -\dfrac{2 \lambda x}{m} \\
-      v^{\prime} = -\dfrac{2 \lambda y}{m} - g
+      x^{\prime} = u \\[0.5em]
+      y^{\prime} = v \\[0.5em]
+      u^{\prime} = -\dfrac{2 \lambda x}{m} \\[0.5em]
+      v^{\prime} = -\dfrac{2 \lambda y}{m} - g \\[0.5em]
       0 = x^2 + y^2 - \ell^2
     \end{cases} \, \text{,}
   \end{equation*}
@@ -53,53 +53,59 @@ where $\m{0} = \m{g}(\m{y}, \m{z}, t)$ denotes the \emph{algebraic constraints}.
 
 \subsection{The Significance of Differential-Algebraic Equations}
 
-As mentioned previously, \ac{DAE} systems represent a generalization of \acp{ODE}, typically expressed as $\m{x}^{\prime} = \m{f}(\m{x}, t)$, which have a well-established literature in both mathematical theory and numerical solution. While \acp{ODE} can be viewed as a subset of \acp{DAE}, the broader scope of \acp{DAE} encompasses problems with distinct mathematical properties and presents unique challenges for numerical resolution. Implicit \ac{DAE} models, as demonstrated in the example above, often provide a more natural representation compared to explicit formulations. Consequently, working with \ac{DAE} models is highly advantageous, particularly when dealing with complex systems.
+As mentioned previously, \ac{DAE} systems represent a generalization of \acp{ODE}, typically expressed as $\m{x}^{\prime} = \m{f}(\m{x}, t)$, which have well-established literature in both mathematical theory and numerical solution. While \acp{ODE} can be viewed as a subset of \acp{DAE}, the broader scope of \acp{DAE} encompasses problems with distinct mathematical properties and presents unique challenges for numerical resolution. Implicit \ac{DAE} models, as demonstrated in the example above, often provide a more natural representation compared to explicit formulations. Consequently, working with \ac{DAE} models is highly advantageous, particularly when dealing with complex systems.
 
 To grasp the distinction between \acp{DAE} and \acp{ODE}, let us consider the simple example
 %
 \begin{equation*}
   \begin{cases}
-  y^{\prime} = z \\
-  0 = y - q(t)
+  x^{\prime} = y \\
+  0 = x - q(t)
   \end{cases} \, \text{,}
 \end{equation*}
 %
-where $q(t)$ is a suitably smooth function. Clearly, the unique solution is $y = q(t)$ and $z = q^{\prime}(t)$, without the need for initial or boundary conditions. This implies that imposing arbitrary initial conditions could render the \ac{DAE} inconsistent. Additionally, unlike \acp{ODE}, the solution's dependency on the derivative of the inhomogeneous part introduces a distinctive characteristic. Moreover, even with consistent initial values, the existence and uniqueness theory for \acp{DAE} involve more intricate technical assumptions beyond mere smoothness, as seen in the \ac{ODE} case. The requirement to differentiate $y$ in the first equation of this example, thereby involving differentiation of the input function $q$ to determine $z$, constitutes a fundamental distinction. Hence, unlike the case of \acp{ODE}, \acp{DAE} may necessitate both integrations and differentiations to be resolved.
+where $q(t)$ is a suitably smooth function. Clearly, the unique solution is $x = q(t)$ and $y = q^{\prime}(t)$, without the need for initial or boundary conditions. This implies that imposing arbitrary initial conditions could render the \ac{DAE} inconsistent. Additionally, unlike \acp{ODE}, the solution's dependency on the derivative of the inhomogeneous part introduces a distinctive characteristic. Moreover, even with consistent initial values, the existence and uniqueness theory for \acp{DAE} involve more intricate technical assumptions beyond mere smoothness, as seen in the \ac{ODE} case. The requirement to differentiate $x$ in the first equation of this example, thereby involving differentiation of the input function $q$ to determine $y$, constitutes a fundamental distinction. Hence, unlike the case of \acp{ODE}, \acp{DAE} may necessitate both integrations and differentiations to be resolved.
 
-\subsection{The Index and Mathematical Structure}
+\subsection{The Index... Or Better Yet, the Indices}
 
 In the realm of \acp{DAE}, the concept of index serves as a metric for measuring the deviation of a \ac{DAE} from its corresponding \ac{ODE}. This index is a non-negative integer that provides valuable insights into the mathematical structure and potential complexities associated with analyzing and numerically solving the \ac{DAE}. Generally, a higher index indicates increased challenges in numerical resolution. Various index definitions exist, including the \emph{Kronecker} index (for linear constant coefficient \acp{DAE}), \emph{differentiation} index, \emph{structural} index, \emph{tractability} index, \emph{strangeness} index, \emph{geometric} index, and \emph{perturbation} index~\cite{mehrmann2015index}. While these indices may coincide in simpler scenarios, they can diverge in more intricate nonlinear and fully implicit systems~\cite{lamour2012detecting}. Indeed, the index may exhibit local variability, assuming different values across distinct regions and could even remain undefined at singular points~\cite{lamour2012detecting}. Notice that the differentiation index is the most common index used in practice and is typically referred to without any further epithet, \ie{}, ``the'' index. In the following sections, we will delve into the differentiation, tractability, and structural indices, which are the most used in practice. Together with their qualitative definition, this discussion will provide a comprehensive understanding of the mathematical structure of \acp{DAE} and the challenges associated with their resolution.
 
 \paragraph{Differential Index}
 
-Given that a \ac{DAE} encompasses both differentiations and integrations, a potential strategy involves iteratively differentiating the constraints (in semi-explicit \ac{DAE} systems) and substituting them into the differential equations. This process, called \emph{index reduction}, aims to transform the \ac{DAE} into an explicit \ac{ODE} system for all unknowns. The solutions of the \ac{DAE} correspond to those solutions of the resulting \ac{ODE} residing within a subset termed the solution manifold. The number of iterations required for this transformation is termed the differential index of the \ac{DAE}, with the \emph{underlying} \acp{ODE} possessing an index of 0~\cite{mehrmann2015index}.
+Given that a \ac{DAE} encompasses both differentiations and integrations, a potential strategy involves iteratively differentiating the constraint equations (in the semi-explicit \ac{DAE} systems) and substituting them into the differential ones. This process, called \emph{index reduction}, aims to transform the \ac{DAE} into an explicit \ac{ODE} system for all unknowns. The solutions of the \ac{DAE} correspond to those solutions of the resulting \ac{ODE} residing within a subset termed the solution manifold. The number of iterations required for this transformation is termed the differential index of the \ac{DAE}, with the \emph{underlying} \acp{ODE} possessing an index of 0~\cite{mehrmann2015index}.
 
 \begin{example}[Differential Index]
-  Consider the following simple examples involving a given smooth function $q(t)$ and the unknown $x$. Then the scalar equation
+  Consider the following simple examples involving a given smooth function $y(t)$ and the unknown $x$. Then the scalar equation
   %
   \begin{equation}
-    x = q(t)
+    x = y(t)
     \label{chap1:eq:dae_index_1}
   \end{equation}
   %
-  constitutes a differential index of 1 \ac{DAE}, as it requires one differentiation to yield the \ac{ODE} $x^{\prime} = q^{\prime}(t)$. Similarly, for the system
+  constitutes a differential index of 1 \ac{DAE}, as it requires one differentiation to yield the \ac{ODE} $x^{\prime} = y^{\prime}(t)$. Similarly, for the system
   %
   \begin{equation}
     \begin{cases}
-      x_1 = q(t) \\
+      x_1 = y(t) \\
       x_2 = x_1^{\prime}
     \end{cases}
     \label{chap1:eq:dae_index_2}
   \end{equation}
   %
-  differentiating the first equation leads to $x_2 = x_1^{\prime} = q^{\prime}(t)$, and subsequent differentiation yields $x_2^{\prime} = x_1^{\prime\prime} = q^{\prime\prime}(t)$. Hence, this system possesses a differential index of 2, necessitating two differentiations.
+  differentiating the first equation leads to $x_2 = x_1^{\prime} = y^{\prime}(t)$, and subsequent differentiation yields $x_2^{\prime} = x_1^{\prime\prime} = y^{\prime\prime}(t)$. Hence, this system possesses a differential index of 2, necessitating two differentiations.
 \end{example}
 
-It is crucial to understand that while $n$ initial or boundary value conditions are required to define the solution of a first-order \acp{ODE} of size $n$, the solution of the simple \acp{DAE} in the previous example is solely determined by the right-hand side, necessitating only one consistent initial condition. General \ac{DAE} systems often include \ac{ODE} subsystems, resulting in $k \in [0, n]$ \acp{DOF} for the \ac{DAE} solution. However, determining which $k$ pieces of information are necessary to determine the solution can be challenging. Initial or boundary conditions specified for the \ac{DAE} must be consistent, satisfying both the constraints and potentially the \emph{hidden} (or differentiated) constraints of the system. For instance, in the index-1 system~\eqref{chap1:eq:dae_index_1}, an initial condition must adhere to $x_1(0) = q(0)$. In the case of the index-2 system~\eqref{chap1:eq:dae_index_2}, meeting the additional constraint $x_2(0) = q^{\prime}(0)$ is necessary, along with $x_1(0) = q(0)$.
+It is crucial to understand that while $n$ initial or boundary value conditions are required to define the solution of a first-order \acp{ODE} of size $n$, the solution of the simple \acp{DAE} in the previous example is solely determined by the right-hand side, necessitating only one consistent initial condition. General \ac{DAE} systems often include \ac{ODE} subsystems, resulting in $k \in [0, n]$ \acp{DOF} for the \ac{DAE} solution. However, determining which $k$ pieces of information are necessary to determine the solution can be challenging. Initial or boundary conditions specified for the \ac{DAE} must be consistent, satisfying both the constraints and potentially the \emph{hidden} (or differentiated) constraints of the system. For instance, in the index-1 system~\eqref{chap1:eq:dae_index_1}, an initial condition must adhere to $x_1(0) = y(0)$. In the case of the index-2 system~\eqref{chap1:eq:dae_index_2}, meeting the additional constraint $x_2(0) = y^{\prime}(0)$ is necessary, along with $x_1(0) = y(0)$.
+
+\paragraph{Structural Index}
+
+The structural index was initially defined in the linear constant coefficient case for combinatorial purposes. Given the linear \acp{DAE} $\m{E}\m{x}^{\prime} = \m{A}\m{x} + \m{f}(t)$, consider the parameter-dependent pencil $(\m{E}(\m{p}), \m{A}(\m{p}))$, obtained by substituting the nonzero elements of $\m{E}$ and $\m{A}$ with independent parameters $\m{p}$. The unique integer that is equal to the Kronecker index of $(\m{E}(\m{p}), \m{A}(\m{p}))$ for all $\m{p}$ (where $\m{p}$ is from some open and dense subset of the parameter set) is termed the structural index, as discussed in~\cite{pantelides1988consistent, pryce2001simple} in a broader context. For the nonlinear case, a local linearization is typically utilized. Although in~\cite{reissig2000differential} it has demonstrated that the differentiation index and the structural index can differ arbitrarily, Pandelide's algorithm, outlined in~\cite{pantelides1988consistent}, is widely employed in applications. For instance, in~\cite{unger1995structural}, combinatorial information is used to determine which equations should be differentiated and to introduce additional variables for index reduction~\cite{mattsson1993index}. However, a thorough analysis of when this approach is utterly justified has only been provided in a few specific cases, refer to~\cite{mehrmann2015index} for more details.
+
+The structural index was initially introduced in the linear constant coefficient scenario for combinatorial analysis. Given the linear \acp{DAE} $\m{E}\m{x}^{\prime} = \m{A}\m{x} + \m{f}(t)$, the parameter-dependent pencil $(\m{E}(\m{p}), \m{A}(\m{p}))$ is constructed by substituting the nonzero elements of $\m{E}$ and $\m{A}$ with independent parameters $\m{p}$. The structural index, as discussed in~\cite{pantelides1988consistent, pryce2001simple} and expanded upon in subsequent works, refers to the unique integer value matching the \emph{Kronecker} index of $(\m{E}(\m{p}), \m{A}(\m{p}))$ across an open and dense subset of the parameter set. In the context of nonlinear systems, local linearization techniques are commonly applied. While it has been demonstrated in~\cite{reissig2000differential} that the differentiation index and the structural index may differ, Pantelides' algorithm, detailed in~\cite{pantelides1988consistent}, remains widely used in practical applications. Notably, in studies like~\cite{unger1995structural}, combinatorial insights are leveraged to determine which equations should be differentiated, as well as to introduce additional variables for index reduction~\cite{mattsson1993index}. However, a comprehensive assessment of the validity of this approach across various scenarios has been provided only in a few specific cases, as discussed in~\cite{mehrmann2015index}.
 
 \paragraph{Tractability Index}
 
-In the semi-explicit \ac{DAE}\eqref{chap1:eq:semiexplicit_dae}, the index is one if the Jacobian matrix $\partial\m{g}/\partial\m{z}$ is non-singular, indicating that one differentiation of the algebraic equation yields $z^{\prime}$. Differential variables $y$ have their derivatives appearing in the equations, while algebraic variables $z$ do not. Notably, algebraic variables may exhibit one less degree of smoothness compared to differential variables. In the general case~\eqref{chap1:eq:dae}, each component of the solution $x$ may consist of a combination of both differential and algebraic components, adding complexity to qualitative analysis and numerical solutions, particularly for high-index problems. While the semi-explicit form simplifies this complexity, it raises the index by one. Moreover, the index may vary depending on a specific solution, as illustrated in the subsequent example.
+In the semi-explicit \ac{DAE}\eqref{chap1:eq:semiexplicit_dae}, the index is 1 if the Jacobian matrix $\partial\m{g}/\partial\m{z}$ is non-singular, indicating that one differentiation of the algebraic equation yields $z^{\prime}$. Differential variables $y$ have their derivatives appearing in the equations, while algebraic variables $z$ do not. Notably, algebraic variables may exhibit one less degree of smoothness compared to differential variables. In the general case~\eqref{chap1:eq:dae}, each component of the solution $x$ may consist of a combination of both differential and algebraic components, adding complexity to qualitative analysis and numerical solutions, particularly for high-index problems. While the semi-explicit form simplifies this complexity, it raises the index by one. Moreover, the index may vary depending on a specific solution, as illustrated in the subsequent example.
 
 \begin{example}[Differential Index Dependency on Solution]
   Consider the \ac{DAE} system
@@ -109,142 +115,139 @@ In the semi-explicit \ac{DAE}\eqref{chap1:eq:semiexplicit_dae}, the index is one
     x_1^{\prime} = x_3 \\
     0 = x_2(1 - x_2) \\
     0 = x_1x_2 + x_3(1 - x_2) - t
-    \end{cases}
+    \end{cases} \, \text{.}
   \end{equation*}
   %
   The second equation admits two solutions: $x_2 = 0$ and $x_2 = 1$. If $x_2$ is continuous, the system does not transition between these values. For $x_2 = 0$, the system is semi-explicit with an index of 1, while for $x_2 = 1$, the index becomes 2. Unlike the index-1 scenario, no initial value of $x_1$ is necessary. Replacing the algebraic equation involving $x_2$ with $x_2^{\prime} = 0$, leads the index of the modified \ac{DAE} system to depend on the initial condition. Specifically, if $x_2(0) = 1$, the index is 2; otherwise, it remains 1.
 \end{example}
 
-The tractability index concept is specifically designed to tackle the challenges posed by high-index \acp{DAE} with multiple regularity regions. It explicitly suggests that the domain of definition of the \ac{DAE} can be divided into maximal regularity regions, each delimited by critical points. Within each regularity region, the \ac{DAE} exhibits a consistent structure, which can be revealed using matrix function sequences formed with permissible projector functions. This construction is governed by constant rank conditions. Critical points arise when this construction process encounters difficulties. A smooth flow and reliable treatment are expected as long as the solution remains within a regularity region. However, crossing or touching a boundary between regions may lead to significant singularities. Essentially, monitoring the structure involves computing an admissible matrix function sequence and monitoring the rank conditions to ensure the stability and reliability of the solution~\cite{lamour2011computational}.
+The tractability index concept is specifically designed to tackle the challenges posed by high-index \acp{DAE} with multiple regular regions. It explicitly suggests that the domain of definition of the \ac{DAE} can be divided into maximal regular regions, each delimited by singular points. Within each regular region, the \ac{DAE} exhibits a consistent structure, which can be revealed using matrix function sequences formed with permissible projector functions. This construction is governed by constant rank conditions. Singular points arise when this construction process encounters difficulties. A smooth flow and reliable treatment are expected as long as the solution remains within a regular region. However, crossing or touching a boundary between regions may lead to significant singularities. Essentially, monitoring the structure involves computing an admissible matrix function sequence and monitoring the rank conditions to ensure the stability and reliability of the solution~\cite{lamour2011computational}.
 
 The fundamental idea behind the tractability index concept involves the utilization of derivatives of projectors instead of derivative arrays. This approach offers the advantage of explicitly specifying the smoothness requirements for the inhomogeneity, thereby facilitating the extension of the tractability index to infinite-dimensional systems. However, if numerical computation of the projectors is necessary, challenges may arise in obtaining the derivatives~\cite{mehrmann2015index}. Characterizing the precise relationship between the tractability index and other indices remains a partially open problem. Some partial results have been obtained, as documented in~\cite{campbell1995index, campbell1995solvability, marz2005characterizing}, indicating that, except for variations in smoothness requirements, the tractability index equals the differentiation index.
 
-\paragraph{Structural Index}
+\subsection{The Hessenberg Forms}
 
-A combinatorially oriented index was initially defined for the linear constant coefficient case. Given the linear \acp{DAE} $\m{E}\m{x}^{\prime} = \m{A}\m{x} + \m{f}(t)$, consider the parameter-dependent pencil $(\m{E}(\m{p}), \m{A}(\m{p}))$, obtained by substituting the nonzero elements of $\m{E}$ and $\m{A}$ with independent parameters $\m{p}$. The unique integer that equals the Kronecker index of $(\m{E}(\m{p}), \m{A}(\m{p}))$ for all $\m{p}$ from some open and dense subset of the parameter set is termed the structural index, as discussed in~\cite{pantelides1988consistent, pryce2001simple} in a broader context. For the nonlinear case, a local linearization is typically utilized. Although in~\cite{reissig2000differential} it has demonstrated that the differentiation index and the structural index can differ arbitrarily, Pandelide's algorithm, outlined in ~\cite{pantelides1988consistent}, is widely employed in applications. For instance, in~\cite{unger1995structural}, combinatorial information is used to analyze which equations should be differentiated and to introduce additional variables for index reduction~\cite{mattsson1993index}. However, a thorough analysis of when this approach is fully justified has only been provided in a few specific cases, refer to~\cite{mehrmann2015index} for more details.
-
-\subsection{Hessenberg Form of Differential-Algebraic Equations}
-
-The general \ac{DAE} system~\eqref{chap1:eq:dae} may encompass ill-defined mathematical problems and situations that challenge direct discretization methods (refer to the Numerical Solution section). However, many high-index problems encountered in practice can be articulated as a blend of more constrained \ac{ODE} structures intertwined with constraints. In such systems, the algebraic and differential variables are explicitly identified for higher-index DAEs as well, and the algebraic variables may all be eliminated using the same number of differentiations. These are called Hessenberg forms of the \acp{DAE} and are given as follows~\cite{brenan1995numerical}, and will be later used in the following sections and chapters.
-
-\paragraph{Hessenberg Index-1}
-
-The Hessenberg index-1 \ac{DAE} system is expressed as
+As outlined in the forthcoming section, the implicit \ac{DAE} system~\eqref{chap1:eq:dae} can present mathematically ill-defined problems and scenarios that challenge direct discretization methods. Nonetheless, numerous high-index problems encountered in practical applications can be expressed as \ac{ODE} structures combined with constraints. Within such systems, both the algebraic and differential variables are explicitly separated and identified, even for higher-index \acp{DAE}, allowing for the elimination of all algebraic variables using a number of differentiations equal to the index of the \ac{DAE} system. These formulations, known as Hessenberg forms of the \acp{DAE}~\cite{brenan1995numerical}, are detailed here below and will serve as the basis for further exploration into \ac{DAE} solutions in subsequent sections and chapters.
 %
-\begin{equation*}
-  \begin{cases}
-    \m{x}^{\prime} = \m{f}(\m{x}, \m{z}, t) \\
-    \m{0} = \m{g}(\m{x}, \m{z}, t)
-  \end{cases}
-\end{equation*}
-%
-where the Jacobian $\m{Jg}_\m{z}$ is presumed non-singular for all $t$. This formulation mirrors the semi-explicit index-1 \ac{DAE} system discussed earlier. Semi-explicit index-1 \acp{DAE} bear close resemblance to implicit \acp{ODE}. While theoretically one can solve for $z$ in the algebraic equation (via the implicit function theorem), and then substitute it into the differential equation to derive the underlying \ac{ODE} in $x$ (though uniqueness isn't guaranteed), this method is not universally recommended for numerical solutions due to various considerations.
-
-\paragraph{Hessenberg Index-2}
-
-The Hessenberg index-2 \ac{DAE} system is expressed as
-%
-\begin{equation*}
-  \begin{cases}
-    \m{x}^{\prime} = \m{f}(\m{x}, \m{z}, t) \\
-    \m{0} = \m{g}(\m{x}, t)
-  \end{cases}
-\end{equation*}
-%
-where the product of Jacobians $\m{Jg}_\m{y}\m{Jf}_\m{z}$ is assumed non-singular for all $t$. Notably, the algebraic variable $y$ is absent from the second equation. This constitutes a pure index-2 \ac{DAE}, where all algebraic variables function as index-2 variables. An instance arising from modeling incompressible fluid flow through discretized Navier-Stokes equations is detailed in~\cite{ascher1998computer}.
-
-\paragraph{Hessenberg Index-3}
-
-The Hessenberg index-3 \ac{DAE} system is expressed as
-%
-\begin{equation*}
-  \begin{cases}
-    \m{x}^\prime = \m{f}(\m{x}, \m{y}, \m{z}, t) \\
-    \m{y}^\prime = \m{g}(\m{x}, \m{y}, t) \\
-    \m{0}        = \m{h}(\m{y}, t)
-  \end{cases}
-\end{equation*}
-%
-where the product $\m{Jh}_{\m{y}} \, \m{Jg}_{\m{x}} \, \m{Jf}_{\m{z}}$ is non-singular. The index of a Hessenberg DAE is found, as in the general ∂y ∂x ∂z
-case, by differentiation. However, only algebraic constraints must be differentiated~\cite{ascher1991projected}. These index-3 \ac{DAE} systems are a common structure encountered in practice, particularly in the context of \ac{MBD}, \acp{TPPC}, and many other complex systems.
+\begin{itemize}
+  \setlength\itemsep{0.0em}
+  \item The \emph{Hessenberg index-1} \ac{DAE} system is represented as
+  %
+  \begin{equation*}
+    \begin{cases}
+      \m{x}^{\prime} = \m{f}(\m{x}, \m{z}, t) \\
+      \m{0} = \m{g}(\m{x}, \m{z}, t)
+    \end{cases} \, \text{,}
+  \end{equation*}
+  %
+  with $\m{x} \in \mathbb{R}^n$, $\m{z} \in \mathbb{R}^m$, $\m{f}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{n}$, $\m{g}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, and where the Jacobian $\m{Jg}_\m{z}$ is assumed non-singular for all $t$. This configuration closely resembles the semi-explicit index-1 \ac{DAE} system\eqref{chap1:eq:semiexplicit_dae} discussed earlier. Semi-explicit index-1 \acp{DAE} share similarities with implicit \acp{ODE}. While it is theoretically feasible to solve for $z$ in the algebraic equation (using the implicit function theorem) and then substitute it into the differential equation to derive the underlying \ac{ODE} in terms of $x$ (though uniqueness is not guaranteed), this approach is not universally recommended for numerical solutions due to potential ill-conditioning and stability issues. The Hessenberg index-1 \ac{DAE} system is a common structure encountered in \acp{TPPC} problems~\cite{brenan1995numerical}.
+  %
+  \item The \emph{Hessenberg index-2} \ac{DAE} system is expressed as
+  %
+  \begin{equation*}
+    \begin{cases}
+      \m{x}^{\prime} = \m{f}(\m{x}, \m{z}, t) \\
+      \m{0} = \m{g}(\m{x}, t)
+    \end{cases} \, \text{,}
+  \end{equation*}
+  %
+  with $\m{x} \in \mathbb{R}^n$, $\m{z} \in \mathbb{R}^m$, $\m{f}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{n}$, $\m{g}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, and where the product of Jacobians $\m{Jg}_\m{y} \, \m{Jf}_\m{z}$ is assumed non-singular for all $t$. It is important to observe that the algebraic variable $\m{z}$ does not appear in the second equation. This arrangement characterizes a pure index-2 \ac{DAE}, where all algebraic variables act as index-2 variables. An illustration arising from the modeling of incompressible fluid flow through discretized Navier-Stokes equations can be found in~\cite{ascher1998computer}.
+  %
+  \item The \emph{Hessenberg index-3} \ac{DAE} system is formulated as
+  %
+  \begin{equation*}
+    \begin{cases}
+      \m{x}^\prime = \m{f}(\m{x}, \m{y}, \m{z}, t) \\
+      \m{y}^\prime = \m{g}(\m{x}, \m{y}, t) \\
+      \m{0}        = \m{h}(\m{y}, t)
+    \end{cases} \, \text{,}
+  \end{equation*}
+  %
+  with $\m{x} \in \mathbb{R}^n$, $\m{z} \in \mathbb{R}^m$, $\m{f}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{n}$, $\m{g}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, $\m{h}: \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, and where the product $\m{Jh}_{\m{y}} \, \m{Jg}_{\m{x}} \, \m{Jf}_{\m{z}}$ is non-singular for all $t$. Determining the index of a Hessenberg \acp{DAE} follows a similar differentiation process to the general case. However, only algebraic constraints need to be differentiated~\cite{ascher1991projected}. These index-3 \ac{DAE} systems are frequently encountered in practical scenarios, notably in the fields of \ac{MBD}, \acp{TPPC}, and various engineering applications~\cite{ascher1998computer,brenan1995numerical}.
+  %
+  \item The \emph{Hessenberg index-($r+2$)} \ac{DAE} system is formulated as
+  %
+  \begin{equation*}
+    \begin{cases}
+      \m{x}_r^\prime = \m{f}_r(\m{x}_1, \m{x}_2, \dots, \m{x}_r, \m{y}, \m{z}, t) \\
+      \vdots \\
+      \m{x}_2^\prime = \m{f}_2(\m{x}_1, \m{x}_2, \m{x}_3, \m{y}, t) \\
+      \m{x}_1^\prime = \m{f}_1(\m{x}_1, \m{x}_2, \m{y}, t) \\
+      \m{y}^\prime = \m{g}(\m{x}_1, \m{y}, t) \\
+      \m{0}        = \m{h}(\m{y}, t)
+    \end{cases} \quad \text{for} \quad r = 1, 2, \dots, r \, \text{,}
+  \end{equation*}
+  %
+  with $\m{x}_i \in \mathbb{R}^{n_i}$, $\m{y} \in \mathbb{R}^m$, $\m{z} \in \mathbb{R}^m$, $\m{f}_i: \mathbb{R}^{n_i} \times \mathbb{R}^{n_{i+1}} \times \dots \times \mathbb{R}^{n_r} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{n_i}$, $\m{g}: \mathbb{R}^{n_1} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, $\m{h}: \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, and where the product $\m{Jh}_{\m{y}} \, \m{Jg}_{\m{x}_1} \, \m{Jf}_{1\m{x}_2} \dots \m{Jf}_{r-1\m{x}_r} \, \m{Jf}_{r\m{z}}$ is non-singular for all $t$.
+\end{itemize}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-\section{Solution Methods}
+\section{Solution Methods for Differential-Algebraic Equations}
 
-Approaches for numerically solving \acp{DAE} can broadly be categorized into two classes: (\emph{i}) direct discretization of the given system and (\emph{ii}) methods involving index reduction (\eg{}, a form of reformulation) along with discretization. While direct discretization is preferred due to its simplicity and efficiency, index reduction approaches are popular for their versatility, especially when dealing with higher-index \acp{DAE}.
+Methods for numerically solving \acp{DAE} can be broadly categorized into two classes: (\emph{i}) direct discretization of the given system and (\emph{ii}) methods involving index reduction, which entails reformulating the system's equations alongside a subsequent discretization. While direct discretization is favored for its simplicity and efficiency, particularly with relatively low-index \acp{DAE} (typically less or equal than 3), index reduction approaches are renowned for their versatility, especially when tackling higher-index \acp{DAE}.
 
 \subsection{Numerical Direct Discretization}
 
-Direct discretization is favored because index reduction can be both time and computationally expensive, requiring more user input and intervention. However, direct discretization is primarily effective for index-1, index-2 Hessenberg, and index-3 Hessenberg \ac{DAE} systems. Thankfully, many practical \acp{DAE} are either index-1 or can be transformed into simple combinations of Hessenberg systems. Despite this, challenges may arise, and even for these restricted classes of problems, direct applications of numerical \ac{ODE} methods may not always yield satisfactory results. For \acp{DAE} with an index greater than two, employing index-reduction techniques to solve the problem in a lower-index form is often the best approach.
-
-Considerations akin to singularly perturbed \ac{ODE} systems arise in cases like
-
+Direct discretization is preferred due to its simplicity and computational efficiency, as index reduction methods can be time-consuming and computationally expensive, often requiring more user inputs and interventions. However, direct discretization is most effective for index-1, index-2, and index-3 Hessenberg \ac{DAE} systems. Usually, many practical \acp{DAE} fall into these categories or can be transformed into simple combinations of Hessenberg systems. Despite this, challenges may still arise, and even for these restricted classes of problems, direct application of numerical \ac{ODE} methods may lead to insufficient results and instabilities. For \acp{DAE} with an index greater than 2, employing index reduction techniques to solve the problem in a lower-index form is often considered the most effective approach. Similar considerations arise in cases resembling singularly perturbed \ac{ODE} systems, such as
+%
 \begin{equation}
   \begin{cases}
   \m{y}^{\prime} = \m{f}(\m{y}, \m{z}, t) \\
-  \varepsilon \m{z}^{\prime} = \m{g}(\m{y}, \m{z}, t),
-  \end{cases}
+  \varepsilon \m{z}^{\prime} = \m{g}(\m{y}, \m{z}, t)
+  \end{cases} \, \text{,}
   \label{chap1:eq:singularly_perturbed}
 \end{equation}
-
-where $\varepsilon$ is a small parameter. Setting $\varepsilon = 0$ reduces equation~\eqref{chap1:eq:singularly_perturbed} to the \ac{DAE}~\eqref{chap1:eq:semiexplicit_dae}. Given the system's stiffness for small $\varepsilon$, methods tailored for stiff \acp{ODE}, such as \ac{BDF} and Radau collocation methods, are natural choices for direct discretization of the limit \ac{DAE} and for handling \acp{DAE} of the form~\eqref{chap1:eq:dae} in general.
+%
+where $\varepsilon$ is a small perturbation parameter. Setting $\varepsilon = 0$ reduces~\eqref{chap1:eq:singularly_perturbed} to the \acp{DAE}~\eqref{chap1:eq:semiexplicit_dae}. In general, due to the system's stiffness for small $\varepsilon$, methods designed for such \ac{ODE} system, like \ac{BDF} and Radau collocation methods, are natural choices for directly discretizing implicit \acp{DAE} of the form~\eqref{chap1:eq:dae}.
 
 \paragraph{Backward Euler Method}
 
-The concept behind direct discretization is straightforward: approximate $\m{x}$ and $\m{x}^{\prime}$ using a discretization formula such as multistep methods or Runge-Kutta methods. To illustrate direct discretization, let's take the backward Euler method, the simplest method possessing the stiff decay property. By applying the backward difference formula to $\m{x}^{\prime}$ in equation~\eqref{chap1:eq:dae}, we arrive at a system of $N$ nonlinear equations
+The concept of direct discretization is quite straightforward: it involves approximating $\m{x}$ and $\m{x}^{\prime}$ using a discretization technique, such as multistep methods or Runge-Kutta methods. As a first example, let us take the Backward Euler method, which is the simplest method exhibiting a stiff decay property. Applying the Backward Euler formula to $\m{x}^{\prime}$ in~\eqref{chap1:eq:dae}, we obtain a system of $N$ nonlinear equations
 %
-\begin{equation*}
-  \m{F}\left(\m{x}_n, \dfrac{\m{x}_n - \m{x}_{n-1}}{h_n}, t_n\right) = \m{0} \quad \text{for} \quad n = 1, 2, \dots
-\end{equation*}
+\begin{equation}
+  \m{F}\left(\m{x}_n, \dfrac{\m{x}_n - \m{x}_{n-1}}{h_n}, t_n\right) = \m{0} \quad \text{for} \quad n = 1, 2, \dots, m \, \text{.}
+  \label{chap1:eq:backward_euler}
+\end{equation}
 %
-where $\m{x}_n$ represents the approximation of $\m{x}(t_n)$, $h_n = t_n - t_{n-1}$ denotes the time step, and $t_n$ are the time points. Solving this nonlinear equation system recursively yields a numerical solution for equation~\eqref{chap1:eq:dae}. This method is effective for index-1 \acp{DAE} and particularly suitable for stiff index-1 \acp{DAE} and stiff \acp{ODE}.
+Here, $\m{x}_n$ represents the approximation of $\m{x}(t_n)$, $h_n = t_n - t_{n-1}$ denotes the time step, $t_n$ are the time points, and $m$ is the total number of time points. Solving this nonlinear equation system recursively provides a numerical solution for~\eqref{chap1:eq:dae}. This method is effective for index-1 \acp{DAE} and particularly suitable for stiff index-1 \acp{DAE} and stiff \acp{ODE}.
 
-However, for higher-index \acp{DAE}, including other methods, this simple approach may not suffice. In some cases, even seemingly straightforward higher-index \ac{DAE} systems with well-defined and stable solutions can pose challenges, rendering methods like the backward Euler method and other multistep and Runge-Kutta methods unstable or inapplicable. Refer to Example 10.1 in~\cite{ascher1998computer} for an illustration of such cases.
-
-Moreover, practical difficulties may arise during the solution of the nonlinear system (13) for $\m{x}_n$ given $\m{x}_{n-1}$. Typically, iterative numerical methods like the Newton method are employed to obtain the solution. Due to these technical challenges, direct discretization of fully implicit \acp{DAE} with an index higher than one is generally discouraged. However, for fully implicit index-1 and semi-explicit index-2 \acp{DAE}, the Backward Euler method has been shown to be stable, convergent, and first-order accurate. For detailed discussions and convergence results, see~\cite{brenan1995numerical, hairer1999stiff}.
+However, for higher-index \acp{DAE}, including other methods, this straightforward approach may not suffice. In some cases, even seemingly simple higher-index \ac{DAE} systems with well-defined and stable solutions can pose challenges, making methods like the Backward Euler method, as well as other multistep and Runge-Kutta methods, unstable or inapplicable~\cite{ascher1998computer}. Practical difficulties may arise during the resolution of the nonlinear system~\eqref{chap1:eq:backward_euler} for $\m{x}_n$ given $\m{x}_{n-1}$, where iterative numerical methods like the Newton method are employed. Due to these implementation challenges, direct discretization of fully implicit \acp{DAE} with an index greater than 1 is generally discouraged. However, for fully implicit index-1 and semi-explicit index-2 \acp{DAE}, the Backward Euler method is stable, convergent, and first-order accurate~\cite{brenan1995numerical, hairer1999stiff}.
 
 \paragraph{Backward Differentiation Formula and Linear Multistep Methods}
 
-While Euler is merely a first-order method, achieving greater accuracy without reducing step size necessitates higher-order methods. The constant step-size \ac{BDF} method applied to a general nonlinear \ac{DAE} of the form~\eqref{chap1:eq:dae} is given by:
+Although Euler is a first-order method, achieving higher accuracy without reducing step size requires the use of higher-order methods. One such method is the constant step-size \ac{BDF}, which is applied to a general nonlinear \ac{DAE} system of the form~\eqref{chap1:eq:dae} and is given by
 %
 \begin{equation*}
-  \m{F}\left(\m{x}_n, \dfrac{1}{\beta_0 h} \sum_{j=0}^{k} \alpha_j x_{n-j}, t_n\right) = \m{0}
+  \m{F}\left(\m{x}_n, \dfrac{1}{\beta_0 h} \sum_{j=0}^{s} \alpha_j \m{x}_{n-j}, t_n\right) = \m{0} \, \text{,}
 \end{equation*}
 %
-where $\beta_0$ and $\alpha_j$ for $j = 0, 1, \dots, k$ are the coefficients of the \ac{BDF} method. The $k$-step \ac{BDF} method of fixed step size $h$ has been shown to be convergent of order $\mathcal{O}(h^k)$ under certain conditions. Similar convergence results have been established for general linear multistep methods, provided their coefficients satisfy a set of order conditions, including those unique to \acp{DAE}. \ac{BDF} methods meet these additional requirements. Refer to~\cite{brenan1995numerical} for more information.
+where $\beta_0$ and $\alpha_j$ for $j = 0, 1, \dots, s$ are the coefficients of the \ac{BDF} method. The $s$-step \ac{BDF} method of fixed step size $h$ has been shown to be convergent of order $\mathcal{O}(h^s)$ under certain conditions. Similar convergence results have been established for general linear multistep methods, provided their coefficients satisfy a set of order conditions, including those unique to \acp{DAE}. \ac{BDF} methods meet these additional requirements. Refer to~\cite{brenan1995numerical} for more information.
 
 \paragraph{Radau Collocation and Implicit Runge-Kutta Methods}
 
-The $s$-stage implicit Runge-Kutta method applied to a general nonlinear \ac{DAE} of the form~\eqref{chap1:eq:dae} is given by:
+The $s$-stage implicit Runge-Kutta method, when applied to a general nonlinear \ac{DAE} of the form~\eqref{chap1:eq:dae}, is expressed as
 %
 \begin{equation*}
   \begin{array}{l}
-      \m{F}\left(\m{X}_{ni}, \m{K}_{ni}, t_{n-1}+c_i h\right) = \m{0} \\[1.0em]
-      \m{X}_{ni} = \m{x}_{n-1} + h\displaystyle\sum_{j=1}^s a_{ij}\m{K}_j \\[0.25em]
-      \m{x}_n = \m{x}_{n-1} + h\displaystyle\sum_{i-1}^s b_i \m{K}_{ni}
+    \m{F}\left(\m{x}_{k} + h_k\displaystyle\sum_{j=1}^{s}a_{ij} \m{K}_j, \m{K}_i, t_{k} + c_i h_k\right) = \m{0} \, \text{,} \\[1em]
+    \m{x}_{k+1} = \m{x}_{k} + h_k\displaystyle\sum_{i=1}^{s} b_i \m{K}_i \, \text{,}
   \end{array}
 \end{equation*}
 %
-where $c_i$, $a_{ij}$, $b_i$ for $i$, $j = 1, 2, \dots, s$ are the coefficients of the Runge-Kutta method, with the additional assumption that the matrix $A = (a_{ij})$ is non-singular.
-
-For the semi-explicit \ac{DAE}~\eqref{chap1:eq:semiexplicit_dae}, the formula for the internal stages reads:
+where $c_i$, $a_{ij}$, $b_i$ for $i = 1, 2, \dots, s$ and $j = 1, 2, \dots, s$ are the coefficients of the Runge-Kutta method, with the additional assumption that the matrix $\m{A} = (a_{ij})$ is non-singular. On the other hand, for the semi-explicit \ac{DAE}~\eqref{chap1:eq:semiexplicit_dae}, the $s$-stage implicit Runge-Kutta method reads
 %
 \begin{equation*}
   \begin{array}{l}
-  \m{K}_{ni} = \m{f}\left(\m{Y}_{ni}, \m{Z}_{ni}, t_{n-1}+c_i h\right) \\
-  \m{Y}_{ni} = \m{y}_{n-1} + h\displaystyle\sum_{j=1}^s a_{ij}\m{K}_j \\
-  \m{g}\left(\m{Y}_{ni}, \m{Z}_{ni}, t_{n-1}+c_i h\right) = \m{0}
+    \m{K}_i = \m{f}\left(\m{x}_{k} + h_k\displaystyle\sum_{j=1}^{s}a_{ij} \m{K}_j, \m{z}_{k}, t_{k} + c_i h_k\right) = \m{0} \, \text{,} \\[1em]
+    \m{x}_{k+1} = \m{x}_{k} + h_k\displaystyle\sum_{i=1}^{s} b_i \m{K}_i \, \text{,} \\[1.75em]
+    \m{0} = \m{g}\left(\m{x}_{k}, \m{z}_{k}, t_{k} + c_i h_k\right) \, \text{,}
   \end{array}
 \end{equation*}
 %
-for $i = 1, 2, \dots, s$. It is possible to avoid the quadrature step for the algebraic variables $z$ by employing stiffly accurate methods, such as Runge-Kutta methods satisfying $b_i = a_{si}$ for $i = 1, 2, \dots, s$. These methods have additional order conditions for attaining order greater than 2, even for semi-explicit index-1 \acp{DAE}, as seen with Runge-Kutta methods. Refer to~\cite{brenan1995numerical} for further details.
+for $i = 1, 2, \dots, s$. It is possible to avoid the quadrature step for the algebraic variables $z$ by employing stiffly accurate methods, such as Runge-Kutta methods satisfying $b_i = a_{si}$ for $i = 1, 2, \dots, s$. These methods have additional order conditions for attaining order greater than 2, even for semi-explicit index-1 \acp{DAE}, as seen with Runge-Kutta methods~\cite{brenan1995numerical}.
 
-It is important to acknowledge that implementing direct discretization methods for \acp{DAE} encounters practical challenges. These include obtaining a consistent set of initial conditions, addressing the ill-conditioning of the iteration matrix, and managing error estimation and stepsize control for index-2 Hessenberg \acp{DAE}.
-
-For certain special classes of \acp{DAE}, like semi-explicit \acp{DAE} in Hessenberg form and \acp{ODE} on manifolds, especially those encountered in \ac{MB} mechanics, highly efficient and robust numerical methods called stabilized or projected methods are available. The fundamental approach involves discretizing the differential equations using a suitable numerical \ac{ODE} method, followed by a post-stabilization or coordinate projection step to align the numerical solution with the constraint. For further details, refer to~\cite{eichsoellner1998numerical}.
-
-For a comprehensive understanding of numerical aspects related to \acp{DAE}, refer to~\cite{ascher1998computer, brenan1995numerical, hairer1999stiff}.
+Implementing direct discretization methods for \acp{DAE} faces practical challenges. These challenges encompass obtaining a consistent set of initial conditions, addressing the ill-conditioning of the iteration matrix, and managing error estimation for step-size control on index-2 Hessenberg \acp{DAE}. However, for specific classes of \acp{DAE}, such as semi-explicit ones in Hessenberg form and \acp{ODE} with hidden constraints typically found in \ac{MB} mechanics, highly efficient and robust numerical methods called stabilized or projected methods exist. The core approach involves discretizing the differential equations using a suitable numerical \ac{ODE} method, together with a stabilization technique or coordinate projection step to align the numerical solution with the constraints~\cite{eichsoellner1998numerical}. For a thorough understanding of numerical aspects concerning \acp{DAE}, refer to~\cite{ascher1998computer, brenan1995numerical, hairer1999stiff}.
 
 \subsubsection{Software for Differential-Algebraic Equations Numerical Solution}
 
@@ -252,38 +255,84 @@ Several software packages are available for solving \acp{DAE}, including both ge
 %
 \begin{itemize}
   \setlength{\itemsep}{0.0em}
-  \item DASSL: Developed by Linda Petzold, DASSL employs \ac{BDF} formulas to solve general index-1 \acp{DAE}. Versions catering to large-scale problems (DASPK) and sensitivity analysis are also available. Some later versions of DASPK can handle Hessenberg index-2 \acp{DAE}. Additionally, there is DASPKADJOINT, which implements the adjoint method for sensitivity analysis of \ac{DAE} systems~\cite{brenan1995numerical}.
-  \item RADAU5: A code by \citet{hairer1999stiff} based on the 3-stage Radau collocation method. It addresses \acp{DAE} of the form $\m{M}\m{x}^{\prime} = \m{f}(\m{x}, t)$, where $\m{M}$ is a constant, possibly singular, square matrix. RADAU5 accommodates problems up to index 3, with the higher-index variables requiring user identification.
-  \item IDA: A component of the SUNDIALS (SUite of Nonlinear and DIfferential/ALgebraic equation Solvers) software package developed by Radu Serban and Alan C. Hindmarsh at Lawrence Livermore National Laboratory, USA~\cite{hindmarsh2005sundials, gardner2022sundials}. IDA, written in C, solves nonlinear \acp{DAE} and is derived from the FORTRAN package DASPK. There is also CPODES, a related code for solving \acp{ODE} with invariants.
-  \item DAEPACK: A software library created by Paul I. Barton and his team at \ac{MIT}~\cite{tolsma2000daepack}. While its name stands for Differential-Algebraic Equation Package, DAEPACK's capabilities extend beyond \ac{DAE} analysis, encompassing both symbolic and numerical components for modeling and general numerical computations.
-  \item COLDAE: Developed by \citet{ascher1994collocation}, COLDAE employs projected Gauss collocation to solve boundary value problems for semi-explicit index-2 \acp{DAE}.
+  \item \textbf{\textsc{Dassl}}, developed by Linda Petzold, utilizes \ac{BDF} formulas to solve generic index-1 \acp{DAE}. Variants tailored for large-scale problems and sensitivity analysis are also accessible. Specifically, \textsc{Daspk}, a later iteration of \textsc{Dassl}, can handle large Hessenberg index-2 \acp{DAE}; \textsc{Daspkadjoint}, on the other hand, implements the adjoint method for sensitivity analysis of \ac{DAE} systems~\cite{brenan1995numerical}.
+  \item \textbf{\textsc{Radau5}} is a software by Ernst Hairer and Gerhard Wanner based on the 3-stage Radau collocation method~\cite{hairer1999stiff}. It tackles problems expressed as $\m{M}\m{x}^{\prime} = \m{f}(\m{x}, t)$, where $\m{M}$ is a constant, possibly singular, square matrix. \textsc{Radau5} solves \acp{DAE} up to index 3, with the identification of higher-index variables being required from the user.
+  \item \textbf{\textsc{Ida}} is a submodule of the \ac{SUNDIALS} software package developed by Radu Serban and Alan Hindmarsh at \ac{LLNL}~\cite{hindmarsh2005sundials, gardner2022sundials}. \textsc{Ida} is coded in \cc{} and tackles nonlinear \acp{DAE}. It is derived from the aforementioned \Fortran{} package \textsc{Daspk}. Additionally, a related code for solving \acp{ODE} with invariants is available under the name of \textsc{Cpodes}.
+  \item \textbf{\textsc{Daepack}}, is a software library created by Paul Barton and his team at \ac{MIT}~\cite{tolsma2000daepack}. While its name stands for \ac{DAE} Package, \textsc{Daepack}'s capabilities extend beyond \ac{DAE} analysis, encompassing both symbolic and numerical components for modeling and general numerical computations.
+  \item \textbf{\textsc{Coldae}} was firstly presented in~\cite{bader1987new}. It employs projected Gauss collocation to solve boundary value problems for semi-explicit \acp{DAE} with an index at most 2.
 \end{itemize}
 
 \subsection{Index Reduction Methods}
 
-For higher-index \acp{DAE}, direct discretization methods may not be the most efficient or effective. In such cases, index reduction methods are preferred. These methods involve transforming the \ac{DAE} into a lower-index form, which can then be solved using either direct discretization methods or standard \ac{ODE} integration techniques with the aid of projection or stabilization techniques. The most common methods include the \emph{differential index} reduction. The differential index~\cite{campbell1995index, campbell1995highindex} is the minimum number of differentiation times required to transform a \ac{DAE} system into an explicit \ac{ODE} system and is used throughout this work. Generally, the differential index reduction process involves differentiating the algebraic constraints and substituting them into the differential equations. This process is repeated until the \ac{DAE} is transformed into an explicit \ac{ODE} system. The number of iterations required to achieve this transformation is termed the differential index of the \ac{DAE}, with \acp{ODE} possessing an index of 0. This method is particularly useful for high-index \acp{DAE} and is widely employed in software packages like \textsc{ModelingToolkit}, \textsc{Modelica}, and \textsc{Modelica}-based tools like \textsc{OpenModelica}.
+For higher-index \acp{DAE}, direct discretization methods might not offer the most efficient or effective solution. In such scenarios, index reduction methods are preferred. These methods involve converting the \ac{DAE} into a lower-index form, which can then be tackled using direct discretization methods or standard \ac{ODE} integration techniques, aided by projection or stabilization techniques. Specifically, the index is reduced by differentiating the algebraic constraints and substituting them into the differential equations. This process repeats until the \ac{DAE} transforms into an explicit \ac{ODE} system. As mentioned earlier, the number of iterations needed for this transformation is termed the index of the \ac{DAE}, with \acp{ODE} having an index of 0.
 
-As an expert reader may have noticed, the differential index reduction method is closely related to the aforementioned symbolic computation techniques. Symbolic computation tools like \textsc{Maple}, \textsc{Mathematica}, and \textsc{SymPy} can be used to perform the differentiation and substitution steps required to reduce the index of a \ac{DAE}. These tools can also be used to derive the Jacobian of the \ac{DAE} system, which is essential for solving the \ac{DAE} system using numerical methods. Nonetheless, in a handful of cases, symbolic computation tools can also be used to derive the solution of the \ac{DAE} system, which can then be used to validate the numerical solution obtained using numerical methods and assess the accuracy of the numerical solution and the numerical method used. However, it is important to note that symbolic computation tools are not always the most efficient or effective tools for solving \acp{DAE}, especially for large-scale or complex \acp{DAE}. Indeed, the computational cost of symbolic computation tools can be prohibitive for large-scale or complex \acp{DAE}, and the numerical solution of the \ac{DAE} system using numerical methods may be preferred.
+However, as we mentioned before, there exist multiple definitions of the index of a \ac{DAE} system, and each of these definitions is specifically tailored to a particular index reduction technique. As a consequence, there are various approaches to index reduction, whose characteristics also depend on factors like the capabilities of the available package, the user's expertise, and the specific problem at hand. Each method has its own pros and cons, being more or less suitable for different types of \acp{DAE} and varying in computational costs, implementation requirements, and theoretical foundations.
 
-There exist several techniques for reducing the index of a \ac{DAE} system, the most common of which is the Pantelides algorithm~\cite{pantelides1988consistent}, which falls under the umbrella of the \ac{SA} methods. Recent advances in the field of symbolic computation have led to the development of a broader theory by John Pryce and his collaborators~\cite{pryce1998solving}. This theory provides a systematic approach to index reduction and the solution of \acp{DAE} using Taylor series, and which has been proven in~\cite{pryce2001simple} to be a generalization of the Pantelides algorithm. The theory has been implemented in the software package \textsc{DAETS}~\cite{nedialkov2007solvingI, nedialkov2007solvingII, nedialkov2008solvingIII}, which is particularly effective in solving \emph{very} high-index \acp{DAE} and has been successfully applied to a wide range of problems in engineering and science.
+ %and the symbolic computation techniques, which include the ``standard'' differential index reduction method as well as the built-in \Maple{} functions for index reduction. These latter methods are particularly effective for small-scale complicated \acp{DAE}, especially if \ac{SA} methods are not applicable or faulty.
 
-Another approach to index reduction is the so-called \emph{projector-based analysis}, which is thoroughly presented in \citet{lamour2013differential, marz2014differential}. This method involves finding a projector that allows for the separation of the differential and algebraic components of the \ac{DAE} system. The projector is then used to transform the \ac{DAE} system into a lower-index form, which can then be solved using numerical methods. This procedure is repeated point-wise during the numerical solution of the \ac{DAE} system, ensuring that the changes in the \acp{DAE} structure are accounted for at each time step. Special continuous projector-valued functions can be used to ensure that it is possible to reutilize the same projector in a wider range of time steps, thus reducing the computational cost of the method. Notice that in the case of nonlinear \acp{DAE} the projector-based analysis is typically performed pointwise, which means that the algorithmic steps of the computation of admissible nullspace projectors are performed at each time step. This is necessary to ensure that the changes in the \ac{DAE} structure are accounted for at each time step~\cite{lamour2011computational, lamour2012detecting}.
+%The most prevalent index reduction methods include the Pantelides algorithm, falling under the umbrella of structural analysis methods, and symbolic computation techniques, encompassing the "standard" differential index reduction method along with built-in Maple functions for index reduction. Symbolic computation methods are particularly effective for small-scale complex \acp{DAE}, especially when structural analysis methods are inapplicable or problematic.
 
-% TRactability già introdotto
-Notably, the projector-based analysis relies on \emph{tractability index}~\cite{mehrmann2015index}. The tractability index concept includes the opinion that a more general \acp{DAE} may be constituted by several so-called regularity regions. The definition domain of the \acp{DAE} decomposes into maximal regularity regions which are bordered by critical points. On each regularity region, the \acp{DAE} show a uniform structure which can be uncovered using matrix function sequences formed with admissible projector functions. The construction is supported by constant rank conditions. Points where construction fails are critical ones. A smooth flow and also reliable treatment can be expected if the solution stays within a regularity region. Crossing or touching a border may yield strong singularities. In essence, to monitor the structure one has to compute an admissible matrix function sequence and thereby monitor the rank conditions~\cite{lamour2011computational}. In all works presented by the group of Roswitha M\"{a}rz, there is little mention of the use of symbolic computation tools that could be used to derive the projector functions and the matrix function sequences. This is likely since the projector functions and the matrix function sequences are typically derived using numerical factorization methods with a coupled automatic differentiation method to \dots. However, it is possible that symbolic computation tools could be used to derive the projector functions and the matrix function sequences, especially for simple or small-scale \acp{DAE}.
+\paragraph{Differential Index Reduction}
+
+As expert readers may notice, the differential index reduction method bears close relation to symbolic computation and symbolic computation software such as \Maple{}, \Mathematica{}, and \Python{}'s library \textsc{SymPy}. These prove invaluable in executing the differentiation and substitution steps essential for reducing the differential index of a \ac{DAE} system. These tools also facilitate the derivation of the \acp{DAE}' Jacobian, crucial for numerical solution approaches. However, in select instances, symbolic computation tools can also furnish the \acp{DAE}' solution, aiding in the validation and assessment of numerical solutions obtained through numerical methods. Nevertheless, it is worth noting that symbolic computation tools are not always the optimal choice for \acp{DAE} resolution, particularly for large-scale or intricate systems. Indeed, the computational overhead of symbolic computation tools can become prohibitive in such cases, prompting a preference for other methods in solving the \ac{DAE} system.
+
+As we mentioned before, the basic idea behind the differential index reduction method is to differentiate the algebraic constraints and substitute them into the differential equations. This process is repeated until the \ac{DAE} system is transformed into an explicit \ac{ODE} system. To do so, one can indiscriminately differentiate all equations in the \ac{DAE} system, however, this approach is not the most efficient or effective. In some cases, differentiating only a subset of the equations can lead to a more straightforward and less computationally expensive solution. This is particularly true for large-scale \acp{DAE} where differentiating all equations can lead to a significant increase in computational cost. In such cases, only algebraic equations should be differentiated. In other words, the \ac{DAE} system must be transformed into its Hessenberg form, where the algebraic variables are explicitly separated from the differential variables~\cite{shmoylova2013simplification}. Thereby, the process of isolation of algebraic variables is crucial for the successful application of the differential index reduction method.
+
+\paragraph{Structural Index Reduction}
+
+The most common index reduction methods are those based on the Pantelides algorithm~\cite{pantelides1988consistent}, which falls under the umbrella of the \ac{SA} methods. However, recent advances have led to the development of more effective algorithms, such as Stephen Campbell and William Gear' method of differential arrays~\cite{campbell1995index} and John Pryce's $\Sigma$-method~\cite{pryce1998solving}. This latter method provides a systematic approach to index reduction and the solution of \acp{DAE} using the Taylor series. Nonetheless, it also has been proven to be a generalization of the Pantelides algorithm~\cite{pryce2001simple}.
+
+The concept behind \ac{SA} of systems of equations involves examining their regularity or singularity in a generic sense. This analysis is typically conducted through the representation of the system's structure using tools such as the bipartite graph, which characterizes the pattern of the system's incidence matrix. Structural regularity or singularity, as well as related properties, are then assessed based on this graph. This approach is particularly useful for sparse systems of equations, where the incidence matrices have a small proportion of non-zero entries. \ac{SA} techniques also extend to numerical equations, considering the Jacobian matrix of the system. Understanding the link between numerical regularity and structural regularity is crucial for correctly applying \ac{SA} methods. Additionally, the \ac{SA} of systems of equations can be extended to include systems with existential quantifiers~\cite{benveniste2021structural}.
+
+In essence, the \ac{SA} of \ac{DAE} systems aims to address the following problem. Considering a \ac{DAE} system represented by equation~\eqref{chap1:eq:dae} as a set of algebraic equations with the leading variables as unknowns, the goal is to determine if this system is structurally non-singular. If it is, then given values for all the derivatives $x_k^{\prime}$ for $i = 1, 2, \dots, n$ and $k = 0, 1, \dots, d_{i-1}$, a unique value for the leading $i$ variables can be computed structurally. In other words, the system behaves like a \ac{ODE} system. However, if the system is not structurally non-singular, additional latent equations can be derived by suitably differentiating selected equations from~\eqref{chap1:eq:dae}. This process transforms the system into a \ac{ODE}-like form without altering its solution set~\cite{benveniste2021structural}.
+
+The structural index introduced earlier serves as a metric for quantifying the number of times the system needs to be differentiated to attain a structurally non-singular form. It is important to emphasize that the structural index can be significantly higher than the differential index. In particular, \citet{reissig2000differential} highlights that the structural index of linear \acp{DAE} with constant coefficients and index-1 can be arbitrarily high, which contrasts with a previous finding in the literature. This reveals that applying Pantelides' algorithm to index-1 \acp{DAE} may lead to an indefinite number of iterations and differentiations.
+
+\paragraph{Tracatability Index Reduction}
+
+Another approach to index reduction is the so-called \emph{projector-based analysis}, which is thoroughly presented in \citet{lamour2013differential, marz2014differential}. The projector-based analysis, based on the tractability index, explores the concept that complex \acp{DAE} can consist of distinct regularity regions bordered by critical points. These regions reveal a consistent structure that can be uncovered using matrix function sequences formed with admissible projector functions, guided by constant rank conditions. Smooth solutions are expected within these regions, but crossing borders may lead to strong singularities. In essence, tracking the structure involves computing an admissible matrix function sequence and monitoring rank conditions~\cite{lamour2011computational}.
+
+This method involves finding a projector that allows for the separation of the differential and algebraic components of the \ac{DAE} system. The projector is then used to transform the \ac{DAE} system into a lower-index form, which can be then integrated~\cite{lamour2011computational}. Notice that in the case of nonlinear \acp{DAE}, the projector-based analysis is typically performed pointwise, which means that the algorithmic steps of the computation of admissible null-space projectors are performed at each time step, ensuring that the changes in the \acp{DAE} structure are accounted for at each time step. Special continuous projector-valued functions can be used to ensure that it is possible to reutilize the same projector in a wider range of time steps, thus reducing the computational cost of the method~\cite{lamour2012detecting}.
 
 \subsection{Software for Index Reduction of Differential-Algebraic Equations}
 
-Following this brief introduction of the most widely recognized index reduction algorithms, we provide an overview of the specific index reduction algorithms found in current state-of-the-art software. The following list is limited to the most prominent solutions dedicated to dynamic system modeling and simulation that are widely adopted in both academia and industry.
+Following this brief introduction to the most widely recognized index reduction algorithms, we provide an overview of the specific index reduction algorithms found in current state-of-the-art software. The following list is limited to the most prominent solutions dedicated to dynamic system modeling and simulation that are widely adopted in both academia and industry.
 %
 \begin{itemize}
   \setlength{\itemsep}{0.0em}
-  \item \Matlab{} uses the Pantelides algorithm~\cite{pantelides1988consistent} to reduce the \acp{DAE} to index-1. Alternatively, or if the latter fails, the more reliable but slower Gaussian elimination algorithm can be employed to obtain an index-0 \ac{DAE} system~\cite{matlab}.
-  \item \textsc{Modelica}-based software~\cite{mattsson1997modelica, mattsson1998physical} and \textsc{ModelingToolkit}~\cite{modelingtoolkit} employ the Pantelides algorithm~\cite{pantelides1988consistent} along with the dummy derivatives method~\cite{mattsson1993index} to automatically perform the reduction to index-1 \acp{DAE}.
-  \item \Mathematica{} offers a comprehensive suite of index reduction algorithms~\cite{mathematica}. It can reduce the index of \acp{DAE} using the Pantelides~\cite{pantelides1988consistent} or structural matrix~ \cite{unger1995structural, chowdhry2004symbolic} methods. Additionally, it implements dummy derivatives~\cite{mattsson1993index} and projection methods for taking hidden constraints into account during numerical integration.
-  \item \Maple{} performs symbolic index reduction within the \texttt{dsolve} function~\cite{maple}. However, the implemented algorithms are not documented or referenced. They are likely to be based on the projection method outlined in~\cite{shmoylova2013simplification}. Notably, the patents by the same authors~\cite{postma2012exact, shmoylova2012method, postma2015exact} discuss techniques for eliminating isolated parameters, extracting parameter sub-expressions from \acp{DAE}, and establishing minimal disconnected clusters of parameter sub-expressions. We would like to point out that this information is to be taken with caution, as \Maple{} does not provide specific references on this topic.
+  \item \textbf{\Matlab{}} uses the Pantelides algorithm~\cite{pantelides1988consistent} to reduce the \acp{DAE} to index-1. Alternatively, or if the latter fails, the more reliable but slower Gaussian elimination algorithm can be employed to obtain an index-0 \ac{DAE} system~\cite{matlab}.
+  \item \textbf{\Modelica{}}~\cite{mattsson1997modelica, mattsson1998physical}, \Modelica{}-based software and \textbf{\ModelingToolkit{}}~\cite{modelingtoolkit} employ the Pantelides algorithm~\cite{pantelides1988consistent} along with the dummy derivatives method~\cite{mattsson1993index} to automatically perform the reduction to index-1 \acp{DAE}.
+  \item \textbf{\Mathematica{}} offers a comprehensive suite of index reduction algorithms~\cite{mathematica}. It can reduce the index of \acp{DAE} using the Pantelides~\cite{pantelides1988consistent} or structural matrix~ \cite{unger1995structural, chowdhry2004symbolic} methods. Additionally, it implements dummy derivatives~\cite{mattsson1993index} and projection methods for taking hidden constraints into account during numerical integration.
+  \item \textbf{\Maple{}} performs symbolic index reduction within the \texttt{dsolve} function~\cite{maple}. However, the implemented algorithms are not documented or referenced. They are likely to be based on the projection method outlined in~\cite{shmoylova2013simplification}. Notably, the patents by the same authors~\cite{postma2012exact, shmoylova2012method, postma2015exact} discuss techniques for eliminating isolated parameters, extracting parameter sub-expressions from \acp{DAE}, and establishing minimal disconnected clusters of parameter sub-expressions. We would like to point out that this information is to be taken with caution, as \Maple{} does not provide specific references on this topic.
+  \item \textbf{\textsc{Daesa}}, developed by Guangning Tan and Ned Nedialkov in collaboration with John Pryce, is a \Matlab{} toolbox designed for conducting \ac{SA} of \acp{DAE}. \textsc{Daesa} can analyze fully nonlinear systems, irrespective of their order or index, making it capable of determining crucial attributes such as the structural index, \acp{DOF}, constraints, and variables requiring initialization, while also proposing a suitable solution strategy~\cite{nedialkov2015algorithm, tan2016symbolic}. Additionally, it can generate a block-triangular form of the \acp{DAE}, enabling efficient block-wise solution strategies.
+  \item \textbf{\textsc{Daets}}, short for \acp{DAE} by Taylor Series, is a \cpp{} package developed by Guangning Tan and Ned Nedialkov in collaboration with John Pryce~\cite{nedialkov2007solvingI, nedialkov2007solvingII, nedialkov2008solvingIII}. It is designed for tackling \acp{IVP} associated with \ac{DAE} systems. \textsc{Daets} leverages Pryce's method for the \ac{SA} of \acp{DAE}, providing a powerful means to determine the system's index, \acp{DOF}, and to precisely identify which components necessitate initial values.
+  \item \textbf{\textsc{Initdae}} is a \Python{} prototype designed to calculate consistent initial values for \acp{DAE}, determining their index, as well as a condition number that aids in identifying singularities. The initialization algorithm utilizes a constrained optimization approach based on projectors, with \ac{AD}. Local structural characteristics of the \ac{DAE} system are examined through the \ac{SVD}~\cite{estvezschwarz2021initdae}
 \end{itemize}
 %
 All the showcased software solutions offer integrators for index-0 and index-1 \acp{DAE}. Depending on the system's stiffness, users can select the most appropriate algorithm for numerically integrating the reduced-index system.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\section{Research Objectives and Contributions}
+
+Notably, in findings presented by the group of Roswitha M{\"a}rz, which are summarized in~\cite{lamour2013differential}, there is little to no mention of the use of symbolic computation tools that could be used to derive the projector functions and the matrix function sequences. Instead, the authors rely on numerical factorization methods with a coupled automatic differentiation method to compute the projector functions and the matrix function sequences. However, it must be pointed out that, especially for simple or small-scale \acp{DAE}, the latest state-of-the-art symbolic computation techniques allow the derivation of smooth symbolic projector functions. This can significantly reduce the computational cost of the method, as well as reduce the risk of numerical errors.
+
+Starting from this observation, the primary objective of this thesis is to develop an index reduction algorithm for \acp{DAE} based on symbolic matrix factorization techniques. It must be pointed out that the algorithm is not directly based on the projector-based analysis, but rather on a broader yet less formal approach that exploits the most recent advances in symbolic computation techniques to tackle the index reduction problem of generic implicit \acp{DAE} of the form~\eqref{chap1:eq:dae}, linear in the derivatives. The specific research objectives and contributions of this thesis to the current state-of-the-art are outlined below.
+%
+\begin{itemize}
+  \item The development of a symbolic linear algebra package for symbolically solving linear systems of equations using matrix factorization techniques. The package, which also includes hierarchical representation techniques for expression swell mitigation and large expression management, enables the \Maple{} kernel to effectively handle larger-scale linear systems of equations.
+  \item The development of a novel symbolic index reduction algorithm for \acp{DAE} based on the symbolic matrix factorization techniques introduced in the previous objective. Specifically, the symbolic linear algebra package is used to separate the differential and algebraic equations of the \ac{DAE} system. A subsequent differentiation is applied to the algebraic equations to reduce the index of the \ac{DAE} system.
+  \item Lastly, the exploitation of the expressions' hierarchical representation to be used as index-1 variables in a newly developed numerical scheme for the integration of reduced-index \acp{DAE} in the \Matlab{} environment.
+\end{itemize}
+%
+Nonetheless, the symbolic algorithm is implemented as an open-source \Maple{} package, on the other hand, the numerical scheme is implemented as an open-source \Matlab{} toolbox. Both software fall under the \Indigo{} toolbox~\cite{indigo}, whose dependencies are the symbolic linear algebra package \LAST{}~\cite{last} and the large expression management package \LEM{}~\cite{lem}. The proposed symbolic algorithm and its dedicated numerical scheme are validated through a set of benchmark \acp{DAE} from the literature arising in various fields, including problems from \ac{MBD}, electrical circuit simulation, and \ac{TPPC}.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\section{Thesis Outline}
+
+After this introductory chapter, the remainder of this thesis is organized as follows. Chapter~\ref{chap2:symbolic_computation} provides a brief overview of the current state-of-the-art symbolic computation techniques, applications, and tools for solving foundational problems in mathematics, physics, and engineering. Then, it introduces the expression swell phenomenon and presents a symbolic computation technique used to mitigate it. The last part of the chapter is dedicated to the development of a computation package for solving large-scale linear systems of equations through symbolic linear algebra techniques, which will be used in the subsequent chapter to tackle \ac{DAE} systems. Chapter~\ref{chap3:daes} is mainly dedicated to the development of a symbolic index reduction algorithm for \acp{DAE} based on the previously introduced symbolic matrix factorization techniques. It presents the symbolic index reduction algorithm implementation, which is written in the \Maple{} language. Lastly, the numerical scheme utilized to integrate the reduced-index \acp{DAE} is validated through an index-3 \acp{DAE} example. Chapter~\ref{chap4:applications} demonstrates the application of the symbolic index reduction algorithm to a set of benchmark \acp{DAE} from the literature arising in various fields, including \ac{MBD}, electrical circuit simulation, and \ac{TPPC}. The chapter concludes with a summary of the presented algorithm performance. Finally, Chapter~\ref{chap5:conclusions} summarizes the main contributions of this thesis and discusses possible future developments.
+
+Appendices are included at the end of the thesis to provide additional information on side topics that are not essential to the main topic of this thesis but are relevant for one of the benchmark \acp{DAE} presented in Chapter~\ref{chap4:applications}. The appendices include the presentation of a \cpp{} computational geometry library (Appendix~\ref{app1:acme}), as well as the derivation of models for tire-ground enveloping (Appendix~\ref{app2:enve}), tire contact forces (Appendix~\ref{app3:tirex}). The last appendix (Appendix~\ref{app4:trussme}) provides an overview of the development of a symbolic package for solving structures using the \ac{DSM}. Notably, these appendices correspond to the author's previous work or side projects carried out during the doctoral program.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
