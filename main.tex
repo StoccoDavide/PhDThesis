@@ -16,14 +16,10 @@
 \usepackage{amssymb}             % particular mathematical symbols
 \usepackage{bm}                  % bold math formula, similar to '\mathbf'
 \usepackage{mathrsfs}            % math upper case letter fonts
-%\usepackage{scalerel}            % scale/stretch/shift an object to conform a second one
 %\usepackage{amsfonts}            % particular mathematical fonts
 \usepackage{amsthm}              % to define theorems, lemmas, etc
 \usepackage{thmtools}            % to define theorems, lemmas, etc
 %\usepackage{mathrsfs}            % math upper case letter fonts
-%\usepackage{systeme}             % easy way to write systems of equations
-%\usepackage{accents}             % particular accents in math
-%\usepackage{commath}             % differential, partial differ., delimiters, etc
 
 \declaretheoremstyle[
   headfont=\normalfont\bfseries,
@@ -75,11 +71,6 @@
 \usepackage{geometry}            % change margins of the document
 \usepackage{acronym}             % to define abbreviations
 \usepackage{rotating}            % rotate objects
-%\usepackage{changepage}          % adjust width environment
-%\usepackage{enumerate}           % basic generate list with numbered items
-%\usepackage{stackengine}         % stack objects vertically
-%\usepackage{setspace}            % spacing between lines in a document
-%\usepackage{pdfpages}            % for the inclusion of multi-page external PDF documents
 
 % Text settings ----------------------------------------------------------------
 \usepackage[dvipsnames]{xcolor}  % color the text
@@ -96,7 +87,7 @@
 \usepackage{realboxes}           % to create boxes around text
 \usepackage{url}                 % to write url in the document
 
-\urlstyle{tt}                    % tt font of the document (forced in the bibliography)
+\urlstyle{tt}                    % teletype font of the document (forced in the bibliography)
 \lstset{                         % settings for the listings package
   basicstyle=\ttfamily,
   columns=fullflexible,
@@ -111,6 +102,7 @@
     belowskip=0.25em,
     #1
   }}{}
+
 \lstnewenvironment{mapleboxed}[1][]
   {\lstset{
     frame=tbrl,
@@ -118,37 +110,29 @@
     belowskip=-0.5em,
     #1
   }}{}
-\lstnewenvironment{maplefigure}[1][]
-  {\lstset{
-    frame=none,
-    linewidth=1.0\textwidth,
-    aboveskip=-0.1em,
-    belowskip=-0.1em,
-    #1
-  }}{}
 
 % Fonts ------------------------------------------------------------------------
 %\usepackage{lmodern}             % text font
 \usepackage{mathspec}            % font selection for XeLaTeX
-\defaultfontfeatures{Mapping=tex-text}       % to support TeX conventions
-\setallmainfonts[Numbers={Lining,Proportional}]{Adobe Caslon Pro}           % normal document font
-\setallsansfonts[Scale=1.0]{HvDTrial Brandon Grotesque}      % Optima % sans-serif font (\textsf{})
+\defaultfontfeatures{Mapping=tex-text} % to support TeX conventions
+\setallmainfonts[Numbers={Lining,Proportional}]{Adobe Caslon Pro} % normal document font
+\setallsansfonts[Scale=1.0]{HvDTrial Brandon Grotesque} % sans-serif font (\textsf{})
 \setallmonofonts[Scale=0.75]{JetBrains Mono} % mono spaced font (\texttt{})
 \usepackage[sf,bf]{titlesec}     % to customize the titles of the document
 \titleformat
 {\chapter}                       % command
 [display]                        % shape
-{\sffamily\center\Huge\bfseries}      % format
-{\MakeUppercase{\chaptertitlename}\quad\MakeUppercase{\thechapter}\\[0.5ex]$\cdot\cdot\cdot$} % label
-{0.5ex}                           % sep
-{\Huge\MakeUppercase}[\vspace{2ex}]  % before-code
+{\sffamily\center\LARGE\bfseries} % format
+{\underline{\MakeUppercase{\chaptertitlename}\quad\MakeUppercase{\thechapter}}}
+{1.0em}                          % sep
+{\huge\MakeUppercase}[\vspace{2.5em}] % before-code
 \titleformat*{\section}{\sffamily\Large\bfseries\MakeUppercase}
 \titleformat*{\subsection}{\sffamily\large\bfseries\MakeUppercase}
 \titleformat*{\subsubsection}{\sffamily\bfseries\MakeUppercase}
 \titleformat*{\paragraph}{\sffamily\bfseries\MakeUppercase}
 \titleformat*{\subparagraph}{\sffamily\bfseries\MakeUppercase}
 \usepackage{textgreek}           % to write greek letters in text mode
-\usepackage{fontawesome5}         % to use icons in the document
+\usepackage{fontawesome5}        % to use icons in the document
 
 % Units ------------------------------------------------------------------------
 \usepackage{siunitx}             % write unit of measurements
@@ -307,18 +291,26 @@
 % Bibliography -----------------------------------------------------------------
 \PassOptionsToPackage{%
   backend=biber, bibencoding=utf8, % instead of bibtex
-  language=auto, %
-  style=numeric-comp, %
-  sorting=none, % sorted by appearance
-  maxbibnames=10, % default: 3, et al.
-  natbib=true, % natbib compatibility mode (\citep and \citet still work)
+  language=auto,                   % get the language of the main document
+  style=numeric-comp,              % numeric citation style
+  sorting=none,                    % sorted by appearance
+  maxbibnames=10,                  % default: 3, et al.
+  maxcitenames=10,                 % default: 1, et al.
+  natbib=true,                     % natbib compatibility mode (\citep and \citet still work)
 }{biblatex}
 \usepackage{biblatex} % to display bibliography
 \usepackage{bibentry} % to insert bibliography entries inline
 \emergencystretch=1em
+
+
+\renewcommand*{\mkbibnamefamily}[1]{% mkbibcompletename
+  \ifitemannotation{jointfirst}
+    {#1\textsuperscript{\dag}}
+    {#1}}
+
 \addbibresource{bibliography.bib}
 
-% Reduce the margin of the summary/abstract ------------------------------------
+% Reduce the margin of the summary/abstract ------------------------------------------
 %\def\changemargin#1#2{
 %  \list{}{\rightmargin#2\leftmargin#1}
 %  \item[]}
@@ -583,26 +575,28 @@
 
 % Copyright --------------------------------------------------------------------
 \subsection*{Copyright Notice}
-%
+
 The content of this thesis is the result of the author's original research work. Permission to include the following previously published material in the thesis has been obtained from the respective publishers. The works are cited in the bibliography and are listed below in chronological order of publication.
 %
 \begin{itemize}
-  %\setlength{\itemsep}{0.0em}
   \item \fullcite{stocco2021acme}
   \item \fullcite{stocco2024symbolic}
   \item \fullcite{stocco2024matrix}
-\end{itemize}
-
-\subsection*{Unpublished Material}
-%
-The thesis contains material that is currently under review for publication. The material has not yet been published previously, a short adapted version of the content is provided in the thesis. The works are cited in the bibliography and are listed below in chronological order of submission.
-%
-\begin{itemize}
-  %\setlength{\itemsep}{0.0em}
   \item \fullcite{stocco2024novel}
   \item \fullcite{stocco2024physical}
-  \item \fullcite{stocco2024trussme}
 \end{itemize}
+
+\subsection*{Material Submitted for Publication}
+
+This thesis contains material that is currently submitted for publication. The material has not yet been published previously, and a short adapted version of the content is provided in the thesis. The works are cited in the bibliography and are listed below in chronological order of submission.
+%
+\begin{itemize}
+  \item \fullcite{stocco2024trussme}
+  \item \fullcite{stocco2024imece_solution}
+  \item \fullcite{larcher2024imece_symbolic}
+\end{itemize}
+%
+\dag{}: The author contributed equally to the work.
 
 \vspace*{\fill}
 
@@ -629,7 +623,7 @@ The thesis contains material that is currently under review for publication. The
 \chapter*{List of Abbreviations}
 \markboth{LIST OF ABBREVIATIONS}{}
 \begin{multicols}{2}
-  \begin{acronym}[XXXXXX]
+  \begin{acronym}[XXXXXXXX]
     \setlength{\itemsep}{-0.5em}
     \acro{OC}{Optimal Control}
     \acro{AD}{Automatic Differentiation}
@@ -640,14 +634,14 @@ The thesis contains material that is currently under review for publication. The
     \acro{2D}{Two-Dimensional}
     \acro{3D}{Three-Dimensional}
     \acro{BSD}{Berkeley Software Distribution}
-    \acro{BC}{Boundary Condition}å
+    \acro{BC}{Boundary Condition}
     \acro{ADAS}{Advanced Driver-Assistance Systems}
     \acro{RDF}{Road Data Format}
     \acro{HIL}{Hardware In the Loop}
     \acro{SIL}{Software In the Loop}
     \acro{DIL}{Driver In the Loop}
-    \acro{MBS}{Multi-body System}
-    \acro{MB}{Multi-body}
+    \acro{MBS}{Multi-Body System}
+    \acro{MB}{Multi-Body}
     \acro{FEM}{Finite Element Method}
     \acro{FE}{Finite Element}
     \acro{DE}{Discrete Element}
@@ -655,8 +649,8 @@ The thesis contains material that is currently under review for publication. The
     \acro{SRT}{Soft Real-Time}
     \acro{HRT}{Hard Real-Time}
     \acro{RT}{Real-Time}
-    \acro{MB}{Multi-body}
-    \acro{MBD}{Multi-body Dynamics}
+    \acro{MB}{Multi-Body}
+    \acro{MBD}{Multi-Body Dynamics}
     \acro{ODE}{Ordinary Differential Equation}
     \acro{DAE}{Differential-Algebraic Equation}
     \acro{PDE}{Partial Differential Equation}
@@ -702,14 +696,14 @@ The thesis contains material that is currently under review for publication. The
 % Mainmatter -------------------------------------------------------------------
 \include{chapters/chapter_1}
 \include{chapters/chapter_2}
-%\include{chapters/chapter_3}
-%\include{chapters/chapter_4}
-%\begin{appendices}
-%\include{appendices/appendix_1}
-%\include{appendices/appendix_2}
-%\include{appendices/appendix_3}
-%\include{appendices/appendix_4}
-%\end{appendices}
+\include{chapters/chapter_3}
+\include{chapters/chapter_4}
+\begin{appendices}
+\include{appendices/appendix_1}
+\include{appendices/appendix_2}
+\include{appendices/appendix_3}
+\include{appendices/appendix_4}
+\end{appendices}
 
 % Bibliography -----------------------------------------------------------------
 \addcontentsline{toc}{chapter}{Bibliography}
@@ -717,10 +711,10 @@ The thesis contains material that is currently under review for publication. The
   \textsc{Doi}\addcolon\space%
   \ifhyperref{%
   \href{https://doi.org/#1}{
-    \nolinkurl{#1}
+    \texttt{#1}
   }
   }{
-    \nolinkurl{#1}
+    \texttt{#1}
   }
 }
 \printbibliography
