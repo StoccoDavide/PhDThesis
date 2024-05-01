@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.28">
-<info created="D:20221110172900" modified="D:20240217111437"/>
-<preamble>\usepackage{newtxtext}
-\usepackage{newtxmath}</preamble>
+<info created="D:20221110172900" modified="D:20240501170639" tex="xetex"/>
+<preamble>\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{mathspec}
+\defaultfontfeatures{Mapping=tex-text}
+\setallmainfonts{Adobe Caslon Pro}</preamble>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -412,9 +415,9 @@ h
 363.299 592.076 m
 364.435 484.686 l
 </path>
-<text matrix="1 0 0 1 -4.00497 -25.6468" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="58.114" height="8.238" depth="0.16" valign="baseline" size="large">Contact line</text>
-<text matrix="1 0 0 1 -19.9069 -30.9632" transformations="translations" custom="undefined" pos="410.267 535.17" stroke="black" type="label" width="60.134" height="8.237" depth="2.6" valign="baseline" size="large">Sliding limit</text>
-<text matrix="1 0 0 1 -4.04508 -56.6166" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="73.931" height="8.237" depth="2.6" valign="baseline" size="large">Bending torque</text>
+<text matrix="1 0 0 1 -4.00497 -25.6468" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="59.5" height="8.653" depth="0.17" valign="baseline" size="large">Contact line</text>
+<text matrix="1 0 0 1 -19.9069 -30.9632" transformations="translations" custom="undefined" pos="410.267 535.17" stroke="black" type="label" width="60.493" height="8.646" depth="3.25" valign="baseline" size="large">Sliding limit</text>
+<text matrix="1 0 0 1 -4.04508 -56.6166" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="74.899" height="8.642" depth="3.29" valign="baseline" size="large">Bending torque</text>
 <path matrix="1 0 0 1 0.410871 -4.66688" stroke="black" arrow="normal/normal">
 388.454 527.837 m
 352.697 526.076
@@ -430,7 +433,7 @@ h
 375.931 469.697
 353.009 484.118 c
 </path>
-<text matrix="1 0 0 1 -344.387 -39.1895" transformations="translations" pos="410.267 535.17" stroke="black" type="label" width="59.692" height="8.233" depth="0.13" valign="baseline" size="large">Flexible belt</text>
+<text matrix="1 0 0 1 -344.387 -39.1895" transformations="translations" pos="410.267 535.17" stroke="black" type="label" width="59.358" height="8.647" depth="0.14" valign="baseline" size="large">Flexible belt</text>
 <path matrix="0.99569 -0.0927472 0.0927472 0.99569 -156.007 69.6077" stroke="black" fill="black">
 2.06703 0 0 2.06703 364.76 491.757 e
 </path>
@@ -443,14 +446,14 @@ h
 211.729 586.398 m
 363.152 586.036 l
 </path>
-<text matrix="1 0 0 1 -125.94 16.7376" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="78.104" height="8.459" depth="2.48" valign="baseline" size="large" style="math">\ell(y,t)-\xi_s(y,t)</text>
-<text matrix="1 0 0 1 -178.51 16.7466" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="34.897" height="8.459" depth="2.48" valign="baseline" size="large" style="math">\xi_s(y,t)</text>
-<text matrix="1 0 0 1 -143.619 64.1818" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="65.897" height="8.235" depth="2.59" valign="baseline" size="large">Contact patch</text>
-<text matrix="1 0 0 1 -298.03 61.6069" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="46.804" height="7.94" depth="0.13" valign="baseline" size="large">Free zone</text>
-<text matrix="1 0 0 1 37.7763 61.6075" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="46.804" height="7.94" depth="0.13" valign="baseline" size="large">Free zone</text>
-<text matrix="1 0 0 1 -120.794 48.66" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="30.29" height="8.459" depth="2.48" valign="baseline" size="large" style="math">\ell(y,t)</text>
-<text matrix="1 0 0 1 -317.731 48.7513" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="85.714" height="8.459" depth="2.48" valign="baseline" size="large" style="math">\pi R(y) - \ell(y,t) / 2</text>
-<text matrix="1 0 0 1 17.782 48.8661" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="85.714" height="8.459" depth="2.48" valign="baseline" size="large" style="math">\pi R(y) - \ell(y,t) / 2</text>
+<text matrix="1 0 0 1 -121.527 16.5834" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="73.463" height="8.967" depth="3.55" valign="baseline" size="large" style="math">\ell(y,t)-\xi_s(y,t)</text>
+<text matrix="1 0 0 1 -178.51 16.7466" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="30.946" height="8.967" depth="3.55" valign="baseline" size="large" style="math">\xi_s(y,t)</text>
+<text matrix="1 0 0 1 -143.619 64.1818" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="68.276" height="8.642" depth="3.29" valign="baseline" size="large">Contact patch</text>
+<text matrix="1 0 0 1 -298.03 61.6069" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="46.614" height="8.515" depth="0.14" valign="baseline" size="large">Free zone</text>
+<text matrix="1 0 0 1 37.7763 61.6075" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="46.614" height="8.515" depth="0.14" valign="baseline" size="large">Free zone</text>
+<text matrix="1 0 0 1 -120.794 48.66" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="27.904" height="8.967" depth="3.55" valign="baseline" size="large" style="math">\ell(y,t)</text>
+<text matrix="1 0 0 1 -317.731 48.7513" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="83.585" height="8.967" depth="3.55" valign="baseline" size="large" style="math">\pi R(y) - \ell(y,t) / 2</text>
+<text matrix="1 0 0 1 17.782 48.8661" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="83.585" height="8.967" depth="3.55" valign="baseline" size="large" style="math">\pi R(y) - \ell(y,t) / 2</text>
 <path stroke="black" pen="heavier">
 31.809 447.903 m
 104.485 448.099
@@ -497,12 +500,12 @@ h
 288.13 502.942 m
 272.103 502.992 l
 </path>
-<text matrix="1 0 0 1 -117.456 -126.011" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="24.017" height="8.457" depth="2.35" valign="baseline" size="large" style="math">x_c(t)</text>
-<text matrix="1 0 0 1 -133.304 -53.7649" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="24.615" height="8.459" depth="2.48" valign="baseline" size="large" style="math">y_c(t)</text>
-<text matrix="1 0 0 1 -217.778 -26.0354" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="24.292" height="8.457" depth="2.35" valign="baseline" size="large" style="math">\theta_c(t)</text>
-<text matrix="1 0 0 1 -134.95 -124.249" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="9.301" height="8.143" depth="0.22" valign="baseline" size="large" style="math">\mathbf{O}</text>
-<text matrix="0.999995 0 0 1 322.285 -220.444" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="4.907" height="4.323" depth="0.09" valign="baseline" style="math">x</text>
-<text matrix="0.999995 0 0 1 59.1771 -102.501" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="5.2" height="4.321" depth="2.06" valign="baseline" style="math">y</text>
+<text matrix="1 0 0 1 -117.456 -126.011" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="21.394" height="8.965" depth="2.99" valign="baseline" size="large" style="math">x_c(t)</text>
+<text matrix="1 0 0 1 -133.304 -53.7649" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="20.653" height="8.967" depth="3.55" valign="baseline" size="large" style="math">y_c(t)</text>
+<text matrix="1 0 0 1 -217.778 -26.0354" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="21.219" height="8.965" depth="2.99" valign="baseline" size="large" style="math">\theta_c(t)</text>
+<text matrix="1 0 0 1 -134.95 -124.249" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="10.162" height="8.653" depth="0.17" valign="baseline" size="large" style="math">\mathbf{O}</text>
+<text matrix="0.999995 0 0 1 322.285 -220.444" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="4.692" height="4.154" depth="0.09" valign="baseline" style="math">x</text>
+<text matrix="0.999995 0 0 1 59.1771 -102.501" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="4.074" height="4.143" depth="2.96" valign="baseline" style="math">y</text>
 <path stroke="black" dash="dashed">
 364.613 431.923 m
 364.592 484.786 l
@@ -511,16 +514,16 @@ h
 211.913 432.063 m
 211.913 499.672 l
 </path>
-<text matrix="1 0 0 1 -225.36 -125.877" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="78.702" height="8.459" depth="2.48" valign="baseline" size="large" style="math">x_c(t) - \ell(y,t) / 2</text>
-<text matrix="1 0 0 1 -64.8681 -126.031" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="77.841" height="8.459" depth="2.48" valign="baseline" size="large" style="math">x_c(t) + \ell(y,t) / 2</text>
-<text matrix="1 0 0 1 -323.141 -61.8774" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="49.442" height="8.457" depth="2.35" valign="baseline" size="large" style="math">\mathcal{L}(\mathbf{x}, \mathbf{c}(t))</text>
+<text matrix="1 0 0 1 -225.36 -125.877" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="75.741" height="8.967" depth="3.55" valign="baseline" size="large" style="math">x_c(t) - \ell(y,t) / 2</text>
+<text matrix="1 0 0 1 -64.8681 -126.031" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="75.547" height="8.967" depth="3.55" valign="baseline" size="large" style="math">x_c(t) + \ell(y,t) / 2</text>
+<text matrix="1 0 0 1 -323.141 -61.8774" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="45.615" height="8.965" depth="2.99" valign="baseline" size="large" style="math">\mathcal{L}(\mathbf{x}, \mathbf{c}(t))</text>
 <path stroke="black" dash="long dashed" arrow="normal/normal">
 312.473 444.876 m
 317.669 475.877 l
 308.786 464.037 l
 315.596 498.435 l
 </path>
-<text matrix="1 0 0 1 -77.0807 -94.8879" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="36.283" height="16.155" depth="10.69" valign="baseline" size="large" style="math">\displaystyle\frac{1}{\Psi y_c(t)}</text>
+<text matrix="1 0 0 1 -77.0807 -94.8879" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="32.149" height="16.244" depth="11.76" valign="baseline" size="large" style="math">\displaystyle\frac{1}{\Psi y_c(t)}</text>
 <path matrix="1 0 0 1 2.87792 3.66577" stroke="black">
 249.637 560.077 m
 250.078 501.797 l

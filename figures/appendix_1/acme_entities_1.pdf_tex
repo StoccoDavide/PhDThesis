@@ -73,7 +73,7 @@
     \put(0.13313552,0.23958033){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\textsc{Line}\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=5]{acme_entities_1.pdf}}%
     \put(0.0718854,0.16544479){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\pt{o}$\\\end{tabular}}}}%
-    \put(0.24968395,0.15566581){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\et{d}$\end{tabular}}}}%
+    \put(0.24968395,0.155){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\et{d}$\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=6]{acme_entities_1.pdf}}%
     \put(0.07617824,0.28318896){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\pt{o}$\\\end{tabular}}}}%
     \put(0.24887432,0.27123687){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\et{d}$\end{tabular}}}}%

@@ -3,26 +3,24 @@
 \chapter{A Small 3D Geometry Library}
 \label{app1:acme}
 
-In the past few decades, the simulation of both manned and unmanned vehicles has gained increasing significance. The demand for highly efficient \ac{RT} simulators underscores the necessity for algorithms that are not only efficient but also accurate in modeling vehicle movements within a virtual environment. Typically, the virtual world comprises numerous basic geometric entities capable of colliding and adjusting accordingly. The ability to quickly solve basic geometric problems is one of the most important roles in this kind of simulation. The \Acme{} library, previously introduced in \citet{stocco2021acme}, is built to efficiently perform simple operations on a large number of basic geometric entities. Specifically, the library is tailored to address specific \ac{HRT} tire-ground contact geometry analysis. This chapter describes the implementation details of the \Acme{} library, exploring its data types, features, and ease of use. The software is implemented in \cpp{} and is released under the \ac{BSD} 2-Clause license. The source code is freely available online and is compatible with MacOS, Linux, and Windows operating systems. The online documentation includes descriptions of the \cpp{} and \Matlab{} \Mex{} \acp{API}, along with usage examples.
+In the past few decades, the simulation of both manned and unmanned vehicles has gained increasing significance. The demand for highly efficient \ac{RT} simulators underscores the necessity for algorithms that are not only efficient but also accurate in modeling vehicle movements within a virtual environment. Typically, the virtual world comprises numerous basic geometric entities capable of colliding and adjusting accordingly. The ability to quickly solve basic geometric problems is one of the most important roles in this kind of simulation. The \Acme{} library, previously introduced in \citet{stocco2021acme}, is built to efficiently perform simple operations on a large number of basic geometric entities. Specifically, the library is tailored to address specific \ac{HRT} tire-ground contact geometry analysis. This chapter describes the implementation details of the \Acme{} library, exploring its data types, features, and ease of use. The software is implemented in \cpp{} and is freely available online under the \ac{BSD} 2-Clause license. Online documentation includes descriptions of the \cpp{} and \Matlab{} \Mex{} \acp{API}, along with usage examples.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
 \section{Computational Geometry in Real-Time Simulations}
 \label{app1:sec:acme_motivation}
 
-Over the recent decades, there has been a notable shift in the automotive manufacturing sector towards prioritizing simulation. In particular, the advent of high-performance \acp{CPU} and \acp{GPU} has intensified the focus on \ac{RT} simulators. These sophisticated simulators, characterized by high fidelity and full integration, demand substantial computational capabilities. Moreover, specialized codes are essential to meet the dual requirements of \ac{HRT} responsiveness and high accuracy within very limited time intervals\footnote{The time step in driving simulators typically stands at \SI{1}{\milli\second}. This frequency is a trade-off to accurately capture typical frequencies in vehicle subsystems.}.
+Over the recent decades, there has been a notable shift in the automotive manufacturing sector towards prioritizing simulation. In particular, the advent of high-performance \acp{CPU} and \acp{GPU} has intensified the focus on \ac{RT} simulators. These sophisticated simulators, characterized by high fidelity and full integration, demand substantial computational capabilities. Moreover, specialized codes are essential to meet the dual requirements of \ac{HRT} responsiveness and high accuracy within very limited time intervals. Indeed, the time step in driving simulators is typically set at \SI{1}{\milli\second}, which is a trade-off to capture most of the typical frequencies in vehicle subsystems.
 
-An important aspect of simulation lies in the vehicle-environment interaction. In driving simulators the virtual environment on which the vehicle moves is made from a multitude of basic geometric entities that can intersect and evolve. Consequently, the efficient resolution of simple geometric problems assumes a crucial role in achieving high accuracy and, by extension, a realistic simulation. Particularly, when working with numerous geometric objects, it is essential to partition the \ac{3D} space with an appropriate data structure. This structured partitioning facilitates efficient access to spatial objects. The absence of spatial partitioning would necessitate scanning the entire database during any search, resulting in a significant increase in processing time.
+An important aspect of simulation lies in the vehicle-environment interaction. In driving simulators the virtual environment on which the vehicle moves is made from a multitude of basic geometric entities that can intersect and evolve. Consequently, the efficient resolution of simple geometric problems assumes a crucial role in achieving high accuracy and, by extension, a realistic simulation. Specifically, when working with numerous geometric objects, it is essential to partition the \ac{3D} space with an appropriate data structure. This structured partitioning facilitates efficient access to spatial objects. The absence of spatial partitioning would necessitate scanning the entire database during any search, resulting in a significant increase in processing time.
 
-There is a multitude of geometric libraries already implemented and capable of solving complicated geometric problems, \eg{}, mesh-mesh intersection, re-meshing, Delaunay triangulation, etc. The sheer size of such libraries and their high complexity make them unsuitable for application in the simulation environment introduced earlier. The need to easily maintain and correct inefficiencies has led to the development of a new geometry library. In this chapter, we introduce a \cpp{} library named \Acme{}, designed to efficiently address the resolution of basic \ac{3D} geometric problems at high speed. The first version of \Acme{} was tailor-made to perform \ac{HRT} tire-ground contact geometry analysis, where geometrical objects and tire-ground intersection objects were initially intertwined. The desire to bring the library to the next level made it necessary to formalize and create a more effective framework. Consequently, all the geometrical algorithms are then collected in an independent library. But why create a new library even if there are plenty of alternatives available out there? The dynamic nature of the simulation field, with the continual introduction of new features, underscores the importance of maintaining a simple yet robust minimum core. This approach enables quick response to changes. Most of the available geometry libraries are either excessively large or overly complex for this specific purpose~\cite{cgal2023cgal, libigl2018libigl}. Furthermore, we aim to reduce the dependencies by relying solely on the \cpp{} \Eigen{} template library. %Lastly, maintaining a streamlined core facilitates thorough testing of all algorithms, aiding in the identification and resolution of any potential numerical instabilities.
+There is a multitude of geometric libraries already implemented and capable of solving complicated geometric problems, \eg{}, mesh-mesh intersection, re-meshing, Delaunay triangulation, and so on. The sheer size of such libraries and their high complexity make them unsuitable for application in the simulation environment introduced earlier. The need to easily maintain and correct inefficiencies has led to the development of a new geometry library. In this chapter, we introduce a \cpp{} library named \Acme{}, designed to efficiently address the resolution of basic \ac{3D} geometric problems at high speed. The first version of \Acme{} was tailor-made to perform \ac{HRT} tire-ground contact geometry analysis, where geometrical objects and tire-ground intersection objects were initially coexistent in the same code. The desire to bring the library to the next level made it necessary to formalize and create a more effective framework. Consequently, all the geometrical algorithms are then collected in an independent library. But why create a new library even if there are plenty of alternatives available out there? The dynamic nature of the simulation field, with the continual introduction of new features, underscores the importance of maintaining a simple yet robust minimum core. This approach enables quick response to changes. Most of the available geometry libraries are either excessively large or overly complex for this specific purpose~\cite{cgal2023cgal, libigl2018libigl}. Furthermore, we aim to reduce the dependencies by relying solely on the \cpp{} \Eigen{} template library, which is well-recognized for its efficiency with small vectors and matrices.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
 \section{A New Geometry Library}
 
-As previously mentioned, the software is implemented in \cpp{}, a widely used and high-performance object-oriented general-purpose programming language. Since its invention
-%by Bjarne Stroustrup
-in 1985, \cpp{} has undergone significant extensions and modifications. Therefore, we chose to develop our code based on the \cpp{}11 standard~\cite{stroustrup2013cpp}. The adoption of the 2011 standard introduced notable improvements and a refreshed coding style, exemplified by the new smart pointer classes, extensively utilized in the \Acme{} library. The source code of the software is freely available online~\cite{acme} and is released under the \ac{BSD} 2-Clause license. The online documentation includes descriptions of the \cpp{} and \Matlab{} \Mex{} \acp{API}, along with usage examples. Rigorous testing has been conducted on MacOS, Linux, and Windows operating systems to ensure the software's compatibility across diverse platforms.
+As previously mentioned, the software is implemented in \cpp{}, a widely used and high-performance object-oriented general-purpose programming language. Since its invention by Bjarne Stroustrup in 1985, \cpp{} has undergone significant extensions and modifications. Therefore, we chose to develop our code based on the \cpp{}11 standard~\cite{stroustrup2013cpp}. The adoption of the 2011 standard introduced notable improvements in the coding style, exemplified by the introduction of the new smart pointer classes, extensively utilized in the \Acme{} library. The source code of the software is freely available online~\cite{acme} and is released under the \ac{BSD} 2-Clause license. The online documentation includes descriptions of the \cpp{} and \Matlab{} \Mex{} \acp{API}, along with usage examples. Rigorous testing has been conducted on \MacOS{}, \Linux{}, and \Windows{} \acp{OS} to ensure the software's compatibility across diverse platforms.
 
 \subsection{Design Choices}
 
@@ -38,12 +36,13 @@ For a flexible and extensible framework, \Acme{} is built on the \Eigen{} templa
 Managing dynamically allocated memory is one of the most critical aspects of a low-level programming language like \cpp{}. Often, the most insidious errors are due to flaws in memory allocation and release policies, resulting in excessive use of resources (\emph{memory leak}), or irreversible error conditions that undermine program stability (\emph{access violation}). The usage of \cpp{}11 smart pointers in \Acme{} significantly reduces the likelihood of these errors. Smart pointers, as part of the standard library utility classes, act as wrappers for raw pointers, offering transparent memory release policies suitable for various use cases. Notably, \SharedPointer{} objects retain shared ownership, allowing multiple objects to own the same instance. The object is only destroyed and its memory deallocated when either the last \SharedPointer{} owning it is destroyed or reassigned to another \SharedPointer{}. Additionally, the object can be destroyed using the \code{delete} expression or a custom \code{delete} expression.
 
 \paragraph{Polymorphic Behavior}
-\Acme{} capitalizes on \cpp{} polymorphism as a fundamental design pattern. This polymorphic behavior greatly simplifies the management of heterogeneous objects that share a common interface of geometric entities. The same \cpp{} polymorphic behavior is also present in the \Matlab{} \Mex{} wrapper.
+\Acme{} capitalizes on \cpp{} polymorphism as a fundamental design pattern. This polymorphic behavior greatly simplifies the management of heterogeneous objects that share a common interface of geometric entities. Notably, the same \cpp{} polymorphic behavior is also present in the \Matlab{} \Mex{} wrapper.
 
 \paragraph{High-quality Documentation}
 Comprehensive documentation is available on the provided website, encompassing both the \cpp{} and \Matlab{} \Mex{} \acp{API}, along with examples. The documentation is generated using a combination of \Doxygen{} and \Sphinx{}. \Doxygen{} processes annotated \cpp{} sources to create documentation, while \Sphinx{} enhances the graphical quality of the generated \html{} code, providing a more visually appealing and graphically rich design.
 
-\paragraph{Data Types}
+\subsection{Data Types}
+
 \Acme{} supports a limited number of geometrical entities, carefully chosen to maintain the library's essential nature for efficiency and easy maintenance. The chosen classes specifically describe and manipulate virtual ground surfaces and tires. While the library is intentionally kept minimal, it is extensible according to the needs of end-users. The geometric entities are systematically organized into classes, each being within the \Acme{} namespace and publicly inheriting from the virtual superclass \Entity{}. The derived classes, representing the homonyms geometric entities are \Point{}, \Line{}, \Ray{}, \Plane{}, \Segment{}, \Triangle{}, \Disk{}, and \Ball{}, are integral components of the library. In \figurename{}~\ref{app1:fig:acme_entities}, a representation of all \Acme{} basic \Entity{} objects is shown. A concise mathematical description of each data type in the software follows.
 
 \begin{figure}[!ht]
@@ -154,51 +153,7 @@ The \Aabb{} corresponds to the set
 Indeed, this type of geometrical entity is very simple, requiring only two \Point{} objects to fully describe the space it occupies. Furthermore, the algorithms involved in \Aabb{} collision detection and/or intersection are highly efficient. Specifically, the basic algorithm for \Aabb{}-\Aabb{} collision detection can be executed solely through two-way comparison operators, making it lightweight and fast to perform.
 
 \paragraph{\AabbTree{}}
-There are plenty of possible tree structures. Some of them are suitable for a more rough spatial description with low computational complexity, while others are suitable for accurate spatial indexing but carry high computational complexity. In the \Acme{} library, the \ac{AABB} tree is chosen due to its balanced complexity-performance ratio, making it effective for \ac{RT} applications. The performance of a generic \ac{BVH} is generally measured by the computation time required to solve an intersection query. To enhance the \ac{BVH} performance and consequently reduce the number of comparisons among pairs of \acp{BVP}, a \ac{BVH} should be as compact as possible, minimizing the bounding volume contained in each \ac{BVP}~\cite{asyrani2012bounding, eloe2014dual}. Several techniques can be employed to build an \ac{AABB} tree, with the most common being the \emph{top-down} and \emph{bottom-up} strategies. While the \emph{top-down} strategy allows to easily perform the tree construction~\cite{eloe2014dual, ericson2004realtime, asyrani2012bounding}, the \emph{bottom-up} approach usually achieves more compact trees and better performances, albeit being more intricate to construct~\cite{omohundro1989five, asyrani2012bounding}. The typical average computational complexity of tree construction is $\mathcal{O}(n\log{n})$, while the intersection of two \ac{AABB} trees has an average cost of $\mathcal{O}(m\log{n})$, where $n$ and $m$ are the numbers of \acp{BVP} of the two trees. If one intends to intersect two sets of \acp{BVP} without the use of the \ac{AABB} tree the computational cost is always $\mathcal{O}(nm)$, as each element of the first set must be compared with all the elements of the second set~\cite{xing2010efficient}.
-
-%The \AabbTree{} implemented in the \Acme{} library is directly derived from the one presented in~\cite{frego2019pointcoloud, bertolazzi2020efficient} and has been extended from the \ac{2D} to the \ac{3D} case. For this extension, the \ac{AABB} tree construction algorithm is modified as in Algorithm~\ref{app1:alg:acme_aabbtree_construction}.
-
-%\begin{breakablealgorithm}
-%  \caption{Axis-aligned bounding box tree construction procedure.}
-%  \label{app1:acme_aabbtree_construction}
-%  \begin{algorithmic}
-%    \State \textbf{Require:} $\Entities{}$: The tire \Entities{} object vector.
-%    \Function{BuildTree}{$\Entities{}$}
-%      \If{$\mathrm{Length}{\Entities{}} = 0$}
-%        \State \Return $\varnothing$
-%      \EndIf
-%      \If{$\mathrm{Length}{\Entities{}} = 1$}
-%        \State \Return $\mathrm{Aabb}{\Entities{}}$
-%      \EndIf
-%      \State $root \gets \mathrm{Aabb}{\Entities{}}$
-%      \State $h \gets \mathrm{Height}(root)$
-%      \State $w \gets \mathrm{Width}(root)$
-%      \State $d \gets \mathrm{Depth}(root)$
-%      \If{$w > h$ \textbf{and} $w > d$}
-%        \State $split_{x} \gets \mathrm{Mean_{x}}(root)$
-%        \State $E_1 \gets \left\{E \in \Entities{} ~|~ \mathrm{Centroid_{x}}(E) < split_{x} \right\}$
-%        \State $E_2 \gets \left\{E \in \Entities{} ~|~ \mathrm{Centroid_{x}}(E) \ge split_{x} \right\}$
-%        \State $T_1 \gets \mathrm{BuildTree}(E_1)$
-%        \State $T_2 \gets \mathrm{BuildTree}(E_2)$
-%        \State \Return $(root, T_1, T_2)$
-%      \ElsIf{$h > w$ \textbf{and} $h > d$}
-%        \State $split_{y} \gets \mathrm{Mean_{y}}(root)$
-%        \State $E_1 \gets \left\{E \in \Entities{} ~|~ \mathrm{Centroid_{y}}(E) < split_{y} \right\}$
-%        \State $E_2 \gets \left\{E \in \Entities{} ~|~ \mathrm{Centroid_{y}}(E) \ge split_{y} \right\}$
-%        \State $T_1 \gets \mathrm{BuildTree}(E_1)$
-%        \State $T_2 \gets \mathrm{BuildTree}(E_2)$
-%        \State \Return $(root, T_1, T_2)$
-%      \Else
-%        \State $split_{z} \gets \mathrm{Mean_{z}}(root)$
-%        \State $E_1 \gets \left\{E \in \Entities{} ~|~ \mathrm{Centroid_{z}}(E) < split_{z} \right\}$
-%        \State $E_2 \gets \left\{E \in \Entities{} ~|~ \mathrm{Centroid_{z}}(E) \ge split_{z} \right\}$
-%        \State $T_1 \gets \mathrm{BuildTree}(E_1)$
-%        \State $T_2 \gets \mathrm{BuildTree}(E_2)$
-%        \State \Return $(root, T_1, T_2)$
-%      \EndIf
-%    \EndFunction
-%  \end{algorithmic}
-%\end{breakablealgorithm}
+There are plenty of possible tree structures. Some of them are suitable for a more rough spatial description with low computational complexity, while others are suitable for accurate spatial indexing but carry high computational complexity. In the \Acme{} library, the \ac{AABB} tree is chosen due to its balanced complexity-performance ratio, making it effective for \ac{RT} applications. The performance of a generic \ac{BVH} is generally measured by the computation time required to solve an intersection query. To enhance the \ac{BVH} performance and consequently reduce the number of comparisons among pairs of \acp{BVP}, a \ac{BVH} should be as compact as possible, minimizing the bounding volume contained in each \ac{BVP}~\cite{asyrani2012bounding, eloe2014dual}. Several techniques can be employed to build an \ac{AABB} tree, with the most common being the \emph{top-down} and \emph{bottom-up} strategies. While the \emph{top-down} strategy allows to easily perform the tree construction~\cite{eloe2014dual, ericson2004realtime, asyrani2012bounding}, the \emph{bottom-up} approach usually achieves more compact trees and better performances, albeit being more intricate to construct~\cite{omohundro1989five, asyrani2012bounding}. The typical average computational complexity of tree construction is $\mathcal{O}(n\log{n})$, while the intersection of two \ac{AABB} trees has an average cost of $\mathcal{O}(m\log{n})$, where $n$ and $m$ are the numbers of \acp{BVP} of the two trees. If one intends to intersect two sets of \acp{BVP} without the use of the \ac{AABB} tree the computational cost is always $\mathcal{O}(nm)$, as each element of the first set must be compared with all the elements of the second set~\cite{xing2010efficient}. Notably, The \AabbTree{} implemented in the \Acme{} library is directly derived from the one presented in~\cite{frego2019pointcoloud, bertolazzi2020efficient} and has been extended from the \ac{2D} to the \ac{3D} case (please refer to~\cite{stocco2021acme} for a detailed description of the \AabbTree{} implementation).
 
 \subsection{Basic Intersection Algorithms}
 
@@ -292,10 +247,7 @@ Table~\ref{app1:tab:acme_timing} presents a comparison of timing performances be
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-%\section{Application Examples}
-%\label{app1:sec:acme_example}
-
-%The provided examples were generated on a MacOS system with a 6-Core Intel i7 Processor (\SSI{2.6}{\giga\hertz}), AMD Radeon Pro 5300M (\SSI{4}{\giga\byte}), Intel \ac{UHD} Graphics 630 (\SSI{1536}{\mega\byte}), and \SSI{16}{\giga\byte} at \SSI{2667}{\mega\hertz} DDR4 of \ac{RAM}. The \ac{CPU} architecture is equipped with L2 and L3 cache memory of \SSI{256}{\kilo\byte} and \SSI{12}{\mega\byte}, respectively.
+\section{A Step-by-Step Example}
 
 \begin{figure}[htb]
   \centering
@@ -304,7 +256,6 @@ Table~\ref{app1:tab:acme_timing} presents a comparison of timing performances be
   \label{app1:fig:acme_example}
 \end{figure}
 
-\section{A Step-by-Step Example}
 We now present an example that illustrates some capabilities of the \Acme{} library. Specifically, the same example will be presented in both the \cpp{} language and the \Matlab{} environment, allowing us to understand the few differences between the two working environments. In the following \cpp{} and \Matlab{} code snippets, we will create the \Disk{} objects
 %
 \begin{equation*}
@@ -368,55 +319,6 @@ e1.plot(f1, 'green');
 \end{mapleboxed}
 \end{minipage}
 
-%\subsection{Real-Time Driving Simulator}
-
-%As mentioned earlier, leveraging the \Acme{} library, we developed another \cpp{} library capable of evaluating the contact geometry between tire and ground under \ac{HRT} constraints. The tire is represented through a set of undeformable ribs, which are properly sized and spaced \Disk{} objects (see Chapter~\ref{app2:enve} for more details).
-%(see \figurename{}~\ref{app1:fig:acme_tire}).
-%The \ac{3D} mapped ground consists of thousands of \Triangle{} objects, each provided with a surface friction coefficients scaling factor. Triangles data is stored in a \ac{RDF} file or in a wavefront OBJ file, which is dynamically loaded at execution time. Both \ac{RDF} and OBJ files consist of two sections. In the first part, all vertices are declared with a vertex identification number and a set of three axes coordinates, \eg{}, \code{id x y z}. In the second part, vertices are linked, and the friction coefficient scaling factor on the relative triangle surface is declared to compose all the triangles of the ground surface, \eg{}, \code{id}\textsubscript{\code{1}} \code{id}\textsubscript{\code{2}} \code{id}\textsubscript{\code{3}} \code{mu}\textsubscript{\code{s}}. Alongside the multi-rib tire and ground representations, we also provided in Chapter~\ref{app1:chap:enve} a custom enveloping model for single and multiple contact points. This novel approach to geometrically modeling the tire-ground intersection problem is highly scalable in terms of both accuracy and execution time. This feature allows us to meet the \ac{RT} requirement even on less powerful machines. In Table~\ref{app1:tab:acme_data}, we report the performance data of the tire-ground intersection algorithm on a medium-density ground surface mesh location, obtained by the results of $10^5$ executions on the previously mentioned MacOS system \ac{PC}.
-
-%In this specific application, the \AabbTree{} object plays a crucial role in achieving a high refresh rate. Since the ground surface is often composed of thousands of custom-modified \Triangle{} objects, individually intersecting the tire ribs with each ground object is impractical. Instead, when the ground surface object is created, its respective \AabbTree{} is built. When it comes time to intersect the tire with the ground, the tire's one-leaf \AabbTree{} is also created. The trees are then intersected through tailored algorithms, and only the ground triangles that touch the tire \Aabb{} are considered in the subsequent detailed intersection analysis.
-
-%This framework makes the library suitable for a multitude of applications, ranging from advanced control testing to race car driving simulation. Two of the most notable characteristics of the implemented tire-ground contact models are their ability to detect different local grip conditions on \ac{3D} mapped grounds and the capability to locally approximate the ground surface with multiple planes. This implies the ability not only to capture slope and track banking angles but also to account for minor unevennesses in the ground surface. These properties make the model a valuable tool for both online and offline virtual \ac{ADAS} testing and/or handling analysis.
-
-%\begin{figure}[!ht]
-%  \centering
-%  \def\svgwidth{9cm}
-%  \input{./figures/appendix_1/acme_tire.pdf_tex}
-%  \caption{Example illustrating the intersection between a tire and ground. In the image, the ground mesh is composed of numerous custom-modified \Triangle{} objects, while the tire is represented as a sequence of appropriately shaped and spaced \Disk{} instances, commonly referred to as \emph{ribs}. The shape of each rib is derived directly from a specialized tire profile function (see Chapter~\ref{app1:chap:enve}).}
-%  \label{app1:fig:acme_tire}
-%\end{figure}
-
-%\begin{table}[!ht]
-%  \centering
-%  \begin{tabular}{cc}
-%    \toprule
-%    \textbf{Parameter description} & \textbf{Value} \\
-%    \midrule
-%    Tire ribs                       & \num{10} \\
-%    Total ground triangles            & \num{27231} \\
-%    Average intersection candidates & \num{12.74} \\
-%    Mean execution time             & \SSI{42.28}{\micro\second} \\
-%    Execution time variance         & \SSI{0.22}{\nano\second\squared} \\
-%    \bottomrule
-%  \end{tabular}
-%  \caption{Example of tire-ground intersection performance data on a medium-density ground surface mesh location.}
-%  \label{app1:tab:acme_data}
-%\end{table}
-
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-%\section{Impact}
-
-%The free and open-source \Acme{} library provides users quick and easy access to geometric entity manipulation, with successful applications in tire-ground interaction computation. The initial version of the library was developed for integration with the \ac{MF} tire model~\cite{pacejka2012tire}, intended for online time-optimal motion planning and control in vehicle applications~\cite{piccinini2022predictive,piccinini2023physics}.
-
-%The library includes a \Matlab{} \Mex{} wrapper, enabling less experienced developers to leverage the software core with low programming language complexity. For users opting for a \cpp{} interface, the library allows for the rapid development of efficient, memory-safe, and concise code. The combination of the \Collection{} object, \AabbTree{}, and the extensive use of smart pointers allows for fast collision detection, intersection, and sorting across a large set of potentially heterogeneous objects of type \Entity{}. Notably, \Acme{} stands out as the only library known to the authors that maintains the same polymorphic behavior in both the \cpp{} interface and the \Matlab{} \Mex{} wrapper. Additionally, other state-of-the-art geometry libraries mentioned in Section~\ref{app1:sec:acme_motivation} do not ensure dual compatibility between \cpp{} and \Matlab{} environments.
-
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-
-%\section{Conclusions}
-
-%In the ever-evolving world of simulation, maintaining a stable minimum core is crucial for future developments. The \Acme{} library, as a basic and user-friendly \cpp{} geometry library, aims to be a minimal tool for \ac{RT} applications. Its simple and effective design stems from a minimal set of basic entity data types, along with \AabbTree{} and \Collection{} objects, allowing users to work efficiently with a large number of object instances. The library enables the creation, intersection, and destruction of basic geometry entities, making it suitable for both simple collision detection and more intricate intersection evaluations. Its object-oriented design allows experienced programmers to extend the library as needed. Thorough documentation for both \cpp{} and \Matlab{} \acp{API}, together with step-by-step examples, complements this tool.
-
-%The example in Section~\ref{app1:sec:acme_example} demonstrates the library's extension and practical use, particularly in the context of modeling tires and ground surfaces. Tested on a \ac{HRT} driving simulator, the library performed well in high-density mesh locations and extreme cases. While \Acme{} is tailored for driving simulation, its potential applications extend to generic projects involving collision detection and intersection evaluation of large sets of basic or composite geometrical entities.
-
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% That's all folks!

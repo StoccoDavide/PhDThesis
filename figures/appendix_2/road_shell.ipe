@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.28">
-<info created="D:20230929163554" modified="D:20231006134833"/>
-<preamble>\usepackage{times}
- \usepackage{mathptm}</preamble>
+<info created="D:20230929163554" modified="D:20240501134049" tex="xetex"/>
+<preamble>\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{mathspec}
+\defaultfontfeatures{Mapping=tex-text}
+\setallmainfonts{Adobe Caslon Pro}</preamble>
 <bitmap id="1" width="3692" height="1881" BitsPerComponent="8" ColorSpace="DeviceRGB" Filter="FlateDecode" length="2251207" encoding="base64">
 eNrs3Xts5Ndd9/Fn7Rnbc7/P+Do3e+wZe3y/39Ze39brvXi93m3uaQI0EtdwUwiIy1MptAUq
 IIBEAYUggQAhChIUqChtQYCgpUUEAiqtCoFAgTZUJQTSZpN9no98tCN3fj//Zna8m2w279cf
@@ -42008,10 +42011,10 @@ h
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
 <image layer="alpha" rect="0 269.43 595 572.57" bitmap="1"/>
-<text matrix="1 0 0 1 68.4915 -15.1749" transformations="translations" pos="112 544" stroke="black" type="label" width="14.392" height="12.825" depth="0" valign="baseline" size="LARGE" style="math">\mathcal{T}</text>
-<text matrix="1 0 0 1 32 -128" transformations="translations" pos="224 608" stroke="black" type="label" width="35.429" height="11.579" depth="3.51" valign="baseline" size="LARGE" style="math">\mathbf{H}xyz</text>
-<text matrix="1 0 0 1 80 -176" transformations="translations" pos="224 608" stroke="black" type="label" width="32.554" height="11.579" depth="3.51" valign="baseline" size="LARGE" style="math">\mathbf{P}xyz</text>
-<text matrix="1 0 0 1 303.085 -123.985" transformations="translations" pos="112 544" stroke="black" type="label" width="13.703" height="11.786" depth="4.68" valign="baseline" size="LARGE" style="math">\mathcal{G}</text>
+<text matrix="1 0 0 1 68.4915 -14.0968" transformations="translations" pos="112 544" stroke="black" type="label" width="13.752" height="11.764" depth="0" valign="baseline" size="LARGE" style="math">\mathcal{T}</text>
+<text matrix="1 0 0 1 32 -128" transformations="translations" pos="224 608" stroke="black" type="label" width="38.133" height="12.243" depth="5.11" valign="baseline" size="LARGE" style="math">\mathbf{H}xyz</text>
+<text matrix="1 0 0 1 77.3895 -172.619" transformations="translations" pos="224 608" stroke="black" type="label" width="33.949" height="12.243" depth="5.11" valign="baseline" size="LARGE" style="math">\mathbf{P}xyz</text>
+<text matrix="1 0 0 1 303.995 -124.915" transformations="translations" pos="112 544" stroke="black" type="label" width="11.262" height="11.768" depth="1.67" valign="baseline" size="LARGE" style="math">\mathcal{G}</text>
 <path stroke="black" arrow="normal/normal">
 273.302 476.513 m
 275.937 466.326

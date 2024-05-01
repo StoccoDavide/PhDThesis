@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.28">
-<info created="D:20230117145617" modified="D:20240220150301"/>
-<preamble>\usepackage{newtxtext}
-\usepackage{newtxmath}</preamble>
+<info created="D:20230117145617" modified="D:20240501170329" tex="xetex"/>
+<preamble>\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{mathspec}
+\defaultfontfeatures{Mapping=tex-text}
+\setallmainfonts{Adobe Caslon Pro}</preamble>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -394,13 +397,13 @@ h
 <path matrix="1 0 0 1 272 0" stroke="black" fill="black">
 2.17179 -0.147749 0.147749 2.17179 192 592 e
 </path>
-<text matrix="1 0 0 1 144 0" transformations="translations" pos="432 624" stroke="black" type="label" width="10.176" height="8.953" depth="0.2" valign="baseline" size="huge" style="math">x</text>
-<text matrix="1 0 0 1 -22.5159 192" transformations="translations" pos="432 624" stroke="black" type="label" width="9.153" height="8.951" depth="1.67" valign="baseline" size="huge" style="math">z</text>
-<text matrix="1 0 0 1 -98.7104 63.7511" transformations="translations" pos="432 624" stroke="black" type="label" width="41.583" height="14.616" depth="4.29" valign="baseline" size="huge" style="math">R(y)</text>
-<text matrix="1 0 0 1 -144.46 -83.3016" transformations="translations" pos="432 624" stroke="black" type="label" width="21.372" height="13.5" depth="3.7" valign="baseline" size="huge" style="math">R_\ell</text>
-<text matrix="1 0 0 1 58.1348 -84.2596" transformations="translations" pos="432 624" stroke="black" type="label" width="21.372" height="13.5" depth="3.7" valign="baseline" size="huge" style="math">R_\ell</text>
-<text matrix="1 0 0 1 -27.5591 20.1207" transformations="translations" pos="432 624" stroke="black" type="label" width="16.075" height="13.761" depth="0" valign="baseline" size="huge" style="math">\mathbf{H}</text>
-<text matrix="1 0 0 1 -201.462 -134.582" transformations="translations" pos="432 624" stroke="black" type="label" width="55.761" height="14.616" depth="4.29" valign="baseline" size="huge" style="math">\varrho(y,t)</text>
+<text matrix="1 0 0 1 144 0" transformations="translations" pos="432 624" stroke="black" type="label" width="9.732" height="8.603" depth="0.2" valign="baseline" size="huge" style="math">x</text>
+<text matrix="1 0 0 1 -22.5159 192" transformations="translations" pos="432 624" stroke="black" type="label" width="9.856" height="9.074" depth="0.41" valign="baseline" size="huge" style="math">z</text>
+<text matrix="1 0 0 1 -98.7104 63.7511" transformations="translations" pos="432 624" stroke="black" type="label" width="37.425" height="15.475" depth="6.14" valign="baseline" size="huge" style="math">R(y)</text>
+<text matrix="1 0 0 1 -144.46 -83.3016" transformations="translations" pos="432 624" stroke="black" type="label" width="20.732" height="13.905" depth="3.1" valign="baseline" size="huge" style="math">R_\ell</text>
+<text matrix="1 0 0 1 58.1348 -84.2596" transformations="translations" pos="432 624" stroke="black" type="label" width="20.732" height="13.905" depth="3.1" valign="baseline" size="huge" style="math">R_\ell</text>
+<text matrix="1 0 0 1 -27.5591 20.1207" transformations="translations" pos="432 624" stroke="black" type="label" width="17.729" height="14.693" depth="0.06" valign="baseline" size="huge" style="math">\mathbf{H}</text>
+<text matrix="1 0 0 1 -201.462 -134.582" transformations="translations" pos="432 624" stroke="black" type="label" width="49.073" height="15.475" depth="6.14" valign="baseline" size="huge" style="math">\varrho(y,t)</text>
 <path matrix="1 0 0 1 144 16" stroke="black" fill="black" arrow="normal/normal" rarrow="normal/normal">
 192 432 m
 320 432 l
@@ -409,7 +412,7 @@ h
 144 480 m
 144 512 l
 </path>
-<text matrix="1 0 0 1 -50.7312 -168.426" transformations="translations" pos="432 624" stroke="black" type="label" width="52.352" height="14.616" depth="4.29" valign="baseline" size="huge" style="math">\ell(y,t)</text>
+<text matrix="1 0 0 1 -50.7312 -168.426" transformations="translations" pos="432 624" stroke="black" type="label" width="47.127" height="15.475" depth="6.14" valign="baseline" size="huge" style="math">\ell(y,t)</text>
 <path stroke="black" pen="ultrafat">
 208 512 m
 16 512 l
@@ -422,8 +425,8 @@ h
 112 508.201 m
 112 816 l
 </path>
-<text matrix="1 0 0 1 -413.216 4.23672" transformations="translations" pos="432 624" stroke="black" type="label" width="10.786" height="8.944" depth="4.29" valign="baseline" size="huge" style="math">y</text>
-<text matrix="1 0 0 1 -310.516 192" transformations="translations" pos="432 624" stroke="black" type="label" width="9.153" height="8.951" depth="1.67" valign="baseline" size="huge" style="math">z</text>
+<text matrix="1 0 0 1 -413.216 4.23672" transformations="translations" pos="432 624" stroke="black" type="label" width="8.451" height="8.593" depth="6.14" valign="baseline" size="huge" style="math">y</text>
+<text matrix="1 0 0 1 -310.516 192" transformations="translations" pos="432 624" stroke="black" type="label" width="9.856" height="9.074" depth="0.41" valign="baseline" size="huge" style="math">z</text>
 <path stroke="black" pen="ultrafat">
 80 512 m
 54.7613 512
@@ -485,7 +488,7 @@ h
 161.769 481.508
 159.97 507.408 c
 </path>
-<text matrix="1 0 0 1 -356.326 -134.613" transformations="translations" pos="432 624" stroke="black" type="label" width="55.761" height="14.616" depth="4.29" valign="baseline" size="huge" style="math">\varrho(y,t)</text>
+<text matrix="1 0 0 1 -356.326 -134.613" transformations="translations" pos="432 624" stroke="black" type="label" width="49.073" height="15.475" depth="6.14" valign="baseline" size="huge" style="math">\varrho(y,t)</text>
 <path stroke="black" fill="black" arrow="normal/normal" rarrow="normal/normal">
 133.146 480.157 m
 133.14 511.292 l
@@ -494,17 +497,17 @@ h
 144 640 m
 144 480.413 l
 </path>
-<text matrix="0.995442 -0.0953698 0.0953698 0.995442 -392.377 1.24298" transformations="translations" pos="432 624" stroke="black" type="label" width="41.583" height="14.616" depth="4.29" valign="baseline" size="huge" style="math">R(y)
+<text matrix="0.995442 -0.0953698 0.0953698 0.995442 -392.377 1.24298" transformations="translations" pos="432 624" stroke="black" type="label" width="37.426" height="15.475" depth="6.14" valign="baseline" size="huge" style="math">R(y)
 </text>
-<text matrix="1 0 0 1 63.7278 -17.7457" transformations="translations" pos="117.658 469.018" stroke="black" type="label" width="94.498" height="9.878" depth="0.2" valign="baseline" size="Large">Undeformed tire</text>
-<text matrix="1 0 0 1 76.3077 -30.5651" transformations="translations" pos="117.658 469.018" stroke="black" type="label" width="74.901" height="9.885" depth="0.15" valign="baseline" size="Large">cross-section</text>
+<text matrix="1 0 0 1 63.7278 -17.7457" transformations="translations" pos="117.658 469.018" stroke="black" type="label" width="96.607" height="10.377" depth="0.21" valign="baseline" size="Large">Undeformed tire</text>
+<text matrix="1 0 0 1 76.3077 -30.5651" transformations="translations" pos="117.658 469.018" stroke="black" type="label" width="74.026" height="9.298" depth="0.17" valign="baseline" size="Large">cross-section</text>
 <path stroke="black" arrow="normal/normal">
 174.665 448.146 m
 142.226 451.282
 138.879 480.238 c
 </path>
-<text matrix="1 0 0 1 87.5799 341.939" transformations="translations" pos="117.658 469.018" stroke="black" type="label" width="80.583" height="9.885" depth="0.15" valign="baseline" size="Large">Deformed tire</text>
-<text matrix="1 0 0 1 91.6064 328" transformations="translations" pos="117.658 469.018" stroke="black" type="label" width="74.901" height="9.885" depth="0.15" valign="baseline" size="Large">cross-section</text>
+<text matrix="1 0 0 1 87.5799 341.939" transformations="translations" pos="117.658 469.018" stroke="black" type="label" width="82.462" height="10.373" depth="0.2" valign="baseline" size="Large">Deformed tire</text>
+<text matrix="1 0 0 1 91.6064 328" transformations="translations" pos="117.658 469.018" stroke="black" type="label" width="74.026" height="9.298" depth="0.17" valign="baseline" size="Large">cross-section</text>
 <path stroke="black" arrow="normal/normal">
 202.445 808.231 m
 177.836 803.872
@@ -764,8 +767,8 @@ h
 142.09 793.309 m
 144.823 796.228 l
 </path>
-<text layer="beta" matrix="1 0 0 1 -315.559 20.1207" transformations="translations" pos="432 624" stroke="black" type="label" width="16.075" height="13.761" depth="0" valign="baseline" size="huge" style="math">\mathbf{H}</text>
-<text matrix="1 0 0 1 -389.332 23.9691" transformations="translations" pos="432 624" stroke="black" type="label" width="18.511" height="8.944" depth="4.29" valign="baseline" size="huge" style="math">y_r</text>
-<text matrix="1 0 0 1 -268.083 23.98" transformations="translations" pos="432 624" stroke="black" type="label" width="16.827" height="8.944" depth="4.29" valign="baseline" size="huge" style="math">y_l</text>
+<text layer="beta" matrix="1 0 0 1 -315.559 20.1207" transformations="translations" pos="432 624" stroke="black" type="label" width="17.729" height="14.693" depth="0.06" valign="baseline" size="huge" style="math">\mathbf{H}</text>
+<text matrix="1 0 0 1 -389.332 23.9691" transformations="translations" pos="432 624" stroke="black" type="label" width="14.056" height="8.593" depth="6.14" valign="baseline" size="huge" style="math">y_r</text>
+<text matrix="1 0 0 1 -268.083 23.98" transformations="translations" pos="432 624" stroke="black" type="label" width="12.593" height="8.593" depth="6.14" valign="baseline" size="huge" style="math">y_l</text>
 </page>
 </ipe>

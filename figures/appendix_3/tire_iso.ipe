@@ -1,9 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.28">
-<info created="D:20221110150902" modified="D:20240217110754"/>
-<preamble>\usepackage{newtxtext}
-\usepackage{newtxmath}</preamble>
+<info created="D:20221110150902" modified="D:20240501171231" tex="xetex"/>
+<preamble>\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{amssymb}
+\usepackage{mathspec}
+\defaultfontfeatures{Mapping=tex-text}
+\setallmainfonts{Adobe Caslon Pro}</preamble>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -319,7 +323,7 @@ h
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<path layer="alpha" stroke="black" fill="lightgray" dash="long dashed" pen="fat">
+<path layer="alpha" matrix="1 0 0 1 16 32" stroke="black" fill="lightgray" dash="long dashed" pen="fat">
 299.288 318.02
 319.439 326.306
 334.58 333.509
@@ -336,55 +340,55 @@ h
 278.766 312.534
 287.466 313.423 u
 </path>
-<path stroke="black" pen="ultrafat" arrow="normal/normal">
+<path matrix="1 0 0 1 16 32" stroke="black" pen="ultrafat" arrow="normal/normal">
 293.153 335.97 m
 113.314 252.158 l
 </path>
-<path stroke="black" dash="long dash dotted" pen="heavier">
+<path matrix="1 0 0 1 16 32" stroke="black" dash="long dash dotted" pen="heavier">
 240.481 367.112 m
 293.285 335.775 l
 </path>
-<path stroke="black" fill="white" dash="long dash dotted" pen="heavier">
+<path matrix="1 0 0 1 16 32" stroke="black" fill="white" dash="long dash dotted" pen="heavier">
 235.001 440.063 m
 352.997 373.264 l
 </path>
-<path stroke="black" fill="white" dash="long dash dotted" pen="heavier">
+<path matrix="1 0 0 1 16 32" stroke="black" fill="white" dash="long dash dotted" pen="heavier">
 293.051 335.856 m
 351.624 363.458 l
 </path>
-<path stroke="black" fill="white" dash="long dash dotted" pen="heavier">
+<path matrix="1 0 0 1 16 32" stroke="black" fill="white" dash="long dash dotted" pen="heavier">
 278.412 416.655 m
 293.075 336.051 l
 </path>
-<path stroke="black" fill="white" dash="long dash dotted" pen="heavier">
+<path matrix="1 0 0 1 16 32" stroke="black" fill="white" dash="long dash dotted" pen="heavier">
 278.436 416.692 m
 278.623 521.403 l
 </path>
-<path stroke="black" fill="white" pen="ultrafat" arrow="normal/normal">
+<path matrix="1 0 0 1 16 32" stroke="black" fill="white" pen="ultrafat" arrow="normal/normal">
 293.14 335.968 m
 292.574 591.508 l
 </path>
-<path stroke="black" fill="white" dash="long dash dotted" pen="heavier">
+<path matrix="1 0 0 1 16 32" stroke="black" fill="white" dash="long dash dotted" pen="heavier">
 278.508 416.72 m
 398.697 472.957 l
 </path>
-<path stroke="black" pen="ultrafat" arrow="normal/normal">
+<path matrix="1 0 0 1 16 32" stroke="black" pen="ultrafat" arrow="normal/normal">
 278.652 416.769 m
 77.8393 325.418 l
 </path>
-<path stroke="black" dash="long dash dotted" pen="heavier">
+<path matrix="1 0 0 1 16 32" stroke="black" dash="long dash dotted" pen="heavier">
 225.757 426.864 m
 278.107 416.038 l
 </path>
-<path stroke="black" pen="ultrafat" arrow="normal/normal">
+<path matrix="1 0 0 1 16 32" stroke="black" pen="ultrafat" arrow="normal/normal">
 278.824 416.265 m
 495.876 369.662 l
 </path>
-<path stroke="black" pen="ultrafat" arrow="normal/normal">
+<path matrix="1 0 0 1 16 32" stroke="black" pen="ultrafat" arrow="normal/normal">
 279.083 415.976 m
 246.492 611.336 l
 </path>
-<path matrix="1 0 0 1 -0.00009895 -0.00000902" stroke="black" pen="2.5">
+<path matrix="1 0 0 1 15.9999 32" stroke="black" pen="2.5">
 313.361 324.331
 339.048 333.798
 366.856 363.558
@@ -407,7 +411,7 @@ h
 282.252 311.615
 297.944 317.24 u
 </path>
-<path stroke="black" pen="ultrafat">
+<path matrix="1 0 0 1 16 32" stroke="black" pen="ultrafat">
 267.384 452.363
 283.312 470.3
 318.35 476.567
@@ -422,7 +426,7 @@ h
 251.485 416.607
 258.644 436.47 u
 </path>
-<path matrix="1 0 0 1 0.00012259 0" stroke="black" pen="2.5">
+<path matrix="1 0 0 1 16.0001 32" stroke="black" pen="2.5">
 263.904 313.434 m
 248.594 316.686
 221.288 327.409
@@ -438,7 +442,7 @@ h
 318.922 518.81
 337.641 510.339 c
 </path>
-<path stroke="black" dash="long dashed" pen="fat">
+<path matrix="1 0 0 1 16 32" stroke="black" dash="long dashed" pen="fat">
 292.383 354.704 m
 308.75 363.448
 322.882 391.44
@@ -452,7 +456,7 @@ h
 286.034 527.201
 278.517 527.768 c
 </path>
-<path stroke="black" pen="fat" arrow="normal/normal">
+<path matrix="1 0 0 1 16 32" stroke="black" pen="fat" arrow="normal/normal">
 416.541 392.966 m
 417.201 402.907
 410.331 416.742
@@ -462,11 +466,11 @@ h
 400.923 364.365
 413.623 380.683 c
 </path>
-<path stroke="black" pen="fat" arrow="normal/normal">
+<path matrix="1 0 0 1 16 32" stroke="black" pen="fat" arrow="normal/normal">
 292.624 562.772 m
 111.834 0 0 111.834 228.032 471.478 252.034 580.706 a
 </path>
-<path stroke="black" pen="fat" arrow="normal/normal">
+<path matrix="1 0 0 1 16 32" stroke="black" pen="fat" arrow="normal/normal">
 285.845 552.254 m
 263.113 548.664
 267.968 538.833
@@ -476,31 +480,30 @@ h
 310.601 550.885
 299.2 552.485 c
 </path>
-<text matrix="1 0 0 1 -130.486 -299.44" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="23.21" height="22.085" depth="3.9" valign="baseline" size="Huge" style="math">\hat{\mathbf{h}}_x</text>
-<text transformations="translations" pos="207.721 643.205" stroke="black" type="label" width="0" height="0" depth="0" valign="baseline" size="LARGE"></text>
-<text matrix="0.999995 0 0 1 270.262 -301.436" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="23.745" height="22.086" depth="7.48" valign="baseline" size="Huge" style="math">\hat{\mathbf{h}}_y</text>
-<text matrix="1 0 0 1 12.5252 -58.9288" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="22.312" height="22.082" depth="5.19" valign="baseline" size="Huge" style="math">\hat{\mathbf{h}}_z</text>
-<text matrix="1 0 0 1 202.061 -292.33" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="18.442" height="16.756" depth="0" valign="baseline" size="Huge" style="math">\Omega</text>
-<text matrix="1 0 0 1 63.0247 -57.3129" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="14.302" height="10.736" depth="5.14" valign="baseline" size="Huge" style="math">\gamma</text>
-<text matrix="1 0 0 1 119.212 -90.7813" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="16.508" height="20.13" depth="5.14" valign="baseline" size="Huge" style="math">\dot{\psi}</text>
-<path stroke="black" pen="ultrafat" arrow="normal/normal">
+<text matrix="1 0 0 1 -114.486 -267.44" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="23.74" height="24.469" depth="3.92" valign="baseline" size="Huge" style="math">\hat{\mathbf{h}}_x</text>
+<text matrix="0.999995 0 0 1 286.262 -269.436" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="22.458" height="24.459" depth="9.86" valign="baseline" size="Huge" style="math">\hat{\mathbf{h}}_y</text>
+<text matrix="1 0 0 1 28.5252 -26.9288" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="23.863" height="24.465" depth="4.13" valign="baseline" size="Huge" style="math">\hat{\mathbf{h}}_z</text>
+<text matrix="1 0 0 1 218.061 -260.33" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="19.129" height="16.533" depth="0" valign="baseline" size="Huge" style="math">\Omega</text>
+<text matrix="1 0 0 1 79.0247 -25.3129" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="13.937" height="10.672" depth="4.82" valign="baseline" size="Huge" style="math">\gamma</text>
+<text matrix="1 0 0 1 135.212 -58.7813" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="16.668" height="22.802" depth="4.82" valign="baseline" size="Huge" style="math">\dot{\psi}</text>
+<path matrix="1 0 0 1 16 32" stroke="black" pen="ultrafat" arrow="normal/normal">
 293.178 335.873 m
 448.241 244.549 l
 </path>
-<text matrix="1 0 0 1 57.9893 -250.364" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="16.075" height="13.761" depth="0" valign="baseline" size="huge" style="math">{\mathbf{H}}</text>
-<text matrix="1 0 0 1 103.095 -313.681" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="16.075" height="14.063" depth="0.39" valign="baseline" size="huge" style="math">{\mathbf{O}}</text>
-<text matrix="0.999995 0 0 1 211.011 -413.107" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="20.968" height="17.178" depth="7.48" valign="baseline" size="Huge" style="math">\hat{\mathbf{e}}_y</text>
-<text matrix="0.999995 0 0 1 -69.9326 -403.61" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="20.434" height="17.177" depth="3.9" valign="baseline" size="Huge" style="math">\hat{\mathbf{e}}_x</text>
-<path matrix="1 0 0 1 0.182112 -17.2047" stroke="black" fill="black">
+<text matrix="1 0 0 1 73.9893 -218.364" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="17.729" height="14.693" depth="0.06" valign="baseline" size="huge" style="math">{\mathbf{H}}</text>
+<text matrix="1 0 0 1 119.095 -281.681" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="17.563" height="14.939" depth="0.31" valign="baseline" size="huge" style="math">{\mathbf{O}}</text>
+<text matrix="0.999995 0 0 1 227.011 -381.107" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="19.707" height="17.208" depth="9.86" valign="baseline" size="Huge" style="math">\hat{\mathbf{e}}_y</text>
+<text matrix="0.999995 0 0 1 -53.9326 -371.61" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="20.988" height="17.218" depth="3.92" valign="baseline" size="Huge" style="math">\hat{\mathbf{e}}_x</text>
+<path matrix="1 0 0 1 16.1821 14.7953" stroke="black" fill="black">
 4.49201 0 0 4.49201 292.283 580.585 e
 </path>
-<path matrix="1 0 0 1 -13.9133 -163.732" stroke="black" fill="black">
+<path matrix="1 0 0 1 2.0867 -131.732" stroke="black" fill="black">
 4.49201 0 0 4.49201 292.283 580.585 e
 </path>
-<path matrix="1 0 0 1 0.539408 -244.539" stroke="black" fill="black">
+<path matrix="1 0 0 1 16.5394 -212.539" stroke="black" fill="black">
 4.49201 0 0 4.49201 292.283 580.585 e
 </path>
-<path matrix="1 0 0 1 0.0000255 0" stroke="black" dash="long dashed" pen="fat">
+<path matrix="1 0 0 1 16 32" stroke="black" dash="long dashed" pen="fat">
 256.355 337.004 m
 247.024 333.766
 232.658 333.027
@@ -508,14 +511,14 @@ h
 205.258 343.141
 194.946 350.226 c
 </path>
-<text matrix="1 0 0 1 -35.4748 -154.929" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="20.92" height="16.735" depth="0.69" valign="baseline" size="Huge" style="math">\mathcal{T}</text>
-<text matrix="1 0 0 1 92.5889 -366.935" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="19.755" height="16.735" depth="0.69" valign="baseline" size="Huge" style="math">\mathcal{P}</text>
-<path stroke="black" arrow="normal/normal">
+<text matrix="1 0 0 1 -19.4748 -122.929" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="19.8" height="16.938" depth="0" valign="baseline" size="Huge" style="math">\mathcal{T}</text>
+<text matrix="1 0 0 1 108.589 -334.935" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="19.279" height="16.938" depth="0" valign="baseline" size="Huge" style="math">\mathcal{P}</text>
+<path matrix="1 0 0 1 16 32" stroke="black" arrow="normal/normal">
 177.946 482.116 m
 185.221 461.273
 214.555 459.72 c
 </path>
-<path stroke="black" arrow="normal/normal">
+<path matrix="1 0 0 1 16 32" stroke="black" arrow="normal/normal">
 304.903 296.004 m
 304.348 314.334
 286.606 325.594 c

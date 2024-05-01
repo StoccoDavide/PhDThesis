@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.28">
-<info created="D:20221110150902" modified="D:20231218103348"/>
-<preamble>\usepackage{times}
- \usepackage{mathptm}</preamble>
+<info created="D:20240501133725" modified="D:20240501133725" tex="xetex"/>
+<preamble>\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{mathspec}
+\defaultfontfeatures{Mapping=tex-text}
+\setallmainfonts{Adobe Caslon Pro}</preamble>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -312,14 +315,10 @@ h
 <tiling name="falling" angle="-60" step="4" width="1"/>
 <tiling name="rising" angle="30" step="4" width="1"/>
 </ipestyle>
-<ipestyle name="custom">
-<dashstyle name="long dash dotted" value="[22 3 1 3] 0"/>
-<dashstyle name="long dashed" value="[6] 0"/>
-</ipestyle>
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<path layer="alpha" stroke="black" fill="lightgray" dash="long dashed" pen="fat">
+<path layer="alpha" matrix="1 0 0 1 0 -112" stroke="black" fill="lightgray" dash="long dashed" pen="fat">
 299.288 318.02
 319.439 326.306
 334.58 333.509
@@ -336,55 +335,55 @@ h
 278.766 312.534
 287.466 313.423 u
 </path>
-<path stroke="black" pen="ultrafat" arrow="normal/normal">
+<path matrix="1 0 0 1 0 -112" stroke="black" pen="ultrafat" arrow="normal/normal">
 293.153 335.97 m
 112 280 l
 </path>
-<path stroke="black" dash="long dash dotted" pen="heavier">
+<path matrix="1 0 0 1 0 -112" stroke="black" dash="long dash dotted" pen="heavier">
 240.481 367.112 m
 293.285 335.775 l
 </path>
-<path stroke="black" fill="white" dash="long dash dotted" pen="heavier">
+<path matrix="1 0 0 1 0 -112" stroke="black" fill="white" dash="long dash dotted" pen="heavier">
 235.001 440.063 m
 352.997 373.264 l
 </path>
-<path stroke="black" fill="white" dash="long dash dotted" pen="heavier">
+<path matrix="1 0 0 1 0 -112" stroke="black" fill="white" dash="long dash dotted" pen="heavier">
 293.051 335.856 m
 351.624 363.458 l
 </path>
-<path stroke="black" fill="white" dash="long dash dotted" pen="heavier">
+<path matrix="1 0 0 1 0 -112" stroke="black" fill="white" dash="long dash dotted" pen="heavier">
 278.412 416.655 m
 293.075 336.051 l
 </path>
-<path stroke="black" fill="white" dash="long dash dotted" pen="heavier">
+<path matrix="1 0 0 1 0 -112" stroke="black" fill="white" dash="long dash dotted" pen="heavier">
 278.436 416.692 m
 278.623 521.403 l
 </path>
-<path stroke="black" fill="white" pen="ultrafat" arrow="normal/normal">
+<path matrix="1 0 0 1 0 -112" stroke="black" fill="white" pen="ultrafat" arrow="normal/normal">
 293.14 335.968 m
 292.574 591.508 l
 </path>
-<path stroke="black" fill="white" dash="long dash dotted" pen="heavier">
+<path matrix="1 0 0 1 0 -112" stroke="black" fill="white" dash="long dash dotted" pen="heavier">
 96 360 m
 432 464 l
 </path>
-<path stroke="black" pen="ultrafat" arrow="normal/normal">
+<path matrix="1 0 0 1 0 -112" stroke="black" pen="ultrafat" arrow="normal/normal">
 278.652 416.769 m
 77.8393 325.418 l
 </path>
-<path stroke="black" dash="long dash dotted" pen="heavier">
+<path matrix="1 0 0 1 0 -112" stroke="black" dash="long dash dotted" pen="heavier">
 225.757 426.864 m
 278.107 416.038 l
 </path>
-<path stroke="black" pen="ultrafat" arrow="normal/normal">
+<path matrix="1 0 0 1 0 -112" stroke="black" pen="ultrafat" arrow="normal/normal">
 278.824 416.265 m
 495.876 369.662 l
 </path>
-<path stroke="black" pen="ultrafat" arrow="normal/normal">
+<path matrix="1 0 0 1 0 -112" stroke="black" pen="ultrafat" arrow="normal/normal">
 279.083 415.976 m
 246.492 611.336 l
 </path>
-<path matrix="1 0 0 1 -0.00009895 -0.00000902" stroke="black" pen="2.5">
+<path matrix="1 0 0 1 -0.00009895 -112" stroke="black" pen="2.5">
 313.361 324.331
 339.048 333.798
 366.856 363.558
@@ -407,7 +406,7 @@ h
 282.252 311.615
 297.944 317.24 u
 </path>
-<path stroke="black" pen="ultrafat">
+<path matrix="1 0 0 1 0 -112" stroke="black" pen="ultrafat">
 267.384 452.363
 283.312 470.3
 318.35 476.567
@@ -422,7 +421,7 @@ h
 251.485 416.607
 258.644 436.47 u
 </path>
-<path matrix="1 0 0 1 0.00012259 0" stroke="black" pen="2.5">
+<path matrix="1 0 0 1 0.00012259 -112" stroke="black" pen="2.5">
 263.904 313.434 m
 248.594 316.686
 221.288 327.409
@@ -438,7 +437,7 @@ h
 318.922 518.81
 337.641 510.339 c
 </path>
-<path stroke="black" dash="long dashed" pen="fat">
+<path matrix="1 0 0 1 0 -112" stroke="black" dash="long dashed" pen="fat">
 292.383 354.704 m
 308.75 363.448
 322.882 391.44
@@ -452,32 +451,31 @@ h
 286.034 527.201
 278.517 527.768 c
 </path>
-<path stroke="black" pen="fat" arrow="normal/normal">
+<path matrix="1 0 0 1 0 -112" stroke="black" pen="fat" arrow="normal/normal">
 292.624 562.772 m
 111.834 0 0 111.834 228.032 471.478 252.034 580.706 a
 </path>
-<text matrix="1 0 0 1 -130.486 -299.44" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="19.198" height="17.15" depth="3.91" valign="baseline" size="Huge" style="math">\hat{\mathbf{e}}_x</text>
-<text transformations="translations" pos="207.721 643.205" stroke="black" type="label" width="0" height="0" depth="0" valign="baseline" size="LARGE"></text>
-<text matrix="0.999995 0 0 1 270.198 -297.468" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="19.147" height="17.152" depth="7.23" valign="baseline" size="Huge" style="math">\hat{\mathbf{e}}_y</text>
-<text matrix="1 0 0 1 12.5252 -58.9288" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="18.2" height="17.155" depth="5.11" valign="baseline" size="Huge" style="math">\hat{\mathbf{e}}_z</text>
-<path stroke="black" pen="ultrafat" arrow="normal/normal">
+<text matrix="1 0 0 1 -130.486 -411.44" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="20.988" height="17.218" depth="3.92" valign="baseline" size="Huge" style="math">\hat{\mathbf{e}}_x</text>
+<text matrix="0.999995 0 0 1 270.198 -409.468" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="19.706" height="17.208" depth="9.86" valign="baseline" size="Huge" style="math">\hat{\mathbf{e}}_y</text>
+<text matrix="1 0 0 1 12.5252 -170.929" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="21.111" height="17.214" depth="4.13" valign="baseline" size="Huge" style="math">\hat{\mathbf{e}}_z</text>
+<path matrix="1 0 0 1 0 -112" stroke="black" pen="ultrafat" arrow="normal/normal">
 293.178 335.873 m
 448.241 244.549 l
 </path>
-<text matrix="1 0 0 1 57.9893 -250.364" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="16.075" height="13.895" depth="0" valign="baseline" size="huge" style="math">{\mathbf{H}}</text>
-<text matrix="1 0 0 1 106.657 -313.772" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="12.625" height="13.895" depth="0" valign="baseline" size="huge" style="math">{\mathbf{P}}</text>
-<text matrix="0.999995 0 0 1 207.381 -415.071" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="22.022" height="20.569" depth="9.64" valign="baseline" size="Huge" style="math">\hat{\mathbf{e}}_y^\mathbf{P}</text>
-<text matrix="0.999995 0 0 1 -85.9326 -387.61" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="22.022" height="20.576" depth="6.31" valign="baseline" size="Huge" style="math">\hat{\mathbf{e}}_x^\mathbf{P}</text>
-<path matrix="1 0 0 1 0.182112 -17.2047" stroke="black" fill="black">
+<text matrix="1 0 0 1 57.9893 -362.364" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="17.728" height="14.693" depth="0.06" valign="baseline" size="huge" style="math">{\mathbf{H}}</text>
+<text matrix="1 0 0 1 106.657 -425.772" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="12.707" height="14.693" depth="0.06" valign="baseline" size="huge" style="math">{\mathbf{P}}</text>
+<text matrix="0.999995 0 0 1 207.381 -527.071" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="23.963" height="23.681" depth="12.27" valign="baseline" size="Huge" style="math">\hat{\mathbf{e}}_y^\mathbf{P}</text>
+<text matrix="0.999995 0 0 1 -85.9326 -499.61" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="23.963" height="23.68" depth="6.34" valign="baseline" size="Huge" style="math">\hat{\mathbf{e}}_x^\mathbf{P}</text>
+<path matrix="1 0 0 1 0.182112 -129.205" stroke="black" fill="black">
 4.49201 0 0 4.49201 292.283 580.585 e
 </path>
-<path matrix="1 0 0 1 -13.9133 -163.732" stroke="black" fill="black">
+<path matrix="1 0 0 1 -13.9133 -275.732" stroke="black" fill="black">
 4.49201 0 0 4.49201 292.283 580.585 e
 </path>
-<path matrix="1 0 0 1 0.539408 -244.539" stroke="black" fill="black">
+<path matrix="1 0 0 1 0.539408 -356.539" stroke="black" fill="black">
 4.49201 0 0 4.49201 292.283 580.585 e
 </path>
-<path matrix="1 0 0 1 0.0000255 0" stroke="black" dash="long dashed" pen="fat">
+<path matrix="1 0 0 1 0.0000255 -112" stroke="black" dash="long dashed" pen="fat">
 256.355 337.004 m
 247.024 333.766
 232.658 333.027
@@ -485,27 +483,27 @@ h
 205.258 343.141
 194.946 350.226 c
 </path>
-<text matrix="1 0 0 1 -35.4748 -154.929" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="20.722" height="18.466" depth="0" valign="baseline" size="Huge" style="math">\mathcal{T}</text>
-<text matrix="1 0 0 1 92.5889 -366.935" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="18.293" height="17.4" depth="0" valign="baseline" size="Huge" style="math">\mathcal{P}</text>
-<path stroke="black" arrow="normal/normal">
+<text matrix="1 0 0 1 -35.4748 -266.929" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="19.8" height="16.938" depth="0" valign="baseline" size="Huge" style="math">\mathcal{T}</text>
+<text matrix="1 0 0 1 92.5889 -478.935" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="19.278" height="16.938" depth="0" valign="baseline" size="Huge" style="math">\mathcal{P}</text>
+<path matrix="1 0 0 1 0 -112" stroke="black" arrow="normal/normal">
 177.946 482.116 m
 185.221 461.273
 214.555 459.72 c
 </path>
-<path stroke="black" arrow="normal/normal">
+<path matrix="1 0 0 1 0 -112" stroke="black" arrow="normal/normal">
 304.903 296.004 m
 304.348 314.334
 286.606 325.594 c
 </path>
-<text matrix="0.999995 0 0 1 101.371 -68.719" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="22.022" height="20.571" depth="7.52" valign="baseline" size="Huge" style="math">\hat{\mathbf{e}}_z^\mathbf{P}</text>
-<path matrix="1 0 0 1 -159.818 -209.205" stroke="black" fill="black">
+<text matrix="0.999995 0 0 1 101.371 -180.719" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="23.963" height="23.687" depth="6.54" valign="baseline" size="Huge" style="math">\hat{\mathbf{e}}_z^\mathbf{P}</text>
+<path matrix="1 0 0 1 -159.818 -321.205" stroke="black" fill="black">
 4.49201 0 0 4.49201 292.283 580.585 e
 </path>
-<path stroke="black" pen="fat" arrow="normal/normal">
+<path matrix="1 0 0 1 0 -112" stroke="black" pen="fat" arrow="normal/normal">
 132.624 370.772 m
 36.9929 0 0 36.9929 169.49 367.712 136 352 a
 </path>
-<text matrix="0.999995 0 0 1 59.011 -53.107" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="21.801" height="18.453" depth="5.59" valign="baseline" size="Huge" style="math">\beta_x</text>
-<text matrix="0.999995 0 0 1 -68.989 -317.107" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="21.75" height="18.454" depth="7.23" valign="baseline" size="Huge" style="math">\beta_y</text>
+<text matrix="0.999995 0 0 1 59.011 -165.107" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="23.932" height="17.213" depth="4.82" valign="baseline" size="Huge" style="math">\beta_x</text>
+<text matrix="0.999995 0 0 1 -68.989 -429.107" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="22.65" height="17.208" depth="9.86" valign="baseline" size="Huge" style="math">\beta_y</text>
 </page>
 </ipe>

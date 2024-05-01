@@ -224,7 +224,7 @@ When using the \texttt{tryhard} flag, the solvability check described in step (5
   \end{matrix}
 \end{equation*}
 %
-To enhance performance, the \TrussMe{} package is designed to complement the \LEM{} and \LAST{} packages, which help manage expression expansion during the symbolic solution procedure. Detailed instructions on utilizing these packages can be found in Section~\ref{app4:sec:lem} and~\ref{app4:sec:last}, as well as in their respective documentation~\cite{lem, last}. If both libraries are unavailable, the toolbox defaults to utilizing the linear algebra routines built into \Maple{}.
+To enhance performance, the \TrussMe{} package is designed to complement the \LEM{} and \LAST{} packages, which help manage expression expansion during the symbolic solution procedure. Detailed instructions on utilizing these packages can be found in Section~\ref{chap2:sec:lem} and Section~\ref{chap2:sec:last}, as well as in their respective documentation~\cite{lem, last}. If both libraries are unavailable, the toolbox defaults to utilizing the linear algebra routines built into \Maple{}.
 
 In cases where no symbolic solution is attainable or if the user prefers to assess the solution numerically, the \texttt{GenerateMatlabCode} function can be employed.
 %
@@ -303,7 +303,7 @@ Once instantiated, we can acquire the components of the system of equations~\eqr
 >>> f = fem.f(x,v);
 \end{verbatim}
 %
-It's worth noting that the vector \texttt{x} encompasses the system's parameters, such as the load value $P$ of \SSI{1000}{\newton}, while the vector \texttt{v} holds the values of the veiling variables that might have been retained during the symbolic solution computation as per \ref{app4:sec:lem} and \ref{app4:sec:last}. In cases where the symbolic solution is unavailable, numerical computation becomes an alternative.
+It's worth noting that the vector \texttt{x} encompasses the system's parameters, such as the load value $P$ of \SSI{1000}{\newton}, while the vector \texttt{v} holds the values of the veiling variables that might have been retained during the symbolic solution computation as per Section~\ref{chap2:sec:lem} and Section~\ref{chap2:sec:last}. In cases where the symbolic solution is unavailable, numerical computation becomes an alternative.
 %
 \begin{verbatim}
 >>> x = [1000];

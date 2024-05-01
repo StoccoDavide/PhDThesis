@@ -312,7 +312,7 @@ The car-axis \ac{DAE} system is solved using the proposed index reduction algori
   \end{tabular}}
 \end{table}
 
-\begin{figure}[htb]
+\begin{figure}[!htb]
   \centering
   \small{\includetikz{figures/chapter_4/car_axis_length.tex}}
   \caption{Springs length of the car-axis problem~\cite{lioen1998test, mazzia2008test}. \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} left spring $L_l = \sqrt{x_l^2 + y_l^2}$, \textcolor{mycolor2}{$\blacksquare$} right spring $L_r = \sqrt{(x_r - x_b)^2 + (y_r - y_b)^2}$.}
@@ -622,7 +622,7 @@ The slider-crank mechanism \ac{DAE} system is solved with the aid of the propose
   \end{tabular}}
 \end{table}
 
-\begin{figure}[htb]
+\begin{figure}[!htb]
   \centering
   \small{\includetikz{figures/chapter_4/flexible_slider_crank.tex}}
   \caption{Longitudinal displacement endpoint of the in the flexible slider-crank problem~\cite{lioen1998test, mazzia2008test}. \emph{Color legend}: \textcolor{mycolor2}{$\blacksquare$} longitudinal displacement $q_3$ at the rod midpoint, and \textcolor{mycolor1}{$\blacksquare$} longitudinal displacement $q_4$ at the rod endpoint. \emph{Line legend}: \textbf{---} linear beam model, and \textbf{--~--} nonlinear beam model.}
@@ -766,7 +766,7 @@ Here, we consider up to $p = 4$ pendula, leading to a \ac{DAE} system of $20$ va
   \end{tabular}}
 \end{table}
 
-\begin{figure}[htb]
+\begin{figure}[!htb]
   \centering
   \small{\includetikz{figures/chapter_4/npendula_length.tex}}
   \caption{Pendula lengths of the multi-pendula problem~\cite{nedialkov2008solvingIII} (up to 5 pendula). \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} 1\textsuperscript{st} pendulum length $\ell_1 = \ell$, \textcolor{mycolor2}{$\blacksquare$} 2\textsuperscript{nd} pendulum length $\ell_2 = \ell + c\lambda_1$, \textcolor{mycolor3}{$\blacksquare$} 3\textsuperscript{rd} pendulum length $\ell_3 = \ell + c\lambda_2$, \textcolor{mycolor4}{$\blacksquare$} 4\textsuperscript{th} pendulum length $\ell_4 = \ell + c\lambda_3$, and \textcolor{mycolor5}{$\blacksquare$} 5\textsuperscript{th} pendulum length $\ell_5 = \ell + c\lambda_4$.}
@@ -991,7 +991,7 @@ Prior to any analyses, the \ac{DAE} system is handled to \Indigo{} for index red
 
 After the reduction process, the reduced system is numerically solved generating appropriate code for the \Simulink{} environment. The system is also reproduced in \Ansys{} for comparison. The first test that is carried out aims to verify the accuracy of the reduced system and to understand the impact of compliance on the system dynamics. The results of the frequency response analysis are shown in Figure~\ref{chap4:fig:suspension_dynamic_results}. The results show that the \Simulink{} multi-body simulation with full compliance dynamics contribution and the \Ansys{} \ac{FE} modal analysis are in good agreement and the first three modal shapes, which are shown in Figure~\ref{chap4:fig:suspension_modes}, are well captured by the reduced system with full compliance dynamics contribution. Conversely, the reduced system with steady-state compliance dynamics contribution is not able to capture the first three modal shapes of the suspension. This result, despite expected, also introduces a zero along the suspension moving direction in the frequency response of the system, which is not present in the full compliance dynamics contribution. The following considerations can be made from these results: the compliance of the suspension system has a significant impact on the system dynamics for high-frequency analyses, and the reduced system with full compliance dynamics contribution can capture the system dynamics accurately. For computationally efficient simulations, the reduced system with steady-state compliance dynamics contribution can be used to capture the system dynamics accurately under the assumption that the suspension system is forced by low-frequency inputs.
 
-\begin{figure}[htb]
+\begin{figure}[!htb]
   \centering
   \begin{subfigure}[c]{0.225\textwidth}
     \centering
@@ -1012,7 +1012,7 @@ After the reduction process, the reduced system is numerically solved generating
   \label{chap4:fig:suspension_modes}
 \end{figure}
 
-\begin{figure}[htb]
+\begin{figure}[!htb]
   \centering
   \small{\includetikz{figures/chapter_4/suspension_dynamic_deformations.tex}}
   \caption{Frequency response analysis of the suspension model is conducted, with tests performed under the equilibrium between the suspension system and a vertical force of \SI{500}{\newton} applied at the wheel hub. Frequency responses are assessed by applying input forces/torques at the wheel hub in the form of a linear chirp spanning frequencies from \SIrange{0}{200}{\hertz}, with a constant amplitude of \SI{5}{\newton}/\SI{5}{\newton\meter}. \emph{Legend:} {\color{mycolor1}$\blacksquare$} \Simulink{} multi-body simulation with full compliance dynamics contribution, {\color{mycolor2}$\blacksquare$} \Simulink{} multi-body with steady-state compliance contribution, {\color{mycolor3}$\blacksquare$} \Ansys{} \ac{FE} modal analysis.}
@@ -1107,7 +1107,7 @@ where the state variables are $\m{x} = [H, \xi, \lambda, V_r, \gamma, A]^\top$. 
 %
 The aerodynamic lift and drag coefficients, respectively $C_L(\alpha)$ and $C_D(\alpha)$, as well as the vehicle cross-sectional area $S$ and mass $m$, will be later specified on the specific test. The control variables, which dictate both the magnitude and direction of the aerodynamic force applied to the vehicle, are assessed within the body coordinate system (refer to \figurename~\ref{todo}). The bank angle $\beta$ corresponds to a rotation or \emph{roll} about the vehicle's $x$-axis, while the angle of attack $\alpha$ is measured from the relative velocity vector of the vehicle to the body $x$-axis, representing a rotation or \emph{pitch} about the body $y$-axis. For a more detailed explanation of these parameters and the coordinate system on the presented tests, please refer to~\cite{brenan1983stability}. Nonetheless, figure~\ref{chap4:fig:shuttle_reentry} illustrates the space shuttle coordinate system, as well as the vehicle's position with respect to the earth reference frame.
 
-\begin{figure}[htb]
+\begin{figure}[!htb]
   \centering
   \begin{subfigure}[c]{0.475\textwidth}
     \centering
@@ -1162,7 +1162,7 @@ for a time $t \in [t_0, t_1] = \RSI{32.868734542}{419.868734542}{\second}$, and 
 
 To address this index-3 \acp{DAE}, we utilize the proposed index reduction algorithm. The complexity of expressions encountered during the algorithm's execution is detailed in \tablename{}~\ref{chap4:tab:tppc_initial}. Notably, the index reduction algorithm effectively reduced the system to index-0 without introducing any additional variables, and the expression growth is inhibited by successful simplification. We conduct numerical integration of the reduced \ac{DAE} system using both the \Maple{} and \Indigo{} solvers. \Maple{} encounters challenges in integrating the original \ac{DAE} system due to difficulties in projecting initial values into the solution space, where initial conditions are deemed inconsistent with the algebraic constraints. In contrast, the \Indigo{} numerical solver successfully integrates the reduced \ac{DAE} system, yielding results depicted in \figurename~\ref{chap4:fig:tppc_initial}.
 
-\begin{figure}[htb]
+\begin{figure}[!htb]
   \centering
   \small{\includetikz{figures/chapter_4/shuttle_index3_control.tex}}
   \caption{Control history of the initial stage space shuttle reentry problem~\cite{brenan1995numerical}. The vehicle's trajectory is prescribed by the drag acceleration $D/m$ versus a relative velocity $V_r$ profile reported in~\eqref{chap4:eq:initial_drag}. The vehicle's state is controlled by the bank angle $\beta$ and the angle of attack is kept fix at $\alpha = \SI{40}{\deg}$.}
@@ -1204,7 +1204,7 @@ for a time $t \in \RSI{0}{300}{\second}$. The flight path angle $\gamma$ spans f
 
 To solve the index-2 \ac{DAE} system, we apply the proposed index reduction algorithm. The expression complexity encountered throughout the index reduction is reported in \tablename{}~\ref{chap4:tab:tppc_final}. As we can see, the index reduction algorithm successfully reduces the index of the \ac{DAE} system to index-0 with minimal expression swelling. The numerical integration of the reduced \ac{DAE} system is performed using both the \Maple{} and \Indigo{} numerical solvers. In this regard, \Maple{} is not able to integrate the original \ac{DAE} system due to the incapacity of projecting the initial values into the solution space (\ie{}, initial conditions are not judged to be consistent with the algebraic constraints). Conversely, the numerical integration of the reduced \ac{DAE} system using the \Indigo{} numerical solver is successful, and the results are presented in \figurename~\ref{chap4:fig:tppc_final}.
 
-\begin{figure}[htb]
+\begin{figure}[!htb]
   \centering
   \small{\includetikz{figures/chapter_4/shuttle_index2_control.tex}}
   \caption{Controls history of the space shuttle reentry problem~\cite{brenan1995numerical} in the time interval $t \in \RSI{0}{300}{\second}$. \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} bank angle $\beta$, and \textcolor{mycolor2}{$\blacksquare$} angle of attack $\alpha$.}
@@ -1251,7 +1251,7 @@ The end effector path constraints are given by
 %
 Figure~\ref{chap4:fig:robotic_arm} illustrates the robotic arm problem, as well as its variables and control parameters.
 
-\begin{figure}[htb]
+\begin{figure}[!htb]
   \centering
   \includegraphics[width=0.4\linewidth]{figures/chapter_4/robotic_arm.eps}
   \caption{Robot arm control problem.}
@@ -1398,7 +1398,7 @@ and $g(x) = \beta(\exp(x/U_f) - 1)\,\USI{\ampere}$, $U_e(t) = 0.1\sin(200 \pi t)
 
 The index reduction process is smoothly performed, and the complexity of the expressions encountered throughout the index reduction is detailed in \tablename{}~\ref{chap4:tab:tppc_robot}. As we can see, the expression complexity is minimally affected by the index reduction process. The numerical integration of the reduced \ac{DAE} system is performed using both the \Maple{} and \Indigo{} numerical solvers. In this regard, both \Maple{} and \Indigo{} can integrate the original \ac{DAE} system in the specified time interval $t \in \RSI{0}{0.2}{\second}$.
 
-\begin{figure}[htb]
+\begin{figure}[!htb]
   \centering
   \small{\includetikz{figures/chapter_4/transistor_amplifier.tex}}
   \caption{Transistor amplifier circuit integration results~\cite{lioen1998test, mazzia2008test} in the time interval $t \in \RSI{0}{0.2}{\second}$. Notice that the output signal $U_8$ is equal to the state variable $x_8$. \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} input signal $U_e(t)$, and \textcolor{mycolor2}{$\blacksquare$} output signal $U_8$.}
@@ -1523,7 +1523,7 @@ Considering $C_s = 0$, the index reduction process is flawlessly performed throu
     \end{tabular}}
 \end{table}
 
-\begin{figure}[htb]
+\begin{figure}[!htb]
   \centering
   \small{\includetikz{figures/chapter_4/ring_modulator.tex}}
   \caption{Electric ring modulator circuit integration results~\cite{lioen1998test, mazzia2008test} in the time interval $t \in \RSI{0}{1}{\milli\second}$. The lines represent the modulated output signal $U_2$, which is equal to the state variable $x_2$. \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} output signal $U_2$ with $C_s = \SSI{0}{\pico\farad}$ (\ac{DAE} system), \textcolor{mycolor2}{$\blacksquare$} output signal $U_2$ with $C_s = \SSI{2}{\pico\farad}$ (\ac{ODE} system).}
@@ -1557,7 +1557,7 @@ Consistent initial conditions at $t = t_0$ can be easily obtained by evaluating 
   \end{bmatrix} \text{.}
 \end{equation}
 
-\begin{figure}[htb]
+\begin{figure}[!htb]
   \centering
   \begin{subfigure}[t]{0.26\textwidth}
     \centering

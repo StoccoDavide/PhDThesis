@@ -9,6 +9,8 @@
 \WarningsOff[everypage] % Suppress warnings related to package everypage
 %\pdfsuppresswarningpagegroup=1
 
+\setlength{\parskip}{0pt}        % no space between paragraphs
+
 % Maths ------------------------------------------------------------------------
 \usepackage{amsmath}             % principal package for serious mathematical typesetting
 \usepackage{empheq}              % emphasize equations
@@ -16,10 +18,8 @@
 \usepackage{amssymb}             % particular mathematical symbols
 \usepackage{bm}                  % bold math formula, similar to '\mathbf'
 \usepackage{mathrsfs}            % math upper case letter fonts
-%\usepackage{amsfonts}            % particular mathematical fonts
 \usepackage{amsthm}              % to define theorems, lemmas, etc
 \usepackage{thmtools}            % to define theorems, lemmas, etc
-%\usepackage{mathrsfs}            % math upper case letter fonts
 
 \declaretheoremstyle[
   headfont=\normalfont\bfseries,
@@ -118,6 +118,7 @@
 \setallmainfonts[Numbers={Lining,Proportional}]{Adobe Caslon Pro} % normal document font
 \setallsansfonts[Scale=1.0]{HvDTrial Brandon Grotesque} % sans-serif font (\textsf{})
 \setallmonofonts[Scale=0.75]{JetBrains Mono} % mono spaced font (\texttt{})
+
 \usepackage[sf,bf]{titlesec}     % to customize the titles of the document
 \titleformat
 {\chapter}                       % command
@@ -343,13 +344,15 @@
 % General commands
 \newcommand{\eg}{\emph{e.g.}}
 \newcommand{\ie}{\emph{i.e.}}
-\newcommand{\pow}{\ensuremath{^{\wedge}}}
 \newcommand{\USI}[1]{\unit{#1}}
 \newcommand{\SSI}[2]{\SI{#1}{#2}}
 \newcommand{\RSI}[3]{\lbrack\num{#1}{,}\ \num{#2}\rbrack\,\USI{#3}}
 
 % Software programs
-\newcommand{\MapleSoft}{\textsc{Maplesoft}\textsuperscript{\textregistered}}
+\newcommand{\MacOS}{\textsc{MacOS}\textsuperscript{\textregistered}}
+\newcommand{\Windows}{\textsc{Windows}\textsuperscript{\textregistered}}
+\newcommand{\Linux}{\textsc{Linux}\textsuperscript{\textregistered}}
+\newcommand{\MapleSoft}{\textsc{MapleSoft}\textsuperscript{\textregistered}}
 \newcommand{\Maple}{\textsc{Maple}\textsuperscript{\textregistered}}
 \newcommand{\Wolfram}{\textsc{Wolfram}}
 \newcommand{\Mathematica}{\textsc{Mathematica}\textsuperscript{\textregistered}}
@@ -479,6 +482,8 @@
 \newcommand{\mgdv}{\ensuremath{\m{g}_{\m{a}}(\mx, \m{v}, t)}}
 \newcommand{\mFv}{\ensuremath{\m{F}(\mx, \mxp, \m{v}, t)}}
 \newcommand{\mhv}{\ensuremath{\m{h}(\mx, \m{v}, t)}}
+\newcommand{\mhiv}{\ensuremath{\m{h}_{i}(\mx, \m{v}, t)}}
+\newcommand{\mhuv}{\ensuremath{\m{h}_{u}(\mx, \m{v}, t)}}
 
 \newcommand{\cf}{\ensuremath{\,\mathrm{f}}}
 \newcommand{\cm}{\ensuremath{\,\mathrm{m}}}
@@ -486,7 +491,7 @@
 \newcommand{\ca}{\ensuremath{\,\mathrm{a}}}
 \newcommand{\cv}{\ensuremath{\,\mathrm{v}}}
 
-\newcommand{\eqdef}{\mathrel{\overset{\mathrm{def}}{=}}}
+\newcommand{\eqdef}{\mathrel{\overset{\mathrm{\tiny{def}}}{=}}}
 \newcommand{\bfell}{\ensuremath{\mathcal{L}}}
 \newcommand{\huvec}{\ensuremath{\hat{\mathbf{n}}}}
 \newcommand{\euvec}{\ensuremath{\hat{\mathbf{e}}}}
@@ -501,6 +506,8 @@
 \newcommand{\meai}{\ensuremath{\mathrm{\mu}}}
 \newcommand{\vari}{\ensuremath{\mathrm{\sigma^2}}}
 
+\newcommand{\undx}{\ensuremath{\pt{x}}}
+\newcommand{\undt}{\ensuremath{\vt{t}}}
 \newcommand{\Fiala}{\textsc{Fiala}}
 \newcommand{\NeoFiala}{\textsc{Neo-Fiala}}
 \newcommand{\TreadSim}{\textsc{TreadSim}}
@@ -532,18 +539,18 @@
 \definecolor{dlt_pink}{RGB}{224, 36, 125}
 
 % Tricks to fix the DOI link in the bibliography
-\makeatletter
-  \DeclareMathSymbol{0}{\mathalpha}{\eu@DigitsArabic@symfont}{`0}
-  \DeclareMathSymbol{1}{\mathalpha}{\eu@DigitsArabic@symfont}{`1}
-  \DeclareMathSymbol{2}{\mathalpha}{\eu@DigitsArabic@symfont}{`2}
-  \DeclareMathSymbol{3}{\mathalpha}{\eu@DigitsArabic@symfont}{`3}
-  \DeclareMathSymbol{4}{\mathalpha}{\eu@DigitsArabic@symfont}{`4}
-  \DeclareMathSymbol{5}{\mathalpha}{\eu@DigitsArabic@symfont}{`5}
-  \DeclareMathSymbol{6}{\mathalpha}{\eu@DigitsArabic@symfont}{`6}
-  \DeclareMathSymbol{7}{\mathalpha}{\eu@DigitsArabic@symfont}{`7}
-  \DeclareMathSymbol{8}{\mathalpha}{\eu@DigitsArabic@symfont}{`8}
-  \DeclareMathSymbol{9}{\mathalpha}{\eu@DigitsArabic@symfont}{`9}
-\makeatother
+%\makeatletter
+%  \DeclareMathSymbol{0}{\mathalpha}{\eu@DigitsArabic@symfont}{`0}
+%  \DeclareMathSymbol{1}{\mathalpha}{\eu@DigitsArabic@symfont}{`1}
+%  \DeclareMathSymbol{2}{\mathalpha}{\eu@DigitsArabic@symfont}{`2}
+%  \DeclareMathSymbol{3}{\mathalpha}{\eu@DigitsArabic@symfont}{`3}
+%  \DeclareMathSymbol{4}{\mathalpha}{\eu@DigitsArabic@symfont}{`4}
+%  \DeclareMathSymbol{5}{\mathalpha}{\eu@DigitsArabic@symfont}{`5}
+%  \DeclareMathSymbol{6}{\mathalpha}{\eu@DigitsArabic@symfont}{`6}
+%  \DeclareMathSymbol{7}{\mathalpha}{\eu@DigitsArabic@symfont}{`7}
+%  \DeclareMathSymbol{8}{\mathalpha}{\eu@DigitsArabic@symfont}{`8}
+%  \DeclareMathSymbol{9}{\mathalpha}{\eu@DigitsArabic@symfont}{`9}
+%\makeatother
 
 % Pages numbering --------------------------------------------------------------
 \makeatletter
@@ -579,11 +586,11 @@
 The content of this thesis is the result of the author's original research work. Permission to include the following previously published material in the thesis has been obtained from the respective publishers. The works are cited in the bibliography and are listed below in chronological order of publication.
 %
 \begin{itemize}
-  \item \fullcite{stocco2021acme}
-  \item \fullcite{stocco2024symbolic}
-  \item \fullcite{stocco2024matrix}
-  \item \fullcite{stocco2024novel}
-  \item \fullcite{stocco2024physical}
+  \item \fullcite{stocco2021acme} -  Reproduced with permission from Elsevier.
+  \item \fullcite{stocco2024symbolic} -  Reproduced with permission from Springer.
+  \item \fullcite{stocco2024matrix} -  Reproduced with permission from Elsevier.
+  \item \fullcite{stocco2024novel} -  Reproduced with permission from ASME.
+  \item \fullcite{stocco2024physical} -  Reproduced with permission from Elsevier.
 \end{itemize}
 
 \subsection*{Material Submitted for Publication}
@@ -711,10 +718,10 @@ This thesis contains material that is currently submitted for publication. The m
   \textsc{Doi}\addcolon\space%
   \ifhyperref{%
   \href{https://doi.org/#1}{
-    \texttt{#1}
+    \nolinkurl{#1}
   }
   }{
-    \texttt{#1}
+    \nolinkurl{#1}
   }
 }
 \printbibliography

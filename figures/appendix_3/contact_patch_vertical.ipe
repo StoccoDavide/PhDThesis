@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.28">
-<info created="D:20230117162500" modified="D:20240217111532"/>
-<preamble>\usepackage{newtxtext}
-\usepackage{newtxmath}</preamble>
+<info created="D:20230117162500" modified="D:20240501170539" tex="xetex"/>
+<preamble>\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{mathspec}
+\defaultfontfeatures{Mapping=tex-text}
+\setallmainfonts{Adobe Caslon Pro}</preamble>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -340,8 +343,8 @@ h
 320 528
 451.47 495.884 c
 </path>
-<text matrix="1 0 0 1 32 0" transformations="translations" pos="512 368" stroke="black" type="label" width="12.208" height="10.741" depth="0.24" valign="baseline" size="Huge" style="math">x</text>
-<text matrix="1 0 0 1 -176 320" transformations="translations" pos="512 368" stroke="black" type="label" width="12.939" height="10.736" depth="5.14" valign="baseline" size="Huge" style="math">y</text>
+<text matrix="1 0 0 1 32 0" transformations="translations" pos="512 368" stroke="black" type="label" width="11.675" height="10.319" depth="0.24" valign="baseline" size="Huge" style="math">x</text>
+<text matrix="1 0 0 1 -176 320" transformations="translations" pos="512 368" stroke="black" type="label" width="10.138" height="10.303" depth="7.37" valign="baseline" size="Huge" style="math">y</text>
 <path stroke="black" pen="fat">
 188.424 512.151 m
 132.07 503.672
@@ -365,21 +368,21 @@ h
 <path matrix="1 0 0 1 -6.02282 14.8265" stroke="black" fill="black" pen="heavier">
 3.34333 -0.0425103 0.0425103 3.34333 428.703 549.087 e
 </path>
-<text matrix="1 0 0 1 -82.9757 229.007" transformations="translations" pos="512 368" stroke="black" type="label" width="18.854" height="10.736" depth="5.14" valign="baseline" size="Huge" style="math">y_i</text>
-<text matrix="1 0 0 1 -210.214 212.395" transformations="translations" pos="512 368" stroke="black" type="label" width="97.911" height="17.54" depth="5.14" valign="baseline" size="Huge" style="math">\xi_i(x, y_i, t)</text>
+<text matrix="1 0 0 1 -82.9757 229.007" transformations="translations" pos="512 368" stroke="black" type="label" width="16.566" height="10.303" depth="7.37" valign="baseline" size="Huge" style="math">y_i</text>
+<text matrix="1 0 0 1 -210.214 212.395" transformations="translations" pos="512 368" stroke="black" type="label" width="92.354" height="18.56" depth="7.37" valign="baseline" size="Huge" style="math">\xi_i(x, y_i, t)</text>
 <path matrix="1 0 0 1 -114.107 -32.7657" stroke="black" fill="black" pen="heavier">
 3.34333 -0.0425103 0.0425103 3.34333 428.703 549.087 e
 </path>
 <path matrix="1 0 0 1 -114.724 15.2826" stroke="black" fill="black" pen="heavier">
 3.34333 -0.0425103 0.0425103 3.34333 428.703 549.087 e
 </path>
-<text matrix="1 0 0 1 -233.907 160.56" transformations="translations" pos="512 368" stroke="black" type="label" width="39.213" height="17.537" depth="4.87" valign="baseline" size="Huge" style="math">\mathbf{c}(t)</text>
-<text matrix="1 0 0 1 -186.93 20.433" transformations="translations" pos="512 368" stroke="black" type="label" width="19.284" height="16.869" depth="0.47" valign="baseline" size="Huge" style="math">\mathbf{O}</text>
+<text matrix="1 0 0 1 -233.907 160.56" transformations="translations" pos="512 368" stroke="black" type="label" width="35.7" height="18.564" depth="6.18" valign="baseline" size="Huge" style="math">\mathbf{c}(t)</text>
+<text matrix="1 0 0 1 -186.93 20.433" transformations="translations" pos="512 368" stroke="black" type="label" width="21.069" height="17.923" depth="0.37" valign="baseline" size="Huge" style="math">\mathbf{O}</text>
 <path stroke="black" fill="black" arrow="normal/normal" rarrow="normal/normal">
 174.366 447.949 m
 470.356 447.993 l
 </path>
-<text matrix="1 0 0 1 -183.602 90.5452" transformations="translations" pos="512 368" stroke="black" type="label" width="62.802" height="17.54" depth="5.14" valign="baseline" size="Huge" style="math">\ell(y,t)</text>
+<text matrix="1 0 0 1 -183.602 90.5452" transformations="translations" pos="512 368" stroke="black" type="label" width="56.534" height="18.56" depth="7.37" valign="baseline" size="Huge" style="math">\ell(y,t)</text>
 <path matrix="1 0 0 1 -108.704 -165.087" stroke="black" fill="black" pen="heavier">
 3.34333 -0.0425103 0.0425103 3.34333 428.703 549.087 e
 </path>
@@ -387,19 +390,19 @@ h
 381.989 563.918 m
 320.001 564.062 l
 </path>
-<text matrix="1 0 0 1 -344.041 16.768" transformations="translations" pos="410.267 535.17" stroke="black" type="label" width="108.334" height="14.233" depth="0.22" valign="baseline" size="huge">Flexible belt </text>
+<text matrix="1 0 0 1 -344.041 16.768" transformations="translations" pos="410.267 535.17" stroke="black" type="label" width="107.838" height="14.947" depth="0.24" valign="baseline" size="huge">Flexible belt </text>
 <path stroke="black" arrow="normal/normal">
 116.774 525.232 m
 123.238 515.581
 125.565 504.281 c
 </path>
-<text matrix="1 0 0 1 -316.34 -12.8524" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="85.453" height="14.619" depth="4.06" valign="baseline" size="huge" style="math">\mathcal{L}(\mathbf{x}, \mathbf{c}(t))</text>
-<text matrix="1 0 0 1 -75.1323 -21.6671" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="19.755" height="16.735" depth="0.69" valign="baseline" size="Huge" style="math">\mathcal{P} </text>
+<text matrix="1 0 0 1 -316.34 -12.8524" transformations="translations" pos="394.282 544.945" stroke="black" type="label" width="76.635" height="15.476" depth="5.15" valign="baseline" size="huge" style="math">\mathcal{L}(\mathbf{x}, \mathbf{c}(t))</text>
+<text matrix="1 0 0 1 -75.1323 -21.6671" transformations="translations" pos="202.43 642.206" stroke="black" type="label" width="19.279" height="16.938" depth="0" valign="baseline" size="Huge" style="math">\mathcal{P} </text>
 <path stroke="black" arrow="normal/normal">
 154.298 627.271 m
 192 624
 224 608 c
 </path>
-<text matrix="1 0 0 1 -328.041 112.768" transformations="translations" pos="410.267 535.17" stroke="black" type="label" width="113.892" height="14.23" depth="4.48" valign="baseline" size="huge">Contact patch</text>
+<text matrix="1 0 0 1 -328.041 112.768" transformations="translations" pos="410.267 535.17" stroke="black" type="label" width="118.004" height="14.941" depth="5.68" valign="baseline" size="huge">Contact patch</text>
 </page>
 </ipe>

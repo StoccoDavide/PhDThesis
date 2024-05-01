@@ -3,7 +3,7 @@
 \chapter[DAEs Index Reduction and Numerical Solution]{Differential-Algebraic Equations Index Reduction and Numerical Solution}
 \label{chap3:daes}
 
-We present an algorithm for the index reduction of first-order differential-algebraic equations. The proposed approach can be applied to generic differential-algebraic equations and exploits neither a priori knowledge nor ad hoc techniques to leverage the specific formulation of the system. The index reduction is performed only by using symbolic manipulation and linear algebra techniques. It is based on the successive separation of the differential and algebraic equations of the system and the subsequent differentiation of the algebraic part. Improved symbolic matrix factorization is used to perform the differential-algebraic equations partitioning, ensure numerical stability, and limit the expression swell of the reduced-index system. The effectiveness of the algorithm is validated through symbolic-numerical examples on a wide range of systems, including physical systems, engineering applications, and ``artificial'' differential-algebraic equations with specific properties. The proposed symbolic index reduction algorithm is implemented in \Maple{} as part of an open-source library.
+In this chapter, we present an algorithm for the index reduction of first-order \acp{DAE}. The proposed approach can be applied to generic \acp{DAE} and exploits neither a priori knowledge nor ad hoc techniques to leverage the specific formulation of the system. The index reduction is performed only by using symbolic manipulation and linear algebra techniques. It is based on the successive separation of the differential and algebraic equations of the system and the subsequent differentiation of the algebraic part. Improved symbolic matrix factorization is used to perform the \acp{DAE} partitioning, ensure numerical stability, and limit the expression swell of the reduced-index system. The effectiveness of the algorithm will be validated in the next chapter through a set of examples on a wide range of systems, including physical systems, engineering applications, and ``artificial'' \acp{DAE} with specific properties. The proposed symbolic index reduction algorithm is implemented in \Maple{} as part of an open-source library.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
@@ -18,7 +18,7 @@ Index reduction based on symbolic-numeric aided \ac{SA} has been successful in h
 
 The absence of user-invocable standalone functions within the \Maple{} environment that allows for the automatic index reduction of \acp{DAE}, and the inability to extract both the reduced-index system and invariants from the \texttt{dsolve} function, are the primary motivations of this research. Furthermore, recent advances in symbolic matrix factorization, combined with expressions hierarchical representation techniques, provide valuable tools that enable us to further investigate the applicability of a novel algorithm for the index reduction of \ac{DAE} systems, firstly presented in~\cite{stocco2024symbolic} as a preliminary work. The proposed methodology is similar to the previous work of~\citet{chowdhry2004symbolic} and extends it to generic first-order \acp{DAE}, linear in the states' derivatives. Nonetheless, the proposed algorithm does not work on the structural matrix of the system but on the \ac{DAE} system symbolic expressions. Specifically, the idea of using matrix factorization for variable substitution and rank determination is adopted to iteratively separate the differential and algebraic equations of the system. The algebraic equations are then differentiated to obtain an equivalent system with a lower differentiation index. Not less important, new libraries for symbolic matrix factorization (\LAST{}), large expression management (\LEM{}), and signature computation (\SIG{}) are presented. These libraries are based on the \LULEM{} package and extend the work of~\citet{zhou2006hierarchical, carette2006linear} and~\citet{zhou2007symbolic}. The newly presented libraries are designed to ensure the numerical stability of the numerically evaluated expressions, limit the expression swell, and provide an updated object-oriented interface. The effectiveness of the presented index reduction algorithm is validated through symbolic-numerical examples on a wide range of systems, including physical systems, engineering applications, as well as ``artificial'' systems with specific properties. The proposed algorithm is implemented in the \Maple{} environment and is available as a collection of open-source packages~\cite{last, lem}. Furthermore, the insights and the techniques presented in~\cite{zhou2006hierarchical, carette2006linear, zhou2007symbolic} are used to improve the presented algorithm to embed the hierarchical representation of expressions in a future implementation of the algorithm.
 
-The manuscript is organized as follows. After this introduction (Section~\ref{chap3:sec:introduction}), the index reduction algorithm is presented in Section~\ref{chap3:sec:algorithm}. The expression swell mitigation, as well as the details on the symbolic matrix factorization, are discussed in Sections~\ref{chap3:sec:expression_swell} and \ref{chap3:sec:matrix_factorization}. The effectiveness of the algorithm is showcased through symbolic-numerical examples in Section~\ref{chap3:sec:examples}. Finally, Sections~\ref{chap3:sec:future_work} and~\ref{chap3:sec:conclusions} report future developments and conclusions respectively. In~\ref{chap3:sec:cokernel} details on cokernel computation are reported. The newly developed object-oriented symbolic linear algebra (\ref{chap3:sec:last}), large expression management (\ref{chap3:sec:lem}) and signature computation (\ref{chap3:sec:signature}) package descriptions are also included in the appendices. The symbolic index reduction algorithm is implemented in the \Maple{} language and is available as part of the open-source \Indigo{} library~\cite{indigo}. Its usage is illustrated in~\ref{chap3:sec:index_reduction}. Notice that throughout the manuscript the \texttt{teletype} font indicates the use of \Maple{} and \Matlab{} commands or software implementations.
+%This chapter is organized as follows. After this introduction (Section~\ref{chap3:sec:introduction}), the index reduction algorithm is presented in Section~\ref{chap3:sec:algorithm}. The expression swell mitigation, as well as the details on the symbolic matrix factorization, are discussed in Sections~\ref{chap3:sec:expression_swell} and \ref{chap3:sec:matrix_factorization}. The effectiveness of the algorithm is showcased through symbolic-numerical examples in Section~\ref{chap3:sec:examples}. Finally, Sections~\ref{chap3:sec:future_work} and~\ref{chap3:sec:conclusions} report future developments and conclusions respectively. In~\ref{chap3:sec:cokernel} details on cokernel computation are reported. The newly developed object-oriented symbolic linear algebra (\ref{chap2:sec:last}), large expression management (\ref{chap2:sec:lem}) and signature computation (\ref{chap3:sec:signature}) package descriptions are also included in the appendices. The symbolic index reduction algorithm is implemented in the \Maple{} language and is available as part of the open-source \Indigo{} library~\cite{indigo}. Its usage is illustrated in~\ref{chap3:sec:index_reduction}.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
@@ -36,7 +36,7 @@ Consider a first-order system of \acp{DAE} $\mF$ of the form
 %
 \begin{equation}
   \label{chap3:eq:daes}
-  \mF \eqdef\mA \, \mxp - \mb = \m{0}.
+  \mF = \mA \, \mxp - \mb = \m{0}.
 \end{equation}
 %
 We denote the cokernel and its orthogonal complement of $\mA$ with $\mK$ and $\mN$ respectively (see~\ref{chap3:sec:cokernel} for details on the cokernel computation with symbolic matrix factorization). Notice that the cokernel is the subspace obtained by the span of $\mK$'s columns. For this reason, hereafter, we refer to the cokernel as the matrix $\mK$ whose columns span the cokernel. Using $\mK$ and $\mN$ it is possible to separate the algebraic part of the \acp{DAE}~\eqref{chap3:eq:daes} as
@@ -71,7 +71,7 @@ This results in an equivalent \ac{DAE} system, where the algebraic equations $\m
 
 
 \subsubsection{Cokernel Computation with Matrix Factorization}
-\label{chap3:sec::cokernel}
+\label{chap3:sec:cokernel}
 
 The cokernel of a generic matrix $\m{A}$ is denoted as $\m{K}$ and satisfy $\m{K}\m{A} = \m{0}$. As mentioned before, the cokernel is the subspace obtained by the span of $\m{K}$'s columns. The orthogonal complement of the cokernel is denoted as $\m{N}$, moreover, the matrices $\m{N}$ and $\m{K}$ stacked compose a square non-singular matrix. It is common knowledge that matrix factorization techniques can be employed to compute the cokernel and its orthogonal complement. Among these techniques, the \ac{LU} factorization stands out as one of the most frequently used methods.
 
@@ -360,11 +360,11 @@ These are the two main points that we acknowledge in the implementation of the a
 
 \section{Index Reduction Algorithm with Expression Swell Mitigation}
 
-The most interesting and relevant aspect to be explored is the connection between the hierarchical representation of expressions (see~\ref{chap3:sec:lem}) and the \ac{DAE} index reduction. The use of veiling variables may be used to hide some parts of the expressions by the collection of common sub-expressions. Even if this may appear to be a substantial improvement, it is not so frequent to encounter expressions that are common to all the equations of the \ac{DAE} system. Still, this concept can be extended to mitigate the expression swell during matrix factorization (see~\ref{chap3:sec:last}). The veiling variables $\mv$ would then include the states $\mx$ of the \ac{DAE} system. In this manner, the hierarchical representation of the expression serves as a system augmentation technique as well as a means to limit expression swell during the index reduction procedure. The augmented \ac{DAE} system would then be expressed as
+The most interesting and relevant aspect to be explored is the connection between the hierarchical representation of expressions (see Section~\ref{chap2:sec:lem}) and the \ac{DAE} index reduction. The use of veiling variables may be used to hide some parts of the expressions by the collection of common sub-expressions. Even if this may appear to be a substantial improvement, it is not so frequent to encounter expressions that are common to all the equations of the \ac{DAE} system. Still, this concept can be extended to mitigate the expression swell during matrix factorization (see Section~\ref{chap2:sec:last}). The veiling variables $\mv$ would then include the states $\mx$ of the \ac{DAE} system. In this manner, the hierarchical representation of the expression serves as a system augmentation technique as well as a means to limit expression swell during the index reduction procedure. The augmented \ac{DAE} system would then be expressed as
 %
 \begin{equation}
   \label{chap3:eq:augmented_dae}
-  \mFv \eqdef \mAv \, \mx^\prime - \mbv = \m{0},
+  \mFv = \mAv \, \mx^\prime - \mbv = \m{0},
   %
   \qquad \text{where} \qquad
   %
@@ -384,7 +384,7 @@ Notice that if the matrix $\mAv$ is non-singular, the augmented \ac{DAE} system~
   \begin{algorithmic}[1]
     \State \textbf{Require:} A \ac{DAE} system of the form $\mFv \eqdef \mAv \, \mxp - \mbv = \m{0}$.
     \Procedure{ReduceIndex}{$\mFv$} \Comment{Index reduction procedure}
-      \State $\mhv \gets \varnothing$ \Comment{The set of invariants}
+      \State $\mhiv \gets \varnothing$ \Comment{The set of invariants}
       \State $\mv \gets \varnothing$ \Comment{The veiling variables vector}
       \State $\mAv, \, \mbv \gets \mathrm{GenerateMatrix}(\mFv, \, \mxp)$ \Comment{The \ac{DAE} system matrix}
       \State $m \gets \mathrm{Size}(\mx)$\Comment{The size of $\mx$}
@@ -405,9 +405,9 @@ Notice that if the matrix $\mAv$ is non-singular, the augmented \ac{DAE} system~
         \State $\mAdv, \, \mgdv \gets \mathrm{GenerateMatrix}(\mav, \, \mxp)$ \Comment{Differentiate the equations $\mav$}
         \State $\mAv \gets \begin{bmatrix} \mEv \\ \mAdv \end{bmatrix}$ and $\mbv \gets \begin{bmatrix} \mgv \\ \mgdv \end{bmatrix}$
         \Comment{The new matrix $\mAv$ and vector $\mbv$}
-        \State $\mhv \gets \mhv \cup \mav$ \Comment{Add the algebraic equations to the set of invariants}
+        \State $\mhiv \gets \mhiv \cup \mav$ \Comment{Add the algebraic equations to the set of invariants}
       \EndWhile \\
-      \Return $\mAv, \, \mbv, \, \mhv, \, \mv$ \Comment{The \acp{DAE} reduced to an \ac{ODE} system with invariants}
+      \Return $\mAv, \, \mbv, \, \mhiv, \, \mv$ \Comment{The \acp{DAE} reduced to an \ac{ODE} system with invariants}
     \EndProcedure
   \end{algorithmic}
 \end{breakablealgorithm}
@@ -467,13 +467,13 @@ The \Indigo{} \Matlab{} toolbox is an object-oriented library that allows the us
         \end{array}
     \end{equation}
     %
-    \item The invariants, composed of the hidden constraints obtained from the index reduction process $h_{i}(\mx, \m{v}, t)$, and optional user-defined invariants $h_{u}(\mx, \m{v}, t)$, namely
+    \item The invariants, composed of the hidden constraints obtained from the index reduction process $\mhiv$, and optional user-defined invariants $\mhuv$, namely
     %
     \begin{equation}
         \label{chap3:eq:inv_part}
         \m{h}(\mx, \m{v}, t) = \begin{bmatrix}
-            h_{i}(\mx, \m{v}, t) \\[0.5mm]
-            h_{u}(\mx, \m{v}, t) \\[0.5mm]
+            \mhiv \\[0.5mm]
+            \mhuv
         \end{bmatrix} = \m{0} \text{.}
     \end{equation}
     %
@@ -507,7 +507,7 @@ To integrate the system generated through the \Matlab{} package or a custom syst
 Once the solver is instantiated, it is only necessary to specify the initial conditions and the integration time vector.
 %
 \begin{verbatim}
->>> [x, x_dot, t, v, h] = solver.solve(t_ini:d_t:t_end, ics);
+>>> [x, t, v, h] = solver.solve(t_ini:d_t:t_end, ics);
 \end{verbatim}
 %
 The solver returns the solution of the system in the form of multiple outputs: \texttt{x} contains the integrated solution, \texttt{x\_dot} the states' time derivative, \texttt{t} the time vector, \texttt{v} the veiling variables, and finally \texttt{h} the values of the invariants over the specified time mesh \texttt{t\_ini:d\_t:t\_end}.
@@ -517,35 +517,17 @@ The solver returns the solution of the system in the form of multiple outputs: \
 \section{Proofing the Symbolic-Numeric Scheme}
 \label{chap3:sec:examples}
 
-In this section, we showcase an example of high-index \ac{DAE} systems, which range in a wide spectrum, encompassing physical systems, engineering applications, as well as ``artificial'' \ac{DAE} systems with specific properties. These examples are employed to demonstrate the capabilities of the proposed index reduction algorithm. In particular, the following test cases are presented.
-%
-\begin{enumerate}
-  \setlength{\itemsep}{0.0em}
-  \item A non-stiff index-3 problem found in \Wolfram{}~\Mathematica{} documentation~\cite{mathematica}, already showcased in Section~\ref{chap3:sec:step_by_step}.
-  \item An index-3 problem with analytical solution, which describes the motion of a particle in 3D~\cite{campbell1995constraint}.
-  \item A moderately stiff car-axis problem of index-3 describing a simple model of a car axis riding over a bumpy road~\cite{lioen1998test, mazzia2008test}.
-  \item A slightly stiff index-1 system of an eight-nodes transistor-amplifier~\cite{lioen1998test, mazzia2008test}.
-  \item A stiff index-2 system of an electric ring modulator~\cite{lioen1998test, mazzia2008test}.
-  \item A dimension 5 Rei{\ss}ig's family \ac{DAE} system of index-1~\cite{reissig2000differential}.
-  \item The shuttle reentry problem with: (a)~an index-2 system that describes the final stage of space shuttle reentry problem~\cite{brenan1995numerical}; and (b)~an index-3 system that describes the intermediate stage of space shuttle reentry problem~\cite{brenan1995numerical}.
-  \item An index-2 system that describes the final stage of space shuttle reentry problem~\cite{brenan1995numerical}.
-  \item An index-3 system that describes the intermediate stage of space shuttle reentry problem~\cite{brenan1995numerical}.
-  \item An index-5 \ac{DAE} system, which describes the motion of a robotic arm~\cite{pryce1998solving}.
-  \item The $\mathrm{N}$-Pendula with: (a)~$\mathrm{N} = 2$ and index-5~\cite{pryce1998solving}; (b)~$\mathrm{N} = 3$ and index-7~\cite{nedialkov2008solvingIII}; and (c)~$\mathrm{N} = 4$ and index-9~\cite{nedialkov2008solvingIII}.
-\end{enumerate}
-%
-Examples 1 and 2 are accurately showcased in Sections~\ref{chap3:sec:step_by_step} and~\ref{chap3:sec:numerical_integration}, respectively. In specific, the first example demonstrates the step-by-step results of the index reduction algorithm presented here, while the second is used to visualize the numerical integration results of the reduced-index system, as well as the good conditioning of both the symbolic matrix factorization and the numerical integration scheme. The remaining tests are presented more concisely, and the expressions' complexity met during the index reduction process for each test is reported in \tablename{}~\ref{chap3:tab:complexity} of Section~\ref{chap3:sec:daes_complexity}. Similarly, the numerical results of the reduced-index systems are reported in \tablename{}~\ref{chap3:tab:numerical_integration} of Section~\ref{chap3:sec:numerical_integration}.
+In this section, we showcase an example of a high-index \ac{DAE} system: an index-3 problem with an analytical solution, which describes the motion of a particle on a 3D torus surface~\cite{campbell1995constraint}. This example is specifically employed to validate the numerical stability of the reduced-index system, as well as the good conditioning of both the symbolic matrix factorization and the numerical integration scheme. To ease the understanding of the results, we purposely avoid the use of the veiling variables in this example. However, the veiling variables just add an evaluation layer to the expressions, and they do not affect the numerical stability of the algorithm.
 
 \subsection{Expression Complexity of the Reduced-Index Systems}
 \label{chap3:sec:daes_complexity}
 
-To demonstrate the capabilities of the proposed index reduction algorithm, we first consider the examples from a symbolic computation perspective. In particular, we consider the computational cost of the expressions generated during the presented procedure. The compactness of the expressions generated during the index reduction algorithm is a crucial aspect, as it ensures that limited computational overhead is introduced in the numerical integration of the reduced-index system, as well as in the projection of the solution on the hidden constraints. For each reduction stage of the examples considered, the computational cost is reported in \tablename{}~\ref{chap3:tab:complexity}. Notice that the computational costs of expressions that could not be simplified by \Maple{} within \SI{100}{\second} of CPU time are reported with a $\star$ symbol preceding them. The tests are performed on a \SI{2.6}{\giga\hertz} 6-Core Intel\textsuperscript{\textregistered} Core\textsuperscript{\textregistered} i7 computer.
-
+To demonstrate the capabilities of the proposed index reduction algorithm, we first consider the examples from a symbolic computation perspective. In particular, we consider the computational cost of the expressions generated during the presented procedure. The compactness of the expressions generated during the index reduction algorithm is a crucial aspect, as it ensures that limited computational overhead is introduced in the numerical integration of the reduced-index system, as well as in the projection of the solution on the hidden constraints. For each reduction stage of the example considered, the computational cost is reported in \tablename{}~\ref{chap3:tab:torus}. Notice that the computational costs of expressions that could not be simplified by \Maple{} within \SI{100}{\second} of CPU time are reported with a $\star$ symbol preceding them. The tests are performed on a \SI{2.6}{\giga\hertz} 6-Core Intel\textsuperscript{\textregistered} Core\textsuperscript{\textregistered} i7 computer.
 
 \subsection{Numerical Integration of the Reduced-Index System}
 \label{chap3:sec:numerical_integration}
 
-To demonstrate the numerical stability of the reduced-index system, we consider the second example, which is an index-3 problem with an analytical solution, taken from~\cite{campbell1995constraint}. It describes the motion of a particle inside a 3D torus surface. This system has three position variables $[x_{1}, \, x_{2}, \, x_{3}]^\top$, three velocity variables $[u_{1}, \, u_{2}, \, u_{3}]^\top$, and one constraint with Lagrange multiplier $\lambda$. The solution manifold is 4D, and the exact solution is
+The numerical stability and consistency of the reduced-index system are demonstrated by exploiting the analytical solution of the problem in~\cite{campbell1995constraint}. Specifically, the \ac{DAE} system consists of three position variables $[x_{1}, \, x_{2}, \, x_{3}]^\top$, three velocity variables $[u_{1}, \, u_{2}, \, u_{3}]^\top$, and one constraint with Lagrange multiplier $\lambda$. The solution manifold is 4D, and the exact solution is
 %
 \begin{equation}
   \label{chap3:eq:torus_solution}
@@ -555,7 +537,7 @@ To demonstrate the numerical stability of the reduced-index system, we consider 
     (\rho \cos(2\pi - t) + r) \cos(t) \\
     (\rho \cos(2\pi - t) + r) \sin(t) \\
     \rho \sin(2\pi - t)
-  \end{bmatrix}.
+  \end{bmatrix} \, \text{.}
 \end{equation}
 %
 The initial value problem is defined as follows
@@ -570,7 +552,7 @@ The initial value problem is defined as follows
     u^{\prime}_{2} - u_{3}\sin(t) - x_{3}\cos(t) - u_{1} - 2 c x_{2}\lambda \\
     u^{\prime}_{3} + x_{3} - 2x_{3}\lambda \\
     x_{1}^2 + x_{2}^2 + x_{3}^2 - 2r(x_{1}^2 + x_{2}^2)^{1/2} + r^2 - \rho^2
-  \end{bmatrix},
+  \end{bmatrix} \, \text{,}
 \end{equation}
 %
 with $c = 1 - {r} / {(x_{1}^2 + x_{2}^2)^{1/2}}$, states $\mx = [x_{1}, \, x_{2}, \, x_{3}, \, u_{1}, \, u_{2}, \, u_{3}, \, \lambda]^{\top}$, initial conditions $\mx_{0} = [15, \, 0, \, 0, \, 0, \, 15, \, -5, \, \lambda]^{\top}$, and parameters $\rho = 5$ and $r = 10$. The index reduction algorithm is applied to the \ac{DAE} system and reduced to index-0. The expressions' complexity of the step-by-step results are reported in \tablename{}~\ref{chap3:tab:torus}.
