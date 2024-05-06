@@ -1,11 +1,9 @@
 %!TEX root = ../main.tex
 
 \chapter{Application Fields and Examples}
-\label{chap4:sec:applications}
+\label{chap4:applications}
 
-In the previous chapter, we presented a methodology for the automatic index reduction of \ac{DAE} systems. The index reduction algorithm is based on the separation of the system into differential and algebraic parts with the help of symbolic linear algebra, \ie{}, \ac{LU} or \ac{FFLU} matrix factorizations. Symbolic-numerical examples are presented to detail the capabilities of the proposed index reduction algorithm. The results show that the presented algorithm is capable of consistently reducing high-index \ac{DAE} systems to index-0 \acp{DAE}. The computational cost of the expressions generated during the index reduction procedure is comparable to the original \ac{DAE} system in most of the examples. However, the \Maple{} symbolic computation kernel is not always able to perform the simplification in some cases. As a consequence, the expression complexity increases significantly throughout the left reduction steps. Still, the presented algorithm can successfully reduce the index of the \ac{DAE} system. Yet, the numerical efficiency of the final \ac{DAE} system is undermined by the inherent increase in computational complexity of the expressions generated in the last reduction steps. This highlights the need for future research on the inclusion of large expression management techniques in the symbolic index reduction algorithm to limit expression swell, as well as to augment the \ac{DAE} system and obtain a more compact representation of the expressions generated during the index reduction procedure. Despite this, the reduced-index systems are proven to retain good numerical stability during the integration process. A comparison between the joint index reduction algorithm and numerical integration schemes offered by \Maple{} with those of \Indigo{} demonstrates the effectiveness of the proposed methodology and software implementation.
-
-The proposed index reduction algorithm is applied to a variety of \ac{DAE} systems. The examples are chosen to demonstrate the capabilities of the algorithm and to show the potential of the proposed methodology. The examples are divided into three categories: \emph{multibody dynamics}, \emph{trajectory prescribed path control}, and \emph{electrical networks}. Each of these categories is characterized by different types of \ac{DAE} systems. For this reason, the examples are chosen to demonstrate the capabilities of the algorithm and to show the potential of the proposed methodology, as well as its wide applicability. The examples are the following.
+In the previous chapter, we presented a methodology for the automatic index reduction of \ac{DAE} systems. The index reduction algorithm is based on the separation of the system into differential and algebraic parts with the help of symbolic linear algebra, \ie{}, \ac{LU} or \ac{FFLU} matrix factorizations. Symbolic-numerical examples are presented to detail the capabilities of the proposed index reduction algorithm. Specifically, the algorithm is applied to a variety of \ac{DAE} systems. The examples are chosen to demonstrate the capabilities of the algorithm and to show the potential of the proposed methodology. The examples are divided into three categories: \emph{multibody dynamics}, \emph{trajectory prescribed path control}, and \emph{electrical networks}. Each of these categories is characterized by different types of \ac{DAE} systems. For this reason, the examples are chosen to demonstrate the capabilities of the algorithm and to show the potential of the proposed methodology, as well as its wide applicability. The examples are the following.
 %
 \begin{enumerate}
   \setlength\itemsep{0.0em}
@@ -33,49 +31,51 @@ The proposed index reduction algorithm is applied to a variety of \ac{DAE} syste
   \end{enumerate}
 \end{enumerate}
 
+A comparison between the built-in joint index reduction algorithm and numerical integration schemes offered by \Maple{} with those of \Indigo{} demonstrates the effectiveness of the proposed methodology and software implementation. It must be pointed out that, to ensure a fair comparison, the same numerical integration method is used in both software packages, \ie{}, the Runge-Kutta-Fehlberg 4(5) method with a relative tolerance of $10^{-6}$ and an absolute tolerance of $10^{-7}$. Only when it is not possible to integrate the system with the chosen method, the integration is performed with the RadauIIA5 method. The computation time limit is set to \SI{100}{\second} for both index reduction and code generation. Numerical integration is not limited by time, but the results are reported only if the integration is thoroughly completed.
+
 \section{Multibody Dynamics}
 \label{chap4:sec:mbd}
 
-The multibody dynamics category is characterized by \ac{DAE} systems that describe the motion of a dynamical system composed of interconnected rigid or flexible bodies. Within these systems, the differential equations represent motion equations, while the algebraic equations correspond to kinematic constraints, collectively constituting these \ac{MBD} problems. Typically, the \ac{MBD} problems are posed as Hessenberg semi-explicit index-3 \acp{DAE} of the form
+The \ac{MBD} problems are present in various fields, such as robotics, vehicle dynamics, and biomechanics. Historically, addressing specific \ac{MBD} challenges involved the development of software models that promptly adjust control variables to approximate prescribed path profiles. In this context, we investigate general numerical techniques directly applicable to \acp{DAE}. \ac{MBD} problems are present in various fields, such as robotics, vehicle dynamics, and biomechanics. Before we proceed with the examples, we provide a brief overview of the \ac{MBD} problems, their mathematical formulation, as well as the formal index reduction of the corresponding generic \ac{MB} \acp{DAE}.
+
+The \ac{MBD} category is characterized by \ac{DAE} systems that describe the motion of a mechanism composed of interconnected rigid or flexible bodies. Within these systems, the differential equations represent motion equations, while the algebraic equations correspond to kinematic constraints, collectively constituting these \ac{MB} problems. Typically, such problems are posed as Hessenberg semi-explicit index-3 \acp{DAE} of the form
 %
 \begin{equation}
   \begin{cases}
     \m{p} = \m{q}^{\prime} \\
     \m{M}(\m{q}, \m{p}, t)\m{p}^{\prime} - \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\bm{\lambda} = \m{f}(\m{q}, \m{p} ,t) \\
     \bm{\Phi}(\m{q}, t) = \m{0}
-  \end{cases} \text{,}
+  \end{cases} \, \text{,}
   \qquad \text{with} \qquad \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t) = \dfrac{\partial}{\partial\m{q}}\bm{\Phi}(\m{q}, t)
-  \text{,}
+  \, \text{,}
   \label{chap4:eq:mbd_fo}
 \end{equation}
 %
 where $\m{q} \in \mathbb{R}^{n}$ and $\m{p} \in \mathbb{R}^{n}$ indicate respectively the generalized coordinates and the generalized velocities, $\m{M}(\m{q}, \m{p}, t) \in \mathbb{R}^{n\times n}$ is the mass matrix, $\bm{\Phi}(\m{q}, t) \in \mathbb{R}^{m}$ is the constraint vector, $\bm{\lambda} \in \mathbb{R}^{m}$ is the vector of Lagrange multipliers, and lastly $\m{f}(\m{q}, \m{p}, t) \in \mathbb{R}^{n}$ collects all the contributions from Coriolis and centrifugal effects, as well as external forces.
 
-\subsubsection{Index Reduction of Multibody Dynamics Equations}
+\paragraph{Index Reduction of Multibody Dynamics Equations}
 
-To solve the problem in~\eqref{chap4:eq:mbd_fo}, one of the possible approaches is to reduce the index to zero and transform the problem into a system of \acp{ODE}. Moreover, one may also isolate the Lagrange multipliers $\bm{\lambda}$ and express them explicitly in terms of the state variables so as to obtain an index-1 \acp{DAE} representation of the \ac{MBD} problem. In this case, the index reduction can be performed by exploiting the structure of the problem, as well as the properties of the mass matrix $\m{M}(\m{q}, \m{p}, t)$ and the constraint vector $\bm{\Phi}(\m{q}, t)$.
-
-In order to do so we need to differentiate the constraint $\bm{\Phi}(\m{q}, t)$, this yields to
+To solve the problem in~\eqref{chap4:eq:mbd_fo}, one of the possible approaches is to reduce the index to 0 and transform the problem into a system of \acp{ODE}. Moreover, one may also isolate the Lagrange multipliers $\bm{\lambda}$ and express them explicitly in terms of the state variables so as to obtain an index-1 \acp{DAE} representation of the \ac{MBD} problem. In this case, the index reduction can be performed by exploiting the structure of the problem, as well as the properties of the mass matrix $\m{M}(\m{q}, \m{p}, t)$ and the constraint vector $\bm{\Phi}(\m{q}, t)$. To do so, we need to differentiate the constraint $\bm{\Phi}(\m{q}, t)$, this yields to
 %
 \begin{equation}
   \dfrac{\de{}}{\de{} t}\bm{\Phi}(\m{q}, t) = \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t) + \m{J}\bm{\Phi}_{t}(\m{q}, t) = \m{0}
-  \text{,}
+  \, \text{,}
   \qquad \text{with} \qquad \m{J}\bm{\Phi}_{t}(\m{q}, t) = \dfrac{\partial}{\partial t}\bm{\Phi}(\m{q}, t)
-  \text{.}
+  \, \text{.}
   \label{chap4:eq:mbd_hidden_1}
 \end{equation}
 %
-Notice that when constraint does not depend on time~\eqref{chap4:eq:mbd_hidden_1} expresses the intuitive idea that generalized velocity $\m{p}$ must be orthogonal to constraint's gradient. This provides also the opportunity to highlight that constraint $\bm{\Phi}(\m{q}, t)$ imposes relationships also at the velocity and acceleration level, \ie{},~\eqref{chap4:eq:mbd_hidden_1} restricts the set of feasible velocities. Finally, it must be noticed that~\eqref{chap4:eq:mbd_hidden_1} is still algebraic in the $\m{p}$ coordinate, thus in order to obtain a fully differential relationship, another differentiation is needed. This results in the following equation
+Notice that when constraint does not depend on time~\eqref{chap4:eq:mbd_hidden_1} expresses the intuitive idea that generalized velocity $\m{p}$ must be orthogonal to constraint's gradient. This provides also the opportunity to highlight that constraint $\bm{\Phi}(\m{q}, t)$ imposes relationships also at the velocity and acceleration level, \ie{},~\eqref{chap4:eq:mbd_hidden_1} restricts the set of feasible velocities. Finally, it must be noticed that~\eqref{chap4:eq:mbd_hidden_1} is still algebraic in the $\m{p}$ coordinates, thus in order to obtain a fully differential relationship, another differentiation is needed. This results in the following equation
 %
 \begin{equation}
-  \dfrac{\de{}^2}{\de{}t^2}\bm{\Phi}(\m{q}, t) = \m{H}\bm{\Phi}_{\m{q}t}(\m{q}, t)\m{p} + \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{p}^{\prime} + \m{D}\bm{\Phi}_{tt}(\m{q}, t) = \m{0} \text{,}
+  \dfrac{\de{}^2}{\de{}t^2}\bm{\Phi}(\m{q}, t) = \m{H}\bm{\Phi}_{\m{q}t}(\m{q}, t)\m{p} + \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{p}^{\prime} + \m{D}\bm{\Phi}_{tt}(\m{q}, t) = \m{0} \, \text{,}
   \label{chap4:eq:mbd_hidden_2}
 \end{equation}
 \begin{equation*}
   \text{with} \qquad
-  \m{D}\bm{\Phi}_{tt}(\m{q}, t) = \dfrac{\partial^2}{\partial t^2}\bm{\Phi}(\m{q}, t) \text{,}
+  \m{D}\bm{\Phi}_{tt}(\m{q}, t) = \dfrac{\partial^2}{\partial t^2}\bm{\Phi}(\m{q}, t) \, \text{,}
   \qquad \text{and} \qquad
-  \m{H}\bm{\Phi}_{\m{q}t}(\m{q}, t) = \dfrac{\de{}}{\de{} t}\,\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t) \text{,}
+  \m{H}\bm{\Phi}_{\m{q}t}(\m{q}, t) = \dfrac{\de{}}{\de{} t}\,\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t) \, \text{,}
 \end{equation*}
 %
 which does not impose any algebraic constraint on the mechanical system states and leads to the following \ac{DAE} system
@@ -85,7 +85,7 @@ which does not impose any algebraic constraint on the mechanical system states a
     \m{q}^{\prime} = \m{p} \\
     \m{M}(\m{q}, \m{p}, t)\m{p}^{\prime} - \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\bm{\lambda} = \m{f}(\m{q},\m{p},t) \\
     -\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{p}^{\prime} = \m{H}\bm{\Phi}_{\m{q}t}(\m{q}, t)\m{p} + \m{D}\bm{\Phi}_{tt}(\m{q}, t)
-  \end{cases} \text{.}
+  \end{cases} \, \text{.}
   \label{chap4:eq:mbd_ode}
 \end{equation}
 %
@@ -108,10 +108,10 @@ System~\eqref{chap4:eq:mbd_ode} can be also written in compact matrix notation a
     \m{p} \\
     \m{f}(\m{q},\m{p},t) \\
     \m{H}\bm{\Phi}_{\m{q}t}(\m{q}, t)\m{p} + \m{D}\bm{\Phi}_{tt}(\m{q}, t)
-  \end{bmatrix} \text{.}
+  \end{bmatrix} \, \text{.}
 \end{equation}
 %
-It is easy to see that if the left-hand side matrix of~\eqref{chap4:eq:mbd_ode_matrix} is invertible, then we can express the system in explicit form. In specific, the matrix is invertible if and only if the sub-block
+It is easy to notice that if the left-hand side matrix of~\eqref{chap4:eq:mbd_ode_matrix} is invertible, then we can express the system in explicit form. In specific, the matrix is invertible if and only if the sub-block
 %
 \begin{equation*}
   \begin{bmatrix}
@@ -129,13 +129,13 @@ is non-singular. To prove its non-singularity the rank additivity formula is app
     \m{M}(\m{q}, \m{p}, t) & -\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top} \\
     -\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t) & \m{0}
   \end{bmatrix}\right)
-  = \mathrm{rk}\left(\m{M}(\m{q}, \m{p}, t)\right) + \mathrm{rk}\left( \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{p}, t)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\right) \text{.}
+  = \mathrm{rk}\left(\m{M}(\m{q}, \m{p}, t)\right) + \mathrm{rk}\left( \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{p}, t)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\right) \, \text{.}
 \end{equation*}
 %
 Since $\m{M}(\m{q}, \m{p}, t)$ is positive definite (and thus also non-singular), then $\forall\m{q} \in \mathbb{R}^{n}, \mathrm{rk}({\m{M}(\m{q}, \m{p}, t)}) = n$. Moreover, the second term in the right-hand side of the equation above is non-negative and it is zero if and only if
 %
 \begin{equation}
-  \mathrm{rk}\left( \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t) \m{M}(\m{q}, \m{p}, t)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\right) = m \text{,}
+  \mathrm{rk}\left( \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t) \m{M}(\m{q}, \m{p}, t)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\right) = m \, \text{,}
   \label{chap4:eq:compression}
 \end{equation}
 %
@@ -156,36 +156,38 @@ which is not generally true. However, if we assume that the constraints are \emp
   \end{bmatrix}
 \end{equation*}
 %
-An explicit expression for the inverse matrix above can be obtained through tedious symbolic calculations. However, regardless of the specific solution we want to stress a very important point; by differentiating the constraint twice we are now able to find an explicit expression for the Lagrange multipliers (index-1 variables). If the acceleration $\m{p}^{\prime}$ are isolated from~\eqref{chap4:eq:mbd_ode_matrix} and substituted into~\eqref{chap4:eq:mbd_hidden_2}, we obtain the following equation
+An explicit expression for the inverse matrix above can be obtained through tedious symbolic calculations. However, regardless of the specific solution we want to stress a very important point: by differentiating the constraint twice we are now able to find an explicit expression for the Lagrange multipliers (index-1 variables). If the accelerations $\m{p}^{\prime}$ are isolated from~\eqref{chap4:eq:mbd_ode_matrix} and substituted into~\eqref{chap4:eq:mbd_hidden_2}, we obtain
 %
 \begin{equation}
-  \m{p}^{\prime} = \m{M}(\m{q}, \m{q}^{\prime}, t)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\bm{\lambda} + \m{M}(\m{q}, \m{q}^{\prime}, t)^{-1}\m{f}(\m{q},\m{p},t) = \m{0} \text{,}
+  \m{p}^{\prime} = \m{M}(\m{q}, \m{q}^{\prime}, t)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\bm{\lambda} + \m{M}(\m{q}, \m{q}^{\prime}, t)^{-1}\m{f}(\m{q},\m{p},t) = \m{0} \, \text{.}
   \label{chap4:eq:gen_vel}
 \end{equation}
 %
-Then substituting~\eqref{chap4:eq:gen_vel} into~\eqref{chap4:eq:mbd_hidden_2} we obtain the following equation
+Then, substituting~\eqref{chap4:eq:gen_vel} into~\eqref{chap4:eq:mbd_hidden_2} we obtain the constraint is rewritten as
 %
 \begin{equation}
-  \m{H}\bm{\Phi}_{\m{q}t}(\m{q}, t)\m{p} + \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{q}^{\prime}, t)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\bm{\lambda} + \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{q}^{\prime}, t)^{-1} \m{f}(\m{q},\m{p},t)+\m{D}\bm{\Phi}_{tt}(\m{q}, t) \text{.}
+  \m{H}\bm{\Phi}_{\m{q}t}(\m{q}, t)\m{p} + \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{q}^{\prime}, t)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\bm{\lambda} + \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{q}^{\prime}, t)^{-1} \m{f}(\m{q},\m{p},t)+\m{D}\bm{\Phi}_{tt}(\m{q}, t) = 0 \, \text{.}
 \end{equation}
 %
-Here the non-singular matrix in~\eqref{chap4:eq:compression} can be easily recognized, therefore the explicit expression for the Lagrange multipliers is
+Here the non-singular matrix in~\eqref{chap4:eq:compression} can be easily recognized, therefore the explicit expression for the Lagrange multipliers is given by
 %
 \begin{equation*}
-  \bm{\lambda} = -\left(\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{q}^{\prime}, t)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\right)^{-1} \Big(\m{H}\bm{\Phi}_{\m{q}t}(\m{q}, t)\m{p} + \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{q}^{\prime}, t)^{-1}\m{f}(\m{q},\m{p},t) + \m{D}\bm{\Phi}_{tt}(\m{q}, t)\Big) \text{,}
+  \bm{\lambda} = -\left(\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{q}^{\prime}, t)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\right)^{-1} \Big(\m{H}\bm{\Phi}_{\m{q}t}(\m{q}, t)\m{p} + \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{q}^{\prime}, t)^{-1}\m{f}(\m{q},\m{p},t) + \m{D}\bm{\Phi}_{tt}(\m{q}, t)\Big) \, \text{,}
 \end{equation*}
 %
-which can be either substituted into the explicit form of the \ac{DAE} system~\eqref{chap4:eq:mbd_ode} or used to obtain a numerically more efficient representation of the \ac{MBD} problem, \ie{},
+which can be either substituted into the explicit form of the \ac{DAE} system~\eqref{chap4:eq:mbd_ode} or used to obtain a numerically efficient representation of the \ac{MBD} problem, \ie{},
 %
 \begin{equation*}
   \text{a set of \acp{ODE}} \qquad
   \begin{cases}
     \m{q}^{\prime} = \m{p} \\
     \m{p}^{\prime} = \dot{\m{p}}
-  \end{cases} \text{,} \\
+  \end{cases} \, \text{,} \\
 \end{equation*}
+%
+where $\m{p}^{\prime}$ is obtained by solving the linear system
+%
 \begin{equation*}
-  \text{with the linear system} \qquad
   \begin{bmatrix}
     \m{M}(\m{q}, \m{p}, t) & -\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top} \\
     -\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t) & \m{0}
@@ -195,14 +197,12 @@ which can be either substituted into the explicit form of the \ac{DAE} system~\e
   \end{bmatrix} = \begin{bmatrix}
     \m{f}(\m{q},\m{p},t) \\
     \m{H}\bm{\Phi}_{\m{q}t}(\m{q}, t)\m{p} + \m{D}\bm{\Phi}_{tt}(\m{q}, t)
-  \end{bmatrix} \text{.}
+  \end{bmatrix} \, \text{.}
 \end{equation*}
 
-Technically Mechanical systems subject to holonomic constraints are systems of \acp{DAE} of index 3. The differential index is one plus the number of differentiations of the constraint that are needed in order to be able to eliminate the Lagrange multipliers. Otherwise, equivalently, the number of times that we need to differentiate the constraint in order to obtain a differential equation also for the Lagrange multiplier.
+Technically mechanical systems subject to holonomic constraints are \acp{DAE} systems of index 3, \ie{}, the differential index is one plus the number of differentiations of the constraint that are needed in order to be able to eliminate the Lagrange multipliers. Otherwise, equivalently, the number of times that we need to differentiate the constraint in order to obtain a differential equation also for each of the Lagrange multipliers.
 
-The \ac{MBD} problems are present in various fields, such as robotics, vehicle dynamics, and biomechanics. Historically, addressing specific \ac{MBD} challenges involved the development of software models that promptly adjust control variables to approximate prescribed path profiles. In this context, we investigate general numerical techniques directly applicable to \acp{DAE}. \ac{MBD} problems are present in various fields, such as robotics, vehicle dynamics, and biomechanics.
-
-\subsubsection{Explicit Matrix Inverse}
+\paragraph{Explicit Matrix Inverse}
 
 For the sake of completeness, we provide the explicit expression for the inverse of matrix in~\eqref{chap4:eq:mbd_ode_matrix}
 %
@@ -223,38 +223,38 @@ For the sake of completeness, we provide the explicit expression for the inverse
 where the quantities $\m{X}_{11} \in \mathbb{R}^{n \times n}$, $\m{X}_{12} \in \mathbb{R}^{n \times m}$, $\m{X}_{21} \in \mathbb{R}^{m \times n}$, and $\m{X}_{22} \in \mathbb{R}^{m \times m}$ are defined as follows
 %
 \begin{equation*}
-    \m{X}_{11} = \m{M}(\m{q}, \m{p}, t)^{-1} - \m{M}(\m{q}, \m{p}, t)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top} \left(\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t) \m{M}(\m{q}, \m{p}, t)^{-1}\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\right)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{p}, t)^{-1} \text{,}
+    \m{X}_{11} = \m{M}(\m{q}, \m{p}, t)^{-1} - \m{M}(\m{q}, \m{p}, t)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top} \left(\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t) \m{M}(\m{q}, \m{p}, t)^{-1}\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\right)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{p}, t)^{-1} \, \text{,}
 \end{equation*}
 \begin{equation*}
-  \m{X}_{12} = -\m{M}(\m{q}, \m{p}, t)^{-1}\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top} \left(\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{p}, t)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\right)^{-1} \text{,}
+  \m{X}_{12} = -\m{M}(\m{q}, \m{p}, t)^{-1}\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top} \left(\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{p}, t)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\right)^{-1} \, \text{,}
 \end{equation*}
 \begin{equation*}
-  \m{X}_{21} = -\left(\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t) \m{M}(\m{q}, \m{p}, t)^{-1}\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\right)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{p}, t)^{-1} \text{,}
+  \m{X}_{21} = -\left(\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t) \m{M}(\m{q}, \m{p}, t)^{-1}\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\right)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{p}, t)^{-1} \, \text{,}
 \end{equation*}
 \begin{equation*}
-  \m{X}_{22} = -\left(\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t) \m{M}(\m{q}, \m{p}, t)^{-1}\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\right)^{-1} \text{.}
+  \m{X}_{22} = -\left(\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t) \m{M}(\m{q}, \m{p}, t)^{-1}\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\right)^{-1} \, \text{.}
 \end{equation*}
 %
 Notice that as expected $\m{X}_{12} = \m{X}_{21}^{\top}$. Moreover, the following matrix appears
 %
 \begin{equation*}
-  \left(\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{p}, t)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\right)^{-1} \text{,}
+  \left(\m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{p}, t)^{-1} \m{J}\bm{\Phi}_{\m{q}}(\m{q}, t)^{\top}\right)^{-1} \, \text{,}
 \end{equation*}
 %
 which is exactly the one in~\eqref{chap4:eq:compression} for that invertibility must be guaranteed.
 
 \subsection{Car-Axis Dynamics}
 
-Model the motion of a car as riding over an uneven road. The car is modeled as springs connected to two bars. The bottom of the left tire is the origin. The car chassis is represented by a bar of mass $M$. The position of the chassis is given by $\m{q} = [x_l, y_l, x_r, y_r]^\top$, as also illustrated in Figure~\ref{chap4:car_axis}. The left tire is always on a flat surface, while the right tire periodically goes over a sinusoidal bump of the form $y_b(t) = h\sin(\omega t)$. The distance between the wheels must always remain fixed, and the car chassis must always have a fixed length, hence, the following constraints must be satisfied
+This example is taken from~\cite{lioen1998test, mazzia2008test} and is used to model the motion of a car as riding over an uneven road. Here, the car is modeled as springs connected to two bars. The bottom of the left tire is the origin. The chassis is represented by a bar of mass $m$, and its position is given by $\m{q} = [x_l, y_l, x_r, y_r]^\top$, as also illustrated in Figure~\ref{chap4:fig:car_axis}. The left tire is always on a flat surface, while the right tire periodically goes over a sinusoidal bump of the form $y_b(t) = h\sin(\omega t)$. The distance between the wheels is fixed, and the car chassis must always have a fixed length, hence, the following constraints are imposed
 %
 \begin{equation*}
   \bm{\Phi}(\m{q}) = \begin{bmatrix}
     x_l x_b - y_l y_b \\
     (x_l - x_r)^2 + (y_l - y_r)^2 - \ell^2
-  \end{bmatrix} = \m{0} \text{.}
+  \end{bmatrix} = \m{0} \, \text{.}
 \end{equation*}
 %
-The equations of motion for the car are derived using Newton's law, the mass matrix $\m{M}$, and the force vector $\m{f}$ are given by
+The equations of motion for the car are derived using Newton's law. The mass matrix $\m{M}$, and the force vector $\m{f}$ are given by
 %
 \begin{equation*}
   \m{M}(\m{q}) = \mathrm{diag}\left(
@@ -263,13 +263,12 @@ The equations of motion for the car are derived using Newton's law, the mass mat
     (\ell_0-\ell_r)\dfrac{x_r}{\ell_r},
     (\ell_0-\ell_r)\dfrac{x_r}{\ell_r}
   \right)
-  \text{,}
-  \qquad
+  \quad \text{and} \quad
   \m{f} = \left[
     0, -\varepsilon^2\dfrac{m}{2},
     0, -\varepsilon^2\dfrac{m}{2}
   \right]^{\top}
-  \text{,}
+  \, \text{,}
 \end{equation*}
 %
 where
@@ -286,10 +285,10 @@ are respectively the lengths of the left and right springs, $\ell_0$ is the rela
   \centering
   \includegraphics[width=0.7\textwidth]{figures/chapter_4/car_axis}
   \caption{Car-axis dynamics problem~\cite{lioen1998test, mazzia2008test}. The car is modeled as springs connected to two bars. The bottom of the left tire is the origin. The car chassis is represented by a bar of mass $m$. The position of the chassis is given by $\m{q} = [x_l, y_l, x_r, y_r]^\top$. The left tire is always on a flat surface, while the right tire periodically goes over a sinusoidal bump of the form $y_b(t) = h\sin(\omega t)$. The distance between the wheels must always remain fixed, and the car chassis must always have a fixed length.}
-  \label{chap4:car_axis}
+  \label{chap4:fig:car_axis}
 \end{figure}
 
-The car-axis \ac{DAE} system is solved using the proposed index reduction algorithm. The results are summarized in Table~\ref{chap4:tab:car_axis}. \dots
+The car-axis \ac{DAE} system is solved using the proposed index reduction algorithm. The results are summarized in Table~\ref{chap4:tab:car_axis}. As expected, the index is reduced to 0, and the system is transformed into a set of \acp{ODE}. The complexity of the expressions encountered during the index reduction is given in terms of the number of functions $\cf$, additions $\ca$, multiplications $\cm$, and divisions $\cd$; and, as reported in the table, the index reduction is successful and no expression swell is observed. The reduced system is numerically solved using a and the results are shown in Figure~\ref{chap4:fig:car_axis}, where the springs' lengths are plotted. The left spring is always at its relaxed length, while the right spring periodically changes its length due to the bump.
 
 \begin{table}
   \caption{Expression complexity encountered throughout the index reduction of the car-axis problem~\cite{lioen1998test, mazzia2008test} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
@@ -312,7 +311,7 @@ The car-axis \ac{DAE} system is solved using the proposed index reduction algori
   \end{tabular}}
 \end{table}
 
-\begin{figure}[!htb]
+\begin{figure}[htb]
   \centering
   \small{\includetikz{figures/chapter_4/car_axis_length.tex}}
   \caption{Springs length of the car-axis problem~\cite{lioen1998test, mazzia2008test}. \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} left spring $L_l = \sqrt{x_l^2 + y_l^2}$, \textcolor{mycolor2}{$\blacksquare$} right spring $L_r = \sqrt{(x_r - x_b)^2 + (y_r - y_b)^2}$.}
@@ -321,17 +320,16 @@ The car-axis \ac{DAE} system is solved using the proposed index reduction algori
 
 \subsection{Slider-Crank Mechanism}
 
-The slider-crank mechanism presented in Figure~\ref{chap4:slider_crank} is a classic problem in mechanical engineering. The mechanism consists of a crank, a connecting rod, and a slider. The crank is driven by a motor, and the slider moves back and forth in a straight line. In this case, the problem is modeled as a flexible \ac{MB} system, hence the rod connecting the crank and the slider is modeled as a flexible beam. The flexible \ac{MBD} problem is posed as a second-order index-3 \acp{DAE} of the form
+The slider-crank mechanism presented in Figure~\ref{chap4:fig:flexible_slider_crank} is a classic problem in mechanical engineering. The mechanism consists of a crank, a connecting rod, and a slider. The crank is driven by a motor, and the slider moves back and forth in a straight line. In this case, the problem is modeled as a flexible \ac{MB} system, hence the rod connecting the crank and the slider is modeled as a flexible beam. The flexible \ac{MBD} problem is posed as a second-order index-3 \acp{DAE} of the form
 %
-\begin{equation}
+\begin{equation*}
   \begin{cases}
-    \m{M}(\m{p}, \m{q})\begin{bmatrix}\m{p}^{\prime\prime} \\ \m{p}^{\prime\prime}\end{bmatrix} - \m{J}\bm{\Phi}_{\m{p},\m{q}}(\m{p}, \m{q}, t)^{\top}\bm{\lambda} = \m{f}(\m{p}, \m{p}^{\prime}, \m{q}, \m{q}^{\prime}) \\
+    \m{M}(\m{p}, \m{q})\begin{bmatrix}\m{p}^{\prime\prime} \\ \m{q}^{\prime\prime}\end{bmatrix} - \m{J}\bm{\Phi}_{\m{p},\m{q}}(\m{p}, \m{q}, t)^{\top}\bm{\lambda} = \m{f}(\m{p}, \m{p}^{\prime}, \m{q}, \m{q}^{\prime}) \\
     \bm{\Phi}(\m{p}) = \m{0}
-  \end{cases} \text{,}
+  \end{cases} \, \text{,}
   \qquad \text{with} \qquad \m{J}\bm{\Phi}_{\m{p},\m{q}}(\m{p}, \m{q}, t) = \dfrac{\partial}{\partial(\m{p}, \m{q})}\bm{\Phi}(\m{p}, \m{q}, t)
-  \text{,}
-  \label{chap4:eq:mbd_fo}
-\end{equation}
+  \, \text{,}
+\end{equation*}
 %
 where the position or gross motion coordinates are
 %
@@ -356,8 +354,8 @@ The deformation coordinates of the flexible connecting rod are
     q_3 \\
     q_4
   \end{bmatrix} \quad \begin{matrix}
-    \text{first lateral mode} \sin(\pi x/\ell_2) \text{,} \\
-    \text{second lateral mode} \sin(2\pi x/\ell_2) \text{,} \\
+    \text{first lateral mode} \sin(\pi x/\ell_2) \, \text{,} \\
+    \text{second lateral mode} \sin(2\pi x/\ell_2) \, \text{,} \\
     \text{longitudinal displacement midpoint,} \\
     \text{longitudinal displacement endpoint.}
   \end{matrix}
@@ -369,7 +367,7 @@ The mass matrix $\m{M}(\m{p}, \m{q})$, and the force vector $\m{f}(\m{p}, \m{q},
   \m{M}(\m{p}, \m{q}) = \begin{bmatrix}
     \m{M}_r(\m{p}) + \m{M}_e(\m{p}, \m{q}) & \m{C}(\m{p}, \m{q})^\top \\
     \m{C}(\m{p}, \m{q})                    & \m{M}_{d}
-  \end{bmatrix} \text{,}
+  \end{bmatrix} \, \text{,}
 \end{equation}
 %
 with rigid motion mass matrix
@@ -379,17 +377,17 @@ with rigid motion mass matrix
     J_1+m_2 \ell_1^2 & \ell_1 \ell_2 m_2 \cos(\phi_1 - \phi_2)/2 & 0 \\
     \ell_1 \ell_2 m_2 \cos(\phi_1 - \phi_2)/2 & J_2 & 0 \\
     0 & 0 & m_3
-  \end{bmatrix} \text{,}
+  \end{bmatrix} \, \text{,}
 \end{equation*}
 %
 coupling blocks
 %
 \begin{equation*}
-  \m{M}_e(\m{p}, \m{q}) = \begin{bmatrix}
+  \m{M}_e(\m{p}, \m{q}) = \small{\begin{bmatrix}
     0 & \rho \ell_1(\cos(\phi_1 - \phi_2)\m{c}_1^\top + \sin(\phi_1 - \phi_2)\m{c}_2^\top) \m{q} & 0 \\
     \rho \ell_1(\cos(\phi_1 - \phi_2)\m{c}_1^\top + \sin(\phi_1 - \phi_2)\m{c}_2^\top) \m{q} & \m{q}^\top\m{M}_{d}\m{q} + 2\rho\m{c}_{12}^\top\m{q} & 0 \\
     0 & 0 & 0
-  \end{bmatrix}
+  \end{bmatrix}}
 \end{equation*}
 %
 and
@@ -399,7 +397,7 @@ and
     \rho \ell_1(\cos(\phi_1 - \phi_2)\m{c}_2^\top - \sin(\phi_1 - \phi_2)\m{c}_1^\top) \\
     \rho\m{c}_{21}^\top + \rho\m{q}^\top\m{B} \\
     \m{0}^\top
-  \end{bmatrix} \text{,}
+  \end{bmatrix} \, \text{,}
 \end{equation*}
 %
 and elastic body space discretization mass matrix
@@ -410,7 +408,7 @@ and elastic body space discretization mass matrix
     0   & 1/2 & 0 & 0 \\
     0   & 0   & 8 & 1 \\
     0   & 0   & 1 & 2
-  \end{bmatrix} \text{.}
+  \end{bmatrix} \, \text{.}
 \end{equation*}
 %
 The force vector is given by
@@ -419,7 +417,7 @@ The force vector is given by
   \m{f}(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime) = \begin{bmatrix}
     \m{f}_r(\m{p}, \m{p}^\prime) + \m{f}_e(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime) \\
     \m{f}_{d}(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime) - \mathrm{grad}(\m{W}_{d}(\m{q})) - \m{D}_{d} \m{q}^\prime
-  \end{bmatrix} \text{.}
+  \end{bmatrix} \, \text{.}
 \end{equation}
 %
 where the rigid motion terms are collected in
@@ -429,24 +427,24 @@ where the rigid motion terms are collected in
     -\ell_1(\gamma(m_1 + 2m_2) \cos(\phi_1)/2 + \ell_2 m_2 \phi_2^{\prime2} \sin(\phi_1 - \phi_2)) \\
     -\ell_2 \gamma m_2 \cos(\phi_2)/2 + \ell_1 \ell_2 m_2 \phi_1^{\prime2} \sin(\phi_1 - \phi_2)/2 \\
     0
-  \end{bmatrix} \text{.}
+  \end{bmatrix} \, \text{.}
 \end{equation*}
 %
 For the force term $\m{f}_e(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime)$ the expression is
 %
 \begin{equation*}
-  \m{f}_e(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime) = \begin{bmatrix}
+  \m{f}_e(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime) = \small{\begin{bmatrix}
     \rho \ell_1 \phi_2^{\prime2}(\cos(\phi_1 - \phi_2)\m{c}_2^\top - \sin(\phi_1 - \phi_2)\m{c}_1^\top) \m{q}-2 \rho \ell_1 \phi_2^\prime(\cos(\phi_1 - \phi_2)\m{c}_1^\top + \sin(\phi_1 - \phi_2)\m{c}_2^\top) \m{q}^\prime \\[0.5em]
     \rho \ell_1 \phi_1^{\prime2}(\sin(\phi_1 - \phi_2)\m{c}_1^\top - \cos(\phi_1 - \phi_2)\m{c}_2^\top) \m{q}-2 \rho \phi_2^\prime \m{c}_{12}^\top \m{q}^\prime-2 \phi_2^\prime {\m{q}^\prime}^\top \m{M}_{d} \m{q} \dots\\
     -\rho {\m{q}^\prime}^\top \m{B} \m{q}^\prime - \rho \gamma(\cos(\phi_2) \m{c}_1^\top \m{q} - \sin \phi_2 \m{c}_2^\top \m{q}) \\[0.5em]
     0
-\end{bmatrix} \text{,}
+\end{bmatrix}} \, \text{,}
 \end{equation*}
 %
 and for $f_{d}(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime)$ the expression is
 %
 \begin{equation*}
-  f_{d}(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime) = \phi_2^{\prime2} \m{M}_{d} \m{q}+\rho(\phi_2^{\prime2} \m{c}_{12}+\ell_1 \phi_1^{\prime2}(\cos(\phi_1 - \phi_2) \m{c}_1 + \sin(\phi_1 - \phi_2) \m{c}_2)+2 \phi_2^\prime \m{B} \m{q}^\prime)-\rho \gamma\left(\sin \phi_2 \m{c}_1+\cos(\phi_2) \m{c}_2\right) \text{.}
+  f_{d}(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime) = \phi_2^{\prime2} \m{M}_{d} \m{q}+\rho(\phi_2^{\prime2} \m{c}_{12}+\ell_1 \phi_1^{\prime2}(\cos(\phi_1 - \phi_2) \m{c}_1 + \sin(\phi_1 - \phi_2) \m{c}_2)+2 \phi_2^\prime \m{B} \m{q}^\prime)-\rho \gamma\left(\sin \phi_2 \m{c}_1+\cos(\phi_2) \m{c}_2\right) \, \text{.}
 \end{equation*}
 
 The gradient of the elastic potential $\m{W}_{d}(\m{q})$ in case of linear elasticity (which is the default) is $\mathrm{grad}(\m{W}_{d}(\m{q})) = \m{K}_{d} \m{q}$ with the stiffness matrix
@@ -457,7 +455,7 @@ The gradient of the elastic potential $\m{W}_{d}(\m{q})$ in case of linear elast
     0                   & \pi^4 2/3(h/\ell_2)^2 & 0    & 0    \\
     0                   & 0                     & 16/3 & -8/3 \\
     0                   & 0                     & -8/3 & 7/3
-  \end{bmatrix} \text{.}
+  \end{bmatrix} \, \text{.}
 \end{equation*}
 %
 Alternatively, in the case of the nonlinear beam model, it holds $\mathrm{grad}(\m{W}_{d}(\m{q})) = K_{d}\m{q} + \m{K}_{d}(\m{q})$, where
@@ -468,11 +466,11 @@ Alternatively, in the case of the nonlinear beam model, it holds $\mathrm{grad}(
     4 q_2 q_4 - \beta q_1(-4q_3 + 2q_4) \\
     4 \beta q_1 q_2 \\
     q_1^2/2 + 2q_2^2 - 2 \beta q_1 q_2
-  \end{bmatrix} \text{,}
+  \end{bmatrix} \, \text{,}
   %
   \quad \text{with} \quad
   %
-  \beta = \dfrac{80}{9\pi^2} \text{.}
+  \beta = \dfrac{80}{9\pi^2} \, \text{.}
 \end{equation*}
 %
 The damping matrix $\m{D}_{d}$ is by default zero. The coupling matrices and vectors arising from the space discretization read
@@ -483,17 +481,17 @@ The damping matrix $\m{D}_{d}$ is by default zero. The coupling matrices and vec
     0             & 0         & 0         & 1/(2\pi)      \\
     16/\pi^3      & 0         & 0         & 0             \\
     1/\pi-8/\pi^3 & -1/(2\pi) & 0         & 0
-  \end{bmatrix} \text{,}
+  \end{bmatrix} \, \text{,}
 \end{equation*}
 %
 and
 %
 \begin{equation*}
   \begin{matrix}
-    \m{c}_{1}  = d h \ell_2  \left[ 0,     0,         2/3, 1/6 \right]^\top \text{,} \\
-    \m{c}_{2}  = d h \ell_2  \left[ 2/\pi, 0,         0,   0   \right]^\top \text{,} \\
-    \m{c}_{12} = d h \ell_2^2\left[ 0,     0,         1/3, 1/6 \right]^\top \text{,} \\
-    \m{c}_{21} = d h \ell_2^2\left[ 1/\pi, -1/(2\pi), 0,   0   \right]^\top \text{.}
+    \m{c}_{1}  = d h \ell_2  \left[ 0,     0,         2/3, 1/6 \right]^\top \, \text{,} \\
+    \m{c}_{2}  = d h \ell_2  \left[ 2/\pi, 0,         0,   0   \right]^\top \, \text{,} \\
+    \m{c}_{12} = d h \ell_2^2\left[ 0,     0,         1/3, 1/6 \right]^\top \, \text{,} \\
+    \m{c}_{21} = d h \ell_2^2\left[ 1/\pi, -1/(2\pi), 0,   0   \right]^\top \, \text{.}
   \end{matrix}
 \end{equation*}
 %
@@ -504,7 +502,7 @@ The constraints of the slider-crank mechanism are given by
     \ell_1\sin(\phi_1) + \ell_2\sin(\phi_2) + q_4\sin(\phi_2) \\
     x_3 - \ell_1\cos(\phi_1) - \ell_2\cos(\phi_2) - q_4\cos(\phi_2) \\
     \phi_1 - \Omega t \\
-  \end{bmatrix} = \m{0} \text{.}
+  \end{bmatrix} = \m{0} \, \text{.}
 \end{equation*}
 %
 For the simulation, the following parameters are used:
@@ -532,12 +530,12 @@ The initial conditions according to~\cite{lioen1998test, mazzia2008test} are
     0.000000000000000\cdot10^{+0} \\
     0.000000000000000\cdot10^{+0} \\
     4.500169330000000\cdot10^{-1}
-  \end{bmatrix} \text{,} \qquad
+  \end{bmatrix} \, \text{,} \qquad
   \m{p}^{\prime}_{0} = \begin{bmatrix}
      1.500000000000000\cdot10^{+2} \\
     -7.499576703969453\cdot10^{+1} \\
     -2.689386719979040\cdot10^{-6}
-  \end{bmatrix} \text{,}
+  \end{bmatrix} \, \text{,}
 \end{equation*}
 \begin{equation*}
   \m{q}_{0} = \begin{bmatrix}
@@ -545,25 +543,32 @@ The initial conditions according to~\cite{lioen1998test, mazzia2008test} are
     0.000000000000000\cdot10^{+0} \\
     1.033398630000000\cdot10^{-5} \\
     1.693279690000000\cdot10^{-5}
-  \end{bmatrix} \text{,} \qquad
+  \end{bmatrix} \, \text{,} \qquad
   \m{q}^{\prime}_{0} = \begin{bmatrix}
      4.448961125815990\cdot10^{-1} \\
      4.634339319238670\cdot10^{-3} \\
     -1.785910760000550\cdot10^{-6} \\
     -2.689386719979040\cdot10^{-6}
-  \end{bmatrix} \text{,}
+  \end{bmatrix} \, \text{,}
 \end{equation*}
 \begin{equation*}
   \bm{\lambda}_{0} = \begin{bmatrix}
      6.552727150584648\cdot10^{-8} \\
     -3.824589509350831\cdot10^{+2} \\
      4.635908708561371\cdot10^{-9}
-  \end{bmatrix} \text{,}
+  \end{bmatrix} \, \text{,}
 \end{equation*}
 %
 and the integration time interval is $t \in \RSI{0}{0.1}{\second}$.
 
-The slider-crank mechanism \ac{DAE} system is solved with the aid of the proposed index reduction algorithm. Specifically, both the linear and nonlinear flexible beam models are considered. The results in terms of expression complexity encountered throughout the index reduction are similar for both formulations, and they are summarized in Table~\ref{chap4:tab:slider_crank}. As shown in the table, the expression complexity increases significantly during the index reduction process, which is expected due to the complexity of the problem. Hierarchical representation is also employed to limit the expression swelling, and the results are summarized in Table~\ref{chap4:tab:slider_crank_veil}. The results show that the hierarchical representation reduces the expression complexity by an order of magnitude, which is beneficial for the numerical solution of the \ac{DAE} system. The results of the numerical simulation are shown in Figure~\ref{chap4:fig:slider_crank}, where the longitudinal displacements $q_3$ and $q_4$ of the flexible beam are illustrated. The results show that the flexible beam undergoes significant and fast deformation during the motion of the slider-crank mechanism, confirming the high stiffness of the \ac{DAE} system. In particular, the nonlinear beam model shows a more pronounced deformation compared to the linear beam model, which makes the numerical solution more challenging. Indeed, after $t \approx \SI{0.05}{\second}$, the nonlinear beam model shows a significant deviation from the linear beam model, lending to an overflow of the numerical solution.
+The slider-crank mechanism \ac{DAE} system is solved with the aid of the proposed index reduction algorithm. Specifically, both the linear and nonlinear flexible beam models are considered. The results in terms of expression complexity encountered throughout the index reduction are similar for both formulations, and they are summarized in Table~\ref{chap4:tab:flexible_slider_crank}. As shown in the table, the expression complexity increases significantly during the index reduction process, which is expected due to the complexity of the problem. Hierarchical representation is also employed to limit the expression swelling, and the results are summarized in Table~\ref{chap4:tab:flexible_slider_crank_veil}. The results show that the hierarchical representation reduces the expression complexity by an order of magnitude, which is beneficial for the numerical solution of the \ac{DAE} system. Nevertheless, it must be highlighted that, despite the mitigation of the expression complexity, the hierarchical representation does not prevent the expression complexity from increasing significantly during the index reduction process, which allows us to conclude that this problem is affected by inherent expression swelling. The results of the numerical simulation are shown in Figure~\ref{chap4:fig:flexible_slider_crank}, where the longitudinal displacements $q_3$ and $q_4$ of the flexible beam are illustrated. The results show that the flexible beam undergoes significant and fast deformation during the motion of the slider-crank mechanism, confirming the high stiffness of the \ac{DAE} system. In particular, the nonlinear beam model shows a more pronounced deformation compared to the linear beam model, which makes the numerical solution more challenging.
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.475\linewidth]{flexible_slider_crank}
+  \caption{Representation of the flexible slider-crank mechanism~\cite{lioen1998test, mazzia2008test}.}
+  \label{chap4:fig:flexible_slider_crank}
+\end{figure}
 
 \begin{table}
   \caption{Expression complexity encountered throughout the index reduction of the flexible slider-crank mechanism problem~\cite{lioen1998test, mazzia2008test} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
@@ -622,7 +627,7 @@ The slider-crank mechanism \ac{DAE} system is solved with the aid of the propose
   \end{tabular}}
 \end{table}
 
-\begin{figure}[!htb]
+\begin{figure}[htb]
   \centering
   \small{\includetikz{figures/chapter_4/flexible_slider_crank.tex}}
   \caption{Longitudinal displacement endpoint of the in the flexible slider-crank problem~\cite{lioen1998test, mazzia2008test}. \emph{Color legend}: \textcolor{mycolor2}{$\blacksquare$} longitudinal displacement $q_3$ at the rod midpoint, and \textcolor{mycolor1}{$\blacksquare$} longitudinal displacement $q_4$ at the rod endpoint. \emph{Line legend}: \textbf{---} linear beam model, and \textbf{--~--} nonlinear beam model.}
@@ -650,13 +655,16 @@ pendulum $p$, for $i = 2, \dots, p$. The first-order equations of motion for the
     y_i^{\prime} = -\lambda_p y_i - g \\
     x_i^2 + y_i^2 = (\ell + c\lambda_{i-1})^2
   \end{cases}
-  \quad \text{for} \quad i = 2, \dots, p \text{.}
+  \quad \text{for} \quad i = 2, \dots, p \, \text{.}
   \label{chap4:eq:multi_pendula}
 \end{equation}
 %
-where $x_i, y_i$ and $u_i, v_i$ are the generalized coordinates and velocities of $i$-th pendulum mass. The parameters of the multi-pendula system are chosen as $\ell = \SI{1}{\meter}$, $g = \SI{9.81}{\meter\per\second\squared}$, and $c = 0.1$. The system~\eqref{chap4:eq:multi_pendula} leads to a class of \acp{DAE} of arbitrary size $5p$ and index $2p+1$, which shows chaotic behavior for $p \geq 2$~\cite{nedialkov2008solvingIII}. Initial conditions are chosen randomly, and the time interval is $t \in \RSI{0}{60}{\second}$.
+where $x_i, y_i$ and $u_i, v_i$ are the generalized coordinates and velocities of $i$-th pendulum mass. The parameters of the multi-pendula system are chosen as $\ell = \SI{1}{\meter}$, $g = \SI{9.81}{\meter\per\second\squared}$, and $c = 0.1$. The system~\eqref{chap4:eq:multi_pendula} leads to a class of \acp{DAE} of arbitrary size $5p$ and index $2p+1$~\cite{nedialkov2008solvingIII}. Initial conditions are chosen randomly, and the time interval is $t \in \RSI{0}{60}{\second}$.
 
-Here, we consider up to $p = 4$ pendula, leading to a \ac{DAE} system of $20$ variables and index $9$. The computational complexities encountered during the index reduction process are summarized in Table~\ref{chap4:tab:pendula_2}, for the 2-pendula problem, Table~\ref{chap4:tab:pendula_3}, for the 3-pendula problem, Table~\ref{chap4:tab:pendula_4}, for the 4-pendula problem, and lastly Table~\ref{chap4:tab:pendula_5}, for the 5-pendula problem. Multi-pendula systems with $p \leq 3$ exhibit low computational complexity growth during the index reduction process. However, for $p \geq 4$, there is a substantial expression swell, which makes the index reduction process time-consuming and computationally demanding. The introduction of veiling variables proved to be effective in reducing the expression complexity, as shown in Tables~\ref{chap4:tab:pendula_4_veil} and \ref{chap4:tab:pendula_5_veil}. It is worth noting that with $p = 4$ the maximum computational complexity that \Maple{} can handle within a reasonable time is reached. For this reason, performing the last reduction steps for $p = 4$ requires a significant amount of time and computational resources. Moreover, we believe that reducing the index of the \ac{DAE} system for $p > 5$ is not feasible with the current computational resources. The numerical integration results of the 5-pendula system is shown in Figure~\ref{chap4:fig:multi_pendula}.
+Here, we consider up to $p = 4$ pendula, leading to a \ac{DAE} system of $20$ variables and index $9$. The computational complexities encountered during the index reduction process are summarized in Table~\ref{chap4:tab:pendula_2}, for the 2-pendula problem, Table~\ref{chap4:tab:pendula_3}, for the 3-pendula problem, Table~\ref{chap4:tab:pendula_4}, for the 4-pendula problem, and lastly Table~\ref{chap4:tab:pendula_5}, for the 5-pendula problem. Multi-pendula systems with $p \leq 3$ exhibit low computational complexity growth during the index reduction process. However, for $p \geq 4$, there is a substantial expression swell, which makes the index reduction process time-consuming and computationally demanding.
+%The introduction of veiling variables proved to be effective in reducing the expression complexity, as shown in Tables~\ref{chap4:tab:pendula_4_veil} and \ref{chap4:tab:pendula_5_veil}.
+The introduction of veiling variables is avoided on purpose to assess the impact of the expression swelling on the stability of the numerical solution.
+It is worth noting that with $p = 4$ the maximum computational complexity that \Maple{} can handle within a reasonable time is reached. For this reason, performing the last reduction steps for $p = 4$ requires a significant amount of time and computational resources. Moreover, we believe that reducing the index of the \ac{DAE} system for $p > 5$ is not feasible with the current computational resources, even with the aid of hierarchical representation. The numerical integration results of the 5-pendula system are depicted in Figure~\ref{chap4:fig:npendula_length}, where the pendula lengths are illustrated in the time interval $t \in \RSI{0}{60}{\second}$.
 
 \begin{table}
   \caption{Expression complexity encountered throughout the index reduction of the 2-pendula problem~\cite{nedialkov2008solvingIII} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
@@ -766,7 +774,7 @@ Here, we consider up to $p = 4$ pendula, leading to a \ac{DAE} system of $20$ va
   \end{tabular}}
 \end{table}
 
-\begin{figure}[!htb]
+\begin{figure}[htb]
   \centering
   \small{\includetikz{figures/chapter_4/npendula_length.tex}}
   \caption{Pendula lengths of the multi-pendula problem~\cite{nedialkov2008solvingIII} (up to 5 pendula). \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} 1\textsuperscript{st} pendulum length $\ell_1 = \ell$, \textcolor{mycolor2}{$\blacksquare$} 2\textsuperscript{nd} pendulum length $\ell_2 = \ell + c\lambda_1$, \textcolor{mycolor3}{$\blacksquare$} 3\textsuperscript{rd} pendulum length $\ell_3 = \ell + c\lambda_2$, \textcolor{mycolor4}{$\blacksquare$} 4\textsuperscript{th} pendulum length $\ell_4 = \ell + c\lambda_3$, and \textcolor{mycolor5}{$\blacksquare$} 5\textsuperscript{th} pendulum length $\ell_5 = \ell + c\lambda_4$.}
@@ -781,7 +789,7 @@ As a final example for this application field, a consider double-wishbone suspen
 
 Double A-arm or double wishbone suspensions are independent suspension systems widely used in the automotive industry, especially in high-performance vehicles, due to their superior handling characteristics. The studied double A-arm suspension system, shown in Figure~\ref{chap4:fig:suspension_render} is characterized by two A-shaped arms, one upper and one lower, connected to the chassis at one end and to the wheel carrier at the other end forming, together with the tie rod, the principal kinematic chain of the suspension system. A second kinematic chain is formed by the push rod and the rocker, which transfer the vertical load from the wheel carrier to the shock absorber.
 
-\begin{figure}[!htb]
+\begin{figure}[htb]
   \begin{minipage}[c]{0.485\linewidth}
     \centering
     \includegraphics[width=1.0\textwidth, trim={3.0cm 1.5cm 4.0cm 1.7cm}, clip]{figures/chapter_4/suspension_render.eps}
@@ -806,11 +814,11 @@ Double A-arm or double wishbone suspensions are independent suspension systems w
       \bottomrule
     \end{tabular}}
   \end{minipage}
-  \caption{Rendering and description of the \TrussMe{} elements \citep{trussmesource} used to model the rear left double wishbone suspension of the Formula SAE \textit{E-Agle Trento Racing Team} vehicle~\citep{eagle}.}
+  \caption{Rendering and description of the \TrussMe{} elements \citep{trussme} used to model the rear left double wishbone suspension of the Formula SAE \textit{E-Agle Trento Racing Team} vehicle~\citep{eagle}.}
   \label{chap4:fig:suspension_render}
 \end{figure}
 
-In this example, the double A-arm suspension compliance is modeled using macro elements, which are modeled through the \TrussMe{} package~\cite{trussme}, which is a \Maple{} package for the symbolic modeling of compliant structures. Details on the modeling of the compliant elements are reported in Appendix~\ref{app4:chap:trussme}. With the approach there presented, two suspension compliance models are generated one does not include the bushings compliance, while the other does. The linear systems have different sizes depending on the number of \acp{DOF} considered. In the case of the suspension without bushings, the system is composed of 78 \acp{DOF}, and has the following form
+In this example, the double A-arm suspension compliance is modeled using macro elements, which are modeled through the \TrussMe{} package~\cite{trussme}, which is a \Maple{} package for the symbolic modeling of compliant structures. Details on the modeling of the compliant elements are reported in Appendix~\ref{app4:trussme}. With the approach there presented, two suspension compliance models are generated one does not include the bushings compliance, while the other does. The linear systems have different sizes depending on the number of \acp{DOF} considered. In the case of the suspension without bushings, the system is composed of 78 \acp{DOF}, and has the following form
 %
 \begin{equation}
   \begin{bmatrix}
@@ -821,7 +829,7 @@ In this example, the double A-arm suspension compliance is modeled using macro e
   \end{bmatrix} = \begin{bmatrix}
     \m{f}_{f ,\, 42 \times 1}(\mathbb{R}) \\ \m{f}_{s ,\, 36 \times 1}(\mathbb{R})
   \end{bmatrix}
-  \text{.}
+  \, \text{.}
 \end{equation}
 %
 On the other hand, the suspension model with the bushings influence is composed of 138 \acp{DOF}
@@ -835,10 +843,10 @@ On the other hand, the suspension model with the bushings influence is composed 
   \end{bmatrix} = \begin{bmatrix}
     \m{f}_{f ,\, 72 \times 1}(\mathbb{R}) \\ \m{f}_{s ,\, 66 \times 1}(\mathbb{R})
   \end{bmatrix}
-  \text{,}
+  \, \text{,}
 \end{equation}
 %
-where the additional 60 \acp{DOF} are related to the compliance of the bushings. Both systems are solved using the technique presented in Appendix~\ref{app4:chap:trussme}, which given a generic compliant mechanism described by the linear system
+where the additional 60 \acp{DOF} are related to the compliance of the bushings. Both systems are solved using the technique presented in Appendix~\ref{app4:trussme} the, given the generic compliant mechanism described by the linear system of equations
 %
 \begin{equation}
   \label{chap4:eq:macrofe}
@@ -849,13 +857,13 @@ where the additional 60 \acp{DOF} are related to the compliance of the bushings.
     \m{d}_{f} \\ \m{d}_{s}
   \end{bmatrix}}_{\textstyle\m{d}} = \underbrace{\begin{bmatrix}
     \m{f}_{f} \\ \m{f}_{s}
-  \end{bmatrix}}_{\textstyle\m{f}}
+  \end{bmatrix}}_{\textstyle\m{f}} \, \text{,}
   %
   \qquad \text{is sequentially solved as} \qquad
   %
   \begin{aligned}
-    \m{d}_{f} &= \m{K}_{ff}^{-1}\left(\m{f}_{f} - \m{K}_{fs}\m{d}_{s}\right) \text{,} \\
-    \m{f}_{s} &= \m{K}_{sf}\m{d}_{f} + \m{K}_{ss}\m{d}_{s} \text{.}
+    \m{d}_{f} &= \m{K}_{ff}^{-1}\left(\m{f}_{f} - \m{K}_{fs}\m{d}_{s}\right) \, \text{,} \\
+    \m{f}_{s} &= \m{K}_{sf}\m{d}_{f} + \m{K}_{ss}\m{d}_{s} \, \text{,}
   \end{aligned}
 \end{equation}
 %
@@ -865,17 +873,21 @@ The dynamic characteristic of the system is modeled through a \ac{DAE} system of
 %
 \begin{subequations}
   \label{chap4:eq:daes}
-  \begin{empheq}[left={\empheqlbrace}, right={\text{,}}]{align}
-    & \m{y} = \m{q} + \m{d} \label{chap4:eq:sy} \\[0.25em]
-    & \m{M}_c(\m{y}) \m{y}^{\prime\prime} + \m{K}_c(\m{q}) \m{d} + \m{C}_c(\m{q}) \m{d}^{\prime} = \m{f}_c(t) \label{chap4:eq:cr} \\[0.25em]
-    & \m{M}(\m{q}) \m{q}^{\prime\prime} + \bm{\Phi}_{\m{q}}(\m{q})^\top \bm{\lambda} = \m{f}(\m{q}, \m{d}, \m{q}^{\prime}, \m{d}^{\prime}, t) \label{chap4:eq:em} \\[0.25em]
-    & \bm{\Phi}(\m{q}) = \m{0} \label{chap4:eq:bc}
-  \end{empheq}
+  \begin{empheq}[left = {\empheqlbrace}, right = {\, \text{,}}]{align}
+    & \m{y} = \m{q} + \m{d} \label{chap4:eq:sy} \\
+    & \m{M}(\m{y}) \ddot{\m{y}} + \m{r}(\m{q}, \dot{\m{q}}, \m{d}, \dot{\m{d}}) = \m{f}(t) \label{chap4:eq:cr} \\
+    & \boldsymbol{\Phi}_{\m{q}}(\m{q})^\top \boldsymbol{\lambda} = \m{r}(\m{q}, \dot{\m{q}}, \m{d}, \dot{\m{d}}) + \m{b}(\m{q}, \dot{\m{q}}, t) \label{chap4:eq:em} \\
+    & \boldsymbol{\Phi}(\m{q}) = \m{0} \label{chap4:eq:bc}
+  \end{empheq} \\[-2.5em]
+  \begin{equation}
+    \label{chap4:eq:emf}
+    \text{with} \quad \m{r}(\m{q}, \dot{\m{q}}, \m{d}, \dot{\m{d}}) = \m{K}_c(\m{q}) \m{d} + \m{C}_c(\m{q}) \dot{\m{d}} \text{,}
+  \end{equation}
 \end{subequations}
 %
-where $\m{q}$ stands for the state vector, and $t$ for the time. The quantity $\m{d}$ represents the compliance contribution of the mechanism members' deformation. States and deformations are conveniently condensed in a single variable $\m{y}$ as in~\eqref{chap4:eq:sy}. Equation~\eqref{chap4:eq:cr} represents the compliance contribution to the dynamics of the system, where $\m{M}_c$, $\m{K}_c$, and $\m{C}_c$ are the mass, stiffness, and damping matrices of the compliant bodies, respectively. The vector $\m{f}_c(t)$ represents external forces applied to the compliant mechanism. Notice that the stiffness matrices can be computed through the symbolic solution of the linear system~\eqref{chap4:eq:macrofe} or by directly using the symbolic stiffness matrices of the macro elements. Equation~\eqref{chap4:eq:em} represents the equations of motion of the system, where $\m{M}$ is the mass matrix, $\bm{\Phi}_{\m{q}}$ is the Jacobian matrix of the constraint vector $\bm{\Phi}$ with respect to the coordinates $\m{q}$, and $\m{f}$ is the vector of external forces. Lastly, equation~\eqref{chap4:eq:bc} represents the kinematic constraints of the system. The pick-up points of the modeled suspension are reported in Table~\ref{cahap4:tab:positions}. It is possible to derive the lengths of the various elements from these coordinates and to impose constraints to ensure a proper assembling of the mechanism. Components and materials specifications are reported in Tables~\ref{chap4:tab:components} and~\ref{chap4:tab:materials}, respectively.
+where $\m{q}$ is the state vector, and $t$ is the time. The quantity $\m{d}$ represents the compliance contribution of the mechanism members' deformation. States and deformations are conveniently condensed in a single variable $\m{y}$ as in~\eqref{chap4:eq:sy}. Equation~\eqref{chap4:eq:cr} represents the compliance contribution to the dynamics of the system, where $\m{K}_c$, and $\m{C}_c$ are the stiffness and damping matrices of the compliant bodies, respectively. The matrix $\m{M}$ represents the mass of the mechanism, while $\m{f}$ is the vector of external forces. For convenience, we collect $\m{r}$ in Equation~\eqref{chap4:eq:emf} as the vector of internal forces at the compliant joint. Notice that the product $\m{K}_c(\m{q}) \m{d}$ can be computed through the symbolic solution of the linear systems~\eqref{chap4:eq:macrofe}. Equation~\eqref{chap4:eq:em} represents the equilibrium equations between the rigid and compliant parts of the suspension. Specifically, $\boldsymbol{\Phi}_{\m{q}}$ is the Jacobian matrix of the constraint vector $\boldsymbol{\Phi}$ with respect to the coordinates $\m{q}$, while $\m{b}$ is the vector of external forces applied to the rigid part of the suspension. Lastly, Equation~\eqref{chap4:eq:bc} represents the kinematic constraints of the system. The pick-up points of the modeled suspension are reported in Table~\ref{chap4:tab:positions}. It is possible to derive the lengths of the various elements from these coordinates and to impose constraints to ensure a proper assembling of the mechanism. Components and materials specifications are reported in Tables~\ref{chap4:tab:components} and~\ref{chap4:tab:materials}, respectively.
 
-To consider the compliance contribution as a superposed effect we first assume that the influence of the members' deformation $\m{d}$ is small with respect to the dimensions of the mechanism itself, and thus to the state vector $\m{x}$, \ie{}, $\m{d} \ll \m{x}$. From~\eqref{chap4:eq:sy} it follows that $\m{y} \approx \m{x}$. As mentioned before, the compliance is also assumed to have stationary behavior, thus the inertia of the compliant part of the mechanism is also disregarded, \ie{}, $\dot{\m{d}} = \m{0}$ and $\m{M}_c(\m{y}) = \m{0}$. Therefore, from~\eqref{chap4:eq:cr} it follows that $\m{d} = \m{K}_c^{-1}(\m{x}) \, \m{f}_c(t)$. It is now possible to split the resolution of the \acp{DAE}~\eqref{chap4:eq:daes} into two stages. Firstly, the implicit differential equation~\eqref{chap4:eq:em} and the manifold~\eqref{chap4:eq:bc} are integrated. Nonetheless, these equations are of an index-3 \ac{MB} \acp{DAE} system of the type~\eqref{chap4:eq:mbd_fo}, which can be reduced to an index-0 or index-1 \acp{DAE} system and solved as above explained. Then, the second stage consists of adding the stationary contribution of the members' deformation $\m{d}$ to the state vector $\m{x}$, that is $\m{y} = \m{x} + \m{d} = \m{x} + \m{K}_c^{-1}(\m{x}) \m{f}_c(t)$.
+To consider the compliance contribution as a superposed effect we first assume that the influence of the members' deformation $\m{d}$ is small with respect to the dimensions of the mechanism itself, and thus to the state vector $\m{q}$, \ie{}, $\m{d} \ll \m{q}$. From~\eqref{chap4:eq:sy} it follows that $\m{M}(\m{y}) \approx \m{M}(\m{q})$. It is then possible to split the resolution of the \acp{DAE}~\eqref{chap4:eq:daes} into two stages. Firstly, the implicit differential equation~\eqref{chap4:eq:em} and the manifold~\eqref{chap4:eq:bc} are integrated. Nonetheless, these equations are of an index-3 \ac{MB} \acp{DAE} system of the type~\eqref{chap4:eq:mbd_fo}, which can be reduced to an index-0 or index-1 \acp{DAE} system and solved as above explained. Then, the second stage consists of adding the stationary contribution of the members' deformation $\m{d}$ to the state vector $\m{q}$, that is $\m{y} = \m{q} + \m{d} = \m{q} + \m{K}_c(\m{q})^{-1} (\m{f}(t) - \m{M}(\m{q})\ddot{\m{q}})$.
 
 \begin{table}[htb]
   \caption[Table]{Suspension pick-up points' coordinates in the nominal position.}
@@ -951,7 +963,7 @@ To consider the compliance contribution as a superposed effect we first assume t
 
 \subsubsection{System Solution}
 
-Prior to any analyses, the \ac{DAE} system is handled to \Indigo{} for index reduction. For this purpose, the system is reduced to a system of \acp{ODE} and the computational complexities encountered during the reduction process are reported in Table~\ref{chap4:tab:suspension_2}. Notice the substantial increase in the expression complexity of the reduced system in the last two reduction steps.
+Prior to any analyses, the \ac{DAE} system is handled to \Indigo{} for index reduction. For this purpose, the system is reduced to a system of \acp{ODE} and the computational complexities encountered during the reduction process are reported in Table~\ref{chap4:tab:suspension}. Notice the substantial increase in the expression complexity of the reduced system in the last two reduction steps despite the simplification capabilities of \Maple{}, which indicates a high lever of inherent expression swell.
 
 \begin{table}
   \caption{Expression complexity encountered throughout the index reduction with the aid of hierarchical representation of the double-wishbone suspension system \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\cv$ = veiling variables, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
@@ -991,7 +1003,7 @@ Prior to any analyses, the \ac{DAE} system is handled to \Indigo{} for index red
 
 After the reduction process, the reduced system is numerically solved generating appropriate code for the \Simulink{} environment. The system is also reproduced in \Ansys{} for comparison. The first test that is carried out aims to verify the accuracy of the reduced system and to understand the impact of compliance on the system dynamics. The results of the frequency response analysis are shown in Figure~\ref{chap4:fig:suspension_dynamic_results}. The results show that the \Simulink{} multi-body simulation with full compliance dynamics contribution and the \Ansys{} \ac{FE} modal analysis are in good agreement and the first three modal shapes, which are shown in Figure~\ref{chap4:fig:suspension_modes}, are well captured by the reduced system with full compliance dynamics contribution. Conversely, the reduced system with steady-state compliance dynamics contribution is not able to capture the first three modal shapes of the suspension. This result, despite expected, also introduces a zero along the suspension moving direction in the frequency response of the system, which is not present in the full compliance dynamics contribution. The following considerations can be made from these results: the compliance of the suspension system has a significant impact on the system dynamics for high-frequency analyses, and the reduced system with full compliance dynamics contribution can capture the system dynamics accurately. For computationally efficient simulations, the reduced system with steady-state compliance dynamics contribution can be used to capture the system dynamics accurately under the assumption that the suspension system is forced by low-frequency inputs.
 
-\begin{figure}[!htb]
+\begin{figure}[htb]
   \centering
   \begin{subfigure}[c]{0.225\textwidth}
     \centering
@@ -1012,14 +1024,14 @@ After the reduction process, the reduced system is numerically solved generating
   \label{chap4:fig:suspension_modes}
 \end{figure}
 
-\begin{figure}[!htb]
+\begin{figure}[htbp]
   \centering
   \small{\includetikz{figures/chapter_4/suspension_dynamic_deformations.tex}}
   \caption{Frequency response analysis of the suspension model is conducted, with tests performed under the equilibrium between the suspension system and a vertical force of \SI{500}{\newton} applied at the wheel hub. Frequency responses are assessed by applying input forces/torques at the wheel hub in the form of a linear chirp spanning frequencies from \SIrange{0}{200}{\hertz}, with a constant amplitude of \SI{5}{\newton}/\SI{5}{\newton\meter}. \emph{Legend:} {\color{mycolor1}$\blacksquare$} \Simulink{} multi-body simulation with full compliance dynamics contribution, {\color{mycolor2}$\blacksquare$} \Simulink{} multi-body with steady-state compliance contribution, {\color{mycolor3}$\blacksquare$} \Ansys{} \ac{FE} modal analysis.}
   \label{chap4:fig:suspension_dynamic_results}
 \end{figure}
 
-Finally, the reduced system is used to perform a transient analysis of the suspension system, coupled with the tire-ground enveloping model and the tire model presented in Appendix~\ref{app4:chap:enve} and Appendix~\ref{app4:chap:tire}, respectively. The transient analysis is conducted to understand the impact of compliance on the system dynamics as well as suspension rods' diameter in the development of tire-ground forces. A side slip angle ramp simulation is thus performed to evaluate the effect of suspension compliance on the lateral force of the tire. For this simulation, the following four cases are analyzed:
+Finally, the reduced system is used to perform a transient analysis of the suspension system, coupled with the tire-ground enveloping model and the tire model presented in Appendix~\ref{app2:enve} (supported by the \Acme{} \cpp{} library described in Appendix~\ref{app1:acme}) and Appendix~\ref{app3:tirex}, respectively. The transient analysis is conducted to understand the impact of compliance on the system dynamics as well as suspension rods' diameter in the development of tire-ground forces. A side slip angle ramp simulation is thus performed to evaluate the effect of suspension compliance on the lateral force of the tire. For this simulation, the following four cases are analyzed:
 %
 \begin{itemize}
   \setlength\itemsep{0.0em}
@@ -1043,7 +1055,7 @@ The results of the simulation are shown in \figurename~\ref{chap4:fig:test_bench
 \section{Trajectory Prescribed Path Control}
 \label{chap4:sec:tppc}
 
-The trajectory prescribed path control category is characterized by \ac{DAE} systems that describe the motion of a dynamical system whose trajectory is prescribed by adding a set of path constraints to the equations of motion. The model equations evolve into a non-linear semi-explicit \acp{DAE}. Within this system, the differential equations represent motion equations, while the algebraic equations correspond to imposed path constraints, collectively constituting \ac{TPPC} problems. Historically, addressing specific \ac{TPPC} challenges involved the development of software models that promptly adjust control variables to approximate prescribed path profiles. In this context, we investigate general numerical techniques directly applicable to \acp{DAE}. \ac{TPPC} problems are present in various fields, such as robot control, chemical process management, as well as space vehicle and aircraft guidance.
+The \ac{TPPC} category is characterized by \ac{DAE} systems that describe the motion of a dynamical system whose trajectory is prescribed by adding a set of path constraints to the equations of motion. The model equations evolve into a non-linear semi-explicit \acp{DAE}. Within this system, the differential equations represent motion equations, while the algebraic equations correspond to imposed path constraints, collectively constituting \ac{TPPC} problems. Historically, addressing specific \ac{TPPC} challenges involved the development of software models that promptly adjust control variables to approximate prescribed path profiles. In this context, we investigate general numerical techniques directly applicable to \acp{DAE}. \ac{TPPC} problems are present in various fields, such as robot control, chemical process management, as well as space vehicle and aircraft guidance.
 
 The \ac{DAE} systems arising from \ac{TPPC} simulations has typically the Hessenberg form~\cite{brenan1986numerical}
 %
@@ -1051,7 +1063,7 @@ The \ac{DAE} systems arising from \ac{TPPC} simulations has typically the Hessen
   \begin{cases}
     \m{x}^\prime = \m{f}(\m{x}, \m{u}, t) & \text{differential equations} \\
     \m{0}        = \m{g}(\m{x}, \m{u}, t) & \text{path constraints}
-  \end{cases} \text{,}
+  \end{cases} \, \text{,}
   \quad \text{with} \quad \m{Jg}_{\m{x}} \, \m{Jf}_{\m{u}} ~ \text{non-singular}
   \label{chap4:eq:tppc_dae_index2}
 \end{equation*}
@@ -1063,7 +1075,7 @@ for index-2 problems, and
     \m{x}^\prime = \m{f}(\m{x}, \m{y}, \m{u}, t) \\
     \m{y}^\prime = \m{g}(\m{x}, \m{y}, t) \\
     \m{0}        = \m{h}(\m{y}, t)
-  \end{cases} \text{,}
+  \end{cases} \, \text{,}
   \quad \text{with} \quad \m{Jh}_{\m{y}} \, \m{Jg}_{\m{x}} \, \m{Jf}_{\m{u}} ~ \text{non-singular}
   \label{chap4:eq:tppc_dae_index3}
 \end{equation*}
@@ -1086,7 +1098,7 @@ The discussion is confined to a reentry vehicle in the absence of propulsive for
   \qquad + \dfrac{\Omega_e^2 r \cos(\lambda)}{V_r}(\sin(\lambda) \cos(A) \sin(\gamma)+\cos(\lambda) \cos(\gamma)) \\
   A^{\prime}       = \dfrac{L\sin(\beta)}{m V_r \cos(\gamma)}+\dfrac{V_r}{r} \cos(\gamma) \sin(A) \tan(\lambda) - 2\Omega_e(\cos(\lambda) \cos(A) \tan(\gamma) - \sin(\lambda)) \dots \\
   \qquad + \dfrac{\Omega_e^2 r \cos(\lambda) \sin(\lambda) \sin(A)}{V_r \cos(\gamma)}
-  \end{cases} \text{,}
+  \end{cases} \, \text{,}
   \label{chap4:eq:space_shuttle_reentry}
 \end{equation}
 %
@@ -1105,9 +1117,9 @@ where the state variables are $\m{x} = [H, \xi, \lambda, V_r, \gamma, A]^\top$. 
   \end{aligned}
 \end{equation*}
 %
-The aerodynamic lift and drag coefficients, respectively $C_L(\alpha)$ and $C_D(\alpha)$, as well as the vehicle cross-sectional area $S$ and mass $m$, will be later specified on the specific test. The control variables, which dictate both the magnitude and direction of the aerodynamic force applied to the vehicle, are assessed within the body coordinate system (refer to \figurename~\ref{todo}). The bank angle $\beta$ corresponds to a rotation or \emph{roll} about the vehicle's $x$-axis, while the angle of attack $\alpha$ is measured from the relative velocity vector of the vehicle to the body $x$-axis, representing a rotation or \emph{pitch} about the body $y$-axis. For a more detailed explanation of these parameters and the coordinate system on the presented tests, please refer to~\cite{brenan1983stability}. Nonetheless, figure~\ref{chap4:fig:shuttle_reentry} illustrates the space shuttle coordinate system, as well as the vehicle's position with respect to the earth reference frame.
+The aerodynamic lift and drag coefficients, respectively $C_L(\alpha)$ and $C_D(\alpha)$, as well as the vehicle cross-sectional area $S$ and mass $m$, will be later specified on the specific test. The control variables, which dictate both the magnitude and direction of the aerodynamic force applied to the vehicle, are assessed within the body coordinate system (refer to \figurename~\ref{chap4:fig:shuttle_frame}). The bank angle $\beta$ corresponds to a rotation or \emph{roll} about the vehicle's $x$-axis, while the angle of attack $\alpha$ is measured from the relative velocity vector of the vehicle to the body $x$-axis, representing a rotation or \emph{pitch} about the body $y$-axis. For a more detailed explanation of these parameters and the coordinate system on the presented tests, please refer to~\cite{brenan1983stability}. Nonetheless, figure~\ref{chap4:fig:shuttle_reentry} illustrates the space shuttle coordinate system, as well as the vehicle's position with respect to the earth reference frame.
 
-\begin{figure}[!htb]
+\begin{figure}[htb]
   \centering
   \begin{subfigure}[c]{0.475\textwidth}
     \centering
@@ -1133,7 +1145,7 @@ Once the space shuttle concludes its mission in space, it must return to Earth f
 We now examine the initial stage reentry \ac{TPPC} problem in the same form of~\cite{brenan1986numerical}. This problem is part of a broader trajectory optimization process aimed at determining a surface of admissible reentry states. Following completion of on-orbit maneuvers, the vehicle must transition to a state vector enabling safe flight to the landing site. This set of allowable states is denoted as a target line. A given initial state qualifies as a target line point if a trajectory can be executed from that state in such a way that the vehicle's drag versus relative velocity profile smoothly aligns with the specified nominal profile, without overshooting and thus without violating any temperature constraints. Consider now the description of the vehicle's drag acceleration versus relative velocity profile, expressed as
 %
 \begin{equation}
-  \dfrac{D}{m} - (C_0 + C_1 (V_r - V_0) + C_2 (V_r - V_0)^2 + C_3 (V_r - V_0)^3) = 0 \text{,}
+  \dfrac{D}{m} - (C_0 + C_1 (V_r - V_0) + C_2 (V_r - V_0)^2 + C_3 (V_r - V_0)^3) = 0 \, \text{,}
   \label{chap4:eq:initial_drag}
 \end{equation}
 %
@@ -1160,12 +1172,12 @@ for a time $t \in [t_0, t_1] = \RSI{32.868734542}{419.868734542}{\second}$, and 
   \end{tabular}}
 \end{table}
 
-To address this index-3 \acp{DAE}, we utilize the proposed index reduction algorithm. The complexity of expressions encountered during the algorithm's execution is detailed in \tablename{}~\ref{chap4:tab:tppc_initial}. Notably, the index reduction algorithm effectively reduced the system to index-0 without introducing any additional variables, and the expression growth is inhibited by successful simplification. We conduct numerical integration of the reduced \ac{DAE} system using both the \Maple{} and \Indigo{} solvers. \Maple{} encounters challenges in integrating the original \ac{DAE} system due to difficulties in projecting initial values into the solution space, where initial conditions are deemed inconsistent with the algebraic constraints. In contrast, the \Indigo{} numerical solver successfully integrates the reduced \ac{DAE} system, yielding results depicted in \figurename~\ref{chap4:fig:tppc_initial}.
+To address this index-3 \acp{DAE}, we utilize the proposed index reduction algorithm. The complexity of expressions encountered during the algorithm's execution is detailed in Table~\ref{chap4:tab:tppc_initial}. Notably, the index reduction algorithm effectively reduced the system to index-0 without introducing any additional variables, and the expression growth is inhibited by successful simplification. We conduct numerical integration of the reduced \ac{DAE} system using both the \Maple{} and \Indigo{} solvers. \Maple{} encounters challenges in integrating the original \ac{DAE} system due to difficulties in projecting initial values into the solution space, where initial conditions are deemed inconsistent with the algebraic constraints. In contrast, the \Indigo{} numerical solver successfully integrates the reduced \ac{DAE} system, yielding results depicted in \figurename~\ref{chap4:fig:tppc_initial}.
 
-\begin{figure}[!htb]
+\begin{figure}[htb]
   \centering
   \small{\includetikz{figures/chapter_4/shuttle_index3_control.tex}}
-  \caption{Control history of the initial stage space shuttle reentry problem~\cite{brenan1995numerical}. The vehicle's trajectory is prescribed by the drag acceleration $D/m$ versus a relative velocity $V_r$ profile reported in~\eqref{chap4:eq:initial_drag}. The vehicle's state is controlled by the bank angle $\beta$ and the angle of attack is kept fix at $\alpha = \SI{40}{\deg}$.}
+  \caption{Control history of the initial stage space shuttle reentry problem~\cite{brenan1995numerical}. The vehicle's trajectory is prescribed by the drag acceleration $D/m$ versus a relative velocity $V_r$ profile reported in~\eqref{chap4:eq:initial_drag}. The vehicle's state is controlled by the bank angle $\beta$ and the angle of attack is kept fix at $\alpha = \SI{40}{\deg}$. \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} bank angle $\beta$, and \textcolor{mycolor2}{$\blacksquare$} angle of attack $\alpha$.}
   \label{chap4:fig:tppc_initial}
 \end{figure}
 
@@ -1174,9 +1186,9 @@ To address this index-3 \acp{DAE}, we utilize the proposed index reduction algor
 We now examine the standard final stage reentry \ac{TPPC} problem in the same form of~\cite{brenan1995numerical}. Let's assume the objective is to navigate a vehicle along a predetermined azimuth $A$ and flight path angle trajectory $\gamma$, as defined by the constraints on state variables
 %
 \begin{equation}
-  \gamma + 1 + 9\left(\dfrac{t}{300}\right)^2 = 0 \text{,}
+  \gamma + 1 + 9\left(\dfrac{t}{300}\right)^2 = 0 \, \text{,}
   \qquad \text{and} \qquad
-  A - 45 + 90\left(\dfrac{t}{300}\right)^2 = 0 \text{.}
+  A - 45 + 90\left(\dfrac{t}{300}\right)^2 = 0 \, \text{.}
   \label{chap4:eq:final_path_constraints}
 \end{equation}
 %
@@ -1202,9 +1214,9 @@ for a time $t \in \RSI{0}{300}{\second}$. The flight path angle $\gamma$ spans f
   \end{tabular}}
 \end{table}
 
-To solve the index-2 \ac{DAE} system, we apply the proposed index reduction algorithm. The expression complexity encountered throughout the index reduction is reported in \tablename{}~\ref{chap4:tab:tppc_final}. As we can see, the index reduction algorithm successfully reduces the index of the \ac{DAE} system to index-0 with minimal expression swelling. The numerical integration of the reduced \ac{DAE} system is performed using both the \Maple{} and \Indigo{} numerical solvers. In this regard, \Maple{} is not able to integrate the original \ac{DAE} system due to the incapacity of projecting the initial values into the solution space (\ie{}, initial conditions are not judged to be consistent with the algebraic constraints). Conversely, the numerical integration of the reduced \ac{DAE} system using the \Indigo{} numerical solver is successful, and the results are presented in \figurename~\ref{chap4:fig:tppc_final}.
+To solve the index-2 \ac{DAE} system, we apply the proposed index reduction algorithm. The expression complexity encountered throughout the index reduction is reported in Table~\ref{chap4:tab:tppc_final}. As we can see, the index reduction algorithm successfully reduces the index of the \ac{DAE} system to index-0 with minimal expression swelling. The numerical integration of the reduced \ac{DAE} system is performed using both the \Maple{} and \Indigo{} numerical solvers. In this regard, \Maple{} is not able to integrate the original \ac{DAE} system due to the incapacity of projecting the initial values into the solution space (\ie{}, initial conditions are not judged to be consistent with the algebraic constraints). Conversely, the numerical integration of the reduced \ac{DAE} system using the \Indigo{} numerical solver is successful, and the results are presented in \figurename~\ref{chap4:fig:tppc_final}.
 
-\begin{figure}[!htb]
+\begin{figure}[htb]
   \centering
   \small{\includetikz{figures/chapter_4/shuttle_index2_control.tex}}
   \caption{Controls history of the space shuttle reentry problem~\cite{brenan1995numerical} in the time interval $t \in \RSI{0}{300}{\second}$. \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} bank angle $\beta$, and \textcolor{mycolor2}{$\blacksquare$} angle of attack $\alpha$.}
@@ -1226,32 +1238,32 @@ Another example of a \ac{TPPC} problem is the control of a robot arm, described 
     \qquad - d(x_3)(x_4+x_6)^2 - 2x_4^2c(x_3) \\
     0 = \cos(x_1) + \cos(x_1+x_3) - p_1(t) \\
     0 = \sin(x_1) + \sin(x_1+x_3) - p_2(t)
-  \end{cases} \text{,}
+  \end{cases} \, \text{,}
 \end{equation}
 %
 with
 %
 \begin{equation}
-  a(z) = \dfrac{2}{2-\cos(z)^2} \text{,}
+  a(z) = \dfrac{2}{2-\cos(z)^2} \, \text{,}
   \quad
-  b(z) = \dfrac{\cos(z)}{2-\cos(z)^2} \text{,}
+  b(z) = \dfrac{\cos(z)}{2-\cos(z)^2} \, \text{,}
   \quad
-  c(z) = \dfrac{\sin(z)}{2-\cos(z)^2} \text{,}
+  c(z) = \dfrac{\sin(z)}{2-\cos(z)^2} \, \text{,}
   \quad \text{and} \quad
-  d(z) = \dfrac{\cos(z)\sin(z)}{2-\cos(z)^2} \text{.}
+  d(z) = \dfrac{\cos(z)\sin(z)}{2-\cos(z)^2} \, \text{.}
 \end{equation}
 %
 The end effector path constraints are given by
 %
 \begin{equation}
-  p_1(t) = \cos(\exp(t) - 1) + \cos(t - 1) \text{,}
+  p_1(t) = \cos(\exp(t) - 1) + \cos(t - 1) \, \text{,}
   \quad \text{and} \quad
-  p_2(t) = \sin(1 - \exp(t)) + \sin(1 - t) \text{.}
+  p_2(t) = \sin(1 - \exp(t)) + \sin(1 - t) \, \text{.}
 \end{equation}
 %
 Figure~\ref{chap4:fig:robotic_arm} illustrates the robotic arm problem, as well as its variables and control parameters.
 
-\begin{figure}[!htb]
+\begin{figure}[htb]
   \centering
   \includegraphics[width=0.4\linewidth]{figures/chapter_4/robotic_arm.eps}
   \caption{Robot arm control problem.}
@@ -1321,7 +1333,7 @@ Figure~\ref{chap4:fig:robotic_arm} illustrates the robotic arm problem, as well 
   \end{tabular}}
 \end{table}
 
-The complexity of expressions encountered throughout the index reduction is detailed in \tablename{}~\ref{chap4:tab:tppc_robot}. The index reduction algorithm effectively reduces the system to index-0 without introducing any additional variables, however, substantial expression growth is observed. The simplification of the expressions within \SI{100}{\second} of \ac{CPU} time is not feasible. Hierarchical representation through veiling variables is necessary to simplify the handling of the system expressions. The complexity of the expressions encountered throughout the index reduction with the aid of hierarchical representation is detailed in \tablename{}~\ref{chap4:tab:tppc_robot_veil}. The introduction of veiling variables effectively reduced the overall expression complexity by a factor of at least $10^4$. This can be attributed to the fact that the chunks of the system are now more efficiently handled by the \ac{CAS}, and simplification can be effectively performed. The numerical integration of the reduced \ac{DAE} system is performed using both the \Maple{} and \Indigo{} numerical solvers. In this regard, \Maple{} is not able to integrate the original \ac{DAE} system due to the incapacity of projecting the initial values into the solution space. Conversely, the numerical integration of the reduced \ac{DAE} system using the RadauIIA5 \Indigo{} numerical solver is successful in the interval $t \in \RSI{0}{0.98}{\second}$. It must be pointed out that this system presents many singularities that hinder a flawless integration (refer to~\cite{schwarz2020singularities} for a detailed analysis).
+The complexity of expressions encountered throughout the index reduction is detailed in Table~\ref{chap4:tab:tppc_robot}. The index reduction algorithm effectively reduces the system to index-0 without introducing any additional variables, however, substantial expression growth is observed. The simplification of the expressions within \SI{100}{\second} of \ac{CPU} time is not feasible. Hierarchical representation through veiling variables is necessary to simplify the handling of the system expressions. The complexity of the expressions encountered throughout the index reduction with the aid of hierarchical representation is detailed in Table~\ref{chap4:tab:tppc_robot_veil}. The introduction of veiling variables effectively reduced the overall expression complexity by a factor of at least $10^4$. This can be attributed to the fact that the chunks of the system are now more efficiently handled by the \ac{CAS}, and simplification can be effectively performed. The numerical integration of the reduced \ac{DAE} system is performed using both the \Maple{} and \Indigo{} numerical solvers. In this regard, \Maple{} is not able to integrate the original \ac{DAE} system due to the incapacity of projecting the initial values into the solution space. Conversely, the numerical integration of the reduced \ac{DAE} system using the RadauIIA5 \Indigo{} numerical solver is successful in the interval $t \in \RSI{0}{0.98}{\second}$. It must be pointed out that this system presents many singularities that hinder a flawless integration (refer to~\cite{schwarz2020singularities} for a detailed analysis).
 
 \section{Electrical Circuits}
 \label{chap4:sec:electrical_circuits}
@@ -1348,7 +1360,7 @@ This problem originates from electrical circuit analysis. It is a model for the 
     0 & 0 & 0 & 0 & 0 & -C_4 & 0 & 0 \\
     0 & 0 & 0 & 0 & 0 & 0 & -C_5 & C_5 \\
     0 & 0 & 0 & 0 & 0 & 0 & C_5 & -C_5
-  \end{bmatrix} \text{,}
+  \end{bmatrix} \, \text{,}
 \end{equation}
 %
 \begin{equation}
@@ -1361,7 +1373,7 @@ This problem originates from electrical circuit analysis. It is a model for the 
     -g(x_5-x_6) + \dfrac{x_6}{R_7} \\
     -\dfrac{U_b}{R_8} + \dfrac{x_7}{R_8} + \alpha g(x_5-x_6) \\
     \dfrac{x_8}{R_9}
-  \end{bmatrix} \text{,}
+  \end{bmatrix} \, \text{,}
 \end{equation}
 %
 and $g(x) = \beta(\exp(x/U_f) - 1)\,\USI{\ampere}$, $U_e(t) = 0.1\sin(200 \pi t)\,\USI{\volt}$. Initial conditions at $t = 0$ and parameters are given by
@@ -1376,17 +1388,17 @@ and $g(x) = \beta(\exp(x/U_f) - 1)\,\USI{\ampere}$, $U_e(t) = 0.1\sin(200 \pi t)
     U_b/(R_6/R_5 + 1) \\
     U_b \\
     0 \\
-  \end{bmatrix} \text{,}
+  \end{bmatrix} \, \text{,}
   \qquad \text{and} \qquad
   \begin{array}{l}
-    U_b = \SI{6}{\volt} \text{,} \\
-    U_f = \SI{0.026}{\volt} \text{,} \\
-    \alpha = 0.99 \text{,} \\
-    \beta = \SI{10^-6}{\ampere} \text{,} \\
-    R_0 = \SI{1}{\kilo\ohm} \text{,} \\
-    R_k = \SI{9}{\kilo\ohm} ~ \text{with} ~ k=1, \dots, 9 \text{,} \\
-    C_k = \SI{k}{\micro\farad} ~ \text{with} ~ k=1, \dots, 9 \text{.} \\
-  \end{array} \text{.}
+    U_b = \SI{6}{\volt} \, \text{,} \\
+    U_f = \SI{0.026}{\volt} \, \text{,} \\
+    \alpha = 0.99 \, \text{,} \\
+    \beta = \SI{10^-6}{\ampere} \, \text{,} \\
+    R_0 = \SI{1}{\kilo\ohm} \, \text{,} \\
+    R_k = \SI{9}{\kilo\ohm} ~ \text{with} ~ k=1, \dots, 9 \, \text{,} \\
+    C_k = \SI{k}{\micro\farad} ~ \text{with} ~ k=1, \dots, 9 \, \text{.} \\
+  \end{array} \, \text{.}
 \end{equation*}
 
 \begin{figure}
@@ -1396,9 +1408,9 @@ and $g(x) = \beta(\exp(x/U_f) - 1)\,\USI{\ampere}$, $U_e(t) = 0.1\sin(200 \pi t)
   \label{chap4:fig:transistor_amplifier}
 \end{figure}
 
-The index reduction process is smoothly performed, and the complexity of the expressions encountered throughout the index reduction is detailed in \tablename{}~\ref{chap4:tab:tppc_robot}. As we can see, the expression complexity is minimally affected by the index reduction process. The numerical integration of the reduced \ac{DAE} system is performed using both the \Maple{} and \Indigo{} numerical solvers. In this regard, both \Maple{} and \Indigo{} can integrate the original \ac{DAE} system in the specified time interval $t \in \RSI{0}{0.2}{\second}$.
+The index reduction process is smoothly performed, and the complexity of the expressions encountered throughout the index reduction is detailed in Table~\ref{chap4:tab:tppc_robot}. As we can see, the expression complexity is minimally affected by the index reduction process. The numerical integration of the reduced \ac{DAE} system is performed using both the \Maple{} and \Indigo{} numerical solvers. In this regard, both \Maple{} and \Indigo{} can integrate the original \ac{DAE} system in the specified time interval $t \in \RSI{0}{0.2}{\second}$.
 
-\begin{figure}[!htb]
+\begin{figure}[htb]
   \centering
   \small{\includetikz{figures/chapter_4/transistor_amplifier.tex}}
   \caption{Transistor amplifier circuit integration results~\cite{lioen1998test, mazzia2008test} in the time interval $t \in \RSI{0}{0.2}{\second}$. Notice that the output signal $U_8$ is equal to the state variable $x_8$. \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} input signal $U_e(t)$, and \textcolor{mycolor2}{$\blacksquare$} output signal $U_8$.}
@@ -1429,7 +1441,7 @@ The index reduction process is smoothly performed, and the complexity of the exp
 The electric ring modulator is an interesting example of a system whose structure depends on the specific values of the parameters. The system is in the form $\m{M}\m{x}^\prime = \m{f}(\m{x},t)$, where $\m{x} = [x_1, \dots, x_{15}]^\top$, $\m{M}$ and $\m{f}(\m{x},t)$ being given by
 %
 \begin{equation}
-  \m{M} = \mathrm{diag}(C, C, C_s, C_s, C_s, C_s, C_p, L_h, L_h, L_{s2}, L_{s3}, L_{s2}, L_{s3}, L_{s1}, L_{s1}) \text{,}
+  \m{M} = \mathrm{diag}(C, C, C_s, C_s, C_s, C_s, C_p, L_h, L_h, L_{s2}, L_{s3}, L_{s2}, L_{s3}, L_{s1}, L_{s1}) \, \text{,}
 \end{equation}
 %
 \begin{equation}
@@ -1449,20 +1461,20 @@ The electric ring modulator is an interesting example of a system whose structur
     -x_2/2 + x_6 - R_{g3}x_{13} \\
     -x_1 + U_{in1}(t) - (R_i + R_{g1})x_{14} \\
     -x_2 - (R_c+R_{g1})x_{15}
-  \end{bmatrix} \text{,}
+  \end{bmatrix} \, \text{,}
 \end{equation}
 %
 where $U_{d1}, U_{d2}, U_{d3}, U_{d4}, q, U_{in1}$ and $U_{in2}$ are given by
 %
 \begin{equation}
   \begin{array}{l}
-    U_{d1} = x_3 - x_5 - x_7 - U_{in2}(t) \text{,} \\
-    U_{d2} = -x_4 + x_6 - x_7 - U_{in2}(t) \text{,} \\
-    U_{d3} = x_4 + x_5 + x_7 + U_{in2}(t) \text{,} \\
-    U_{d4} = -x_3 - x_6 + x_7 + U_{in2}(t) \text{,} \\
-    q(U) = \gamma(exp(\delta U) - 1) \text{,} \\
-    U_{in1}(t) = 1/2 \sin(2000 \pi t) \text{,} \\
-    U_{in2}(t) = 2 \sin(20000 \pi t) \text{.}
+    U_{d1} = x_3 - x_5 - x_7 - U_{in2}(t) \, \text{,} \\
+    U_{d2} = -x_4 + x_6 - x_7 - U_{in2}(t) \, \text{,} \\
+    U_{d3} = x_4 + x_5 + x_7 + U_{in2}(t) \, \text{,} \\
+    U_{d4} = -x_3 - x_6 + x_7 + U_{in2}(t) \, \text{,} \\
+    q(U) = \gamma(exp(\delta U) - 1) \, \text{,} \\
+    U_{in1}(t) = 1/2 \sin(2000 \pi t) \, \text{,} \\
+    U_{in2}(t) = 2 \sin(20000 \pi t) \, \text{.}
   \end{array}
 \end{equation}
 %
@@ -1470,31 +1482,31 @@ Initial conditions at $t = 0$ and parameters are given by $\m{x}_0 = [0, 0, 0, 0
 %
 \begin{equation*}
   \begin{array}{l}
-    C = \SI{16}{\nano\farad} \text{,} \\
-    C_s = 0~\text{or}~\SI{2}{\pico\farad} \text{,} \\
-    C_p = \SI{100}{\nano\farad} \text{,} \\
-    L_h = \SI{4.45}{\henry} \text{,} \\
-    L_{s1} = \SI{2}{\milli\henry} \text{,} \\
-    L_{s2} = \SI{0.5}{\milli\henry} \text{,} \\
-    L_{s3} = \SI{0.5}{\milli\henry} \text{,} \\
-    \gamma = 40.67286402 \text{,} \\
+    C = \SI{16}{\nano\farad} \, \text{,} \\
+    C_s = 0~\text{or}~\SI{2}{\pico\farad} \, \text{,} \\
+    C_p = \SI{100}{\nano\farad} \, \text{,} \\
+    L_h = \SI{4.45}{\henry} \, \text{,} \\
+    L_{s1} = \SI{2}{\milli\henry} \, \text{,} \\
+    L_{s2} = \SI{0.5}{\milli\henry} \, \text{,} \\
+    L_{s3} = \SI{0.5}{\milli\henry} \, \text{,} \\
+    \gamma = 40.67286402 \, \text{,} \\
   \end{array}
   \qquad
   \begin{array}{l}
-    R = \SI{25}{\kilo\ohm} \text{,} \\
-    R_p = \SI{50}{\ohm} \text{,} \\
-    R_{g1} = \SI{36.3}{\ohm} \text{,} \\
-    R_{g2} = \SI{17.3}{\ohm} \text{,} \\
-    R_{g3} = \SI{17.3}{\ohm} \text{,} \\
-    R_{i} = \SI{50}{\ohm} \text{,} \\
-    R_{c} = \SI{600}{\ohm} \text{,} \\
-    \delta = 17,7493332 \text{.} \\
-  \end{array} \text{.}
+    R = \SI{25}{\kilo\ohm} \, \text{,} \\
+    R_p = \SI{50}{\ohm} \, \text{,} \\
+    R_{g1} = \SI{36.3}{\ohm} \, \text{,} \\
+    R_{g2} = \SI{17.3}{\ohm} \, \text{,} \\
+    R_{g3} = \SI{17.3}{\ohm} \, \text{,} \\
+    R_{i} = \SI{50}{\ohm} \, \text{,} \\
+    R_{c} = \SI{600}{\ohm} \, \text{,} \\
+    \delta = 17,7493332 \, \text{.} \\
+  \end{array} \, \text{.}
 \end{equation*}
 %
 It must be pointed out that if $C_s \neq 0$, the system is an \acp{ODE}, otherwise, it is an index-2 \ac{DAE} system. In the original test problem in~\cite{lioen1998test, mazzia2008test}, the authors set $C_s = \SI{2}{\pico\farad}$ to obtain an \ac{ODE} system. In Figure~\ref{chap4:fig:ring_modulator}, the electric ring modulator circuit is shown.
 
-Considering $C_s = 0$, the index reduction process is flawlessly performed through the presented algorithm, complexity of the expressions encountered throughout the index reduction is detailed in \tablename{}~\ref{chap4:tab:tppc_robot}. Numerical integration in the specified time interval $t \in \RSI{0}{1}{\milli\second}$ is successfully performed by \Indigo{} numerical solvers. Conversely, \Maple{} is not able to integrate the original \ac{DAE} due to computational time exceeding \SI{100}{\second}. Results of the numerical integration are shown in Figure~\ref{chap4:fig:ring_modulator_results}, where the modulated output signal $U_2$ is represented. Notice that the modulated output signal is strongly influenced by the $C_s = 0$ assumption and the magnitude of $U_2$ is reduced by a factor of $10^6$.
+Considering $C_s = 0$, the index reduction process is flawlessly performed through the presented algorithm, complexity of the expressions encountered throughout the index reduction is detailed in Table~\ref{chap4:tab:tppc_robot}. Numerical integration in the specified time interval $t \in \RSI{0}{1}{\milli\second}$ is successfully performed by \Indigo{} numerical solvers. Conversely, \Maple{} is not able to integrate the original \ac{DAE} due to computational time exceeding \SI{100}{\second}. Results of the numerical integration are shown in Figure~\ref{chap4:fig:ring_modulator_results}, where the modulated output signal $U_2$ is represented. Notice that the modulated output signal is strongly influenced by the $C_s = 0$ assumption and the magnitude of $U_2$ is reduced by a factor of $10^6$.
 
 \begin{figure}
   \centering
@@ -1523,7 +1535,7 @@ Considering $C_s = 0$, the index reduction process is flawlessly performed throu
     \end{tabular}}
 \end{table}
 
-\begin{figure}[!htb]
+\begin{figure}[htb]
   \centering
   \small{\includetikz{figures/chapter_4/ring_modulator.tex}}
   \caption{Electric ring modulator circuit integration results~\cite{lioen1998test, mazzia2008test} in the time interval $t \in \RSI{0}{1}{\milli\second}$. The lines represent the modulated output signal $U_2$, which is equal to the state variable $x_2$. \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} output signal $U_2$ with $C_s = \SSI{0}{\pico\farad}$ (\ac{DAE} system), \textcolor{mycolor2}{$\blacksquare$} output signal $U_2$ with $C_s = \SSI{2}{\pico\farad}$ (\ac{ODE} system).}
@@ -1534,7 +1546,7 @@ Considering $C_s = 0$, the index reduction process is flawlessly performed throu
 
 The cascade of differential amplifiers is an example of a system whose index can be arbitrarily high, depending on how many operational amplifiers are cascaded. If we consider a circuit with one differential amplifier as shown in Figure~\ref{chap:4:fig:diffamp_single} and, assuming that the operational amplifier is ideal, the circuit equations lead to the relation $x(t) = -C R U(t)^{\prime}$ where $U(t)$ is the generator voltage. Since the solution to the circuit equations involves at least one derivative of the input function, the system must be index-1. By cascading a series of $p \in \mathcal{N}$ differential amplifiers in a circuit as in Figure~\ref{chap:4:fig:diffamp_cascade}, we can see that the resulting \acp{DAE} index is equal to $p$. Specifically, the voltage at the output of the $p$-th differential amplifier is given by $x_p(t) = -C_p R_p x_{p-1}(t)^{\prime}$, where $v(t) = -C_1 R_1 U(t)^{\prime}$. Thence the following system of equations is obtained
 %
-\begin{equation}
+\begin{equation*}
   \begin{cases}
     x_1(t) = -C_1 R_1 U(t)^{\prime} \\
     x_2(t) = -C_2 R_2 x_1(t)^{\prime} \\
@@ -1544,20 +1556,20 @@ The cascade of differential amplifiers is an example of a system whose index can
   %
   \quad \text{whose analytical solution is} \quad
   %
-  x_i(t) = \prod_{j=1}^{i} (-C_j R_j) \dfrac{\de{}^{i}}{\de{}t^{i}}U(t) \text{.}
-\end{equation}
+  x_i(t) = \prod_{j=1}^{i} (-C_j R_j) \dfrac{\de{}^{i}}{\de{}t^{i}}U(t) \, \text{.}
+\end{equation*}
 %
 Consistent initial conditions at $t = t_0$ can be easily obtained by evaluating the analytical solution at $t = t_0$, \ie{},
 %
-\begin{equation}
+\begin{equation*}
   \m{x}_0 = \begin{bmatrix}
     -C_1 R_1 \left.\dfrac{\de{}}{\de{}t}U(t)\right|_{t=t_0} \\
     \vdots \\
     \displaystyle\prod_{j=1}^{p} (-C_j R_j) \left.\dfrac{\de{}^{p}}{\de{}t^{p}}U(t)\right|_{t=t_0}
-  \end{bmatrix} \text{.}
-\end{equation}
+  \end{bmatrix} \, \text{.}
+\end{equation*}
 
-\begin{figure}[!htb]
+\begin{figure}[htb]
   \centering
   \begin{subfigure}[t]{0.26\textwidth}
     \centering
@@ -1578,7 +1590,7 @@ Consistent initial conditions at $t = t_0$ can be easily obtained by evaluating 
 
 The index reduction of such a system, which falls under the category of linear \acp{DAE}, is pretty much straightforward. \Indigo{} can reduce to index-0 systems made of up to $p = 100$ differential amplifiers, even if the performance of the reduction process is strongly linked to the capabilities of \Maple{} symbolic kernel to deal with sparse large matrices. An interesting aspect that this last application brings to light is how systematically the index reduction process is performed through \Indigo{}. The system is transformed in the form $\mE \, \mx = \mg$ with $\ma = \m{0}$, which is explicitly given by
 %
-\begin{equation}
+\begin{equation*}
   \left[\begin{array}{ccc|c}
     -C_2 R_2 & & & 0 \\
     & \ddots & & \vdots \\
@@ -1595,12 +1607,12 @@ The index reduction of such a system, which falls under the category of linear \
   %
   \ma = \begin{bmatrix}
     - x_1 - C_1 R_1 \dfrac{\de{}}{\de{}t}U(t)
-  \end{bmatrix} \text{.}
-\end{equation}
+  \end{bmatrix} \, \text{.}
+\end{equation*}
 %
 Then the index reduction is performed $p$ times, and the system $\mE \, \mx = \mg$ at the $k$-th index reduction step is given by
 %
-\begin{equation}
+\begin{equation*}
   \left[\begin{array}{ccc|c|ccc}
     1 &        &   & \\
       & \ddots &   & \\
@@ -1621,12 +1633,12 @@ Then the index reduction is performed $p$ times, and the system $\mE \, \mx = \m
     \displaystyle\prod_{j=1}^{k-1} (-C_j R_j) \dfrac{\de{}^k}{\de{}t^k}U(t) \\ \hline
     x_{k+2} \\ \vdots \\ x_p \\ \hline
     \displaystyle\prod_{j=1}^{k} (-C_j R_j) \dfrac{\de{}^{k+1}}{\de{}t^{k+1}}U(t)
-  \end{array}\right] \text{,}
-\end{equation}
+  \end{array}\right] \, \text{,}
+\end{equation*}
 %
 with algebraic equations $\ma = \m{0}$ and hidden constraints $\mh = \m{0}$ given by
 %
-\begin{equation}
+\begin{equation*}
   \ma = \begin{bmatrix}
     -x_{k+1} + \displaystyle\prod_{j=1}^{k+1} (-C_j R_j) \dfrac{\de{}^{k+1}}{\de{}t^{k+1}}U(t)
   \end{bmatrix}
@@ -1637,12 +1649,12 @@ with algebraic equations $\ma = \m{0}$ and hidden constraints $\mh = \m{0}$ give
     -x_{1} - C_1R_1 \dfrac{\de{}}{\de{}t}U(t) \\
     \vdots \\
     -x_k + \displaystyle\prod_{j=1}^{k} (-C_j R_j) \dfrac{\de{}^{k}}{\de{}t^{k}}U(t)
-  \end{bmatrix} \text{.}
-\end{equation}
+  \end{bmatrix} \, \text{.}
+\end{equation*}
 %
 The reduced index-0 system is then given by
 %
-\begin{equation}
+\begin{equation*}
   \begin{bmatrix}
     1 & & \\
     & \ddots & \\
@@ -1663,23 +1675,27 @@ The reduced index-0 system is then given by
     -x_{1} - C_1R_1 \dfrac{\de{}}{\de{}t}U(t) \\
     \vdots \\
     -x_k + \displaystyle\prod_{j=1}^{p} (-C_j R_j) \dfrac{\de{}^{p}}{\de{}t^{p}}U(t)
-  \end{bmatrix} \text{.}
-\end{equation}
+  \end{bmatrix} \, \text{.}
+\end{equation*}
 %
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
 \section{Summary of Results and Discussion}
 
+It is now time to summarize the results obtained from the experiments and discuss the performance of the presented algorithm. To do so we will consider the following aspects: the symbolic index reduction, the numerical integration, and the overall performance of the algorithm. The results are summarized in Table~\ref{chap3:tab:numerical_integration}, where for each example the solution process is summarized in brief. It is important to highlight that in the same table, the examples are numbered according to the order in which they were presented in this chapter, which will be useful for the discussion that follows.
+
 \subsection{Symbolic Index Reduction}
 
-The presented algorithm can successfully reduce the index of all the example \ac{DAE} systems here considered. The computational cost of the expressions generated during the index reduction procedure is comparable to the original \ac{DAE} system in most of the tests. However, it is important to highlight that in examples 7, 8 and 9c some of the expressions generated during the index reduction procedure are significantly more complex than the original \ac{DAE} system. In these cases, the \Maple{} symbolic computation kernel is not able to perform the simplification within \SI{100}{\second} of CPU time and the raw expressions are kept in the following reduction steps. As a consequence, the computational cost inherently increases throughout the following reduction steps. The \ac{DAE} systems that are hard to simplify are those having a matrix $\mA$ that is strongly dependent on the state variables $\mx$ or equivalently that retains complicated divisions in the vector $\mb$. In these cases, the computational cost of the vector $\ma$ increases significantly due to successive and repeated differentiation and symbolic factorization. The trigonometric identities provided by Weierstra{\ss}~\eqref{chap3:eq:weierstrass} or~\eqref{chap3:eq:zhou} can be used to obtain polynomial expressions and improve the detection of symbolic eliminations (see~\ref{chap3:sec:signature}). However, the use of such trigonometric identities does not typically lead to a significant improvement in the computational cost of the expressions generated during the index reduction procedure as the polynomial expressions obtained are hard to simplify as well.
+The first aspect to consider is the symbolic index reduction process. Specifically, the presented algorithm can successfully reduce the index of all the example \ac{DAE} systems here considered. The computational cost of the expressions generated during the index reduction procedure is comparable to the original \ac{DAE} system in most of the tests. However, in examples 3, 6, 7 and 11 the expressions generated during the index reduction procedure are significantly more complex than the original \ac{DAE} system. In these cases, the \Maple{} symbolic computation kernel is not able to perform the simplification within \SI{100}{\second} of CPU time and the raw expressions are kept in the following reduction steps. As a consequence, the computational cost inherently increases throughout the following reduction steps. Notably, the \ac{DAE} systems that are hard to simplify are those having a matrix $\mA$ that is strongly dependent on the state variables $\mx$ or equivalently that retains complicated divisions in the vector $\mb$. In these cases, the computational cost of the vector $\ma$ increases significantly due to successive and repeated differentiation and symbolic factorization. In examples 3, 6, 7 and 11, the hierarchical pivoting strategy is then used to mitigate the expression swell and ensure the successful index reduction of the \ac{DAE} system. In examples 3 and 11 the veiling strategy proved to be of substantial help, effectively reducing the expression complexities and ensuring the successful index reduction of the \ac{DAE} system. In examples 6 and 7, the hierarchical representation is not used on purpose to understand the impact of the expression swell on the numerical integration process.
 
-Another aspect that is important to mention is the sudden increase in computational complexity of the expressions generated in the last reduction step. Even if this increase is not critical to the correct index reduction as the presented algorithm is robust to expression swell, it does undermine the numerical efficiency of the final \ac{DAE} system. This highlights the need for further research on expression swell mitigation techniques in symbolic computation (see~\ref{chap3:sec:lem}), as well as the need to use integrators that can handle index-1 or even index-2 \acp{DAE}.
+It worth mentioning that the trigonometric identities provided by Weierstra{\ss}~\eqref{chap2:eq:weierstrass} or~\eqref{chap2:eq:zhou} can be used to obtain polynomial expressions and improve the detection of symbolic eliminations (see Section~\ref{chap2:sec:signature}). However, the use of such trigonometric identities does not typically lead to a significant improvement in the computational cost of the expressions generated during the index reduction procedure as the polynomial expressions obtained are hard to simplify as well. Furthermore, such transformations impose a change of coordinates in the original \ac{DAE} system, which may be undesirable in some applications.
+
+Another aspect that is important to mention is the sudden increase in computational complexity of the expressions generated in the last reduction step. Even if this increase is not critical to the correct index reduction as the presented algorithm is robust to expression swell, it does undermine the numerical efficiency of the final \ac{DAE} system. This highlights the need for further research on expression swell mitigation techniques in symbolic computation (see Section~\ref{chap2:sec:lem}), as well as the need to use integrators that can handle index-1 or even index-2 \acp{DAE}.
 
 \subsection{Numerical Integration}
 
-The numerical integration for the remaining examples is also carried out, with outcomes detailed in \tablename{}~\ref{chap3:tab:numerical_integration}. This table reports the performance comparison between the joint index reduction algorithm and numerical integration schemes offered by \Maple{} and those of \Indigo{}. To ensure a fair comparison, both \Maple{} and \Indigo{} utilize the Runge-Kutta-Fehlberg 4(5) method for numerical integration of the \ac{DAE} system. Identical error tolerances are applied, with a relative tolerance of $10^{-6}$ and an absolute tolerance of $10^{-7}$. The results illustrate that the \Indigo{}'s index reduction algorithm implementation effectively generates numerically stable reduced-index \acp{DAE}, ensuring consistent integration across examples. However, exceptions arise in examples 8, 9b, and 9c. In example 8, \Maple{} fails to generate code for the reduced-index system within the expected time frame, thus the integration is not performed. This is due to the complexity of the expressions generated during the index reduction procedure, which overloads the \Maple{}'s \texttt{CodeGeneration} package. Conversely, in examples 9b and 9c the integration of the reduced-index system is successfully performed using the non-default implicit RadauIIA5 method. Nonetheless, \Maple{}'s \texttt{dsolve} exceeded the function evaluations limit during the numerical integration of example 4 and fails in examples 5, 7, 8, 9b, and 9c due to either system's stiffness or high index.
+The numerical integration for the remaining examples is also carried out, with outcomes detailed in Table~\ref{chap3:tab:numerical_integration}. This table reports the performance comparison between the joint index reduction algorithm and numerical integration schemes offered by \Maple{} and those of \Indigo{}. To ensure a fair comparison, both \Maple{} and \Indigo{} utilize the Runge-Kutta-Fehlberg 4(5) method for numerical integration of the \ac{DAE} system. Identical error tolerances are applied, with a relative tolerance of $10^{-6}$ and an absolute tolerance of $10^{-7}$. The results illustrate that the \Indigo{}'s index reduction algorithm implementation effectively generates numerically stable reduced-index \acp{DAE}, ensuring consistent integration across examples. However, exceptions arise in examples 3, 5, 6, 7, 9, 10, 11, 13, and 14. Specifically, in examples 3, 5, 6, 7, 9, 11, and 13, \Maple{} fails to generate code for the reduced-index system within the expected time frame, thus the integration is not performed. This is due to the complexity of the expressions generated during the index reduction procedure, which overloads the \Maple{}'s \texttt{CodeGeneration} package. On the other hand in examples 10 and 14, the numerical integration can not be performed due to the inability of \Maple{} to verify the consistency of the \ac{IVP}. The \Indigo{} numerical integration is successful in all examples, except for example 11, where it fails to generate the code for the reduced-index system within the expected time frame. This is due to the complexity of the expressions generated during the index reduction procedure, which overloads the \Indigo{}'s \texttt{CodeGeneration} package. Notably, in examples 5, 6 and 7 the integration of the reduced-index system is successfully performed using the non-default implicit RadauIIA5 method. Nonetheless, the high expression swell in these examples lead to a significant increase in the computational cost of the numerical integration, however, the numerical stability is not compromised. Notice that \Maple{}'s \texttt{dsolve} exceeded the function evaluations limit during the numerical integration of these examples due to either system's stiffness or high index.
 
 It is important to highlight that during the numerical integration, the symbolic code is not regenerated by updating the index reduction. Therefore, for some numerical values of states and parameters, the \acp{DAE} system structure may change, leading to numerical instability. While this does pose a potential issue, it is worth noting that we have not encountered instability in the integration process, proving that the presented pivoting strategy is effective.
 

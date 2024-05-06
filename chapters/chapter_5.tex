@@ -1,0 +1,37 @@
+%!TEX root = ../main.tex
+
+\chapter{Conclusions and Future Work}
+\label{chap5:conclusions}
+
+\section{Conclusions}
+
+In this thesis, we presented a methodology for the automatic index reduction of \ac{DAE} systems. The index reduction algorithm is based on the separation of the system into differential and algebraic parts with the help of symbolic linear algebra, \ie{}, \ac{LU} matrix factorization. However, the current capabilities of \Maple{} kernel do not allow for an effective handling of large expressions. That is why we exploited the latest state-of-the-art symbolic computation techniques to manage large expressions and to reduce the computational complexity of the expressions generated during the index reduction procedure. The open-source \LEM{} and \LAST{} libraries implement matrix factorization with large expression management, and form the core of the symbolic index reduction algorithm. The symbolic index reduction algorithm is implemented in the \Indigo{} software package, which is a \Maple{} library for the analysis of \ac{DAE} systems. The \Indigo{} software package is capable of automatically reducing the index of \ac{DAE} systems, and provides a comprehensive set of tools for the analysis of \ac{DAE} systems, ranging from the involved symbolic manipulation, as well as \Matlab{} code generation, for the numerical integration of the reduced-index \ac{DAE} systems.
+
+Notably, symbolic-numerical examples are presented to detail the capabilities of the proposed index reduction algorithm. The results show that the presented algorithm is capable of consistently reducing high-index \ac{DAE} systems to index-0 \acp{DAE}. The computational cost of the expressions generated during the index reduction procedure is comparable to the original \ac{DAE} system in most of the examples. However, the \Maple{} symbolic computation kernel is not always able to perform the simplification in some cases. As a consequence, the expression complexity increases significantly throughout the left reduction steps. Still, the presented algorithm can successfully reduce the index of the \ac{DAE} system. Yet, the numerical efficiency of the final \ac{DAE} system is undermined by the inherent increase in computational complexity of the expressions generated in the last reduction steps. This brought us to the inclusion of large expression management techniques in the symbolic index reduction algorithm to limit expression swell, as well as to augment the \ac{DAE} system and obtain a more compact representation of the expressions generated during the index reduction procedure. Despite this intricacy, the reduced-index systems are proven to retain good numerical stability during the integration process. A comparison between the joint index reduction algorithm and numerical integration schemes offered by \Maple{} with those of \Indigo{} demonstrates the effectiveness of the proposed methodology and software implementation.
+
+As a concluding remark, the symbolic index reduction algorithm that we presented in this thesis is capable of reducing the high-index \ac{DAE} systems to index-0 or index-1 \acp{DAE}. This provides a solid foundation for practical applications in the field of control engineering, as well as in the field of scientific computing. To this end, the \Indigo{} software package, as well as its supporting libraries, \LEM{} and \LAST{}, are made available to the public as open-source software under the BSD 3-Clause License. Future publications, such as~\cite{stocco2024imece_solution}, will aim at promoting the use of the proposed methodology and software package in the scientific community.
+
+\section{Future Work}
+
+This is probably the most exciting part of the thesis, as it opens up a wide range of possibilities for future work. The symbolic index reduction algorithm presented in this thesis is a solid foundation for future research in the field of symbolic computation. Given the complexities we encountered during the development of the symbolic index reduction algorithm, there are several directions for future work that could be pursued. Some of the most promising directions for future work are outlined below.
+
+\paragraph{Detection of Linear Index-1 Variables}
+
+Future efforts will focus on enhancing the algorithm to handle more complicated \ac{DAE} systems. Specifically, addressing expression swell mitigation techniques and leveraging the symbolic computation software's simplification capabilities are crucial for optimizing the algorithm's performance. To this end, the algorithm will be extended to detect and accordingly solve index-1 variables $\boldsymbol{\lambda}$ that are linearly present in the system's equations. This extension leads to the reduced system
+%
+\begin{equation*}
+  \m{F}(\tilde{\m{x}}, \tilde{\m{x}}^{\prime}, \boldsymbol{\lambda}, \m{v}, t) = \m{E}(\tilde{\m{x}}, \boldsymbol{\lambda}, \m{v}, t) \tilde{\m{x}}^{\prime} - \m{g}(\tilde{\m{x}}, \boldsymbol{\lambda}, \m{v}, t) = \m{0} \text{,}
+\end{equation*}
+%
+with state vector $\mx = [\tilde{\m{x}}, \boldsymbol{\lambda}]^\top$, veiling variables $\m{v}(\tilde{\m{x}}, t)$, linear index-1 variables $\m{A}_{\boldsymbol{\lambda}}(\tilde{\m{x}}, \m{v}, t) \boldsymbol{\lambda} = \m{b}_{\boldsymbol{\lambda}}(\tilde{\m{x}}, \m{v}, t)$, and invariants $\m{h}(\tilde{\m{x}}, \boldsymbol{\lambda}, \m{v}, t) = \m{0}$. Importantly, this enables us to avoid the last factorization step -- the most computationally expensive step, usually leading to the strongest expression swell -- while also reducing the size of the differential system.
+
+\paragraph{Computer Algebra System}
+
+
+
+\section{Applications of the Proposed Methodology}
+
+\paragraph{Optimal Control}
+
+\paragraph{Nonlinear Optimization}
+

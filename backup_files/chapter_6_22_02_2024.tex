@@ -238,7 +238,7 @@ The \Indigo{} \Matlab{} toolbox is an object-oriented library that allows the us
     \end{equation}
 \end{itemize}
 
-To respect the invariants during the integration the \emph{standard projection} method is applied \cite{hairer2000symmetric}. This method consists of projecting the solution $\vX$ of the numerically integrated reduced-index system onto the invariants manifold $\m{h}(\vX, \m{v}, t) = \m{0}$, which is equivalent to the following constrained minimization
+To respect the invariants during the integration the \emph{standard projection} method is applied~\cite{hairer2000symmetric}. This method consists of projecting the solution $\vX$ of the numerically integrated reduced-index system onto the invariants manifold $\m{h}(\vX, \m{v}, t) = \m{0}$, which is equivalent to the following constrained minimization
 %
 \begin{equation}
   \underset{\widetilde{\vX}}{\textrm{minimize}} \quad \dfrac{1}{2}\left(\vX - \widetilde{\vX}\right)^2
@@ -278,7 +278,7 @@ In this section, an experiment using the symbolic-numerical \Indigo{} library is
 %
 where $\m{\Phi}_{\mq}(\mq, t)$ is the Jacobian matrix of the constraint vector $\m{\Phi}(\mq, t)$ with respect to the coordinates $\mq$.
 
-\begin{figure}[htp!]
+\begin{figure}[htp]
     \centering
     \begin{minipage}{0.5\textwidth}
         %\includegraphics[width=1.0\textwidth]{./ipe/SliderCrank.pdf}
@@ -401,7 +401,7 @@ Through the methodology presented in the previous Sections, the system in both f
 
 The reduced-index system is integrated using the \Indigo{} \Matlab{} toolbox. The numerical integration is performed using the \texttt{Implicit} system class with the classic 4th-order Runge-Kutta solver. The results with and without projection on the invariant manifolds are reported in \figurename~\ref{chap6:fig:numerical_integration}. As expected, the two formulations lead to similar results. Notice that the \emph{standard projection} leads to a small linear drift of the total energy of the system. Indeed, this projection algorithm does not mitigate the geometric properties destruction of the differential equations numerical solution discretization, making it less suitable for long-time integration~\cite{hairer2000symmetric}.
 
-\begin{figure}[ht!]
+\begin{figure}[htp]
     \centering
     %\input{./tikz/theta.tex}
     \hfill
