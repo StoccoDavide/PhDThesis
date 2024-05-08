@@ -13,25 +13,39 @@ As a concluding remark, the symbolic index reduction algorithm that we presented
 
 \section{Future Work}
 
-This is probably the most exciting part of the thesis, as it opens up a wide range of possibilities for future work. The symbolic index reduction algorithm presented in this thesis is a solid foundation for future research in the field of symbolic computation. Given the complexities we encountered during the development of the symbolic index reduction algorithm, there are several directions for future work that could be pursued. Some of the most promising directions for future work are outlined below.
+This is probably the most exciting part of the thesis, as it opens up a wide range of possibilities for future work. The symbolic index reduction algorithm presented in this thesis is a solid foundation for future research in the field of symbolic computation. However, future efforts will focus on enhancing the algorithm to handle more complicated \ac{DAE} systems. Specifically, addressing expression swell mitigation techniques while guaranteeing the numerical stability of the reduced-index \ac{DAE} systems is crucial for optimizing the algorithm's performance. Thereby, there are several directions for future work that could be pursued. Some of the most promising are outlined here below.
 
 \paragraph{Detection of Linear Index-1 Variables}
 
-Future efforts will focus on enhancing the algorithm to handle more complicated \ac{DAE} systems. Specifically, addressing expression swell mitigation techniques and leveraging the symbolic computation software's simplification capabilities are crucial for optimizing the algorithm's performance. To this end, the algorithm will be extended to detect and accordingly solve index-1 variables $\boldsymbol{\lambda}$ that are linearly present in the system's equations. This extension leads to the reduced system
+During the index reduction procedure, we noticed that the strongest expression swell occurs in the last factorization step. This is due to the presence of index-1 variables that are linearly present in the system's equations, which are substituted in the \ac{DAE} system by factorization. The detection of these variables would have a relevant impact on the optimization of the algorithm, as it would enable us to avoid the last factorization step, which is typically the most computationally expensive step in the algorithm.
+
+\paragraph{System Augmentation}
+
+One may also argue that veiling variables are also linear index-1 state variables. However, until this moment, we have not considered them as such. This can be exploited to augment the \ac{DAE} system with the corresponding equations. Specifically, whenever a ``complicated'' pivot is detected in the factorization process, we could just transform it into a new veiling variable, with which we could augment the system. This would would have the following benefits.
 %
-\begin{equation*}
-  \m{F}(\tilde{\m{x}}, \tilde{\m{x}}^{\prime}, \boldsymbol{\lambda}, \m{v}, t) = \m{E}(\tilde{\m{x}}, \boldsymbol{\lambda}, \m{v}, t) \tilde{\m{x}}^{\prime} - \m{g}(\tilde{\m{x}}, \boldsymbol{\lambda}, \m{v}, t) = \m{0} \text{,}
-\end{equation*}
-%
-with state vector $\mx = [\tilde{\m{x}}, \boldsymbol{\lambda}]^\top$, veiling variables $\m{v}(\tilde{\m{x}}, t)$, linear index-1 variables $\m{A}_{\boldsymbol{\lambda}}(\tilde{\m{x}}, \m{v}, t) \boldsymbol{\lambda} = \m{b}_{\boldsymbol{\lambda}}(\tilde{\m{x}}, \m{v}, t)$, and invariants $\m{h}(\tilde{\m{x}}, \boldsymbol{\lambda}, \m{v}, t) = \m{0}$. Importantly, this enables us to avoid the last factorization step -- the most computationally expensive step, usually leading to the strongest expression swell -- while also reducing the size of the differential system.
+\begin{itemize}
+  \setlength{\itemsep}{0pt}
+  \item The augmentation introduces a new equation that grants us a one in the pivot position, which allows us to continue with the factorization process by keeping the complexity of the expressions under control.
+  \item The numerical stability of the reduced-index \ac{DAE} system is better guaranteed, as the pivot is not substituted by a complicated expression, but by a one in the diagonal of the matrix being factorized. The overhead is relegated to the right-hand side of the system, which does not affect the numerical stability of the system.
+  \item The augmentation exploits the detection of linear index-1 variables, but in a more general way, as both veiling variables and linear index-1 variables are considered as the system's state variables.
+\end{itemize}
+
+Notably, the problem of finding consistent initial conditions for the augmented system would not get more complicated, as the augmented system in its index-1 form, separates the differential variables from the index-1 variables, with these latter depending on the state variables and not on their derivatives. This would allow us to find consistent initial conditions for the augmented system in the same straightforward manner as we did previously.
 
 \paragraph{Computer Algebra System}
 
-
+The \Maple{} computer algebra system is a powerful tool for symbolic computation. The current capabilities of the \Maple{} kernel do not allow for an effective handling of large expressions. This is why we resorted to the latest state-of-the-art symbolic computation techniques to handle large expressions and to mitigate the computational complexity of the expressions generated during the index reduction procedure. However, in some cases, the \Maple{} symbolic computation kernel struggles to perform the index reduction procedure. This is due to \ac{CAS}'s sensitivity to the size of the generated expressions. Despite this being a normal behavior for symbolic computation systems, it would be beneficial to explore the possibility of implementing the symbolic index reduction algorithm in an open-source, efficient symbolic computation system. This would allow us to exploit the full potential of the symbolic index reduction algorithm, as well as to know the limitations of the algorithm in terms of computational complexity and try to overcome them by having an in-depth understanding of the \ac{CAS}.
 
 \section{Applications of the Proposed Methodology}
 
+In this thesis, we have only explored the capabilities of the proposed methodology in some application examples, which are mainly focused on the validation of the symbolic index reduction algorithm and the \Indigo{} software package. However, the proposed methodology has a wide range of applications in real-world problems. Some of the most promising applications are outlined here below.
+
 \paragraph{Optimal Control}
+
+The proposed methodology can be used in \acp{OCP} to reduce the index of the \ac{DAE} system and to obtain an index-0 \ac{DAE} system. This would allow us to apply numerical integration schemes to solve the \ac{OCP}. Specifically, the index-0 \ac{DAE} system can be integrated as a standard \ac{ODE}, while the hidden constraints can be enforced by introducing a quadratic penalty term in the cost function.
+
+Another approach would be to exploit a common interface between \ac{ODE} and \ac{DAE} systems. In particular, we can provide the \ac{OCP} solver with the values of the state variables derivatives, as well as the appropriate Jacobian matrices at any given time. How the Jacobian matrices are computed will be thereby hidden from the solver, which uses them to compute the \ac{OC} input. This would allow us to solve the \ac{OCP} by integrating \ac{DAE} systems likewise \acp{ODE}, while also enforcing invariants or hidden constraints and providing the Jacobian matrices at each time step.
 
 \paragraph{Nonlinear Optimization}
 
+Likewise \citet{shmoylova2013simplification}, \ac{NLP} problems can also be tackled using \ac{DAE} systems. Specifically, if one formulate the \ac{NLP} problem through a Lagrangian function, the \ac{KKT} conditions would yield a \ac{DAE} system of index-2. The proposed methodology can be used to reduce the index of the \ac{DAE} system and to obtain an index-0 \ac{DAE} system. This would allow us to apply numerical integration schemes to solve the \ac{NLP} problem.

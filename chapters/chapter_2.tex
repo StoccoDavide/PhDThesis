@@ -16,22 +16,6 @@ Over the past five decades, computers have evolved into indispensable tools for 
 
 \subsection{Elementary Concepts of Computer Algebra}
 
-%A \ac{CAS} is a specialized software designed to execute symbolic mathematical operations. As a result, it possesses the capability to execute precise symbolic computations across various mathematical domains. Some of these capabilities include but are not limited to the following operations.
-%
-%\begin{itemize}
-%  \setlength{\itemsep}{0.0em}
-%  \item \textbf{Arithmetic:} Performing unlimited precision rational number arithmetic, complex (rational number) arithmetic, transforming number bases, interval arithmetic, modulo arithmetic, integer operations (such as greatest common divisors, least common multiples, prime factorization), and combinatorial functions.
-%  \item \textbf{Algebraic manipulation:} Simplification, expansion, factorization, and substitution operations.
-%  \item \textbf{Polynomial operations:} Conducting structural operations on polynomials (such as determining degree and extracting coefficients), polynomial division, finding greatest common divisors, factorization, calculating resultants, polynomial decomposition, and simplification with respect to side relations.
-%  \item \textbf{Equation solving:} Handling polynomial equations, some non-linear equations, systems of linear equations, systems of polynomial equations, and recurrence relations.
-%  \item \textbf{Trigonometry:} Performing trigonometric expansion and reduction, and verifying identities.
-%  \item \textbf{Calculus:} Computing derivatives, antiderivatives, definite integrals, limits, Taylor series, manipulating power series, summing series, and executing operations involving special functions of mathematical physics.
-%  \item \textbf{Differential equations:} Solving ordinary differential equations, systems of differential equations, series solutions, solutions using Laplace transforms, and some \acp{PDE}.
-%  \item \textbf{Advanced algebra:} Manipulating algebraic numbers, exploring group theory, and investigating Galois groups.
-%  \item \textbf{Linear algebra and related topics:} Conducting matrix operations, and performing vector and tensor analysis.
-%  \item \textbf{Code generation:} Translating formulas into conventional programming languages like \Fortran{} and C, as well as mathematics word processing languages like \LaTeX{}.
-%\end{itemize}
-
 A \ac{CAS} is specialized software designed to execute symbolic mathematical operations, allowing for precise computations across various mathematical domains. Its capabilities encompass a wide range of functionalities, including arithmetic operations such as unlimited precision rational number arithmetic, complex arithmetic, and combinatorial functions. Furthermore, it enables algebraic manipulation through simplification, expansion, factorization, and substitution operations, as well as polynomial operations like structural operations, polynomial division, and finding the greatest common divisors. Additionally, it can handle equation solving for polynomial equations, systems of linear equations, and recurrence relations, while also performing trigonometric operations, calculus computations, and solving differential equations, including \acp{ODE} and \acp{PDE}. Moreover, it supports advanced algebraic manipulations, linear algebra operations, and code generation for conventional programming languages and mathematical word processing.
 
 \subsection{Commercial Computer Algebra Systems}
@@ -125,7 +109,7 @@ As we have just shown, there exist several commercial \acp{CAS} that provide a w
 %
 In Example~\ref{chap2:ex:maple_1}, the initial two prompts involve assigning a polynomial to a variable, \code{p1}, using the ``'\code{:=}'' operator, followed by factoring it into irreducible factors over the rational numbers. Subsequently, the third and fourth prompts involve inputting a rational polynomial and determining its partial fraction decomposition.
 
-In the example below, we demonstrate differentiation operation using the prompt command \code{diff}, followed by integration using the \code{int} command. Notably, the output of the \code{int} operator lacks the arbitrary constant of integration. In the fifth prompt, we assign a first-order differential equation to the variable \code{p7}. In this prompt result is can be seen that \Maple{} denotes the derivative of an unknown function $y(x)$ using the total derivative symbol ``$\de{}$''. Subsequently, we request \Maple{} to solve the differential equation at the sixth prompt. The presence of the symbol \code{C1} in the solution indicates \Maple{}'s inclusion of an arbitrary constant. This means that \Maple{} includes an arbitrary constant in the solution of a differential equation but does not include the arbitrary constant for an anti-differentiation.
+In the example below, we demonstrate differentiation operation using the prompt command \code{diff}, followed by integration using the \code{int} command. Notably, the output of the \code{int} operator lacks the arbitrary constant of integration. In the fifth prompt, we assign a first-order differential equation to the variable \code{p7}. In this prompt result, it can be seen that \Maple{} denotes the derivative of an unknown function $y(x)$ using the total derivative symbol ``$\de{}$''. Subsequently, we request \Maple{} to solve the differential equation at the sixth prompt. The presence of the symbol \code{C1} in the solution indicates \Maple{}'s inclusion of an arbitrary constant. This means that \Maple{} includes an arbitrary constant in the solution of a differential equation but does not include the arbitrary constant for an anti-differentiation.
 %
 \begin{example}[Symbolic operations from calculus and differential equations in \Maple{}] \phantom{.} \\
   \label{chap2:ex:maple_2}
@@ -700,7 +684,7 @@ The full-pivoting \ac{LU} and \ac{FFLU} decompositions are widely used algorithm
 %
 Pivoting for \ac{LU} factorization is the process of systematically selecting pivots for Gaussian elimination during the \ac{LU} factorization of a matrix. The \ac{LU} factorization is closely related to Gaussian elimination, which is unstable in its pure form. To guarantee the elimination process goes to completion, we must ensure that there is a non-zero pivot at every step of the elimination process. This is the reason we need to pivot when computing \ac{LU} factorizations. But we can do more with pivoting than just making sure Gaussian elimination is completed. To ensure the numerical stability of the \ac{LU}, we need to consider that the domain of the entries of the matrix $\m{A}$ is not only the real number set but also the more generic symbolic domain. Hence, we need to consider the symbolic stability of the \ac{LU} factorization from two different perspectives: the numerical one and the symbolic one.
 
-\subsubsection{The LU Factorization from a Numerical Computation Standpoint}
+\subsubsection{The LU Factorization from a Numerical Computation Point of View}
 
 From a numerical perspective, we can reduce round-off errors during computation and improve the algorithm \emph{backward stability} by implementing the right pivoting strategy. Depending on the matrix $\m{A}$, some \ac{LU} decompositions may become numerically unstable if either numerically small pivots or symbolically zero pivots are used. Relatively small pivots cause instability because they operate very similar to zeros during Gaussian elimination. Through the process of pivoting, we can greatly reduce this instability by ensuring that we use the largest available entry as our pivot elements. This prevents large factors from appearing in the computed $\m{L}$ and $\m{U}$, which reduces round-off errors during computation. The following example illustrates the importance of pivoting in the \ac{LU} factorization.
 
@@ -989,7 +973,7 @@ A detailed description of the developed symbolic pivoting strategy is presented 
       \For{$i$ \textbf{from} $1$ \textbf{to} $m$} \Comment{Iterate over the rows}
         \IfThen{$A_{ij} \neq 0$}{$d^c_j \gets d^c_j + 1$} \Comment{Increment the column degree}
       \EndFor
-    \EndFor
+    \EndFor \\
     \Return $\m{d}^r, \, \m{d}^c$ \Comment{Return the row and column degrees of $\m{A}$}
     \EndProcedure
   \end{algorithmic}

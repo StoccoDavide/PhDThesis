@@ -18,7 +18,7 @@ A system of equations involving one or more unknown functions and their derivati
   \label{chap1:eq:dae}
 \end{equation}
 %
-where $\m{x}(t) = \m{x}$ denotes the vector of unknown functions, and $\m{F}(\m{x}, \m{x}^{\prime}, t) = \m{F}$ consists of $n$ components. Notice the components of $\m{x}$ and $\m{F}$ are denoted as $x_i$ and $F_i$, respectively, for $i = 1, 2, \dots, n$. The term ``\ac{DAE}'' is typically used when the highest derivative $\m{x}^{\prime}$ can not be explicitly solved in terms of the other variables $\m{x}$ and $t$ within the algebraic relationship represented by~\eqref{chap1:eq:dae}. Notably, the Jacobian $\m{JF}_{\m{x}^{\prime}}$ along a specific solution of the \ac{DAE} might become singular. Systems of equations like~\eqref{chap1:eq:dae} are also known as \emph{implicit} systems. Depending on the context, a \ac{DAE} may represent either an \ac{IVP}, where $\m{x}$ is specified at the initial time (\eg{}, $x(t_0) = x_0$), or a \ac{BVP}, where the solution adheres to $n$ two-point boundary conditions (\eg{}, $g(x(t_0), x(t_f)) = 0$).
+where $\m{x}(t) = \m{x}$ denotes the vector of unknown functions, and $\m{F}(\m{x}, \m{x}^{\prime}, t) = \m{F}$ consists of $n$ components. Notice the components of $\m{x}$ and $\m{F}$ are denoted as $x_i$ and $F_i$, respectively, for $i = 1, 2, \dots, n$. The term ``\ac{DAE}'' is typically used when the highest derivative $\m{x}^{\prime}$ can not be explicitly solved in terms of the other variables $\m{x}$ and $t$ within the algebraic relationship represented by~\eqref{chap1:eq:dae}. Notably, the Jacobian $\jac{\m{F}}{\m{x}^{\prime}}$ along a specific solution of the \ac{DAE} might become singular. Systems of equations like~\eqref{chap1:eq:dae} are also known as \emph{implicit} systems. Depending on the context, a \ac{DAE} may represent either an \ac{IVP}, where $\m{x}$ is specified at the initial time (\eg{}, $x(t_0) = x_0$), or a \ac{BVP}, where the solution adheres to $n$ two-point boundary conditions (\eg{}, $g(x(t_0), x(t_f)) = 0$).
 
 The solution approach for a \ac{DAE} depends on its structural characteristics. A prevalent category of \acp{DAE} encountered in practical applications is the semi-explicit \ac{DAE}, represented as
 %
@@ -30,7 +30,7 @@ The solution approach for a \ac{DAE} depends on its structural characteristics. 
   \label{chap1:eq:semiexplicit_dae}% not to indent the following text
 \end{subequations}
 %
-where~\eqref{chap1:eq:semiexplicit_dae_diff} and~\eqref{chap1:eq:semiexplicit_dae_alg} denote the \emph{differential equations} and the \emph{algebraic constraints}, respectively. An example of a \ac{DAE} system of the form~\eqref{chap1:eq:semiexplicit_dae} is the simple pendulum, where the motion of a mass at the end of a rod is constrained to a fixed length. In the Cartesian coordinates, the system is described by a set of \acp{DAE} that can be transformed into the classical \ac{ODE} for a pendulum.
+where~\eqref{chap1:eq:semiexplicit_dae_diff} and~\eqref{chap1:eq:semiexplicit_dae_alg} denote the \emph{differential equations} and the \emph{algebraic constraints}, respectively. An example of a \ac{DAE} system of the form~\eqref{chap1:eq:semiexplicit_dae} is the simple pendulum in redundant coordinates, where the motion of a mass at the end of a rod is constrained to a fixed length. In the Cartesian coordinates, the system is described by a set of \acp{DAE} that can be transformed into the classical \ac{ODE} for a pendulum.
 %
 \begin{example}[The Simple Pendulum]
   Consider a straightforward example involving the motion of a pendulum in Cartesian coordinates (see Figure 1). Let the position and velocity coordinates of the mass $m$ at the end of the rod be $(x, y)$ and $(x^{\prime}, y^{\prime}) = (u, v)$ respectively, with the angle between the rod and the vertical axis denoted as $\theta$. The position of the mass is given by $x = \ell\sin{\theta}$ and $y = \ell\cos{\theta}$, where $\ell$ represents the length of the pendulum. The Euler-Lagrange equations yield the following first-order semi-explicit \ac{DAE} system
@@ -60,12 +60,12 @@ To grasp the distinction between \acp{DAE} and \acp{ODE}, let us consider the si
 \begin{subequations}
   \begin{empheq}[left = {\empheqlbrace}, right = {\, \text{,}}]{align}
   & x^{\prime} = y \label{chap1:eq:dae_example_1} \\
-  & 0 = x - q(t) \label{chap1:eq:dae_example_2}
+  & 0 = x - q \label{chap1:eq:dae_example_2}
   \end{empheq}
   \label{chap1:eq:dae_example}% not to indent the following text
 \end{subequations}
 %
-where $q(t)$ is a suitably smooth function. Clearly, the unique solution is $x = q(t)$ and $y = q^{\prime}(t)$, without the need for initial or boundary conditions. This implies that imposing arbitrary initial conditions could render the \ac{DAE} inconsistent. Additionally, unlike \acp{ODE}, the solution's dependency on the derivative of the inhomogeneous part introduces a distinctive characteristic and, even with consistent initial values, the existence and uniqueness theory for \acp{DAE} involve more intricate technical assumptions beyond mere smoothness, as seen in the \ac{ODE} case. The requirement to differentiate $x$ in~\eqref{chap1:eq:dae_example_2}, thereby involving differentiation of the input function $q$ to determine $y$, constitutes a fundamental distinction. Hence, conversely to \acp{ODE}, \acp{DAE} may necessitate both integrations and differentiations to be resolved.
+where $q = q(t)$ is a suitably smooth function. Clearly, the unique solution is $x = q$ and $y = q^{\prime}$, without the need for initial or boundary conditions. This implies that imposing arbitrary initial conditions could render the \ac{DAE} inconsistent. Additionally, unlike \acp{ODE}, the solution's dependency on the derivative of the inhomogeneous part introduces a distinctive characteristic and, even with consistent initial values, the existence and uniqueness theory for \acp{DAE} involve more intricate technical assumptions beyond mere smoothness, as seen in the \ac{ODE} case. The requirement to differentiate $x$ in~\eqref{chap1:eq:dae_example_2}, thereby involving differentiation of the input function $q$ to determine $y$, constitutes a fundamental distinction. Hence, conversely to \acp{ODE}, \acp{DAE} may necessitate both integrations and differentiations to be resolved.
 
 \subsection{The Index... Or Better Yet, the Indices}
 
@@ -76,10 +76,10 @@ In the realm of \acp{DAE}, the concept of index serves as a metric for measuring
 Given that a \ac{DAE} encompasses both differential equations and constraints, a potential strategy involves repeatedly differentiating the constraint equations (in the semi-explicit \ac{DAE} systems of the form~\eqref{chap1:eq:semiexplicit_dae}) and substituting them into the differential ones. This process, called \emph{index reduction}, aims to transform the \ac{DAE} into an explicit \ac{ODE} system for all unknowns. The solutions of the \ac{DAE} correspond to those solutions of the resulting \ac{ODE} residing within a subset termed as the \emph{solution manifold}~\cite{rheinboldt1984differential}. The number of iterations required for this transformation is termed the differential index of the \ac{DAE}, with the underlying \acp{ODE} possessing an index of 0~\cite{mehrmann2015index}.
 
 \begin{example}[Differential Index]
-  Consider the following simple examples involving a given smooth function $y(t)$ and the unknown $x$. Then the scalar equation
+  Consider the following simple examples involving a given smooth function $y = y(t)$ and the unknown $x$. Then the scalar equation
   %
   \begin{equation}
-    x = y(t)
+    x = y
     \label{chap1:eq:dae_index_1}
   \end{equation}
   %
@@ -87,13 +87,13 @@ Given that a \ac{DAE} encompasses both differential equations and constraints, a
   %
   \begin{equation}
     \begin{cases}
-      x_1 = y(t) \\
+      x_1 = y \\
       x_2 = x_1^{\prime}
     \end{cases}
     \label{chap1:eq:dae_index_2}
   \end{equation}
   %
-  differentiating the first equation leads to $x_2 = x_1^{\prime} = y^{\prime}(t)$, and subsequent differentiation yields $x_2^{\prime} = x_1^{\prime\prime} = y^{\prime\prime}(t)$. Hence, this system possesses a differential index of 2, necessitating two differentiations to obtain the explicit underlying \ac{ODE} system.
+  differentiating the first equation leads to $x_2 = x_1^{\prime} = y^{\prime}$, and subsequent differentiation yields $x_2^{\prime} = x_1^{\prime\prime} = y^{\prime\prime}$. Hence, this system possesses a differential index of 2, necessitating two differentiations to obtain the explicit underlying \ac{ODE} system.
 \end{example}
 
 It is crucial to understand that, while $n$ initial or boundary value conditions are required to define the solution of a first-order \acp{ODE} of size $n$, the solution of the simple \acp{DAE} in the previous example is solely determined by the right-hand side, necessitating only one consistent initial condition. General \ac{DAE} systems often include \ac{ODE} subsystems, resulting in $k \in [0, n]$ \acp{DOF} for the \ac{DAE} solution. However, determining which $k$ pieces of information are necessary to determine the solution can be challenging. Initial or boundary conditions specified for the \ac{DAE} must be consistent, satisfying both the constraints and the \emph{hidden} constraints of the system, which represent the solution manifold~\cite{rheinboldt1984differential}. For instance, in the index-1 system~\eqref{chap1:eq:dae_index_1}, an initial condition must adhere to $x_1(0) = y(0)$. In the case of the index-2 system~\eqref{chap1:eq:dae_index_2}, meeting the additional constraint $x_2(0) = y^{\prime}(0)$ is necessary, along with $x_1(0) = y(0)$.
@@ -111,7 +111,7 @@ The structural index was initially introduced in the linear constant coefficient
 It is known from relevant studies, such as~\cite{lamour2013differential}, that the index may vary depending on a specific solution. An example of this is the \ac{DAE} system illustrated in the subsequent example.
 
 \begin{example}[Differential Index Dependency on Solution]
-  Consider the \ac{DAE} system
+  Consider the \ac{DAE} system in semi-explicit form
   %
   \begin{equation*}
     \begin{cases}
@@ -141,7 +141,7 @@ As will be better detailed in the forthcoming section, the implicit \ac{DAE} sys
     \end{cases} \, \text{,}
   \end{equation*}
   %
-  with $\m{x} \in \mathbb{R}^n$, $\m{z} \in \mathbb{R}^m$, $\m{f}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{n}$, $\m{g}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, and where the Jacobian $\m{Jg}_\m{z}$ is assumed non-singular for all $t$. This configuration closely resembles the semi-explicit index-1 \ac{DAE} system~\eqref{chap1:eq:semiexplicit_dae} discussed earlier. Semi-explicit index-1 \acp{DAE} shares similarities with implicit \acp{ODE}. While it is theoretically feasible to solve for $\m{z}$ in the algebraic equation (using the implicit function theorem) and then substitute it into the differential equation to derive the underlying \ac{ODE} in terms of $\m{x}$ (though uniqueness is not guaranteed), this approach is not universally recommended for numerical solutions due to potential ill-conditioning and stability issues. An example of a Hessenberg index-1 \ac{DAE} system is in the formulation of \acp{TPPC} problems~\cite{brenan1995numerical}.
+  with $\m{x} \in \mathbb{R}^n$, $\m{z} \in \mathbb{R}^m$, $\m{f}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{n}$, $\m{g}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, and where the Jacobian $\jac{\m{g}}{\m{z}}$ is assumed non-singular for all $t$. This configuration closely resembles the semi-explicit index-1 \ac{DAE} system~\eqref{chap1:eq:semiexplicit_dae} discussed earlier. Semi-explicit index-1 \acp{DAE} shares similarities with implicit \acp{ODE}. While it is theoretically feasible to solve for $\m{z}$ in the algebraic equation (using the implicit function theorem) and then substitute it into the differential equation to derive the underlying \ac{ODE} in terms of $\m{x}$ (though uniqueness is not guaranteed), this approach is not universally recommended for numerical solutions due to potential ill-conditioning and stability issues. An example of a Hessenberg index-1 \ac{DAE} system is in the formulation of \acp{TPPC} problems~\cite{brenan1995numerical}.
   %
   \item The \emph{Hessenberg index-2} \ac{DAE} system is expressed as
   %
@@ -152,7 +152,7 @@ As will be better detailed in the forthcoming section, the implicit \ac{DAE} sys
     \end{cases} \, \text{,}
   \end{equation*}
   %
-  with $\m{x} \in \mathbb{R}^n$, $\m{z} \in \mathbb{R}^m$, $\m{f}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{n}$, $\m{g}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, and where the product of Jacobians $\m{Jg}_\m{y} \, \m{Jf}_\m{z}$ is assumed non-singular for all $t$. It is important to observe that the algebraic variable $\m{z}$ does not appear in the second equation. This arrangement characterizes a pure index-2 \ac{DAE}, where all algebraic variables act as index-2 variables. An example of Hessenberg index-2 \acp{DAE}arises from the modeling of incompressible fluid flow through discretized Navier-Stokes equations~\cite{ascher1998computer}.
+  with $\m{x} \in \mathbb{R}^n$, $\m{z} \in \mathbb{R}^m$, $\m{f}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{n}$, $\m{g}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, and where the product of Jacobians $\jac{\m{g}}{\m{y}} \, \jac{\m{f}}{\m{z}}$ is assumed non-singular for all $t$. It is important to observe that the algebraic variable $\m{z}$ does not appear in the second equation. This arrangement characterizes a pure index-2 \ac{DAE}, where all algebraic variables act as index-2 variables. An example of Hessenberg index-2 \acp{DAE}arises from the modeling of incompressible fluid flow through discretized Navier-Stokes equations~\cite{ascher1998computer}.
   %
   \item The \emph{Hessenberg index-3} \ac{DAE} system is formulated as
   %
@@ -164,7 +164,7 @@ As will be better detailed in the forthcoming section, the implicit \ac{DAE} sys
     \end{cases} \, \text{,}
   \end{equation*}
   %
-  with $\m{x} \in \mathbb{R}^n$, $\m{z} \in \mathbb{R}^m$, $\m{f}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{n}$, $\m{g}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, $\m{h}: \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, and where the product $\m{Jh}_{\m{y}} \, \m{Jg}_{\m{x}} \, \m{Jf}_{\m{z}}$ is non-singular for all $t$. Determining the index of a Hessenberg \acp{DAE} follows a similar differentiation process to the general case. However, only algebraic constraints need to be differentiated~\cite{ascher1991projected}. These index-3 \ac{DAE} systems are frequently encountered in practical scenarios, notably in the fields of \ac{MBD}, \acp{TPPC}, and various engineering applications~\cite{ascher1998computer,brenan1995numerical}.
+  with $\m{x} \in \mathbb{R}^n$, $\m{z} \in \mathbb{R}^m$, $\m{f}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{n}$, $\m{g}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, $\m{h}: \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, and where the product $\jac{\m{h}}{\m{y}} \, \jac{\m{g}}{\m{x}} \, \jac{\m{f}}{\m{z}}$ is non-singular for all $t$. Determining the index of a Hessenberg \acp{DAE} follows a similar differentiation process to the general case. However, only algebraic constraints need to be differentiated~\cite{ascher1991projected}. These index-3 \ac{DAE} systems are frequently encountered in practical scenarios, notably in the fields of \ac{MBD}, \acp{TPPC}, and various engineering applications~\cite{ascher1998computer,brenan1995numerical}.
   %
   \item The \emph{Hessenberg index-($r+2$)} \ac{DAE} system is formulated as
   %
@@ -179,7 +179,7 @@ As will be better detailed in the forthcoming section, the implicit \ac{DAE} sys
     \end{cases} \quad \text{for} \quad r = 1, 2, \dots, r \, \text{,}
   \end{equation*}
   %
-  with $\m{x}_i \in \mathbb{R}^{n_i}$, $\m{y} \in \mathbb{R}^m$, $\m{z} \in \mathbb{R}^m$, $\m{f}_i: \mathbb{R}^{n_i} \times \mathbb{R}^{n_{i+1}} \times \dots \times \mathbb{R}^{n_r} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{n_i}$, $\m{g}: \mathbb{R}^{n_1} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, $\m{h}: \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, and where the product $\m{Jh}_{\m{y}} \, \m{Jg}_{\m{x}_1} \, \m{Jf}_{1\m{x}_2} \dots \m{Jf}_{r-1\m{x}_r} \, \m{Jf}_{r\m{z}}$ is non-singular for all $t$~\cite[Section 3.5]{lamour2013differential}.
+  with $\m{x}_i \in \mathbb{R}^{n_i}$, $\m{y} \in \mathbb{R}^m$, $\m{z} \in \mathbb{R}^m$, $\m{f}_i: \mathbb{R}^{n_i} \times \mathbb{R}^{n_{i+1}} \times \dots \times \mathbb{R}^{n_r} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{n_i}$, $\m{g}: \mathbb{R}^{n_1} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, $\m{h}: \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, and where the product $\jac{\m{h}}{\m{y}} \, \jac{\m{g}}{\m{x}_1} \, \jac{\m{f}}{1\m{x}_2} \dots \jac{\m{f}}{r-1\m{x}_r} \, \jac{\m{f}}{r\m{z}}$ is non-singular for all $t$~\cite[Section 3.5]{lamour2013differential}.
 \end{itemize}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
@@ -223,7 +223,7 @@ Although Euler is a first-order method, achieving higher accuracy without reduci
   \m{F}\left(\m{x}_n, \dfrac{1}{\beta_0 h} \sum_{j=0}^{s} \alpha_j \m{x}_{n-j}, t_n\right) = \m{0} \quad \text{for} \quad n = 1, 2, \dots, m \, \text{,}
 \end{equation*}
 %
-where $\beta_0$ and $\alpha_j$ for $j = 0, 1, \dots, s$ are the coefficients of the \ac{BDF} method. The $s$-step \ac{BDF} method of fixed step size $h$ has been shown to be convergent of order $\mathcal{O}(h^s)$ under certain conditions. Similar convergence results have been established for general linear multistep methods, provided their coefficients satisfy a set of order conditions, including those unique to \acp{DAE}. \ac{BDF} methods meet these additional requirements (refer to~\cite{brenan1995numerical} for additional information).
+where $\beta_0$ and $\alpha_j$ for $j = 0, 1, \dots, s$ are the coefficients of the \ac{BDF} method. The $s$-step \ac{BDF} method of fixed step size $h$ has been shown to be convergent of order $\mathcal{O}(h^s)$ under certain conditions. Similar convergence results have been established for general linear multistep methods, provided their coefficients satisfy a set of order conditions, including those unique to \acp{DAE}~\cite{brenan1995numerical}. \ac{BDF} methods meet these additional requirements (refer to~\cite{brenan1995numerical} for additional information).
 
 \paragraph{Radau Collocation and Implicit Runge-Kutta Methods}
 
@@ -288,13 +288,13 @@ In essence, the \ac{SA} of \ac{DAE} systems aims to address the following proble
 
 The structural index introduced earlier serves as a metric for quantifying the number of times the system needs to be differentiated to attain a structurally non-singular form. It is important to emphasize that the structural index can be significantly higher than the differential index. In particular, \citet{reissig2000differential} highlights that the structural index of constant coefficients linear \acp{DAE}, with a differential index of 1, can be arbitrarily high, which contrasts many previous findings in the literature. This reveals that applying Pantelides' algorithm to index-1 \acp{DAE} may lead to an indefinite number of iterations and differentiations.
 
-\paragraph{Tracatability Index Reduction}
+\paragraph{Tractability Index Reduction}
 
 Another approach to index reduction is the so-called \emph{projector-based analysis}, which is thoroughly presented in \citet{lamour2013differential, marz2014differential}. The projector-based analysis, based on the tractability index, explores the concept that complex \acp{DAE} can consist of distinct regularity regions bordered by critical points. These regions reveal a consistent structure that can be uncovered using matrix function sequences formed with admissible projector functions and guided by constant rank conditions. Smooth solutions are expected within these regions, but crossing borders may lead to strong singularities. In essence, this method provides a systematic way of tracking the system's structure by computing an admissible matrix function sequence and monitoring rank conditions~\cite{lamour2011computational}.
 
 More specifically, the projector-based analysis involves finding a projector that allows for the separation of the differential and algebraic components of a \ac{DAE} system with ``proper leading term''~\cite{lamour2011computational}. The projector is then used to transform the \ac{DAE} system into a lower-index form, which can be then integrated. Notice that in the case of nonlinear \acp{DAE}, the projector-based analysis is typically performed pointwise, which means that the algorithmic steps of the computation of admissible null-space projectors are performed at each time step, ensuring that the changes in the \acp{DAE} structure are accounted for at each time step. Special continuous projector-valued functions can be used to ensure that it is possible to reutilize the same projector in a wider range of time steps, thus reducing the computational cost of the method~\cite{lamour2012detecting}.
 
-\subsection{Software for Index Reduction of Differential-Algebraic Equations}
+\subsection{Software for Index Reduction}
 
 Following this brief introduction to the most widely recognized index reduction algorithms, we provide an overview of the specific index reduction algorithms found in current state-of-the-art software. The following list is limited to the most prominent solutions dedicated to dynamic system modeling and simulation that are widely adopted in both academia and industry.
 %

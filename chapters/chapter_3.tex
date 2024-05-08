@@ -255,7 +255,7 @@ with states $\mx = [x_{1}, \, x_{2}, \, x_{3}]^\top$ and initial conditions $\mx
     \mg = \begin{bmatrix}
       \sin(t) - x_{1} \\
       \sin(t) - x_{2}
-    \end{bmatrix}, \quad\quad~~~\,
+    \end{bmatrix}, \quad
     \ma = \begin{bmatrix}
       \cos(t) - x_{3}
     \end{bmatrix}. \\[1.0em]
@@ -267,7 +267,7 @@ with states $\mx = [x_{1}, \, x_{2}, \, x_{3}]^\top$ and initial conditions $\mx
     \mg = \begin{bmatrix}
       \sin(t) - x_{1} \\
       \sin(t) - x_{2}
-    \end{bmatrix}, \quad\quad~~~\,
+    \end{bmatrix}, \quad
     \ma = \begin{bmatrix}
       2\sin(t) - x_{2}
     \end{bmatrix}. \\[1.0em]
@@ -279,7 +279,7 @@ with states $\mx = [x_{1}, \, x_{2}, \, x_{3}]^\top$ and initial conditions $\mx
     \mg = \begin{bmatrix}
       \sin(t) - x_{2} \\
       \sin(t) - x_{1}
-    \end{bmatrix}, \quad\quad~~~\,
+    \end{bmatrix}, \quad
     \ma = \begin{bmatrix}
       \sin(t) - 2\cos(t) - x_{1}
     \end{bmatrix}. \\[1.0em]
@@ -399,9 +399,9 @@ Notice that if the matrix $\mAv$ is non-singular, the augmented \ac{DAE} system~
         \State $\mgv \gets \begin{bmatrix} \mI_1, \, \m{0} \end{bmatrix} \, \mLv^{-1} \, \mP \, \mbv$ \Comment{The differential part of $\mbv$}
         \State $\mav \gets \begin{bmatrix} \m{0}, \, \mI_2 \end{bmatrix} \, \mLv^{-1} \, \mP \, \mbv$ \Comment{The algebraic part of $\mbv$}
         \State $\displaystyle\triangleright$ Algebraic equations differentiation (Section~\ref{chap3:sec:differentiation})
-        \State $\m{Jv}_{\mx}(\mx, \m{v}, \, t) \gets \mathrm{Jacobian}(\mv, \, \mx)$ \Comment{The Jacobian of $\mav$ with respect to $\mx$}
+        \State $\jac{\m{v}}{\mx}(\mx, \m{v}, \, t) \gets \mathrm{Jacobian}(\mv, \, \mx)$ \Comment{The Jacobian of $\mav$ with respect to $\mx$}
         \State $\mav \gets \mathrm{Diff}(\mav, \, t)$ \Comment{Differentiate the equations $\mav$}
-        \State $\mav \gets \mathrm{Substitute}(\m{Jv}_{\mx}(\mx, \m{v}, \, t), \mav)$ \Comment{Remove the $\mv$ derivatives from $\mav$}
+        \State $\mav \gets \mathrm{Substitute}(\jac{\m{v}}{\mx}(\mx, \m{v}, \, t), \mav)$ \Comment{Remove the $\mv$ derivatives from $\mav$}
         \State $\mAdv, \, \mgdv \gets \mathrm{GenerateMatrix}(\mav, \, \mxp)$ \Comment{Differentiate the equations $\mav$}
         \State $\mAv \gets \begin{bmatrix} \mEv \\ \mAdv \end{bmatrix}$ and $\mbv \gets \begin{bmatrix} \mgv \\ \mgdv \end{bmatrix}$
         \Comment{The new matrix $\mAv$ and vector $\mbv$}
@@ -414,7 +414,7 @@ Notice that if the matrix $\mAv$ is non-singular, the augmented \ac{DAE} system~
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-\section{Index Reduction Algorithm and Numerical Integration Scheme Implementation}
+\section{Index Reduction and Numerical Integration Scheme}
 \label{chap3:sec:indigo}
 
 After this fairly long discussion on the actual implementation aspects of the index reduction algorithm, we can now present the \Indigo{} index reduction and integration toolbox~\cite{indigo}. This toolbox consists of two main components: a \Maple{} package to carry out symbolic index reduction of \ac{DAE} systems, and a \Matlab{} toolbox to perform numerical integration of the reduced-index system. \Indigo{} is designed to be used in conjunction with the \LEM{} package, to limit the expression swell, and the \LAST{} package, to conveniently factorize matrices. In the following paragraphs, we briefly discuss the usage of the \Indigo{} package.

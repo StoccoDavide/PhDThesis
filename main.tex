@@ -115,8 +115,8 @@
 %\usepackage{lmodern}             % text font
 \usepackage{mathspec}            % font selection for XeLaTeX
 \defaultfontfeatures{Mapping=tex-text} % to support TeX conventions
-\setallmainfonts[Numbers={Lining,Proportional}]{Adobe Caslon Pro} %PFDINSerif} % normal document font
-\setallsansfonts[Scale=1.0]{HvDTrial Brandon Grotesque} %DIN Alternate} % sans-serif font (\textsf{})
+\setallmainfonts[Numbers={Lining,Proportional}]{Adobe Caslon Pro} % normal document font
+\setallsansfonts[Scale=1.0]{HvDTrial Brandon Grotesque} % sans-serif font (\textsf{})
 \setallmonofonts[Scale=0.75]{JetBrains Mono} % mono spaced font (\texttt{})
 
 \usepackage[sf,bf]{titlesec}     % to customize the titles of the document
@@ -445,6 +445,9 @@
 \newcommand{\de}{\mathrm{d}}
 
 % Matrices and vectors
+\newcommand{\dif}[2]{\ensuremath{{#1}_{#2}}}
+\newcommand{\jac}[2]{\ensuremath{{#1}_{#2}}}
+\newcommand{\hes}[2]{\ensuremath{{#1}_{#2}}}
 \newcommand{\m}[1]{\ensuremath{\mathbf{#1}}}
 \newcommand{\mx}{\ensuremath{\m{x}}}
 \newcommand{\mxp}{\ensuremath{\mx^\prime}}
@@ -539,18 +542,18 @@
 \definecolor{dlt_pink}{RGB}{224, 36, 125}
 
 % Tricks to fix the DOI link in the bibliography
-%\makeatletter
-%  \DeclareMathSymbol{0}{\mathalpha}{\eu@DigitsArabic@symfont}{`0}
-%  \DeclareMathSymbol{1}{\mathalpha}{\eu@DigitsArabic@symfont}{`1}
-%  \DeclareMathSymbol{2}{\mathalpha}{\eu@DigitsArabic@symfont}{`2}
-%  \DeclareMathSymbol{3}{\mathalpha}{\eu@DigitsArabic@symfont}{`3}
-%  \DeclareMathSymbol{4}{\mathalpha}{\eu@DigitsArabic@symfont}{`4}
-%  \DeclareMathSymbol{5}{\mathalpha}{\eu@DigitsArabic@symfont}{`5}
-%  \DeclareMathSymbol{6}{\mathalpha}{\eu@DigitsArabic@symfont}{`6}
-%  \DeclareMathSymbol{7}{\mathalpha}{\eu@DigitsArabic@symfont}{`7}
-%  \DeclareMathSymbol{8}{\mathalpha}{\eu@DigitsArabic@symfont}{`8}
-%  \DeclareMathSymbol{9}{\mathalpha}{\eu@DigitsArabic@symfont}{`9}
-%\makeatother
+\makeatletter
+  \DeclareMathSymbol{0}{\mathalpha}{\eu@DigitsArabic@symfont}{`0}
+  \DeclareMathSymbol{1}{\mathalpha}{\eu@DigitsArabic@symfont}{`1}
+  \DeclareMathSymbol{2}{\mathalpha}{\eu@DigitsArabic@symfont}{`2}
+  \DeclareMathSymbol{3}{\mathalpha}{\eu@DigitsArabic@symfont}{`3}
+  \DeclareMathSymbol{4}{\mathalpha}{\eu@DigitsArabic@symfont}{`4}
+  \DeclareMathSymbol{5}{\mathalpha}{\eu@DigitsArabic@symfont}{`5}
+  \DeclareMathSymbol{6}{\mathalpha}{\eu@DigitsArabic@symfont}{`6}
+  \DeclareMathSymbol{7}{\mathalpha}{\eu@DigitsArabic@symfont}{`7}
+  \DeclareMathSymbol{8}{\mathalpha}{\eu@DigitsArabic@symfont}{`8}
+  \DeclareMathSymbol{9}{\mathalpha}{\eu@DigitsArabic@symfont}{`9}
+\makeatother
 
 % Pages numbering --------------------------------------------------------------
 \makeatletter
@@ -583,14 +586,14 @@
 % Copyright --------------------------------------------------------------------
 \subsection*{Copyright Notice}
 
-The content of this thesis is the result of the author's original research work. Permission to include the following previously published material in the thesis has been obtained from the respective publishers. The works are cited in the bibliography and are listed below in chronological order of publication.
+The content of this thesis is the result of the author's original research work. Permission to include the following published material in the thesis for non-commercial purposes is granted from the respective publishers' copyright policy. The works are cited in the bibliography and are listed below in chronological order of publication.
 %
 \begin{itemize}
-  \item \fullcite{stocco2021acme} -  Reproduced with permission from Elsevier.
-  \item \fullcite{stocco2024symbolic} -  Reproduced with permission from Springer.
-  \item \fullcite{stocco2024matrix} -  Reproduced with permission from Elsevier.
-  \item \fullcite{stocco2024novel} -  Reproduced with permission from ASME.
-  \item \fullcite{stocco2024physical} -  Reproduced with permission from Elsevier.
+  \item \fullcite{stocco2021acme}
+  \item \fullcite{stocco2024symbolic}
+  \item \fullcite{stocco2024matrix}
+  \item \fullcite{stocco2024novel}
+  \item \fullcite{stocco2024physical}
 \end{itemize}
 
 \subsection*{Material Submitted for Publication}
@@ -632,71 +635,68 @@ This thesis contains material that is currently submitted for publication. The m
 \begin{multicols}{2}
   \begin{acronym}[XXXXXXXX]
     \setlength{\itemsep}{-0.5em}
-    \acro{OC}{Optimal Control}
-    \acro{AD}{Automatic Differentiation}
-    \acro{OCP}{Optimal Control Problem}
-    \acro{SVD}{Singular Value Decomposition}
-    \acro{TP-BVP}{Two-Point Boundary Value Problem}
-    \acro{NASA}{National Aeronautics and Space Administration}
-    \acro{2D}{Two-Dimensional}
-    \acro{3D}{Three-Dimensional}
-    \acro{BSD}{Berkeley Software Distribution}
-    \acro{BC}{Boundary Condition}
-    \acro{ADAS}{Advanced Driver-Assistance Systems}
-    \acro{RDF}{Road Data Format}
-    \acro{HIL}{Hardware In the Loop}
-    \acro{SIL}{Software In the Loop}
-    \acro{DIL}{Driver In the Loop}
-    \acro{MBS}{Multi-Body System}
-    \acro{MB}{Multi-Body}
-    \acro{FEM}{Finite Element Method}
-    \acro{FE}{Finite Element}
-    \acro{DE}{Discrete Element}
-    \acro{FEA}{Finite Element Analysis}
-    \acro{SRT}{Soft Real-Time}
-    \acro{HRT}{Hard Real-Time}
-    \acro{RT}{Real-Time}
-    \acro{MB}{Multi-Body}
-    \acro{MBD}{Multi-Body Dynamics}
-    \acro{ODE}{Ordinary Differential Equation}
-    \acro{DAE}{Differential-Algebraic Equation}
-    \acro{PDE}{Partial Differential Equation}
-    \acro{PDAE}{Partial Differential-Algebraic Equation}
-    \acro{BLAS}{Basic Linear Algebra Subprograms}
-    \acro{LAPACK}{Linear Algebra PACKage}
-    \acro{DSM}{Direct Stiffness Method}
-    \acro{SA}{Structural Analysis}
-    \acro{LU}{Lower-Upper}
-    \acro{FFLU}{Fraction-Free Lower-Upper}
-    \acro{GJ}{Gauss-Jordan}
-    \acro{RTF}{Real-Time Factor}
-    \acro{API}{Application Programming Interface}
-    \acro{GUI}{Graphical User Interface}
-    \acro{CPU}{Central Processing Unit}
-    \acro{GPU}{Graphics Processing Unit}
-    \acro{RAM}{Random Access Memory}
     \acro{AABB}{Axis-Aligned Bounding Box}
+    \acro{AD}{Automatic Differentiation}
+    \acro{ADAS}{Advanced Driver-Assistance Systems}
+    \acro{API}{Application Programming Interface}
+    \acro{BC}{Boundary Condition}
+    \acro{BDF}{Backward Differentiation Formula}
+    \acro{BLAS}{Basic Linear Algebra Subprograms}
+    \acro{BSD}{Berkeley Software Distribution}
     \acro{BVH}{Bounding Volume Hierarchy}
     \acro{BVP}{Bounding Volume Primitive}
-    \acro{OS}{Operative System}
-    \acro{UHD}{Ultra High Definition}
-    \acro{MF}{\textsc{Magic Formula}}
-    \acro{DOF}{Degree of Freedom}
-    \acro{RTF}{Real-Time Factor}
     \acro{CAS}{Computer Algebra System}
-    \acro{MPL}{Mathematical Pseudo-Language}
     \acro{CERN}{Conseil Europ{\'e}en pour la Recherche Nucl{\'e}aire}
-    \acro{RMS}{Root Mean Square}
-    \acro{TIRF}{Tire Research Facility}
-    \acro{SAE}{Society of Automotive Engineers}
+    \acro{CPU}{Central Processing Unit}
+    \acro{DAE}{Differential-Algebraic Equation}
+    \acro{DE}{Discrete Element}
+    \acro{DOF}{Degree of Freedom}
+    \acro{DIL}{Driver In the Loop}
+    \acro{DSM}{Direct Stiffness Method}
+    \acro{FE}{Finite Element}
+    \acro{FEA}{Finite Element Analysis}
+    \acro{FEM}{Finite Element Method}
+    \acro{FFLU}{Fraction-Free Lower-Upper}
     \acro{FSAE}{Formula SAE}
-    \acro{TTC}{Tire Test Consortium}
-    \acro{TPPC}{Trajectory Prescribed Path Control}
-    \acro{BDF}{Backward Differentiation Formula}
+    \acro{GPU}{Graphics Processing Unit}
+    \acro{GJ}{Gauss-Jordan}
+    \acro{GUI}{Graphical User Interface}
+    \acro{HIL}{Hardware In the Loop}
+    \acro{HRT}{Hard Real-Time}
     \acro{IVP}{Initial Value Problem}
-    \acro{MIT}{Massachusetts Institute of Technology}
-    \acro{SUNDIALS}{SUite of Nonlinear and DIfferential-ALgebraic equation Solvers}
+    \acro{KKT}{Karush-Kuhn-Tucker}
     \acro{LLNL}{Lawrence Livermore National Laboratory}
+    \acro{LAPACK}{Linear Algebra PACKage}
+    \acro{LU}{Lower-Upper}
+    \acro{MB}{Multi-Body}
+    \acro{MBD}{Multi-Body Dynamics}
+    \acro{MIT}{Massachusetts Institute of Technology}
+    \acro{MBS}{Multi-Body System}
+    \acro{MPL}{Mathematical Pseudo-Language}
+    \acro{NASA}{National Aeronautics and Space Administration}
+    \acro{NLP}{Non-Linear Programming}
+    \acro{OC}{Optimal Control}
+    \acro{OCP}{Optimal Control Problem}
+    \acro{ODE}{Ordinary Differential Equation}
+    \acro{OS}{Operative System}
+    \acro{PDAE}{Partial Differential-Algebraic Equation}
+    \acro{PDE}{Partial Differential Equation}
+    \acro{RAM}{Random Access Memory}
+    \acro{RDF}{Road Data Format}
+    \acro{RT}{Real-Time}
+    \acro{RTF}{Real-Time Factor}
+    \acro{RMS}{Root Mean Square}
+    \acro{SA}{Structural Analysis}
+    \acro{SAE}{Society of Automotive Engineers}
+    \acro{SIL}{Software In the Loop}
+    \acro{SRT}{Soft Real-Time}
+    \acro{SUNDIALS}{SUite of Nonlinear and DIfferential-ALgebraic equation Solvers}
+    \acro{SVD}{Singular Value Decomposition}
+    \acro{TIRF}{Tire Research Facility}
+    \acro{TTC}{Tire Test Consortium}
+    \acro{TP-BVP}{Two-Point Boundary Value Problem}
+    \acro{TPPC}{Trajectory Prescribed Path Control}
+    \acro{UHD}{Ultra High Definition}
   \end{acronym}
 \end{multicols}
 
