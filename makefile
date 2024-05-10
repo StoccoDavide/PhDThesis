@@ -33,6 +33,7 @@ dir:
 	mkdir -p out/figures/chapter_2
 	mkdir -p out/figures/chapter_3
 	mkdir -p out/figures/chapter_4
+	mkdir -p out/figures/chapter_5
 	mkdir -p out/figures/appendix_1
 	mkdir -p out/figures/appendix_2
 	mkdir -p out/figures/appendix_3

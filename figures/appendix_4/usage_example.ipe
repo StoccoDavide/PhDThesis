@@ -1,9 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.28">
-<info created="D:20230728145401" modified="D:20240108112145"/>
-<preamble>\usepackage{times}
-\usepackage{mathptmx}</preamble>
+<info created="D:20230728145401" modified="D:20240510102519" tex="xetex"/>
+<preamble>\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{amssymb}
+\usepackage{mathspec}
+\defaultfontfeatures{Mapping=tex-text}
+\setallmainfonts{Adobe Caslon Pro}</preamble>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -342,7 +346,7 @@ h
 <path stroke="black" fill="black" pen="heavier">
 1.82086 -0.139808 0.139808 1.82086 96 544 e
 </path>
-<text matrix="1 0 0 1 -24.074 -51.5639" transformations="translations" pos="184 584" stroke="black" type="label" width="55.121" height="8.159" depth="1.88" valign="baseline" size="large">Element $E_1$</text>
+<text matrix="1 0 0 1 -24.074 -51.5639" transformations="translations" pos="184 584" stroke="black" type="label" width="56.823" height="8.651" depth="1.81" valign="baseline" size="large">Element $E_1$</text>
 <path stroke="black">
 119.496 568.037 m
 104.744 561.744
@@ -365,10 +369,10 @@ h
 120 496 m
 106.446 482.446 l
 </path>
-<text matrix="1 0 0 1 -27.022 -2.9274" transformations="translations" pos="121.111 507.755" stroke="black" type="label" width="4.453" height="4.338" depth="0.1" valign="baseline" style="math">x</text>
-<text matrix="1 0 0 1 -68.9636 -10.9673" transformations="translations" pos="121.111 507.755" stroke="black" type="label" width="3.875" height="4.336" depth="0.8" valign="baseline" style="math">z</text>
-<text matrix="1 0 0 1 -56.9372 30.1816" transformations="translations" pos="121.111 507.755" stroke="black" type="label" width="4.423" height="4.331" depth="2.03" valign="baseline" style="math">y</text>
-<text matrix="1 0 0 1 51.106 -6.67995" transformations="translations" pos="184 584" stroke="black" type="label" width="35.865" height="8.161" depth="0.13" valign="baseline" size="large">Load $F$</text>
+<text matrix="1 0 0 1 -27.022 -2.9274" transformations="translations" pos="121.111 507.755" stroke="black" type="label" width="4.692" height="4.154" depth="0.09" valign="baseline" style="math">x</text>
+<text matrix="1 0 0 1 -68.9636 -10.9673" transformations="translations" pos="121.111 507.755" stroke="black" type="label" width="4.752" height="4.383" depth="0.19" valign="baseline" style="math">z</text>
+<text matrix="1 0 0 1 -56.9372 30.1816" transformations="translations" pos="121.111 507.755" stroke="black" type="label" width="4.075" height="4.143" depth="2.96" valign="baseline" style="math">y</text>
+<text matrix="1 0 0 1 51.106 -6.67995" transformations="translations" pos="184 584" stroke="black" type="label" width="35.89" height="8.651" depth="0.16" valign="baseline" size="large">Load $F$</text>
 <path stroke="black">
 280 566.532 m
 262.055 566.245
@@ -378,7 +382,7 @@ h
 160 544 m
 344 544 l
 </path>
-<text matrix="1 0 0 1 213.189 -17.5943" transformations="translations" pos="184 584" stroke="black" type="label" width="41.54" height="8.158" depth="2.02" valign="baseline" size="large">Node $N_3$</text>
+<text matrix="1 0 0 1 213.189 -17.5943" transformations="translations" pos="184 584" stroke="black" type="label" width="43.098" height="8.647" depth="1.91" valign="baseline" size="large">Node $N_3$</text>
 <path stroke="black">
 440 568 m
 456 560
@@ -407,20 +411,20 @@ h
 160 528 m
 154.419 522.41 l
 </path>
-<text matrix="1 0 0 1 160.158 -51.7237" transformations="translations" pos="184 584" stroke="black" type="label" width="55.121" height="8.159" depth="1.88" valign="baseline" size="large">Element $E_2$</text>
+<text matrix="1 0 0 1 160.158 -51.7237" transformations="translations" pos="184 584" stroke="black" type="label" width="56.823" height="8.649" depth="1.98" valign="baseline" size="large">Element $E_2$</text>
 <path matrix="1 0 0 1 368 0" stroke="black" fill="black" pen="heavier">
 1.82086 -0.139808 0.139808 1.82086 96 544 e
 </path>
-<text matrix="1 0 0 1 -16.3808 -35.5432" transformations="translations" pos="184 584" stroke="black" type="label" width="40.438" height="6.801" depth="2.15" valign="baseline">Length $L_1$</text>
-<text matrix="1 0 0 1 168.145 -35.5933" transformations="translations" pos="184 584" stroke="black" type="label" width="40.438" height="6.801" depth="2.15" valign="baseline">Length $L_2$</text>
-<text matrix="1 0 0 1 220.713 -7.54674" transformations="translations" pos="184 584" stroke="black" type="label" width="27.054" height="8.161" depth="0.13" valign="baseline" size="large">Fixed</text>
+<text matrix="1 0 0 1 -16.3808 -35.5432" transformations="translations" pos="184 584" stroke="black" type="label" width="42.51" height="7.203" depth="2.71" valign="baseline">Length $L_1$</text>
+<text matrix="1 0 0 1 168.145 -35.5933" transformations="translations" pos="184 584" stroke="black" type="label" width="42.51" height="7.203" depth="2.71" valign="baseline">Length $L_2$</text>
+<text matrix="1 0 0 1 220.713 -7.54674" transformations="translations" pos="184 584" stroke="black" type="label" width="26.361" height="8.651" depth="0.16" valign="baseline" size="large">Fixed</text>
 <path matrix="1 0 0 1 0 0.448138" stroke="darkorange" pen="fat" arrow="normal/normal">
 280 584 m
 280 548.167 l
 </path>
-<text matrix="1 0 0 1 -63.4558 -18.7162" transformations="translations" pos="184 584" stroke="black" type="label" width="41.54" height="8.159" depth="1.88" valign="baseline" size="large">Node $N_1$</text>
-<text matrix="1 0 0 1 -55.9318 -8.66866" transformations="translations" pos="184 584" stroke="black" type="label" width="27.054" height="8.161" depth="0.13" valign="baseline" size="large">Fixed</text>
-<text matrix="1 0 0 1 41.548 -75.4842" transformations="translations" pos="184 584" stroke="black" type="label" width="41.54" height="8.159" depth="1.88" valign="baseline" size="large">Node $N_2$</text>
-<text matrix="1 0 0 1 44.7666 -64.0998" transformations="translations" pos="184 584" stroke="black" type="label" width="35.196" height="8.151" depth="2.59" valign="baseline" size="large">Hinged</text>
+<text matrix="1 0 0 1 -63.4558 -18.7162" transformations="translations" pos="184 584" stroke="black" type="label" width="43.099" height="8.651" depth="1.81" valign="baseline" size="large">Node $N_1$</text>
+<text matrix="1 0 0 1 -55.9318 -8.66866" transformations="translations" pos="184 584" stroke="black" type="label" width="26.361" height="8.651" depth="0.16" valign="baseline" size="large">Fixed</text>
+<text matrix="1 0 0 1 41.548 -75.4842" transformations="translations" pos="184 584" stroke="black" type="label" width="43.099" height="8.649" depth="1.98" valign="baseline" size="large">Node $N_2$</text>
+<text matrix="1 0 0 1 44.7666 -64.0998" transformations="translations" pos="184 584" stroke="black" type="label" width="36.81" height="8.646" depth="3.25" valign="baseline" size="large">Hinged</text>
 </page>
 </ipe>

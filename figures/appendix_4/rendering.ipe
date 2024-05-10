@@ -1,8 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.28">
-<info created="D:20230717101427" modified="D:20231212111935"/>
-<preamble>\usepackage{times}</preamble>
+<info created="D:20240510102042" modified="D:20240510102042" tex="xetex"/>
+<preamble>\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{amssymb}
+\usepackage{mathspec}
+\defaultfontfeatures{Mapping=tex-text}
+\setallmainfonts{Adobe Caslon Pro}</preamble>
 <bitmap id="1" width="3300" height="2550" BitsPerComponent="8" ColorSpace="DeviceRGB" Filter="FlateDecode" length="1611416" encoding="base64">
 eNrswQEBAAAAgJD/q+sICgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -30158,60 +30163,59 @@ h
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<image layer="alpha" matrix="1 0 0 1 0 -64" transformations="translations" rect="0 191.114 595 650.886" bitmap="1"/>
-<text matrix="1 0 0 1 5.23167 324.222" transformations="translations" pos="259.682 581.189" stroke="purple" type="label" width="0" height="0" depth="0" valign="baseline" size="LARGE"></text>
-<path matrix="1 0 0 1 0 -64" transformations="translations" stroke="black" arrow="normal/normal">
+<image layer="alpha" matrix="1 0 0 1 0 -32" transformations="translations" rect="0 191.114 595 650.886" bitmap="1"/>
+<path matrix="1 0 0 1 0 -32" transformations="translations" stroke="black" arrow="normal/normal">
 171.049 262.87 m
 212.722 361.884 l
 </path>
-<path matrix="1 0 0 1 0 -64" transformations="translations" stroke="black" arrow="normal/normal">
+<path matrix="1 0 0 1 0 -32" transformations="translations" stroke="black" arrow="normal/normal">
 254.002 273.402 m
 246.256 308.207 l
 </path>
-<path matrix="1 0 0 1 0 -64" transformations="translations" stroke="black" arrow="normal/normal">
+<path matrix="1 0 0 1 0 -32" transformations="translations" stroke="black" arrow="normal/normal">
 434.21 298.507 m
 407.924 341.083 l
 </path>
-<path matrix="1 0 0 1 0 -64" transformations="translations" stroke="black" arrow="normal/normal">
+<path matrix="1 0 0 1 0 -32" transformations="translations" stroke="black" arrow="normal/normal">
 98.9349 403.528 m
 117.358 375.428 l
 </path>
-<path matrix="1 0 0 1 0 -64" transformations="translations" stroke="black" arrow="normal/normal">
+<path matrix="1 0 0 1 0 -32" transformations="translations" stroke="black" arrow="normal/normal">
 145.015 456.148 m
 182.946 413.036 l
 </path>
-<path matrix="1 0 0 1 0 -64" transformations="translations" stroke="black">
+<path matrix="1 0 0 1 0 -32" transformations="translations" stroke="black">
 305.611 569.216 m
 299.477 507.71 l
 </path>
-<path matrix="1 0 0 1 0 -64" transformations="translations" stroke="black">
+<path matrix="1 0 0 1 0 -32" transformations="translations" stroke="black">
 221.131 549.976 m
 249.25 474.217 l
 </path>
-<path matrix="1 0 0 1 0 -64" transformations="translations" stroke="white" pen="fat">
+<path matrix="1 0 0 1 0 -32" transformations="translations" stroke="white" pen="fat">
 230.068 525.898 m
 245.927 483.172 l
 </path>
-<path matrix="1 0 0 1 0 -64" transformations="translations" stroke="white" pen="heavier">
+<path matrix="1 0 0 1 0 -32" transformations="translations" stroke="white" pen="heavier">
 303.227 545.311 m
 300.777 520.741 l
 </path>
-<path matrix="1 0 0 1 0 -64" transformations="translations" stroke="black" fill="black">
+<path matrix="1 0 0 1 0 -32" transformations="translations" stroke="black" fill="black">
 2.98432 0 0 2.98432 249.25 474.217 e
 </path>
-<path matrix="1 0 0 1 50.228 -30.5071" transformations="translations" stroke="black" fill="black">
+<path matrix="1 0 0 1 50.228 1.4929" transformations="translations" stroke="black" fill="black">
 2.98432 0 0 2.98432 249.25 474.217 e
 </path>
-<path matrix="1 0 0 1 0 -64" transformations="translations" stroke="white" fill="white" pen="heavier">
+<path matrix="1 0 0 1 0 -32" transformations="translations" stroke="white" fill="white" pen="heavier">
 191.589 311.674 m
 188.041 303.242 l
 </path>
-<text matrix="0.096918 0.995293 -0.995293 0.096918 486.897 250.839" transformations="translations" pos="48.915 432.668" stroke="black" type="label" width="81.657" height="9.785" depth="0.2" valign="baseline" size="Large">Wheel Carrier</text>
-<text matrix="0.994634 -0.103455 0.103455 0.994634 12.51 -237.927" transformations="translations" pos="48.915 432.668" stroke="black" type="label" width="97.037" height="9.79" depth="3.1" valign="baseline" size="Large">Upper Wishbone</text>
-<text matrix="0.996431 0.0844176 -0.0844176 0.996431 204.684 -237.381" transformations="translations" pos="48.915 432.668" stroke="black" type="label" width="98.271" height="9.785" depth="0.2" valign="baseline" size="Large">Lower Wishbone</text>
-<text matrix="0.652314 -0.75795 0.75795 0.652314 -93 262.635" transformations="translations" pos="48.915 432.668" stroke="black" type="label" width="92.834" height="9.785" depth="0.2" valign="baseline" size="Large">Shock Absorber</text>
-<text matrix="0.933042 0.359769 -0.359769 0.933042 311.291 67.706" transformations="translations" pos="48.915 432.668" stroke="black" type="label" width="41.288" height="9.789" depth="0.16" valign="baseline" size="Large">Rocker</text>
-<text matrix="0.401931 0.91567 -0.91567 0.401931 499.271 176.552" transformations="translations" pos="48.915 432.668" stroke="black" type="label" width="46.123" height="9.789" depth="0.16" valign="baseline" size="Large">Tie Rod</text>
-<text matrix="0.974355 -0.225014 0.225014 0.974355 273.778 -188.193" transformations="translations" pos="48.915 432.668" stroke="black" type="label" width="36.654" height="9.588" depth="0.16" valign="baseline" size="Large">Frame</text>
+<text matrix="0.096918 0.995293 -0.995293 0.096918 486.897 282.839" transformations="translations" pos="48.915 432.668" stroke="black" type="label" width="84.356" height="10.379" depth="0.28" valign="baseline" size="Large">Wheel Carrier</text>
+<text matrix="0.994634 -0.103455 0.103455 0.994634 12.51 -205.927" transformations="translations" pos="48.915 432.668" stroke="black" type="label" width="100.237" height="10.367" depth="3.95" valign="baseline" size="Large">Upper Wishbone</text>
+<text matrix="0.996431 0.0844176 -0.0844176 0.996431 204.684 -205.381" transformations="translations" pos="48.915 432.668" stroke="black" type="label" width="101.47" height="10.379" depth="0.28" valign="baseline" size="Large">Lower Wishbone</text>
+<text matrix="0.652314 -0.75795 0.75795 0.652314 -93 294.635" transformations="translations" pos="48.915 432.668" stroke="black" type="label" width="93.164" height="10.65" depth="0.21" valign="baseline" size="Large">Shock Absorber</text>
+<text matrix="0.933042 0.359769 -0.359769 0.933042 311.291 99.706" transformations="translations" pos="48.915 432.668" stroke="black" type="label" width="41.302" height="10.374" depth="0.17" valign="baseline" size="Large">Rocker</text>
+<text matrix="0.401931 0.91567 -0.91567 0.401931 499.271 208.552" transformations="translations" pos="48.915 432.668" stroke="black" type="label" width="48.561" height="10.675" depth="0.2" valign="baseline" size="Large">Tie Rod</text>
+<text matrix="0.974355 -0.225014 0.225014 0.974355 273.778 -156.193" transformations="translations" pos="48.915 432.668" stroke="black" type="label" width="36.827" height="10.216" depth="0.17" valign="baseline" size="Large">Frame</text>
 </page>
 </ipe>

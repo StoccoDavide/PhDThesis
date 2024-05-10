@@ -130,24 +130,26 @@ we can write
 %
 Eventually, the matrices $\m{N}$ and $\m{K}$ have the following form
 %
-\begin{equation}
-    \m{N} = \begin{bmatrix} \mI_1 & \m{0} \end{bmatrix} \, \m{M}
-    %
-    \quad \text{and} \quad
-    %
-    \m{K} = \begin{bmatrix} \m{0} & \mI_2 \end{bmatrix} \, \m{M},
-    %
-    \quad \text{where} \quad
-    %
-    \begin{array}{l}
-        \m{K}\m{A} = \m{0} \\[0.2em]
-        \m{N}\m{A} = \m{U}_1 ~ \text{is full-rank}
-    \end{array},
-    %
-    \quad \text{and} \quad
-    %
-    \begin{bmatrix} \m{N} \\[0.2em] \m{K} \end{bmatrix} \quad \text{is non-singular.}
-\end{equation}
+\begin{equation*}
+  \m{N} = \begin{bmatrix} \mI_1 & \m{0} \end{bmatrix} \, \m{M}
+  %
+  \quad \text{and} \quad
+  %
+  \m{K} = \begin{bmatrix} \m{0} & \mI_2 \end{bmatrix} \, \m{M},
+\end{equation*}
+%
+where
+%
+\begin{equation*}
+  \begin{array}{l}
+      \m{K}\m{A} = \m{0} \\[0.2em]
+      \m{N}\m{A} = \m{U}_1 ~ \text{is full-rank}
+  \end{array} \, \text{,}
+  %
+  \quad \text{and} \quad
+  %
+  \begin{bmatrix} \m{N} \\[0.2em] \m{K} \end{bmatrix} \quad \text{is non-singular.}
+\end{equation*}
 
 \paragraph{Fraction-Free Lower-Upper Decomposition}
 

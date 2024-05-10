@@ -42,7 +42,7 @@ In this thesis, we have only explored the capabilities of the proposed methodolo
 
 \paragraph{Optimal Control}
 
-The proposed methodology can be used in \acp{OCP} to reduce the index of the \ac{DAE} system and to obtain an index-0 \ac{DAE} system. This would allow us to apply numerical integration schemes to solve the \ac{OCP}. Specifically, the index-0 \ac{DAE} system can be integrated as a standard \ac{ODE}, while the hidden constraints can be enforced by introducing a quadratic penalty term in the cost function.
+\acp{DAE} found applications in \ac{OCP}~\cite{gerdts2012optimal, gerdts2003optimal, gerdts2005gradient}. The proposed methodology can be used in \acp{OCP} to reduce the index of the \ac{DAE} system and to obtain an index-0 \ac{DAE} system. This would allow us to apply numerical integration schemes to solve the \ac{OCP}. Specifically, the index-0 \ac{DAE} system can be integrated as a standard \ac{ODE}, while the hidden constraints can be enforced by introducing a quadratic penalty term in the cost function.
 
 Another approach would be to exploit a common interface between \ac{ODE} and \ac{DAE} systems. In particular, we can provide the \ac{OCP} solver with the values of the state variables derivatives, as well as the appropriate Jacobian matrices at any given time. How the Jacobian matrices are computed will be thereby hidden from the solver, which uses them to compute the \ac{OC} input. This would allow us to solve the \ac{OCP} by integrating \ac{DAE} systems likewise \acp{ODE}, while also enforcing invariants or hidden constraints and providing the Jacobian matrices at each time step.
 
