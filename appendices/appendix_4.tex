@@ -126,7 +126,7 @@ As will be elucidated later, obtaining a symbolic solution for~\eqref{app4:eq:ma
 
 This section outlines the implementation of the \TrussMe{} toolbox, which comprises two main components: the symbolic and numerical parts. The symbolic component, developed in \Maple{}, facilitates the symbolic analysis of the structure. Conversely, the numerical component, developed in \Matlab{}, is utilized for numerically evaluating the symbolic expressions generated earlier. Each component is discussed in detail, accompanied by usage examples.
 
-\subsection{The Symbolic Computation in \Maple{}}
+\subsection{The Symbolic Computation in Maple}
 \label{app4:subsec:symbolic_computation}
 
 As previously stated, the \TrussMe{} package serves as a symbolic implementation of the \ac{DSM} method for assembling and solving structures. The package's interface is designed with the philosophy of offering users a collection of user-friendly functions that can be seamlessly combined to conduct structural analysis. \TrussMe{} is structured to be employed in a step-by-step manner. Users are prompted to define the nodes, elements, and loads of the structure, followed by the generation of the structure's model. To accomplish this, the following procedure is recommended.
@@ -220,9 +220,9 @@ In cases where no symbolic solution could be obtained, or if the user just prefe
     L_2=1.0]);
 \end{verbatim}
 %
-This function creates the \texttt{FemClass.m} file in the \texttt{./dir/} directory, which contains a class definition of the aforementioned \ac{FE} model. During the code generation process, users can establish default class properties in the \texttt{data} field and variable parameters in the \texttt{vars} field. The latter are intended to represent parameters that may vary during the structure analysis, such as the load magnitude $P$. Further insights into the generated class and its application are elaborated in the subsequent section.
+This function creates the \texttt{FemClass.m} file in the \texttt{./dir/} directory, which contains a class definition of the aforementioned \ac{FE} model. During the code generation process, users can establish default class properties in the \texttt{data} field and variable parameters in the \texttt{vars} field. The latter is intended to represent parameters that may vary during the structure analysis, such as the load magnitude $P$. Further insights into the generated class and its application are elaborated in the subsequent section.
 
-\subsection{The Numerical Computation in \Matlab{}}
+\subsection{The Numerical Computation in Matlab}
 \label{app4:subsec:numerical_computation}
 
 Since the symbolic solution of~\eqref{app4:eq:macrodf} may not always be feasible, users have the option to employ a numerical solution. This involves numerically factorizing the $\mathbf{K}^{n}_{ff}$ matrix and evaluating~\eqref{app4:eq:macrosol}. The numerical solution can be achieved within the \Maple{} environment through variable substitution or in \Matlab{} post the code generation process. In the latter scenario, the \TrussMe{} \Matlab{} toolbox comes into play. This toolbox is built upon the \texttt{TrussMe.System} base class, which is utilized to define the components of~\eqref{app4:eq:macrosol} and to establish a unified framework that can be leveraged by inherited classes. Within this abstract class, various methods are present, including several virtual methods that need to be implemented in the inherited classes: \\[0.5em]

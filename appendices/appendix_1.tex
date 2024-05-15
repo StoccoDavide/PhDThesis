@@ -43,7 +43,7 @@ Comprehensive documentation is available on the provided website, encompassing b
 
 \subsection{Data Types}
 
-\Acme{} supports a limited number of geometrical entities, carefully chosen to maintain the library's essential nature for efficiency and easy maintenance. The chosen classes specifically describe and manipulate virtual ground surfaces and tires. While the library is intentionally kept minimal, it is extensible according to the needs of end-users. The geometric entities are systematically organized into classes, each being within the \Acme{} namespace and publicly inheriting from the virtual superclass \Entity{}. The derived classes, representing the homonyms geometric entities are \Point{}, \Line{}, \Ray{}, \Plane{}, \Segment{}, \Triangle{}, \Disk{}, and \Ball{}, are integral components of the library. In \figurename{}~\ref{app1:fig:acme_entities}, a representation of all \Acme{} basic \Entity{} objects is shown. A concise mathematical description of each data type in the software follows.
+\Acme{} supports a limited number of geometrical entities, carefully chosen to maintain the library's essential nature for efficiency and easy maintenance. The chosen classes specifically describe and manipulate virtual ground surfaces and tires. While the library is intentionally kept minimal, it is extensible according to the needs of end-users. The geometric entities are systematically organized into classes, each being within the \Acme{} namespace and publicly inheriting from the virtual superclass \Entity{}. The derived classes, representing the homonyms geometric entities are \Point{}, \Line{}, \Ray{}, \Plane{}, \Segment{}, \Triangle{}, \Disk{}, and \Ball{}, are integral components of the library. In Figure~\ref{app1:fig:acme_entities}, a representation of all \Acme{} basic \Entity{} objects is shown. A concise mathematical description of each data type in the software follows.
 
 \begin{figure}[htp]
   \centering
@@ -117,7 +117,7 @@ A ball $\boldsymbol{\omega}$ is defined by a radius $r$ and a center point $\pt{
 In addition to the fundamental data types presented, we also provide other classes that are useful in scenarios involving mesh or manipulation of large numbers of entities. These objects include \Collection{}, \ac{AABB}, and \AabbTree{}.
 
 \paragraph{\Collection{}}
-The \Collection{} object consists of a vector of \SharedPointer{} to \Entity{} type objects. This class can be used when a substantial number of \Entity{} object instances need to be grouped into a single object. The grouping, coupled with the usage of \SharedPointer{} objects, facilitates effective data manipulation and ensures safe memory management. Nonetheless, the \Collection{} object is not a geometric entity and does not have any geometric meaning. It is merely a container for \Entity{} objects that can be used to perform operations on a large number of \Entity{} objects simultaneously. In \figurename{}~\ref{app1:fig:acme_collection}, an example of two \Collection{} objects bounded in two different \Aabb{}s is reported.
+The \Collection{} object consists of a vector of \SharedPointer{} to \Entity{} type objects. This class can be used when a substantial number of \Entity{} object instances need to be grouped into a single object. The grouping, coupled with the usage of \SharedPointer{} objects, facilitates effective data manipulation and ensures safe memory management. Nonetheless, the \Collection{} object is not a geometric entity and does not have any geometric meaning. It is merely a container for \Entity{} objects that can be used to perform operations on a large number of \Entity{} objects simultaneously. In Figure~\ref{app1:fig:acme_collection}, an example of two \Collection{} objects bounded in two different \Aabb{}s is reported.
 
 \begin{figure}[htp]
   \centering
@@ -226,8 +226,8 @@ Table~\ref{app1:tab:acme_timing} presents a comparison of timing performances be
     \multirow{2.5}{*}{\makecell[cc]{\textbf{Intersected}\\\textbf{entities}}} &
     \multicolumn{2}{c}{\textbf{\CGAL{}}} & \multicolumn{2}{c}{\textbf{\Acme{}}} &
     \textbf{Speed-up} \\ \cmidrule(l{4pt}r{4pt}){2-3} \cmidrule(l{4pt}r{4pt}){4-5}
-    & $\mu$~(\si{\nano\second}) & $\sigma^2$~(\si{\nano\second\squared}) &
-      $\mu$~(\si{\nano\second}) & $\sigma^2$~(\si{\nano\second\squared}) &
+    & $\mu$~(\USI{\nano\second}) & $\sigma^2$~(\USI{\nano\second\squared}) &
+      $\mu$~(\USI{\nano\second}) & $\sigma^2$~(\USI{\nano\second\squared}) &
       ($\times$) \\
     \midrule
     \Line{}-\Line{}         & \num{18.3} & \num{0.291}  & \num{2.2}  & \num{0.0132} & \num{8.3} \\
@@ -263,7 +263,7 @@ We now present an example that illustrates some capabilities of the \Acme{} libr
   \boldsymbol{\phi}_2(r_2, \pt{o}_2, \et{n}_2) = \boldsymbol{\phi}_2(1, \, \left[0, 0, 0\right]^{\top}, \left[1, 1, 0\right]^{\top}) \text{,}
 \end{equation*}
 %
-that will be indicated by the variables \code{d1} and \code{d2}, respectively. Then, we will then intersect them, obtaining a geometric entity whose type is unknown to us. Subsequently, we will use the \code{type()} method to identify and print a string describing the type of the obtained \Entity{} object. In both cases, the output will be the string ``\code{segment}''. Finally, we will plot the obtained \Entity{} object in a \Matlab{} figure. The \cpp{} and \Matlab{} code snippets are reported in the following. The visualization of the example problem is reported in \figurename{}~\ref{app1:fig:acme_example}, which is obtained through the last 6 lines of the \Matlab{} example code. \\[1.0em]
+that will be indicated by the variables \code{d1} and \code{d2}, respectively. Then, we will then intersect them, obtaining a geometric entity whose type is unknown to us. Subsequently, we will use the \code{type()} method to identify and print a string describing the type of the obtained \Entity{} object. In both cases, the output will be the string ``\code{segment}''. Finally, we will plot the obtained \Entity{} object in a \Matlab{} figure. The \cpp{} and \Matlab{} code snippets are reported in the following. The visualization of the example problem is reported in Figure~\ref{app1:fig:acme_example}, which is obtained through the last 6 lines of the \Matlab{} example code. \\[1.0em]
 
 \begin{minipage}[t]{0.475\textwidth}
 \cpp{}

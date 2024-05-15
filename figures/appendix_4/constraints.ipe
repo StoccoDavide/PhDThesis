@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.28">
-<info created="D:20240510102326" modified="D:20240510102326" tex="xetex"/>
+<info created="D:20240510102326" modified="D:20240513174831" tex="xetex"/>
 <preamble>\usepackage{mathtools}
 \usepackage{bm}
 \usepackage{amssymb}
@@ -624,10 +624,10 @@ h
 <text matrix="3.45963 0 0 1.93112 114.685 -1242.82" transformations="translations" pos="80 768" stroke="black" type="label" width="24.787" height="15.153" depth="4.82" valign="baseline" size="Huge" style="math">\textcircled{\fontsize{20pt}{1pt}\selectfont S}</text>
 <text matrix="3.45963 0 0 1.93112 -174.524 -1198.35" transformations="translations" pos="80 768" stroke="black" type="label" width="24.787" height="15.153" depth="4.82" valign="baseline" size="Huge" style="math">\textcircled{\fontsize{20pt}{1pt}\selectfont S}</text>
 <text matrix="3.45963 0 0 1.93112 -103.465 -1217.12" transformations="translations" pos="80 768" stroke="black" type="label" width="24.787" height="15.153" depth="4.82" valign="baseline" size="Huge" style="math">\textcircled{\fontsize{20pt}{1pt}\selectfont S}</text>
-<text matrix="3.45963 0 0 1.93112 -120.482 -1162.14" transformations="translations" pos="80 768" stroke="black" type="label" width="24.787" height="15.153" depth="4.82" valign="baseline" size="Huge" style="math">\textcircled{\fontsize{20pt}{1pt}\selectfont S}</text>
+<text matrix="3.45963 0 0 1.93112 -121.819 -1165.77" transformations="translations" pos="80 768" stroke="black" type="label" width="24.787" height="15.153" depth="4.82" valign="baseline" size="Huge" style="math">\textcircled{\fontsize{20pt}{1pt}\selectfont S}</text>
 <text matrix="3.45963 0 0 1.93112 -99.5708 -1030.77" transformations="translations" pos="80 768" stroke="black" type="label" width="24.787" height="15.153" depth="4.82" valign="baseline" size="Huge" style="math">\textcircled{\fontsize{20pt}{1pt}\selectfont S}</text>
 <text matrix="3.45963 0 0 1.93112 22.9754 -1019.44" transformations="translations" pos="80 768" stroke="black" type="label" width="24.787" height="15.153" depth="4.82" valign="baseline" size="Huge" style="math">\textcircled{\fontsize{20pt}{1pt}\selectfont S}</text>
-<text matrix="3.45963 0 0 1.93112 92.4111 -1007.9" transformations="translations" pos="80 768" stroke="black" type="label" width="24.787" height="15.153" depth="4.82" valign="baseline" size="Huge" style="math">\textcircled{\fontsize{20pt}{1pt}\selectfont C}</text>
+<text matrix="3.45963 0 0 1.93112 91.9532 -1010.32" transformations="translations" pos="80 768" stroke="black" type="label" width="24.787" height="15.153" depth="4.82" valign="baseline" size="Huge" style="math">\textcircled{\fontsize{20pt}{1pt}\selectfont C}</text>
 <text matrix="3.45963 0 0 1.93112 -1.48156 -1088.81" transformations="translations" pos="80 768" stroke="black" type="label" width="24.787" height="15.153" depth="4.82" valign="baseline" size="Huge" style="math">\textcircled{\fontsize{20pt}{1pt}\selectfont S}</text>
 <text matrix="3.45963 0 0 1.93112 103.024 -1083.83" transformations="translations" pos="80 768" stroke="black" type="label" width="24.787" height="15.153" depth="4.82" valign="baseline" size="Huge" style="math">\textcircled{\fontsize{20pt}{1pt}\selectfont C}</text>
 <text matrix="3.45963 0 0 1.93112 17.3307 -1156.64" transformations="translations" pos="80 768" stroke="black" type="label" width="24.787" height="15.153" depth="4.82" valign="baseline" size="Huge" style="math">\textcircled{\fontsize{20pt}{1pt}\selectfont S}</text>
@@ -664,5 +664,9 @@ h
 </path>
 <text matrix="2.37707 -2.51052 1.40486 1.32685 -812.568 -475.349" transformations="translations" pos="80 768" stroke="black" type="label" width="24.787" height="15.153" depth="4.82" valign="baseline" size="Huge" style="math">\textcircled{\fontsize{20pt}{1pt}\selectfont C}</text>
 <text matrix="0.842728 -0.194372 0.194617 0.841671 220.554 19.8729" pos="48.915 432.668" stroke="black" type="label" width="30.689" height="8.515" depth="0.14" valign="baseline" size="large">Frame</text>
+<path stroke="black">
+381.002 490.524 m
+381.009 490.269 l
+</path>
 </page>
 </ipe>
