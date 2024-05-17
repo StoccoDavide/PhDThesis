@@ -281,7 +281,7 @@ In this example, we define the Rosenbrock function $f(x,y) = (1-x)^2 + 100(y-x^2
 %
 We can use \Mathematica{} to solve this \ac{ODE} symbolically and obtain the closed-form solution for $y(t)$
 %
-\begin{equation}
+\begin{equation*}
   y(t) = \begin{cases}
     5-\dfrac{981}{200}t^2 &
       0\leq t\leq \dfrac{10 \sqrt{\dfrac{10}{109}}}{3} \\[0.1em]
@@ -298,11 +298,11 @@ We can use \Mathematica{} to solve this \ac{ODE} symbolically and obtain the clo
     \dfrac{-24525000000 t^2+7499983500 \sqrt{1090} t-624651217823}{5000000000} &
       \dfrac{244117}{1500 \sqrt{1090}}<t\leq 5
     \end{cases} \, \text{.}
-\end{equation}
+\end{equation*}
 
 Even more complex \acp{ODE} can be solved using \acp{CAS} for design optimization, control systems, and other engineering applications. For example, \Mathematica{} can find the symbolic solution for a proportional-derivative controller keeping the position of a moving mass $x(t)$ constant through the control input $u(t)$, given by
 %
-\begin{equation}
+\begin{equation*}
   \begin{cases}
     x^{\prime\prime}(t) + = u(t) \\[0.1em]
     x(0) = x^{\prime}(0) = 0 \\[0.1em]
@@ -310,11 +310,11 @@ Even more complex \acp{ODE} can be solved using \acp{CAS} for design optimizatio
     \mathrm{WhenEvent}(\mathrm{mod}(t, \tau) = 0, u(t) = (1 - x(t) - x^{\prime}(t)))
   \end{cases}
   \quad \text{with} \qquad t \in [0, 15] \, \text{.}
-\end{equation}
+\end{equation*}
 %
 The solution for $x(t)$ and $u(t)$ is respectively given by
 %
-\begin{equation}
+\begin{equation*}
   x(t) = \begin{cases}
     \dfrac{t^2}{2} & 0\leq t\leq 1 \\[0.1em]
     \dfrac{1}{4} \left(-t^2+6 t-3\right) & 1<t\leq 2 \\[0.1em]
@@ -349,7 +349,7 @@ The solution for $x(t)$ and $u(t)$ is respectively given by
     -\dfrac{89}{8192} & 13<t\leq 14 \\[0.1em]
     \dfrac{93}{16384} & 14<t\leq 15
   \end{cases} \, \text{.}
-\end{equation}
+\end{equation*}
 \end{example}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
@@ -682,7 +682,7 @@ The full-pivoting \ac{LU} and \ac{FFLU} decompositions are widely used algorithm
   such that $\m{P}\m{D}\m{A}\m{Q} = \m{L}\m{U}$.
 \end{definition}
 %
-Pivoting for \ac{LU} factorization is the process of systematically selecting pivots for Gaussian elimination during the \ac{LU} factorization of a matrix. The \ac{LU} factorization is closely related to Gaussian elimination, which is unstable in its pure form. To guarantee the elimination process goes to completion, we must ensure that there is a non-zero pivot at every step of the elimination process. This is the reason we need to pivot when computing \ac{LU} factorizations. But we can do more with pivoting than just making sure Gaussian elimination is completed. To ensure the numerical stability of the \ac{LU}, we need to consider that the domain of the entries of the matrix $\m{A}$ is not only the real number set but also the more generic symbolic domain. Hence, we need to consider the symbolic stability of the \ac{LU} factorization from two different perspectives: the numerical one and the symbolic one.
+Pivoting for \ac{LU} factorization is the process of systematically selecting pivots for Gaussian elimination during the \ac{LU} factorization of a matrix. The \ac{LU} factorization is closely related to Gaussian elimination, which is unstable in its pure form. To guarantee the elimination process goes to completion, we must ensure that there is a non-zero pivot at every step of the elimination process. This is the reason we need to pivot when computing \ac{LU} factorization. But we can do more with pivoting than just making sure Gaussian elimination is completed. To ensure the numerical stability of the \ac{LU}, we need to consider that the domain of the entries of the matrix $\m{A}$ is not only the real number set but also the more generic symbolic domain. Hence, we need to consider the symbolic stability of the \ac{LU} factorization from two different perspectives: the numerical one and the symbolic one.
 
 \subsubsection{The LU Factorization from a Numerical Computation Point of View}
 
@@ -981,7 +981,7 @@ A detailed description of the developed symbolic pivoting strategy is presented 
 
 \subsection{Linear Algebra Symbolic Toolbox}
 
-The considerations just made are the basis of the \LAST{} package~\cite{last}. This package is a \Maple{} toolbox for symbolic linear algebra. It is based on the original works in~\cite{carette2006linear,zhou2008fraction} and offers a set of routines for symbolic full-pivoting \ac{LU}, a \ac{FFLU}, QR decomposition, and \ac{GJ} factorizations. The package \LAST{} is designed to be used in conjunction with the \LEM{} package~\cite{lem} to limit the expression swell.
+The considerations just made are the basis of the \LAST{} package~\cite{last}. This package is a \Maple{} toolbox for symbolic linear algebra. It is based on the original works in~\cite{carette2006linear,zhou2008fraction} and offers a set of routines for symbolic full-pivoting \ac{LU}, a \ac{FFLU}, QR decomposition, and \ac{GJ} factorization. The package \LAST{} is designed to be used in conjunction with the \LEM{} package~\cite{lem} to limit the expression swell.
 
 An important aspect of \ac{LU} decomposition is the pivoting strategy. In the \LAST{} package, the pivoting process is developed to take into account the aforementioned aspects of expression swell and numerical stability. In particular, the pivots are chosen based on the degree of the elements of the system matrix and the actual complexity of the expressions. The elements of the system matrix are sorted in descending order of their degree and the least complex element is chosen as the pivot. Pivots with numeric values are preferred over pivots with symbolic values due to their inherent numerical stability. During the pivoting procedure, whenever possible, signatures are also exploited to verify the presence of null expressions. Here a simple example is given to briefly illustrate the usage of the \LAST{} package.
 

@@ -3,7 +3,7 @@
 \chapter{Application Fields and Examples}
 \label{chap4:applications}
 
-In the previous chapter, we presented a methodology for the automatic index reduction of \ac{DAE} systems. The index reduction algorithm is based on the separation of the system into differential and algebraic parts with the help of symbolic linear algebra, \ie{}, \ac{LU} or \ac{FFLU} matrix factorizations. No information on the \ac{DAE} system structure is leveraged during the reduction algorithm and, for this reason, this methodology can be applied to generic \acp{DAE} linear in the state derivatives. Numerical integration goodness is showcased by assessing the order of the numerical integration scheme and the accuracy of the projection. In this chapter, we take for granted the correctness of the proposed methodology and we focus on the application and capabilities of the index reduction algorithm. Hence, the algorithm is applied to a variety of \ac{DAE} systems, which are specifically chosen to demonstrate the capabilities, the potential, as well as the wide range of applicability of the proposed methodology. The examples are divided into three main categories: \emph{multibody dynamics}, \emph{trajectory prescribed path control}, and \emph{electrical networks}. Each of these categories is characterized by a different structure of the \ac{DAE} system, which will be analyzed in detail and will help us to understand the effectiveness of the proposed methodology. The examples are mainly taken from the testsets~\cite{lioen1998test, mazzia2003test, mazzia2008test, mazzia2012test} and are the following.
+In the previous chapter, we presented a methodology for the automatic index reduction of \ac{DAE} systems. The index reduction algorithm is based on the separation of the system into differential and algebraic parts with the help of symbolic linear algebra, \ie{}, \ac{LU} or \ac{FFLU} matrix factorization. No information on the \ac{DAE} system structure is leveraged during the reduction algorithm and, for this reason, this methodology can be applied to generic \acp{DAE} linear in the state derivatives. Numerical integration goodness is showcased by assessing the order of the numerical integration scheme and the accuracy of the projection. In this chapter, we take for granted the correctness of the proposed methodology and we focus on the application and capabilities of the index reduction algorithm. Hence, the algorithm is applied to a variety of \ac{DAE} systems, which are specifically chosen to demonstrate the capabilities, the potential, as well as the wide range of applicability of the proposed methodology. The examples are divided into three main categories: \emph{multibody dynamics}, \emph{trajectory prescribed path control}, and \emph{electrical networks}. Each of these categories is characterized by a different structure of the \ac{DAE} system, which will be analyzed in detail and will help us to understand the effectiveness of the proposed methodology. The examples are mainly taken from the testsets~\cite{lioen1998test, mazzia2003test, mazzia2008test, mazzia2012test} and are the following.
 %
 \begin{enumerate}
   \setlength\itemsep{0.0em}
@@ -31,11 +31,11 @@ In the previous chapter, we presented a methodology for the automatic index redu
   \end{enumerate}
 \end{enumerate}
 
-A comparison between the built-in joint index reduction algorithm and numerical integration schemes offered by \Maple{} with those of \Indigo{} will demonstrate the effectiveness of the proposed methodology and software implementation. It must be pointed out that, to ensure a fair comparison, the same numerical integration method is used in both software packages, \ie{}, the \ac{RKF} 4(5) method with a relative tolerance of $10^{-6}$ and an absolute tolerance of $10^{-7}$. Only when it is not possible to integrate the system with the chosen method, the integration is performed with the RadauIIA5 method. The computation time limit is set to \SI{100}{\second} for both index reduction and code generation. Numerical integration is not limited by time, but the results are reported only if the integration is thoroughly completed.
+A comparison between the built-in joint index reduction algorithm and numerical integration schemes offered by \Maple{} with those of \Indigo{} will demonstrate the effectiveness of the proposed methodology and software implementation. It must be pointed out that, to ensure a fair comparison, the same numerical integration method is used in both software packages, \ie{}, the \ac{RKF} 4(5) method with a relative tolerance of $10^{-6}$ and an absolute tolerance of $10^{-7}$. Only when it is not possible to integrate the system with the chosen method, the integration is performed with the RadauIIA5 method in \Indigo{} and the implicit Rosenbrock 3(4) method in \Maple{}. The computation time limit is set to \SI{100}{\second} for both index reduction and code generation. Numerical integration is not limited by time, but the results are reported only if the integration is thoroughly completed.
 
-For the sake of completeness, we also compare \emph{some} of our results with those obtained by the \Matlab{} symbolic toolbox, which works under a \MuPAD{} \ac{CAS}. Notably, \Matlab{} is capable of performing \acp{DAE} index reduction through either the Pantelides algorithm (\texttt{reduceDAEToODE} function)~\cite{pantelides1988consistent} or the Gaussian elimination method (\texttt{reduceDAEIndex} function). The latter is claimed to be more robust and, to some extent, might be similar to the approach proposed in this work, although its working principles are not fully disclosed and its success is guaranteed only if semilinear \ac{DAE} systems are considered. However, the Pantelides algorithm is reported to be less robust and to have a higher computational cost~\cite{matlabdaes}. For the same examples, we also include the results obtained by the \Mathematica{} symbolic toolbox, which is capable of performing \acp{DAE} index reduction through the Pantelides algorithm as well. It is worth noticing that \Mathematica{} does not provide access to the reduced index \ac{DAE} system, moreover, \Matlab{} has no built-in function to compute the computational cost of each equation in the reduced-index \ac{DAE} system. This makes the comparison with the proposed methodology and software package more challenging. For this reason, we will only limit our considerations to overall performance, \ie{}, the success of both index reduction process and numerical integration processes.
+For the sake of completeness, we also compare \emph{some} of our results with those obtained by the \Matlab{} symbolic toolbox, which works under a \MuPAD{} \ac{CAS}. Notably, \Matlab{} is capable of performing \acp{DAE} index reduction through either the Pantelides algorithm (\texttt{reduceDAEToODE} function)~\cite{pantelides1988consistent} or the Gaussian elimination method (\texttt{reduceDAEIndex} function). The latter is claimed to be more robust and, to some extent, might be similar to the approach proposed in this work, although its working principles are not fully disclosed and its success is guaranteed only if semilinear \ac{DAE} systems are considered. However, the Pantelides algorithm is reported to be less robust and to have a higher computational cost~\cite{matlabdaes}. For the same examples, we also include the results obtained by the \Mathematica{} symbolic toolbox, which is capable of performing \acp{DAE} index reduction through the Pantelides algorithm as well. It is worth noticing that \Mathematica{} does not provide access to the reduced index \ac{DAE} system, moreover, \Matlab{} has no built-in function to compute the computational cost of each equation in the reduced-index \ac{DAE} system. This makes the comparison with the proposed methodology and software package more challenging. For this reason, we will only limit our considerations to overall performance, \ie{}, the success of both index reduction process and numerical integration processes. A summary of this comparison will be later reported in Table~\eqref{chap4:tab:numerical_integration}.
 
-A summary of this comparison will be later reported in Table~\eqref{chap4:tab:numerical_integration}.
+But before we proceed with the examples, it is also worth mentioning that during the index reduction process, the trigonometric identities provided by Weierstra{\ss}~\eqref{chap2:eq:weierstrass} or~\eqref{chap2:eq:zhou} can be used to slightly reformulate the \acp{DAE}expressions, as well as to obtain polynomials expressions and improve the detection of symbolic eliminations (see Section~\ref{chap2:sec:signature}). However, the use of such trigonometric identities does not typically lead to a significant improvement in the computational cost of the expressions generated during the index reduction procedure as the polynomial expressions obtained are hard to simplify as well. Furthermore, such transformations impose a change of coordinates in the original \ac{DAE} system, which may be undesirable in some applications. For this reason, no reformulation is performed in the examples presented in this chapter.
 
 \section{Multibody Dynamics}
 \label{chap4:sec:mbd}
@@ -277,7 +277,7 @@ where
   \ell_r = \sqrt{(x_r - x_b)^2 + (y_r - y_b)^2}
 \end{equation*}
 %
-are respectively the length of the left and right springs, $\ell_0$ is the relaxed length of both springs, $h$ is the amplitude of the bump, and $1/\varepsilon^2$ is the Hooke's constant of the springs. The parameters of the car are chosen as $\ell = \SI{1}{\meter}$, $\ell_0 = \SI{1/2}{\meter}$, $\varepsilon = 0.01$, $m = \SI{10}{\kilo\gram}$, $h = \SI{0.1}{\meter}$, and $\omega = \SI{10}{\radian\per\second}$. While the initial conditions according to~\cite{lioen1998test, mazzia2008test} are $\m{q}_0 = [-1/2, 0, -1/2, 0]^\top$ and $\m{p}_0 = [0, 1/2, 1, 1/2]^\top$, with an integration time interval of $t \in \RSI{0}{3}{\second}$.
+are respectively the length of the left and right springs, $\ell_0$ is the relaxed length of both springs, $h$ is the amplitude of the bump, and $1/\varepsilon^2$ is the Hooke's constant of the springs. The parameters of the car are chosen as $\ell = \SI{1}{\meter}$, $\ell_0 = \SI{1/2}{\meter}$, $\varepsilon = 0.01$, $m = \SI{10}{\kilo\gram}$, $h = \SI{0.1}{\meter}$, and $\omega = \SI{10}{\radian\per\second}$. While the \acp{IC} according to~\cite{lioen1998test, mazzia2008test} are $\m{q}_0 = [-1/2, 0, -1/2, 0]^\top$ and $\m{p}_0 = [0, 1/2, 1, 1/2]^\top$, with an integration time interval of $t \in \RSI{0}{3}{\second}$.
 
 \begin{figure}
   \centering
@@ -286,14 +286,14 @@ are respectively the length of the left and right springs, $\ell_0$ is the relax
   \label{chap4:fig:car_axis}
 \end{figure}
 
-The car-axis \ac{DAE} system is solved using the proposed index reduction algorithm. The results are summarized in Table~\ref{chap4:tab:car_axis}. As expected, the index is reduced to 0, and the system is transformed into a set of \acp{ODE}. The complexity of the expressions encountered during the index reduction is given in terms of the number of functions $\cf$, additions $\ca$, multiplications $\cm$, and divisions $\cd$; and, as reported in the table, the index reduction is successful and little expression swell is observed only in the last reduction step. The reduced system is then numerically solved using the \ac{RKF} 4(5) integrator, and the results are shown in Figure~\ref{chap4:fig:car_axis}, where the springs' lengths are plotted. Notably, during the simulation, the left spring remains nearly constant at its relaxed length, while the right spring periodically changes its length due to the bumps. It is worth mentioning that also \Mathematica{} and \Matlab{} (with both Pantelides and Gaussian elimination techniques) can correctly reduce the index of the car-axis problem and integrate the resulting system.
+The car-axis \ac{DAE} system is solved using the proposed index reduction algorithm with both \ac{LU} and \ac{FFLU} factorization. The results are summarized in Table~\ref{chap4:tab:car_axis}. As expected, the index is reduced to 0, and the system is transformed into a set of \acp{ODE}. The complexity of the expressions encountered during the index reduction is given in terms of the number of functions $\cf$, additions $\ca$, multiplications $\cm$, and divisions $\cd$; and, as reported in the table, the index reduction is successful and little expression swell is observed only in the last reduction step. It should be noted that the \ac{FFLU} factorization produces more complex expressions than the \ac{LU} factorization and, for this reason, the former is dropped in the following simulations. The reduced system is then numerically solved using the \ac{RKF} 4(5) integrator, and the results are shown in Figure~\ref{chap4:fig:car_axis}, where the springs' lengths are plotted. Notably, during the simulation, the left spring remains nearly constant at its relaxed length, while the right spring periodically changes its length due to the bumps. It is worth mentioning that also \Mathematica{} and \Matlab{} (with both Pantelides and Gaussian elimination techniques) can correctly reduce the index of the car-axis problem and integrate the resulting system.
 
 \begin{table}
-  \caption{Expression complexity encountered throughout the index reduction of the car-axis problem~\cite{lioen1998test, mazzia2008test} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \caption{Expression complexity encountered throughout the index reduction of the car-axis problem~\cite{lioen1998test, mazzia2008test} \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:car_axis}
   \centering
   {\footnotesize\begin{tabular}{cccc}
-    \multicolumn{4}{c}{\textbf{Car-Axis~\cite{lioen1998test, mazzia2008test}}} \\
+    \multicolumn{4}{c}{\textbf{Car-Axis (LU Factorization)~\cite{lioen1998test, mazzia2008test}}} \\
     \toprule
     \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 108\cf + 131\cm + 56\ca$ \quad $\mh = 0$} \\
     \midrule
@@ -305,6 +305,20 @@ The car-axis \ac{DAE} system is solved using the proposed index reduction algori
     Index-0 \acp{DAE} & $1060\cf + 38\cd + 1901\cm + 717\ca$ & $431\cf + 8\cd + 842\cm + 268\ca$ & $0$ \\
     \midrule
     \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 896\cf + 4\cd + 1202\cm + 546\ca$ \quad $\mh = 176\cf + 4\cd + 322\cm + 120\ca$} \\
+    \bottomrule \\[0.5em]
+    %
+    \multicolumn{4}{c}{\textbf{Car-Axis (FFLU Factorization)~\cite{lioen1998test, mazzia2008test}}} \\
+    \toprule
+    \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 108\cf + 131\cm + 56\ca$ \quad $\mh = 0$} \\
+    \midrule
+    \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+    \midrule
+    Index-3 \acp{DAE} & $0$ & $94\cf + 8\cd + 150\cm + 54\ca$ & $14\cf + 21\cm + 10\ca$ \\
+    Index-2 \acp{DAE} & $0$ & $94\cf + 8\cd + 154\cm + 54\ca$ & $26\cf + 1\cd + 44\cm + 15\ca$ \\
+    Index-1 \acp{DAE} & $0$ & $94\cf + 8\cd + 155\cm + 54\ca$ & $136\cf + 6\cd + 4\cd + 261\cm + 95\ca$ \\
+    Index-0 \acp{DAE} & $1066\cf + 55\cd + 1888\cm + 717\ca$ & $431\cf + 18\cd + 851\cm + 268\ca$ & $0$ \\
+    \midrule
+    \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 1549\cf + 73\cd + 2765\cm + 1011\ca$ \quad $\mh = 176\cf + 7\cd + 326\cm + 120\ca$} \\
     \bottomrule
   \end{tabular}}
 \end{table}
@@ -522,7 +536,7 @@ For the simulation, the following parameters are used:
   \end{matrix}
 \end{equation*}
 %
-The initial conditions according to~\cite{lioen1998test, mazzia2008test} are
+The \acp{IC} according to~\cite{lioen1998test, mazzia2008test} are
 %
 \begin{equation*}
   \m{p}_{0} = \begin{bmatrix}
@@ -560,7 +574,7 @@ The initial conditions according to~\cite{lioen1998test, mazzia2008test} are
 %
 with an integration time interval of $t \in \RSI{0}{0.1}{\second}$.
 
-The slider-crank mechanism \ac{DAE} system is solved with the aid of the proposed index reduction algorithm. Specifically, both the linear and nonlinear flexible beam models are considered. The results in terms of expression complexity encountered throughout the index reduction are similar for both formulations, and they are summarized in Table~\ref{chap4:tab:flexible_slider_crank}. As shown in the table, the expression complexity increases significantly during the index reduction process, which is expected due to the inherent complexity of the problem. Hierarchical representation is also employed to limit the expression swelling, and the results are summarized in Table~\ref{chap4:tab:flexible_slider_crank_veil}. The results show that the hierarchical representation reduces the expression complexity by an order of magnitude, which is beneficial for the numerical solution of the \ac{DAE} system. Nevertheless, it must be highlighted that, despite the mitigation of the expression complexity, the hierarchical representation does not prevent the expression complexity from increasing significantly during the index reduction process, which allows us to conclude that this problem is affected by inherent expression swelling. The results of the numerical simulation are shown in Figure~\ref{chap4:fig:flexible_slider_crank}, where the longitudinal displacements $q_3$ and $q_4$ of the flexible beam are illustrated. The results show that the flexible beam undergoes significant and fast deformation during the motion of the slider-crank mechanism, confirming the high stiffness of the \ac{DAE} system. In particular, the nonlinear beam model shows a more pronounced and fast deformation compared to the linear beam model, which makes the numerical solution more challenging. Indeed, the numerical solution of the slider-crank mechanism with the nonlinear beam model exhibits an overflow error after $t = \SI{0.05}{\second}$, which is likely due to either the high stiffness of the \ac{DAE} system or strongly undamped oscillations. The linear beam model, on the other hand, does not exhibit such issues and is successfully solved.
+The slider-crank mechanism \ac{DAE} system is solved with the aid of the proposed index reduction algorithm. Specifically, both the linear and nonlinear flexible beam models are considered. The results in terms of expression complexity encountered throughout the index reduction are similar for both formulations, and they are summarized in Table~\ref{chap4:tab:flexible_slider_crank}. As shown in the table, the expression complexity increases significantly during the index reduction process, which is expected due to the inherent complexity of the problem. Hierarchical representation is also employed to limit the expression swelling, and the results are summarized in Table~\ref{chap4:tab:flexible_slider_crank_veil}. The results show that the hierarchical representation reduces the expression complexity by an order of magnitude, which is beneficial for the numerical solution of the \ac{DAE} system. Nevertheless, it must be highlighted that, despite the mitigation of the expression complexity, the hierarchical representation does not prevent the expression complexity from increasing significantly during the index reduction process, which allows us to conclude that this problem is affected by inherent expression swelling. The results of the numerical simulation are shown in Figure~\ref{chap4:fig:flexible_slider_crank}, where the longitudinal displacements $q_3$ and $q_4$ of the flexible beam are illustrated. The results show that the flexible beam undergoes significant and fast deformation during the motion of the slider-crank mechanism, confirming the high stiffness of the \ac{DAE} system. In particular, the nonlinear beam model shows a more pronounced and fast deformation compared to the linear beam model, which makes the numerical solution more challenging. Indeed, the numerical solution of the slider-crank mechanism with the nonlinear beam model exhibits an overflow error after $t = \SI{0.05}{\second}$, which is likely due to either the high stiffness of the \ac{DAE} system or strongly undamped oscillations. The linear beam model, on the other hand, does not exhibit such issues and is successfully solved. It should be noticed from Figure~\ref{chap4:fig:flexible_slider_crank_pivots} that the ac{LU} pivots having minimum values are neither crossing nor getting close to zero, which is a good indicator of the numerical stability of the \ac{LU} factorization and thereby of the efficacy of the symbolic pivoting strategy.
 
 \begin{figure}[htb]
   \centering
@@ -570,7 +584,7 @@ The slider-crank mechanism \ac{DAE} system is solved with the aid of the propose
 \end{figure}
 
 \begin{table}
-  \caption{Expression complexity encountered throughout the index reduction of the flexible slider-crank mechanism problem~\cite{lioen1998test, mazzia2008test} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \caption{Expression complexity encountered throughout the index reduction of the flexible slider-crank mechanism problem~\cite{lioen1998test, mazzia2008test} \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:flexible_slider_crank}
   \centering
   \resizebox{\textwidth}{!}{%
@@ -593,7 +607,7 @@ The slider-crank mechanism \ac{DAE} system is solved with the aid of the propose
 \end{table}
 
 \begin{table}
-  \caption{Expression complexity encountered throughout the index reduction with the aid of hierarchical representation of the flexible slider-crank mechanism problem~\cite{lioen1998test, mazzia2008test} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\cv$ = veiling variables, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \caption{Expression complexity encountered throughout the index reduction with the aid of hierarchical representation of the flexible slider-crank mechanism problem~\cite{lioen1998test, mazzia2008test} \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\cv$ = veiling variables, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:flexible_slider_crank_veil}
   \centering
   \resizebox{\textwidth}{!}{%
@@ -637,6 +651,13 @@ The slider-crank mechanism \ac{DAE} system is solved with the aid of the propose
   \label{chap4:fig:flexible_slider_crank}
 \end{figure}
 
+\begin{figure}[htb]
+  \centering
+  \small{\includetikz{figures/chapter_4/flexible_slider_crank_pivots.tex}}
+  \caption{Representation of the two pivots of the flexible slider-crank mechanism~\cite{lioen1998test, mazzia2008test} having minimum values. \emph{Color legend}: \textcolor{mycolor1}{$\blacksquare$} pivot 1, and \textcolor{mycolor2}{$\blacksquare$} pivot 2. \emph{Line legend}: \textbf{---} linear beam model, and \textbf{--~--} nonlinear beam model.}
+  \label{chap4:fig:flexible_slider_crank_pivots}
+\end{figure}
+
 \subsection{The Multi-Pendula System}
 
 The multi-pendula system consists of a chain of $p$ coupled pendula. The first pendulum is a standard simple pendulum, while the remaining pendula are coupled to the previous one. Specifically, the tension in pendulum $i - 1$, which is represented by the Lagrange multiplier $\lambda_{i-1}$, has a small effect on the length of
@@ -662,13 +683,13 @@ pendulum $p$, for $i = 2, \dots, p$. The first-order equations of motion for the
   \label{chap4:eq:multi_pendula}
 \end{equation}
 %
-where $x_i, y_i$ and $u_i, v_i$ are the generalized coordinates and velocities of $i$-th pendulum mass. The parameters of the multi-pendula system are chosen as $\ell = \SI{1}{\meter}$, $g = \SI{9.81}{\meter\per\second\squared}$, and $c = 0.1$. The system~\eqref{chap4:eq:multi_pendula} leads to a class of \acp{DAE} of arbitrary size $5p$ and index $2p+1$~\cite{nedialkov2008solvingIII}. Initial conditions are chosen randomly, and the time interval is $t \in \RSI{0}{60}{\second}$.
+where $x_i, y_i$ and $u_i, v_i$ are the generalized coordinates and velocities of $i$-th pendulum mass. The parameters of the multi-pendula system are chosen as $\ell = \SI{1}{\meter}$, $g = \SI{9.81}{\meter\per\second\squared}$, and $c = 0.1$. The system~\eqref{chap4:eq:multi_pendula} leads to a class of \acp{DAE} of arbitrary size $5p$ and index $2p+1$~\cite{nedialkov2008solvingIII}. \acp{IC} are chosen randomly, and the time interval is $t \in \RSI{0}{60}{\second}$.
 
 Here, we consider up to $p = 4$ pendula, leading to a \ac{DAE} system of $20$ variables and index $9$. The computational complexities encountered during the index reduction process are summarized in Table~\ref{chap4:tab:pendula_2}, for the 2-pendula problem, Table~\ref{chap4:tab:pendula_3}, for the 3-pendula problem, Table~\ref{chap4:tab:pendula_4}, for the 4-pendula problem, and lastly, Table~\ref{chap4:tab:pendula_5}, for the 5-pendula problem. The multi-pendula systems with $p \leq 3$ exhibit low computational complexity growth during the index reduction process. However, for $p \geq 4$, there is a substantial expression swell, which makes the index reduction process time-consuming and computationally demanding, yet still feasible. The introduction of veiling variables is avoided on purpose to assess the impact of strong expression swelling on the stability of the numerical solution.
 It is worth noting that with $p = 4$ the maximum computational complexity that \Maple{} can handle within a reasonable time is reached. For this reason, performing the last reduction steps for $p > 4$ requires a significant amount of time and computational resources. Furthermore, we believe that reducing the index of the \ac{DAE} system for $p > 5$ is not feasible within an acceptable time frame, even with the aid of hierarchical representation. The numerical integration results of the 5-pendula system are depicted in Figure~\ref{chap4:fig:npendula_length}, where the pendula lengths are illustrated in the time interval $t \in \RSI{0}{60}{\second}$. It must be pointed out that the numerical solution of the 5-pendula system is computed from its index-2 \ac{DAE} form, as its index-0 form demands a significant amount of computational resources and time to be solved.
 
 \begin{table}
-  \caption{Expression complexity encountered throughout the index reduction of the 2-pendula problem~\cite{nedialkov2008solvingIII} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \caption{Expression complexity encountered throughout the index reduction of the 2-pendula problem~\cite{nedialkov2008solvingIII} \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:pendula_2}
   \centering
   {\footnotesize\begin{tabular}{cccc}
@@ -692,7 +713,7 @@ It is worth noting that with $p = 4$ the maximum computational complexity that \
 \end{table}
 
 \begin{table}
-  \caption{Expression complexity encountered throughout the index reduction of the 3-pendula problem~\cite{nedialkov2008solvingIII} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \caption{Expression complexity encountered throughout the index reduction of the 3-pendula problem~\cite{nedialkov2008solvingIII} \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:pendula_3}
   \centering
   {\footnotesize\begin{tabular}{cccc}
@@ -718,7 +739,7 @@ It is worth noting that with $p = 4$ the maximum computational complexity that \
 \end{table}
 
 \begin{table}
-  \caption{Expression complexity encountered throughout the index reduction of the 4-pendula problem~\cite{nedialkov2008solvingIII} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \caption{Expression complexity encountered throughout the index reduction of the 4-pendula problem~\cite{nedialkov2008solvingIII} \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:pendula_4}
   \centering
   {\footnotesize\begin{tabular}{cccc}
@@ -746,7 +767,7 @@ It is worth noting that with $p = 4$ the maximum computational complexity that \
 \end{table}
 
 \begin{table}
-  \caption{Expression complexity encountered throughout the index reduction of the 5-pendula problem~\cite{nedialkov2008solvingIII} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \caption{Expression complexity encountered throughout the index reduction of the 5-pendula problem~\cite{nedialkov2008solvingIII} \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:pendula_5}
   \centering
   {\footnotesize\begin{tabular}{cccc}
@@ -967,7 +988,7 @@ It is important to note that one may consider the compliance contribution as a s
 Prior to any analyses, the \ac{DAE} system is handled to \Indigo{} for index reduction. For this purpose, the system is reduced to a system of \acp{ODE} and the computational complexities encountered during the reduction process are reported in Table~\ref{chap4:tab:suspension}. Notice the substantial increase in the expression complexity of the reduced system in the last two reduction steps despite the simplification capabilities of \Maple{}, which indicates a high level of inherent expression swell.
 
 \begin{table}
-  \caption{Expression complexity encountered throughout the index reduction with the aid of hierarchical representation of the double-wishbone suspension system \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\cv$ = veiling variables, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \caption{Expression complexity encountered throughout the index reduction with the aid of hierarchical representation of the double-wishbone suspension system \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\cv$ = veiling variables, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:suspension}
   \centering
   {\footnotesize\begin{tabular}{cccc}
@@ -1053,7 +1074,7 @@ The results of the simulation are shown in Figure~\ref{chap4:fig:test_bench}, wh
   \label{chap4:fig:test_bench}
 \end{figure}
 
-Finally, a full-vehicle simulation is conducted on the \textit{Pista Azzurra} track in Jesolo (Italy). The simulation is conducted using the index-reduced \ac{DAE} system, the tire-ground enveloping model, and the tire model presented in Appendices~\ref{app2:enve} and~\ref{app3:tirex}, respectively. The results of the simulation are shown in Figure~\ref{chap4:fig:suspension_pista_azzurra}, where the suspension travel $z$ is shown in the first plot, while the translations $\delta$ and rotation $\theta$ components of the compliance contribution at the wheel hub are shown in the second and third plots, respectively. The results show that the compliance of the suspension system has a significant impact on the wheel hub's translations and rotations, which are captured by the full-vehicle simulation.
+Finally, to estimate what would be the impact of compliance in a racing vehicle, the telemetry and inputs of a full-vehicle simulation conducted on the \textit{Pista Azzurra} track in Jesolo (Italy), are applied to the modeled rear left double wishbone suspension. The simulation is conducted using the previously reduced \ac{MB}-\ac{DAE} system, the tire-ground enveloping model, and the tire model presented in Appendices~\ref{app2:enve} and~\ref{app3:tirex}, respectively. The results of the simulation are shown in Figure~\ref{chap4:fig:suspension_pista_azzurra}, where the suspension travel $z$ is shown in the first plot, while the translations $\delta$ and rotation $\theta$ components of the compliance contribution at the wheel hub are shown in the second and third plots, respectively. The results show that the compliance of the suspension system adds a non-negligible contribution to the wheel hub's positioning, especially in terms of rotations.
 
 \begin{figure}[htbp]
   \centering
@@ -1162,7 +1183,7 @@ We now examine the initial stage reentry \ac{TPPC} problem in the same form of~\
 for a time $t \in [t_0, t_1] = \RSI{32.868734542}{419.868734542}{\second}$, and where $V_0$, is the vehicle's initial velocity at $t_0$ and $C_0 = 3.974960446019$, $C_1 = -0.01448947694635$, $C_2 = -0.2156171551995 \cdot 10^{-4}$, and $C_3 = -0.1089609507291 \cdot 10^{-7}$ are constants chosen so that the initial state vector satisfies~\eqref{chap4:eq:initial_drag} and its first derivative at $t_0$, and so that this transitional phase smoothly joins with the nominal profile. Notice that, posed in this way, the resulting \ac{TPPC} system is a semi-explicit index-3 \acp{DAE} problem. In this test, the set of initial values are $\gamma = \SI{-0.749986488}{\deg}$, $A = \SI{62.7883367}{\deg}$, $H = \SI{264039.3280}{\feet}$, $\xi = \SI{177.718047}{\deg}$, $\lambda = \SI{32.0417885}{\deg}$, $V_r = \SI{24317.0798}{\feet\per\second}$, and $\beta = \SI{41.10071834}{\deg}$. The lift and drag coefficients $C_L = 0.8769230769$ and $C_D = 0.8246153846$, as well as the angle of attack $\alpha = \SI{40}{\deg}$ are assumed to be constant throughout the simulation. The vehicle mass is $m = \SI{5964.496499824}{\slugs}$, and its cross-sectional reference area is $S = \SI{2690}{\feet\squared}$.
 
 \begin{table}
-  \caption{Expression complexity encountered throughout the index reduction of the initial stage space shuttle reentry problem~\cite{brenan1995numerical} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \caption{Expression complexity encountered throughout the index reduction of the initial stage space shuttle reentry problem~\cite{brenan1995numerical} \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:tppc_initial}
   \centering
   {\footnotesize\begin{tabular}{cccc}
@@ -1182,7 +1203,7 @@ for a time $t \in [t_0, t_1] = \RSI{32.868734542}{419.868734542}{\second}$, and 
   \end{tabular}}
 \end{table}
 
-To address this index-3 \acp{DAE}, we utilize the proposed index reduction algorithm. The complexity of expressions encountered during the algorithm's execution is detailed in Table~\ref{chap4:tab:tppc_initial}. Notably, the index reduction algorithm effectively reduced the system to index-0 without the aid of hierarchical representations, and the expression growth is strongly inhibited by successful simplification and only limited to the last reduction step. We conduct numerical integration of the reduced \ac{DAE} system using both the \Maple{} and \Indigo{} solvers. Specifically, \Maple{} encounters challenges in integrating the original \ac{DAE} system due to difficulties in projecting initial values into the solution space, where initial conditions are deemed inconsistent with the algebraic constraints. In contrast, the \Indigo{} numerical solver successfully integrates the reduced \ac{DAE} system, yielding results depicted in Figure~\ref{chap4:fig:tppc_initial}.
+To address this index-3 \acp{DAE}, we utilize the proposed index reduction algorithm. The complexity of expressions encountered during the algorithm's execution is detailed in Table~\ref{chap4:tab:tppc_initial}. Notably, the index reduction algorithm effectively reduced the system to index-0 without the aid of hierarchical representations, and the expression growth is strongly inhibited by successful simplification and only limited to the last reduction step. We conduct numerical integration of the reduced \ac{DAE} system using both the \Maple{} and \Indigo{} solvers. Specifically, \Maple{} encounters challenges in integrating the original \ac{DAE} system due to difficulties in projecting initial values into the solution space, where \acp{IC} are deemed inconsistent with the algebraic constraints. In contrast, the \Indigo{} numerical solver successfully integrates the reduced \ac{DAE} system, yielding results depicted in Figure~\ref{chap4:fig:tppc_initial}.
 
 \begin{figure}[htb]
   \centering
@@ -1205,7 +1226,7 @@ We now examine the final stage reentry \ac{TPPC} problem in the same form of~\ci
 for a time $t \in \RSI{0}{300}{\second}$. The flight path angle $\gamma$ spans from $\RSI{-1}{-10}{\deg}$, while the azimuth $A$ ranges from $\RSI{45}{135}{\deg}$. Both the bank angle $\beta$ and the angle of attack $\alpha$ serve as control variables, \ie{} $\m{u} = [\beta, \alpha]^\top$. The \ac{DAE} system is index-2 for a lifting reentry vehicle as long as $(0.05 \rho S V_r/m)^2 C_L(\alpha)/\cos(\gamma) \neq 0$. Notice that to be physically consistent we require that $V_r \neq \SI{0}{\deg}$, $\rho\neq \SI{0}{\deg}$, $\alpha \neq \SI{0}{\deg}$, $\gamma \neq \SI{90}{\deg}$, as well as $\lambda \neq \SI{180}{\deg}$. The related index-1 \acp{DAE} can be obtained directly by differentiating the algebraic constraints once and substituting for $A^\prime$ and $\gamma^\prime$ from the differential equations. Consistent initial values for the \ac{DAE} system are determined by selecting the initial differential and control variables to satisfy~\eqref{chap4:eq:final_path_constraints} the two new hidden constraints in the related index-1 system. The set of initial values used in this experiment are $H = \SI{100000}{\feet}$, $\xi = \SI{0}{\deg}$, $\lambda = \SI{0}{\deg}$, $A = \SI{0}{\deg}$, $V_r = \SI{12000}{\feet\per\second}$, $\gamma = \SI{-1}{\deg}$, $A = \SI{45}{\deg}$, $\beta = \SI{-0.05220958616134}{\deg}$, and $\alpha = \SI{2.6728700742}{\deg}$. The lift and drag coefficients are set to $C_L = 0.01\alpha$ and $C_D = 0.04 + 0.1C_L^2$, respectively. The vehicle mass is $m = \SI{2.890532728}{\slugs}$, and its cross-sectional reference area is $S = \SI{1}{\feet\squared}$.
 
 \begin{table}
-  \caption{Expression complexity encountered throughout the index reduction of the final stage space shuttle reentry problem~\cite{brenan1995numerical} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \caption{Expression complexity encountered throughout the index reduction of the final stage space shuttle reentry problem~\cite{brenan1995numerical} \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:tppc_final}
   \centering
   {\footnotesize\begin{tabular}{cccc}
@@ -1224,7 +1245,7 @@ for a time $t \in \RSI{0}{300}{\second}$. The flight path angle $\gamma$ spans f
   \end{tabular}}
 \end{table}
 
-To solve the index-2 \ac{DAE} system, we apply the proposed index reduction algorithm. The expression complexity encountered throughout the index reduction is reported in Table~\ref{chap4:tab:tppc_final}. As we can see, the index reduction algorithm successfully reduces the index of the \ac{DAE} system to index-0 with minimal expression swelling in the last reduction step. The numerical integration of the reduced \ac{DAE} system is performed using both the \Maple{} and \Indigo{} numerical solvers. In this regard, \Maple{} is again not able to integrate the original \ac{DAE} system due to the incapacity of projecting the initial values into the solution space (\ie{}, initial conditions are not judged to be consistent with the algebraic constraints). Conversely, the numerical integration of the reduced \ac{DAE} system using the \Indigo{} numerical solver is successful, and the results are presented in Figure~\ref{chap4:fig:tppc_final}, where the bank angle $\beta$ and the angle of attack $\alpha$ controls history are shown.
+To solve the index-2 \ac{DAE} system, we apply the proposed index reduction algorithm. The expression complexity encountered throughout the index reduction is reported in Table~\ref{chap4:tab:tppc_final}. As we can see, the index reduction algorithm successfully reduces the index of the \ac{DAE} system to index-0 with minimal expression swelling in the last reduction step. The numerical integration of the reduced \ac{DAE} system is performed using both the \Maple{} and \Indigo{} numerical solvers. In this regard, \Maple{} is again not able to integrate the original \ac{DAE} system due to the incapacity of projecting the initial values into the solution space (\ie{}, \acp{IC} are not judged to be consistent with the algebraic constraints). Conversely, the numerical integration of the reduced \ac{DAE} system using the \Indigo{} numerical solver is successful, and the results are presented in Figure~\ref{chap4:fig:tppc_final}, where the bank angle $\beta$ and the angle of attack $\alpha$ controls history are shown.
 
 \begin{figure}[htb]
   \centering
@@ -1281,7 +1302,7 @@ Figure~\ref{chap4:fig:robotic_arm} illustrates the robotic arm problem, as well 
 \end{figure}
 
 \begin{table}
-  \caption{Expression complexity encountered throughout the index reduction of the robotic arm problem~\cite{brenan1995numerical} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \caption{Expression complexity encountered throughout the index reduction of the robotic arm problem~\cite{brenan1995numerical} \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:tppc_robot}
   \centering
   \resizebox{\textwidth}{!}{%
@@ -1306,7 +1327,7 @@ Figure~\ref{chap4:fig:robotic_arm} illustrates the robotic arm problem, as well 
 \end{table}
 
 \begin{table}
-  \caption{Expression complexity encountered throughout the index reduction with the aid of hierarchical representation of the robotic arm problem~\cite{brenan1995numerical} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\cv$ = veiling variables, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \caption{Expression complexity encountered throughout the index reduction with the aid of hierarchical representation of the robotic arm problem~\cite{brenan1995numerical} \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\cv$ = veiling variables, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:tppc_robot_veil}
   \centering
   {\footnotesize\begin{tabular}{cccc}
@@ -1356,7 +1377,7 @@ Historically, the \acp{DAE} of electrical networks stimulated the study of \acp{
 
 Consider an electrical network comprising $b$ branches connected to $n$ nodes. Assigning a current variable $i_b$ to each branch and a voltage variable $v_n$ to each node, the circuit equations stem from Kirchoff's laws, \ie{} the algebraic sum of currents into a node is zero, and the algebraic sum of the voltage drops around a loop is zero. By convention, current denotes the net flow of positive charge, with a designated current direction along each branch assigned by designating one node as negative and the other as positive (with current flowing from positive to negative). The circuit's topology can be described by a $b \times n$ network incidence matrix $\m{A}$. The $(i,j)$ element of $\m{A}$ is $\pm1$ if node $j$ is the $\pm$ node for the $i$-th branch. Denoting $\m{i}_b$ as the vector of current variables, Kirchoff's current law simply states that $\m{A}^\top\m{i}_b = 0$. The voltage drop across each branch is defined as the difference between the voltage at the positive node and that at the negative node. These branch voltages $\m{v}_b$ can be expressed in terms of the nodal voltages $\m{v}_n$ as $\m{v}_b = \m{A}\m{v}_n$.
 
-Linear circuits composed of resistors, capacitors, and inductors can result in large sparse linear \acp{DAE}. In these circuits, the voltage-current relationship across a resistor branch follows Ohm's law, $v_r = Ri_r$, with a positive resistance $R$. Similarly, the voltage-current characteristics of linear capacitors and inductors satisfy $i_c = C\de{}v_c/\de{}t$ and $v_l = L\de{}i_l/\de{}t$, respectively. However, the inclusion of transistors or unicursal elements tends to introduce non-linearity into \ac{DAE} systems. The solvability of \acp{DAE} arising from linear circuits lacking operational amplifiers is solely influenced by the network topology. However, circuits containing differential amplifiers, typically realized using operational amplifiers, may give rise to \acp{DAE} of arbitrarily high index. \acp{DAE} arising from linear circuits incorporating operational amplifiers depends on the specific voltage-current characteristics of the circuit components for solvability. Moreover, the number of independent initial conditions may vary depending on specific circuit parameter values. The potential for arbitrarily high-index \acp{DAE} originating from circuits is demonstrated in examples such as a cascade of differential amplifiers. Furthermore, high-index \acp{DAE} may emerge when different variables are designated as inputs and outputs. For example, whether a device functions as a differentiator or an integrator depends on the designation of inputs and outputs~\cite{brenan1995numerical}.
+Linear circuits composed of resistors, capacitors, and inductors can result in large sparse linear \acp{DAE}. In these circuits, the voltage-current relationship across a resistor branch follows Ohm's law, $v_r = Ri_r$, with a positive resistance $R$. Similarly, the voltage-current characteristics of linear capacitors and inductors satisfy $i_c = C\de{}v_c/\de{}t$ and $v_l = L\de{}i_l/\de{}t$, respectively. However, the inclusion of transistors or unicursal elements tends to introduce non-linearity into \ac{DAE} systems. The solvability of \acp{DAE} arising from linear circuits lacking operational amplifiers is solely influenced by the network topology. However, circuits containing differential amplifiers, typically realized using operational amplifiers, may give rise to \acp{DAE} of arbitrarily high index. \acp{DAE} arising from linear circuits incorporating operational amplifiers depends on the specific voltage-current characteristics of the circuit components for solvability. Moreover, the number of independent \acp{IC} may vary depending on specific circuit parameter values. The potential for arbitrarily high-index \acp{DAE} originating from circuits is demonstrated in examples such as a cascade of differential amplifiers. Furthermore, high-index \acp{DAE} may emerge when different variables are designated as inputs and outputs. For example, whether a device functions as a differentiator or an integrator depends on the designation of inputs and outputs~\cite{brenan1995numerical}.
 
 In the following, we present three examples of electrical circuits, the first being an eight-node transistor amplifier, the second an electric ring modulator, and the third a cascade of differential amplifiers. The first two examples are taken from~\cite{lioen1998test, mazzia2008test}, while the third is taken from~\cite{brenan1995numerical}.
 
@@ -1390,7 +1411,7 @@ This problem originates from electrical circuit analysis, and it is a model for 
   \end{bmatrix} \, \text{,}
 \end{equation}
 %
-where $g(x) = \beta(\exp(x/U_f) - 1)\,\USI{\ampere}$, and $U_e(t) = 0.1\sin(200 \pi t)\,\USI{\volt}$. Initial conditions at $t = 0$ and parameters are given by
+where $g(x) = \beta(\exp(x/U_f) - 1)\,\USI{\ampere}$, and $U_e(t) = 0.1\sin(200 \pi t)\,\USI{\volt}$. \acp{IC} at $t = 0$ and parameters are given by
 %
 \begin{equation*}
   \m{x}_0 = \begin{bmatrix}
@@ -1432,7 +1453,7 @@ The index reduction process is smoothly performed, and the complexity of the exp
 \end{figure}
 
 \begin{table}
-  \caption{Expression complexity encountered throughout the index reduction of the eight-node transistor-amplifier problem~\cite{lioen1998test, mazzia2008test} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \caption{Expression complexity encountered throughout the index reduction of the eight-node transistor-amplifier problem~\cite{lioen1998test, mazzia2008test} \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:tppc_robot}
   \centering
   {\footnotesize\begin{tabular}{cccc}
@@ -1492,7 +1513,7 @@ where
   \end{array}
 \end{equation*}
 %
-Initial conditions at $t = 0$ and parameters are given by $\m{x}_0 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]^\top$, and
+\acp{IC} at $t = 0$ and parameters are given by $\m{x}_0 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]^\top$, and
 %
 \begin{equation*}
   \begin{array}{l}
@@ -1530,7 +1551,7 @@ Considering $C_s = 0$, the index reduction process is flawlessly performed throu
 \end{figure}
 
 \begin{table}
-  \caption{Expression complexity encountered throughout the index reduction of the electric ring modulator problem~\cite{lioen1998test, mazzia2008test} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \caption{Expression complexity encountered throughout the index reduction of the electric ring modulator problem~\cite{lioen1998test, mazzia2008test} \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:tppc_robot}
   \centering
   {\footnotesize\begin{tabular}{cccc}
@@ -1573,7 +1594,7 @@ The cascade of differential amplifiers is an example of a system whose index can
   x_i(t) = \prod_{j=1}^{i} (-C_j R_j) \dfrac{\de{}^{i}}{\de{}t^{i}}U(t) \, \text{.}
 \end{equation*}
 %
-Consistent initial conditions at $t = t_0$ can be easily obtained by evaluating the analytical solution at $t = t_0$, \ie{},
+Consistent \acp{IC} at $t = t_0$ can be easily obtained by evaluating the analytical solution at $t = t_0$, \ie{},
 %
 \begin{equation*}
   \m{x}_0 = \begin{bmatrix}
@@ -1701,17 +1722,19 @@ It is now time to summarize the results obtained from the experiments and discus
 
 \subsection{Symbolic Index Reduction}
 
-The first aspect to consider is the symbolic index reduction process. Specifically, the presented algorithm can successfully reduce the index of all the example \ac{DAE} systems here considered. The computational cost of the expressions generated during the index reduction procedure is comparable to the original \ac{DAE} system in most of the tests. However, in examples 3, 6, 7 and 11 the expressions generated during the index reduction procedure are significantly more complex than the original \ac{DAE} system. In these cases, the \Maple{} symbolic computation kernel is not able to perform the simplification within \SI{100}{\second} of CPU time and the raw expressions are kept in the following reduction steps. As a consequence, the computational cost inherently increases throughout the following reduction steps. Notably, the \ac{DAE} systems that are hard to simplify are those having a matrix $\mA$ that is strongly dependent on the state variables $\mx$ or equivalently that retains complicated divisions in the vector $\mb$. In these cases, the computational cost of the vector $\ma$ increases significantly due to successive and repeated differentiation and symbolic factorization. In examples 3, 6, 7 and 11, the hierarchical pivoting strategy is then used to mitigate the expression swell and ensure the successful index reduction of the \ac{DAE} system. In examples 3 and 11 the veiling strategy proved to be of substantial help, effectively reducing the expression complexities and ensuring the successful index reduction of the \ac{DAE} system. In examples 6 and 7, the hierarchical representation is not used on purpose to understand the impact of the expression swell on the numerical integration process.
+The first aspect to consider is the symbolic index reduction process. Specifically, the presented algorithm can successfully reduce the index of all the example \ac{DAE} systems here considered. The computational cost of the expressions generated during the index reduction procedure is typically comparable to the original \ac{DAE} system in most of the tests. Additionally, we have seen that the specific type of matrix factorization plays a crucial role in the computational cost of the expressions generated during the index reduction process. In this regard, the ``standard'' \ac{LU} factorization is found to produce better results in terms of computational cost than the \ac{FFLU} factorization. Nonetheless, in examples 3, 6, 7 and 11 the expressions generated during the index reduction procedure are significantly more complex than the original \ac{DAE} system. In these cases, the \Maple{} symbolic computation kernel is not able to perform the simplification within \SI{100}{\second} of \ac{CPU} time and the raw expressions are kept in the following reduction steps. As a consequence, the computational cost inherently increases throughout the following reduction steps. Notably, the \ac{DAE} systems that are hard to simplify are those having a matrix $\mA$ that is strongly dependent on the state variables $\mx$ or equivalently that retains complicated divisions in the vector $\mb$. In these cases, the computational cost of the vector $\ma$ increases significantly due to successive and repeated differentiation and symbolic factorization. In examples 3 and 11, the hierarchical pivoting strategy is thereby used to mitigate the expression swell and ensure the successful index reduction of the \ac{DAE} system. In such examples the veiling strategy proved to be of substantial help, effectively reducing the expression complexities and ensuring the successful index reduction of the \ac{DAE} system. On the other hand, in examples 6 and 7, the hierarchical representation is not used on purpose to understand the impact of the expression swell on the numerical integration process.
 
-It is worth mentioning that the trigonometric identities provided by Weierstra{\ss}~\eqref{chap2:eq:weierstrass} or~\eqref{chap2:eq:zhou} can be used to obtain polynomial expressions and improve the detection of symbolic eliminations (see Section~\ref{chap2:sec:signature}). However, the use of such trigonometric identities does not typically lead to a significant improvement in the computational cost of the expressions generated during the index reduction procedure as the polynomial expressions obtained are hard to simplify as well. Furthermore, such transformations impose a change of coordinates in the original \ac{DAE} system, which may be undesirable in some applications.
+For the sake of completeness, also the index reduction algorithms provided by \Matlab{} and \Mathematica{} are tested. The results show that both software tools are able to reduce the index of the \ac{DAE} systems, however, the computational cost of the expressions generated during the index reduction procedure cannot be evaluated due to either the lack of a built-in function to compute the expression complexity or the inability to access the reduced \ac{DAE} systems' expressions.
 
-Another aspect that is important to mention is the sudden increase in computational complexity of the expressions generated in the last reduction step. Even if this increase is not critical to the correct index reduction as the presented algorithm is robust to expression swell, it does undermine the numerical efficiency of the final \ac{DAE} system. This highlights the need for further research on expression swell mitigation techniques in symbolic computation (see Section~\ref{chap2:sec:lem}), as well as the need to use integrators that can handle index-1 or even index-2 \acp{DAE}.
+Another aspect that is important to mention is the sudden increase in computational complexity of the expressions generated in the last reduction steps. Even if such a sudden increase is not critical to the correct index reduction as the presented algorithm is insensitive to expression swell, it does undermine the numerical solution efficiency of the final \ac{DAE} system. This highlights the need for further research on expression swell mitigation techniques in symbolic computation (see Section~\ref{chap2:sec:lem}), as well as the need to use integrators that can handle index-1 \acp{DAE}. Specifically, the detection of linear index-1 variables during the index reduction process is would be beneficial to the minimization of the final \ac{DAE} system complexity. This is particularly important for the numerical integration process, as the more complex the expressions, the more computationally expensive the numerical integration process becomes. Discussion on future work (Section~\ref{chap5:sec:future_work}) will provide insights on new developments in this direction.
 
 \subsection{Numerical Integration}
 
-The numerical integration for the remaining examples is also carried out, with outcomes detailed in Table~\ref{chap4:tab:numerical_integration}. This table reports the performance comparison between the joint index reduction algorithm and numerical integration schemes offered by \Maple{} and those of \Indigo{}. To ensure a fair comparison, both \Maple{} and \Indigo{} utilize the \ac{RKF} 4(5) method for numerical integration of the \ac{DAE} system. Identical error tolerances are applied, with a relative tolerance of $10^{-6}$ and an absolute tolerance of $10^{-7}$. The results illustrate that the \Indigo{}'s index reduction algorithm implementation effectively generates numerically stable reduced-index \acp{DAE}, ensuring consistent integration across examples. However, exceptions arise in examples 3, 5, 6, 7, 9, 10, 11, 13, and 14. Specifically, in examples 3, 5, 6, 7, 9, 11, and 13, \Maple{} fails to generate code for the reduced-index system within the expected time frame, thus the integration is not performed. This is due to the complexity of the expressions generated during the index reduction procedure, which overloads the \Maple{}'s \texttt{CodeGeneration} package. On the other hand in examples 10 and 14, the numerical integration can not be performed due to the inability of \Maple{} to verify the consistency of the \ac{IVP}. The \Indigo{} numerical integration is successful in all examples, except for example 11, where it fails to generate the code for the reduced-index system within the expected time frame. This is due to the complexity of the expressions generated during the index reduction procedure, which overloads the \Indigo{}'s \texttt{CodeGeneration} package. Notably, in examples 5, 6 and 7 the integration of the reduced-index system is successfully performed using the non-default implicit RadauIIA5 method. Nonetheless, the high expression swell in these examples leads to a significant increase in the computational cost of the numerical integration, however, the numerical stability is not compromised. Notice that \Maple{}'s \texttt{dsolve} exceeded the function evaluations limit during the numerical integration of these examples due to either system's stiffness or high index.
+The numerical integration has also been carried out, with outcomes detailed in Table~\ref{chap4:tab:numerical_integration}. This table reports the performance comparison between the joint index reduction algorithm and numerical integration schemes offered by \Maple{} and those of \Indigo{}. To ensure a fair comparison, both \Maple{} and \Indigo{} utilized the \ac{RKF} 4(5) method for numerical integration of the \ac{DAE} system. Identical error tolerances are applied, with a relative tolerance of $10^{-6}$ and an absolute tolerance of $10^{-7}$. The results illustrate that \Indigo{}'s index reduction algorithm implementation effectively generates numerically stable reduced-index \acp{DAE}, ensuring consistent integration across examples. However, exceptions arise in examples 3, 5, 6, 7, 9, 10, 11, 13, and 14. Specifically, in examples 3, 5, 6, 7, 9, 11, and 13, \Maple{} fails to generate code for the reduced-index system within the expected time frame, thus the integration is not performed. This is due to the complexity of the expressions generated during the index reduction procedure, which overloads the \Maple{}'s \texttt{CodeGeneration} package. On the other hand in examples 10 and 14, the numerical integration can not be performed due to the inability of \Maple{} to verify the consistency of the \ac{IVP}. The \Indigo{} numerical integration is successful in all examples, except for example 11, where it fails to generate the code for the reduced-index system within the expected time frame. This is due to the complexity of the expressions generated during the index reduction procedure, which overloads the \Indigo{}'s \texttt{CodeGeneration} package. Notably, in examples 5, 6 and 7 the integration of the reduced-index system is successfully performed using the non-default implicit RadauIIA5 method. Nonetheless, the high expression swell in these examples leads to a significant increase in the computational cost of the numerical integration, however, the numerical stability is not compromised.
 
-It is important to highlight that during the numerical integration, the symbolic code is not regenerated by updating the index reduction. Therefore, for some numerical values of states and parameters, the \acp{DAE} system structure may change, leading to numerical instability. While this does pose a potential issue, it is worth noting that we have not encountered instability in the integration process, proving that the presented pivoting strategy is effective.
+\Mathematica{} and \Matlab{} are also tested for numerical integration. The results show that both software tools are able to integrate the original \ac{DAE} systems in the specified time interval. The only exception is example 11, where both fail to integrate the \ac{DAE} system due to the inability to project the \acp{IC} onto the solution manifold.
+
+It is important to highlight that during the numerical integration, the symbolic code is not regenerated, even if the \ac{DAE} system may locally change its index. Indeed, for some numerical values of states and parameters, the \acp{DAE} system structure may change, leading to numerical instability. While this does pose a potential issue, we have not encountered instability in the integration process. The pivot values were continuously monitored during the numerical integration process to ensure that the \ac{DAE} system structure remains consistent, thereby experimentally proving that the presented pivoting strategy is effective.
 
 \input{./chapters/chapter_4_table_integration.tex}
 
