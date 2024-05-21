@@ -1,625 +1,1075 @@
 %!TEX root = ../main.tex
 
-\chapter[DAEs Index Reduction and Numerical Solution]{Differential-Algebraic Equations Index Reduction and Numerical Solution}
-\label{chap3:daes}
+\chapter{Essential Concepts and Techniques of Symbolic Computation}
+\label{chap3:symbolic_computation}
 
-In this chapter, we present an algorithm for the index reduction of first-order \acp{DAE}. The proposed approach can be applied to generic \acp{DAE} and exploits neither a priori knowledge nor ad hoc techniques to leverage the specific formulation of the system. The index reduction is performed only by using symbolic manipulation and linear algebra techniques. It is based on the successive separation of the differential and algebraic equations of the system and the subsequent differentiation of the algebraic part. Improved symbolic matrix factorization is used to perform the \acp{DAE} partitioning, ensure numerical stability, and limit the expression swell of the reduced-index system. The effectiveness of the algorithm will be validated in the next chapter through a set of examples on a wide range of systems, including physical systems, engineering applications, and ``artificial'' \acp{DAE} with specific properties. The proposed symbolic index reduction algorithm is implemented in \Maple{} as part of an open-source library.
-
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-
-\section{Differential-Algebraic Equations Index Reduction and Solution}
-\label{chap3:sec:introduction}
-
-As we already mentioned in Chapter~\ref{chap1:introduction}, \acp{DAE} are extensively used in dynamic system modeling. The challenge in numerically solving a \ac{DAE} system is assessed through its differentiation index, commonly referred to as ``the'' index~\cite{campbell1995index, campbell1995highindex}. Achieving accurate simulations necessitates converting high-index \acp{DAE} into low-index counterparts, posing a well-recognized challenge~\cite{petzold1982differential}. This process involves transforming a \ac{DAE} system into an equivalent system with a lower index through successive differentiation of the system equations. For this reason, the differentiation index is roughly defined as the number of times algebraic equations are differentiated to obtain an equivalent system of \acp{ODE} with invariants. Index reduction is a crucial step prior to the numerical integration of \acp{DAE}, as integrating high-index systems can be impractical. The primary obstacle lies in the necessity to solve non-linear systems of equations at each integration step, which can be computationally expensive and, in certain cases, numerically unstable. Specific numerical techniques, introduced in~\cite{petzold1982differential, thomsen1999numerical, baumgarte1972stabilization}, have been developed to address this challenge. However, these methods are not universally effective and may be inapplicable to some high-index \acp{DAE}. Consequently, index reduction becomes an indispensable preliminary stage before numerical integration~\cite{lamour2013differential}.
-
-Given its complicated nature, index reduction has been the subject of extensive research and is often carried out by leveraging the specific formulation of the \ac{DAE} system, like in the multi-body modeling~\cite{zhou2005implicit, zhou2007symbolic, zhou2007symbolicseq, bayo1988modified, wehage1982generalized}. When the specific formulation of the \ac{DAE} system is not known a priori, or the system is not in a specific form, the index reduction process becomes more challenging. Many current simulation software packages for dynamic systems use index-reduction algorithms based on the \ac{SA} of the system, such as the Pantelides algorithm~\cite{pantelides1988consistent} and the dummy derivatives method~\cite{mattsson1993index}, which are subcases of the Pryce's $\Sigma$-method~\cite{pryce1998solving, pryce2001simple, nedialkov2007solvingI, nedialkov2007solvingII, nedialkov2008solvingIII, nedialkov2015algorithm, tan2016symbolic, mckenzie2017structural}. These algorithms are effective in reducing the index of most of the systems, but they can fail either for numerical cancellations~\cite{iwata2019index} or underestimation of the differentiation index~\cite{pantelides1988consistent, unger1995structural}, like in the case of Rei{\ss}ig's \acp{DAE} family~\cite{reissig2000differential}. Symbolic manipulation is proven to be successful in restating a \acp{DAE} on which the $\Sigma$-method fails to a \acp{DAE} on which the \ac{SA} may succeed~\cite{tan2016symbolic}.
-
-Index reduction based on symbolic-numeric aided \ac{SA} has been successful in handling failures of the Pryce's $\Sigma$-method~\cite{tan2016symbolic} as well as in performing symbolically-informed \ac{SA}~\cite{chowdhry2004symbolic}. This latter \ac{SA} approach, which is named $\sigma v$-method, uses symbolic-numeric \ac{LU} factorization for variable substitution and rank determination on linear constant coefficient \acp{DAE}. A valuable attempt to use pure symbolic manipulation in \acp{DAE} index reduction is presented in~\cite{zhou2005implicit, zhou2007symbolic, zhou2007symbolicseq}, where implicit involutive form and \ac{LU} decomposition are successfully used to reduce the index of a simple constrained multi-body system. It is clear that index reduction algorithms based on pure symbolic matrix factorization represent a viable alternative to classic \ac{SA} techniques. However, symbolic matrix factorization feasibility is strongly tied to the performance of the symbolic computation kernel and its capabilities~\cite{zhou2008fraction}. Large expressions can lead to strong performance degradation of the kernel. Techniques aimed at limiting this decrease of performance while performing symbolic linear algebra operations are presented in~\cite{zhou2006hierarchical, zhou2007symbolic, zhou2007symbolicseq}. In these works, the hierarchical representation of expressions is applied to matrix factorization tasks. Nonetheless, the \LULEM{} package~\cite{carette2006linear}, which implements large expression management strategies in \ac{LU} decomposition, significantly outperforms the \Maple{}'s built-in matrix factorization routines.
-
-The absence of user-invocable standalone functions within the \Maple{} environment that allows for the automatic index reduction of \acp{DAE}, and the inability to extract both the reduced-index system and invariants from the \texttt{dsolve} function, are the primary motivations of this research. Furthermore, recent advances in symbolic matrix factorization, combined with expressions hierarchical representation techniques, provide valuable tools that enable us to further investigate the applicability of a novel algorithm for the index reduction of \ac{DAE} systems, firstly presented in~\cite{stocco2024symbolic} as a preliminary work. The proposed methodology is similar to the previous work of~\citet{chowdhry2004symbolic} and extends it to generic first-order \acp{DAE}, linear in the states' derivatives. Nonetheless, the proposed algorithm does not work on the structural matrix of the system but on the \ac{DAE} system symbolic expressions. Specifically, the idea of using matrix factorization for variable substitution and rank determination is adopted to iteratively separate the differential and algebraic equations of the system. The algebraic equations are then differentiated to obtain an equivalent system with a lower differentiation index. Not less important, new libraries for symbolic matrix factorization (\LAST{}), large expression management (\LEM{}), and signature computation (\SIG{}) are presented. These libraries are based on the \LULEM{} package and extend the work of~\citet{zhou2006hierarchical, carette2006linear} and~\citet{zhou2007symbolic}. The newly presented libraries are designed to ensure the numerical stability of the numerically evaluated expressions, limit the expression swell, and provide an updated object-oriented interface. The effectiveness of the presented index reduction algorithm is validated through symbolic-numerical examples on a wide range of systems, including physical systems, engineering applications, as well as ``artificial'' systems with specific properties. The proposed algorithm is implemented in the \Maple{} environment and is available as a collection of open-source packages~\cite{last, lem}. Furthermore, the insights and the techniques presented in~\cite{zhou2006hierarchical, carette2006linear, zhou2007symbolic} are used to improve the presented algorithm to embed the hierarchical representation of expressions in a future implementation of the algorithm.
-
-%This chapter is organized as follows. After this introduction (Section~\ref{chap3:sec:introduction}), the index reduction algorithm is presented in Section~\ref{chap3:sec:algorithm}. The expression swell mitigation, as well as the details on the symbolic matrix factorization, are discussed in Sections~\ref{chap3:sec:expression_swell} and \ref{chap3:sec:matrix_factorization}. The effectiveness of the algorithm is showcased through symbolic-numerical examples in Section~\ref{chap3:sec:example}. Finally, Sections~\ref{chap3:sec:future_work} and~\ref{chap3:sec:conclusions} report future developments and conclusions respectively. In~\ref{chap3:sec:cokernel} details on cokernel computation are reported. The newly developed object-oriented symbolic linear algebra (\ref{chap2:sec:last}), large expression management (\ref{chap2:sec:lem}) and signature computation (\ref{chap3:sec:signature}) package descriptions are also included in the appendices. The symbolic index reduction algorithm is implemented in the \Maple{} language and is available as part of the open-source \Indigo{} library~\cite{indigo}. Its usage is illustrated in~\ref{chap3:sec:index_reduction}.
+Symbolic linear algebra plays a crucial role in the index reduction of \acp{DAE}. Nonetheless, it is also a powerful tool to handle complex mathematical tasks involving extensive algebraic and calculus operations. However, symbolic computation brings its own challenges. In particular, expression swelling is a common issue when intensively working with symbolic expressions. In this chapter, we discuss the expression swell phenomenon and discuss strategies for its mitigation through hierarchical representation techniques. Additionally, we tackle the solution of linear systems of equations using novel matrix factorization methods. Practical implementation details, including strategies for managing large expressions during symbolic matrix decomposition, are demonstrated using the newly developed \LEM{} and \LAST{} \Maple{} packages. These packages provide improved symbolic linear algebra capabilities with expression swell mitigation. But before we delve into the details of these packages, let us first introduce the concept of computer algebra and its applications in scientific computing.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-\section{A New Index Reduction Algorithm}
-\label{chap3:sec:algorithm}
+\section{Introduction to Computer Algebra}
+\label{chap2:sec:cas}
 
-In this section, we explore the theoretical aspect of reducing the differential index of \ac{DAE} systems. Specifically, to systematically reduce the \ac{DAE} system's index, a novel iterative algorithm is presented. This algorithm comprises two main phases: initially, the separation of the differential equations from the algebraic equations inherent in \acp{DAE}; and subsequently, the differentiation of the algebraic ones to obtain an equivalent system with a reduced index. The algorithm that is presented in this section is implemented in the \Maple{} environment and is available as an open-source package~\cite{indigo}.
+Mathematical scientists employ methodical approaches to model natural phenomena. This involves translating empirical observations and theoretical constructs into mathematical expressions consisting of numerical values, variables, functions, and operators. These expressions are then subjected to established methods of mathematical reasoning, where they are carefully manipulated or transformed to unveil novel insights into the studied phenomenon. This mathematical methodology has been integral to the scientific method in the physical sciences since the era of Galileo Galilei and Ren{\'e} Descartes. Following their legacy, Isaac Newton applied this approach to develop a systematic, quantitative framework for describing the motion of objects. Through mathematical reasoning, he uncovered the universal law of gravitation and formulated additional principles governing phenomena such as tidal motion and planetary orbits. Thus, the discipline of mechanics emerged, solidifying the practice of manipulating and transforming mathematical expressions as a fundamental tool for advancing our understanding of the physical universe.
 
-\subsection{Differential and Algebraic Equations Separation}
-\label{chap3:sec:separation}
+Over the past five decades, computers have evolved into indispensable tools for mathematical exploration, greatly expanding our capacity to tackle complex problems. Mathematicians frequently employ computers to generate numerical and graphical solutions for challenges that surpass manual capabilities. However, computers go beyond simple arithmetic; fundamentally, they operate by manipulating symbols, represented as binary digits (0s and 1s), following precise rules. Given this capability, it is natural to wonder about the possibility of automating other aspects of mathematical reasoning. While it is unrealistic to expect machines to create foundational axioms like Newton's or develop groundbreaking theories from scratch, there is a significant area of mathematical reasoning that lends itself well to algorithmic treatment, and more specifically to the mechanical manipulation and analysis of mathematical expressions. Currently, computer programs routinely handle tasks such as simplifying algebraic expressions, integrating complex functions, accurately solving differential equations, and performing many other operations crucial in applied mathematics, scientific research, and engineering. The interdisciplinary field at the intersection of mathematics and computer science dedicated to this pursuit is commonly referred to as \emph{computer algebra} or \emph{symbolic computation}.
 
-The initial phase of the index reduction procedure involves the partitioning of the \ac{DAE} system into its differential and algebraic equations. While in the case of small systems this can be accomplished through manual identification and isolation of the algebraic equations, this approach is inconvenient when dealing with large systems. An alternative method for automating the separation process leverages the cokernel, or left null space, of the \ac{DAE} system matrix, which is computed through matrix factorization techniques. The usage of the cokernel offers a more efficient and reliable means of accomplishing the separation task, variable substitution and not less importantly rank determination.
+\subsection{Elementary Concepts of Computer Algebra}
 
-Consider a first-order system of \acp{DAE} $\mF$ of the form
-%
-\begin{equation}
-  \label{chap3:eq:daes}
-  \mF = \mA \, \mxp - \mb = \m{0}  \, \text{.}
-\end{equation}
-%
-We denote the cokernel and its orthogonal complement of $\mA$ with $\mK$ and $\mN$ respectively (see~\ref{chap3:sec:cokernel} for details on the cokernel computation with symbolic matrix factorization). Notice that the cokernel is the subspace obtained by the span of $\mK$'s columns. For this reason, hereafter, we refer to the cokernel as the matrix $\mK$ whose columns span the cokernel. Using $\mK$ and $\mN$ it is possible to separate the algebraic part of the \acp{DAE}~\eqref{chap3:eq:daes} as
-%
-\begin{equation}
-  \label{chap3:eq:separated_daes}
-  \begin{cases}
-    \mE \, \mxp = \mg \\[0.1em]
-    \ma = \m{0}
-  \end{cases} \text{,} \quad \text{where} \qquad \mA = \begin{bmatrix}
-    \mE \\[0.2em]
-    \m{0}
-  \end{bmatrix} \text{,}
-  \quad \text{and} \quad
-  \mb = \begin{bmatrix}
-     \mg \\[0.2em]
-     \ma
-  \end{bmatrix} \, \text{.}
-\end{equation}
-%
-The separated equations of the \acp{DAE} are obtained by the left product of $\mK$ and $\mN$ as
-%
-\begin{equation*}
-  \begin{array}{l@{~}c@{~}l}
-    \mE &=& \mN \, \mA \, \text{,} \\[0.1em]
-    \mg &=& \mN \, \mb \, \text{,} \\[0.1em]
-    \ma &=& \mK \, \mb \, \text{.}
-  \end{array}
-\end{equation*}
-%
-This results in an equivalent \ac{DAE} system, where the algebraic equations $\ma$ are now explicit. The details of the cokernel and its orthogonal complement computation are discussed in~\ref{chap3:sec:cokernel}.
+A \ac{CAS} is specialized software designed to execute symbolic mathematical operations, allowing for precise computations across various mathematical domains. Its capabilities encompass a wide range of functionalities, including arithmetic operations such as unlimited precision rational number arithmetic, complex arithmetic, and combinatorial functions. Furthermore, it enables algebraic manipulation through simplification, expansion, factorization, and substitution operations, as well as polynomial operations like structural operations, polynomial division, and finding the greatest common divisors. Additionally, it can handle equation solving for polynomial equations, systems of linear equations, and recurrence relations, while also performing trigonometric operations, calculus computations, and solving differential equations, including \acp{ODE} and \acp{PDE}. Moreover, it supports advanced algebraic manipulations, linear algebra operations, and code generation for conventional programming languages and mathematical word processing.
 
+\subsection{Commercial Computer Algebra Systems}
 
-\subsubsection{Cokernel Computation with Matrix Factorization}
-\label{chap3:sec:cokernel}
-
-The cokernel of a generic matrix $\m{A}$ is denoted as $\m{K}$ and satisfy $\m{K}\m{A} = \m{0}$. As mentioned before, the cokernel is the subspace obtained by the span of $\m{K}$'s columns. The orthogonal complement of the cokernel is denoted as $\m{N}$, moreover, the matrices $\m{N}$ and $\m{K}$ stacked compose a square non-singular matrix. It is common knowledge that matrix factorization techniques can be employed to compute the cokernel and its orthogonal complement. Among these techniques, the \ac{LU} factorization stands out as one of the most frequently used methods.
-
-\paragraph{Lower-Upper Decomposition}
-
-The full-pivoting \ac{LU} decomposition of a matrix $\m{A} \in \mathbb{R}^{m \times n}$ (with $m\geq n$) is represented as the product of matrices $\m{L}$ and $\m{U}$ with the permutation matrices $\mP$ and $\mQ$. It is characterized by the following properties:
+Over the past 15 years, we have witnessed the development and widespread dissemination of several large-scale (yet user-friendly) \acp{CAS}. Among the most notable are:
 %
 \begin{itemize}
   \setlength{\itemsep}{0.0em}
-  \item $\mP\m{A}\mQ = \m{L}\m{U}$;
-  \item $\m{L} \in \mathbb{R}^{m \times m}$ is a lower-triangular matrix with all diagonal entries equal to $1$;
-  \item $\m{U} \in \mathbb{R}^{m \times n}$ is an upper-triangular matrix;
-  \item $\mP \in \mathbb{R}^{m \times m}$ and $\mQ \in \mathbb{R}^{n \times n}$ are the rows and columns permutation matrices, respectively.
+  \item \Axiom{}: A comprehensive \ac{CAS} developed during the 1970s at IBM under the name of Scratchpad, later sold to the Numerical Algorithms Group (NAG) in England and became the \Axiom{} commercial system. NAG withdrew it from the market 2001 and released it as free software. Further details about \Axiom{} can be found in~\citet{jenks1992axiom}.
+  \item \Derive{}: A compact \ac{CAS} originally crafted by Soft Warehouse Inc. for personal computer use. \Derive{} has also been integrated into Texas Instruments Inc.'s TI-89 and TI-92 handheld calculators. More information about \Derive{} is available online, yet the software is no longer actively maintained.
+  \item \Macsyma{}: A robust \ac{CAS} initially conceived at the Massachusetts Institute of Technology during the late 1960s and 1970s. Various versions of the original \Macsyma{} system are currently in circulation. Additional insights into \Macsyma{} can be gleaned from~\citet{wester1999computer}.
+  \item \Maple{}: A highly sophisticated \ac{CAS} initially developed by the Symbolic Computation Group at the University of Waterloo (Canada) and presently distributed by Waterloo \Maple{} Inc. For more information about \Maple{}, refer to~\citet{heck2003introduction} or visit the website~\cite{maple}.
+  \item \Mathematica{}: An advanced \ac{CAS} created by Wolfram Research Inc. Further details about \Mathematica{} are provided in~\citet{wolfram2003mathematica} or on the website~\cite{mathematica}.
+  \item \MuPAD{}: A sizable \ac{CAS} developed by the University of Paderborn (Germany) and SciFace Software GmbH \& Co. KG. Refer to~\citet{creutzig2004mupad}. Later versions of \MuPAD{} are distributed by MathWorks Inc. and currently constitute the \Matlab{} \ac{CAS}.
+  \item \Reduce{}: One of the earliest \acp{CAS}, developed in the late 1960s and 1970s. Further information about \Reduce{} can be found in~\citet{rayna1987reduce}.
 \end{itemize}
 %
-If $\m{M}$ is defined such that $\m{M} = \m{L}^{-1}\mP$, then the following relation holds
-%
-\begin{equation*}
-    \m{M}\m{A}
-    = \m{L}^{-1}\mP\m{A}
-    = \m{L}^{-1}\mP\m{A}\mQ\mQ^\top
-    = \m{L}^{-1}\m{L}\m{U}\mQ^\top
-    = \m{U}\mQ^\top
-    = \begin{bmatrix} \m{U}_1 \\[0.2em] \m{0} \end{bmatrix}\mQ^\top \text{.}
-\end{equation*}
-%
-If the identity matrix $\mI$ is partitioned as
-%
-\begin{equation*}
-  \mI = \begin{bmatrix}
-    \mI_1 & \m{0} \\[0.2em]
-    \m{0} & \mI_2
-  \end{bmatrix} \text{,}
-  %
-  \quad \text{where} \quad
-  %
-  \begin{array}{l}
-    \mI_1 \in \mathbb{R}^{m \times m} \quad \text{and} \quad
-    \mI_2 \in \mathbb{R}^{(m-n)\times(m-n)}\text{,}
-  \end{array}
-\end{equation*}
-%
-we can write
-%
-\begin{equation*}
-  \begin{bmatrix} \mI_1 & \m{0} \end{bmatrix} \, \m{M}\m{A} =
-  \begin{bmatrix} \mI_1 & \m{0} \end{bmatrix}
-  \begin{bmatrix} \m{U}_1 \\[0.2em] \m{0} \end{bmatrix} \mQ^\top = \m{U}_1 \mQ^\top \text{,}
-  %
-  \qquad \text{and} \qquad
-  %
-  \begin{bmatrix} \m{0} & \mI_2 \end{bmatrix} \, \m{M}\m{A} =
-  \begin{bmatrix} \m{0} & \mI_2 \end{bmatrix}
-  \begin{bmatrix} \m{U}_2 \\[0.2em] \m{0} \end{bmatrix} \mQ^\top = \m{0} \text{.}
-\end{equation*}
-%
-Eventually, the matrices $\m{N}$ and $\m{K}$ have the following form
-%
-\begin{equation*}
-  \m{N} = \begin{bmatrix} \mI_1 & \m{0} \end{bmatrix} \, \m{M}
-  %
-  \quad \text{and} \quad
-  %
-  \m{K} = \begin{bmatrix} \m{0} & \mI_2 \end{bmatrix} \, \m{M},
-\end{equation*}
-%
-where
-%
-\begin{equation*}
-  \begin{array}{l}
-      \m{K}\m{A} = \m{0} \\[0.2em]
-      \m{N}\m{A} = \m{U}_1 ~ \text{is full-rank}
-  \end{array} \, \text{,}
-  %
-  \quad \text{and} \quad
-  %
-  \begin{bmatrix} \m{N} \\[0.2em] \m{K} \end{bmatrix} \quad \text{is non-singular.}
-\end{equation*}
-
-\paragraph{Fraction-Free Lower-Upper Decomposition}
-
-The \ac{FFLU} factorization is a variant of the \ac{LU} decomposition. It is based on the same principles as the standard \ac{LU} decomposition, but it is designed to avoid the appearance of fractions in the intermediate results. Similarly to the \ac{LU} case, the \ac{FFLU} decomposition of a matrix $\m{A} \in \mathbb{R}^{m \times n}$ (with $m\geq n$) is represented as the quintet of matrices $\m{L}$, $\m{U}$, $\m{D}$, $\mP$, and $\mQ$, and is characterized by the properties:
+Specialized \acp{CAS} are also available for specific mathematical domains, such as the system developed for physics applications from the 1970s onward. These include, but are not limited to:
 %
 \begin{itemize}
   \setlength{\itemsep}{0.0em}
-  \item $\mP\m{D}\m{A}\mQ = \m{L}\m{U}$;
-  \item $\m{L} \in \mathbb{R}^{m \times m}$ is a lower-triangular matrix with all diagonal entries equal to $1$;
-  \item $\m{D} \in \mathbb{R}^{m \times m}$ is a diagonal matrix;
-  \item $\m{U} \in \mathbb{R}^{m \times n}$ is an upper-triangular matrix;
-  \item $\mP \in \mathbb{R}^{m \times m}$ and $\mQ \in \mathbb{R}^{n \times n}$ are the rows and columns permutation matrices, respectively.
+  \item \textsc{Trigman}~\cite{jeffreys1972trigman} and \textsc{Trip}~\cite{gastineau2011trip}, developed in 1972 for manipulates Poisson series (trigonometric series with polynomial coefficients);
+  \item \textsc{Schoonschip}~\cite{strubbe1974presentation}, introduced in 1971 for quantum physics applications at \ac{CERN};
+  \item \textsc{Camal}~\cite{bourne1972camal} presented in 1972 for celestial mechanics and the general theory of relativity
+  \item \textsc{Sheep}~\cite{frick1977computer} first released in 1977 for the general theory of relativity.
 \end{itemize}
 %
-The procedure for computing the cokernel of a matrix $\m{A}$ using the \ac{FFLU} is similar to the case of the \ac{LU} decomposition. The only difference is in the computation of the matrix product $\m{M}\m{A}$. If $\m{M} = \m{L}^{-1}\mP\m{D}$, then $\m{M}\m{A}$ are written as
+Each of these software packages constitutes an integrated mathematics problem-solving system, featuring capabilities for exact symbolic computations, as well as some capacity for approximate numerical solutions of mathematical problems and high-quality graphics.
+
+\subsection{The Maple Language}
+
+As we have just shown, there exist several commercial \acp{CAS} that provide a wide range of symbolic computation capabilities. Among these, \Maple{} is a powerful system developed by \MapleSoft{} that offers a comprehensive suite of mathematical tools. The \Maple{} system is equipped with a high-level programming language that allows users to interact with the system in an intuitive manner. The \Maple{} language is designed to facilitate the execution of symbolic computations, enabling users to perform complex mathematical operations with ease. The language is equipped with a wide range of built-in functions and operators that can be used to manipulate mathematical expressions, solve equations, and perform various other mathematical tasks. In the following examples, we illustrate an interactive session with the \Maple{} \ac{CAS}. User inputs, denoted by the prompt (\code{>}) at the line beginning, are entered at a computer workstation. Commands such as \code{factor}, \code{convert}, \code{compoly}, and \code{simplify} are among the mathematical operators available in the \Maple{} system. Upon receiving these commands, the program carries out the corresponding mathematical operations and displays the results using notation akin to conventional mathematical expressions.
+
+\begin{example}[Symbolic operations from algebra and trigonometry in \Maple{}] \phantom{.} \\
+  \label{chap3:ex:maple_1}
+  \begin{mapleinline}
+> p1 := x^5 - 4*x^4 - 7*x^3 - 41*x^2 - 4*x + 35;
+  \end{mapleinline}
+  \begin{equation*}
+    p1 := x^5 - 4x^4 - 7x^3 - 41x^2 - 4x + 35
+  \end{equation*}
+  \begin{mapleinline}
+> factor(p1);
+  \end{mapleinline}
+  \begin{equation*}
+    (x + 1)(x^2 - 7x + 5)(x^2 + 2x + 7)
+  \end{equation*}
+  \begin{mapleinline}
+> p2 := (x^4 + 6*x^2 + 3)/(x^5 + x^3 + x^2 + 1);
+  \end{mapleinline}
+  \begin{equation*}
+    p2 := \dfrac{x^4 + 6x^2 + 3}{x^5 + x^3 + x^2 + 1}
+  \end{equation*}
+  \begin{mapleinline}
+> convert(p2, parfrac, x);
+  \end{mapleinline}
+  \begin{equation*}
+    \dfrac{x + 7}{3(x^2 - x + 1)} - \dfrac{x + 1}{x^2 + 1} + \dfrac{5}{3(x + 1)}
+  \end{equation*}
+  \begin{mapleinline}
+> p3 := x^6+9*x^5+30*x^4+5*x^3+35*x^2+4*x+10;
+  \end{mapleinline}
+  \begin{equation*}
+    p3 := x^6 + 9x^5 + 30x^4 + 5x^3 + 35x^2 + 4x + 10
+  \end{equation*}
+  \begin{mapleinline}
+> p4 := 1/(1/a+c/(a*b))+(a*b*c+a*c^2)/(b+c)^2;
+  \end{mapleinline}
+  \begin{equation*}
+    \dfrac{1}{\dfrac{1}{a} + \dfrac{c}{ab}} + \dfrac{abc+ac^2}{(b+c)^2}
+  \end{equation*}
+  \begin{mapleinline}
+> simplify(p4);
+  \end{mapleinline}
+  \begin{equation*}
+    a
+  \end{equation*}
+  \begin{mapleinline}
+> p5 := (sin(x)+sin(3*x)+sin(5*x)+sin(7*x))/(cos(x)+cos(3*x)+cos(5*x)+cos(7*x))-tan(4*x);
+  \end{mapleinline}
+  \begin{equation*}
+    \dfrac{\sin(x) + \sin(3x) + \sin(5x) + \sin(7x)}{\cos(x) + \cos(3x) + \cos(5x) + \cos(7x)} - \tan(4x)
+  \end{equation*}
+  \begin{mapleinline}
+> simplify(p5);
+  \end{mapleinline}
+  \begin{equation*}
+    0
+  \end{equation*}
+\end{example}
+%
+In Example~\ref{chap3:ex:maple_1}, the initial two prompts involve assigning a polynomial to a variable, \code{p1}, using the ``'\code{:=}'' operator, followed by factoring it into irreducible factors over the rational numbers. Subsequently, the third and fourth prompts involve inputting a rational polynomial and determining its partial fraction decomposition.
+
+In the example below, we demonstrate differentiation operation using the prompt command \code{diff}, followed by integration using the \code{int} command. Notably, the output of the \code{int} operator lacks the arbitrary constant of integration. In the fifth prompt, we assign a first-order differential equation to the variable \code{p7}. In this prompt result, it can be seen that \Maple{} denotes the derivative of an unknown function $y(x)$ using the total derivative symbol ``$\de{}$''. Subsequently, we request \Maple{} to solve the differential equation at the sixth prompt. The presence of the symbol \code{C1} in the solution indicates \Maple{}'s inclusion of an arbitrary constant. This means that \Maple{} includes an arbitrary constant in the solution of a differential equation but does not include the arbitrary constant for an anti-differentiation.
+%
+\begin{example}[Symbolic operations from calculus and differential equations in \Maple{}] \phantom{.} \\
+  \label{chap3:ex:maple_2}
+  \begin{mapleinline}
+> p6 := cos(4*x + 3)/(x^2 + 1);
+  \end{mapleinline}
+  \begin{equation*}
+    p6 := \dfrac{\cos(4x + 3)}{x^2 + 1}
+  \end{equation*}
+  \begin{mapleinline}
+> diff(p6, x);
+  \end{mapleinline}
+  \begin{equation*}
+    -\dfrac{4\sin(4x + 3)}{x^2 + 1} - \dfrac{2x\cos(4x + 3)}{(x^2 + 1)^2}
+  \end{equation*}
+  \begin{mapleinline}
+> p7 := cos(x)/(sin(x)^2 + 6*sin(x) + 4);
+  \end{mapleinline}
+  \begin{equation*}
+    p7 := \dfrac{\cos(x)}{\sin(x)^2 + 6\sin(x) + 4}
+  \end{equation*}
+  \begin{mapleinline}
+> int(p7, x);
+  \end{mapleinline}
+  \begin{equation*}
+    -\dfrac{\sqrt{5}}{5}\text{arctanh}\left(\dfrac{(2\sin(x) + 6)\sqrt{5}}{10}\right)
+  \end{equation*}
+  \begin{mapleinline}
+> p8 := diff(y(x), x) + 3*y(x) = x^2 + sin(x);
+  \end{mapleinline}
+  \begin{equation*}
+    \dfrac{\mathrm{d}}{\mathrm{d}x}y(x) + 3y(x) = x^2 + \sin(x)
+  \end{equation*}
+  \begin{mapleinline}
+> dsolve(p8, y(x));
+  \end{mapleinline}
+  \begin{equation*}
+    y(x) = \dfrac{1}{3}x^2 - \dfrac{2}{9}x + \dfrac{2}{27} - \dfrac{\cos(x)}{10} + \dfrac{3\sin(x)}{10} + \mathrm{e}^{-3x}\_C1
+  \end{equation*}
+\end{example}
+%
+The term computer algebra language or symbolic programming language refers to the programming language used to interact with a \ac{CAS}, as illustrated in Examples~\ref{chap3:ex:maple_1} and~\ref{chap3:ex:maple_2}. Most \acp{CAS} offer both programming and interactive modes. In programming mode, mathematical operators like \code{factor} and \code{simplify} are combined with standard programming \emph{functions} or \emph{procedures} to create programs capable of solving complex mathematical problems. To illustrate this concept, let us examine the task of determining the equation for the tangent line to the curve
 %
 \begin{equation*}
-  \m{M}\m{A}
-  = \m{L}^{-1}\mP\m{D}\m{A}
-  = \m{L}^{-1}\mP\m{D}\m{A}\mQ\mQ^\top
-  = \m{L}^{-1}\m{L}\m{U}\mQ^\top
-  = \m{U}\mQ^\top = \begin{bmatrix} \m{U}_1 \\[0.2em] \m{0} \end{bmatrix}\mQ^\top \text{.}
+  y = f(x) = x^2 + 5x + 6
 \end{equation*}
 %
-Then, the subspaces $\m{N}$ and $\m{K}$ are computed as in the \ac{LU} case.
-
-\subsection{Algebraic Equations Differentiation}
-\label{chap3:sec:differentiation}
-
-The algebraic equations in the \ac{DAE} system~\eqref{chap3:eq:separated_daes} are now differentiated as
-%
-\begin{equation}
-  \label{chap3:eq:diff_daes}
-  \dfrac{\mathrm{d}}{\mathrm{d}t} \ma = \mAd \, \mxp - \mgd \, \text{.}
-\end{equation}
-%
-The \acp{DAE}~\eqref{chap3:eq:separated_daes} after differentiation of algebraic equations now take a form similar to that of~\eqref{chap3:eq:daes}, where
-%
-\begin{equation}
-  \label{chap3:eq:reduced_daes}
-  \mA = \begin{bmatrix} \mE \\[0.2em] \mAd\end{bmatrix} \, \text{,}
-  \quad \text{and} \quad
-  \mb = \begin{bmatrix} \mg \\[0.2em] \mgd\end{bmatrix} \, \text{.}
-\end{equation}
-%
-The set of invariants, which are collected in $\mh$, is updated adding the algebraic equations $\ma$
+at the point $x = 2$. Initially, we derive a general formula for the slope through differentiation. Subsequently, we substitute $x = 2$ into this expression to obtain the slope at that specific point,
 %
 \begin{equation*}
-  \mh \quad \xleftarrow[\text{update}]{\text{\, Invariants \,}} \quad \overset{{\text{The old $\mh$}}}{\begin{bmatrix} \overbrace{\mh} \\[0.2em] \ma \end{bmatrix}} \, \text{.}
+  m = \dfrac{dy}{dx}(2) = 9.
 \end{equation*}
 %
-The iterative procedure, involving the sequential separation and differentiation of the algebraic segment of the system, is iterated until $\mA$ is non-singular. When $\mA$ is non-singular the \ac{DAE} corresponds to a system of \acp{ODE} compounded by the invariants $\mh$, which are the collection of the hidden constraints produced in the index reduction process. The invariants $\mh$ can be initialized empty or with user-defined algebraic equations aimed at preserving crucial system properties, such as energy conservation and/or momentum conservation. A pseudocode of the index reduction algorithm can be found in Algorithm~\ref{chap3:alg:index_reduction}.
-
-\begin{breakablealgorithm}
-  \caption{Index reduction algorithm (without large expression management)~\cite{stocco2024symbolic}.}
-  \label{chap3:alg:index_reduction}
-  \begin{algorithmic}[1]
-    \State \textbf{Require:} A \ac{DAE} system of the form $\mF \eqdef \mA \, \mxp - \mb = \m{0}$.
-    \Procedure{ReduceIndex}{$\mF$} \Comment{Index reduction procedure}
-      \State $\mh \gets \varnothing$ \Comment{The set of invariants}
-      \State $\mA, \, \mb \gets \mathrm{GenerateMatrix}(\mF, \, \mxp)$ \Comment{The \ac{DAE} system matrix}
-      \State $m \gets \mathrm{Size}(\mx)$\Comment{The size of $\mx$}
-      \While{$\mA$ is singular}
-        \State $\displaystyle\triangleright$ Differential and algebraic equations separation (Section~\ref{chap3:sec:separation})
-        \State $\mL, \, \mU, \, \mP, \, \mQ \gets \mathrm{MatrixFactorization}(\mA)$ \Comment{LU or FFLU decomposition of $\mA$}
-        \State $r \gets \mathrm{Rank}(\mU)$ \Comment{The rank of $\mU$ is equal to the rank of $\mA$}
-        \State $\mI_1 \gets \mathrm{IdentityMatrix}(r, \, r)$ \Comment{The upper identity matrix}
-        \State $\mI_2 \gets \mathrm{IdentityMatrix}(m-r, \, m-r)$ \Comment{The lower identity matrix}
-        \State $\mE \gets \begin{bmatrix} \mI_1, \, \m{0} \end{bmatrix} \, \mU \, \mQ^\top$ \Comment{The reordered part of $\mA$}
-        \State $\mg \gets \begin{bmatrix} \mI_1, \, \m{0} \end{bmatrix} \, \mL^{-1} \, \mP \, \mb$ \Comment{The differential part of $\mb$}
-        \State $\ma \gets \begin{bmatrix} \m{0}, \, \mI_2 \end{bmatrix} \, \mL^{-1} \, \mP \, \mb$ \Comment{The algebraic part of $\mb$}
-        \State $\displaystyle\triangleright$ Algebraic equations differentiation (Section~\ref{chap3:sec:differentiation})
-        \State $\mAd, \, \mgd \gets \mathrm{GenerateMatrix}(\mathrm{Diff}(\ma, \, t), \, \mxp)$ \Comment{Differentiate the equations $\ma$}
-        \State $\mA \gets \begin{bmatrix} \mE \\ \mAd \end{bmatrix}$ and $\mb \gets \begin{bmatrix} \mg \\ \mgd \end{bmatrix}$
-        \Comment{The new matrix $\mA$ and vector $\mb$}
-        \State $\mh \gets \mh \cup \ma$ \Comment{Add the algebraic equations to the set of invariants}
-      \EndWhile \\
-      \Return $\mA, \, \mb, \, \mh$ \Comment{The \acp{DAE} reduced to an \ac{ODE} system with invariants}
-    \EndProcedure
-  \end{algorithmic}
-\end{breakablealgorithm}
-
-\subsection{A Step-by-Step Example}
-\label{chap3:sec:step_by_step}
-
-Within this Section, we present the step-by-step results of the index reduction algorithm. To do so we exploit a simple non-stiff index-3 problem found in \Wolfram{}~\Mathematica{} documentation~\cite{mathematica}. The initial value problem is defined as follows
-%
-\begin{equation}
-  \label{chap3:eq:index_3}
-  \mF = \begin{bmatrix}
-    x^{\prime}_{2} - x_{1} - \cos(t) \\
-    x^{\prime}_{3} - x_{2} - \sin(t) \\
-    x_{3} - \cos(t)
-  \end{bmatrix} \, \text{,}
-\end{equation}
-%
-with states $\mx = [x_{1}, \, x_{2}, \, x_{3}]^\top$ and \acp{IC} $\mx_{0} = [-1, \, 0, \, 1]^\top$. Notice that the analytical solution of this problem is $\mx_\text{exact} = [\sin(t) - 2\cos(t), \, 2\sin(t), \, \cos(t)]^\top$. The index reduction algorithm is applied to the \ac{DAE} system~\eqref{chap3:eq:index_3} and the step-by-step results for the matrices $\mE$, $\mg$, and $\ma$ are reported here below.
+Using the point-slope form for a line, the equation for the tangent line is derived as
 %
 \begin{equation*}
-  \begin{array}{l}
-    \text{Index-3 \acp{DAE}:} \quad \mE = \begin{bmatrix}
-      0 & 1 & 0 \\
-      0 & 0 & 1
-    \end{bmatrix}, \quad
-    \mg = \begin{bmatrix}
-      \sin(t) - x_{1} \\
-      \sin(t) - x_{2}
-    \end{bmatrix}, \quad
-    \ma = \begin{bmatrix}
-      \cos(t) - x_{3}
-    \end{bmatrix} \, \text{.} \\[1.0em]
-    %
-    \text{Index-2 \acp{DAE}:} \quad \mE = \begin{bmatrix}
-      0 & 1 & 0 \\
-      0 & 0 & 1
-    \end{bmatrix}, \quad
-    \mg = \begin{bmatrix}
-      \sin(t) - x_{1} \\
-      \sin(t) - x_{2}
-    \end{bmatrix}, \quad
-    \ma = \begin{bmatrix}
-      2\sin(t) - x_{2}
-    \end{bmatrix} \, \text{.} \\[1.0em]
-    %
-    \text{Index-1 \acp{DAE}:} \quad \mE = \begin{bmatrix}
-      0 & 0 & 1 \\
-      0 & 1 & 0
-    \end{bmatrix}, \quad
-    \mg = \begin{bmatrix}
-      \sin(t) - x_{2} \\
-      \sin(t) - x_{1}
-    \end{bmatrix}, \quad
-    \ma = \begin{bmatrix}
-      \sin(t) - 2\cos(t) - x_{1}
-    \end{bmatrix} \, \text{.} \\[1.0em]
-    %
-    \text{Index-0 \acp{DAE}:} \quad \mE = \begin{bmatrix}
-      0 & 0 & 1 \\
-      0 & 1 & 0 \\
-      1 & 0 & 0
-    \end{bmatrix}, \quad
-    \mg = \begin{bmatrix}
-      \sin(t) - x_{2} \\
-      \sin(t) - x_{1} \\
-      2\sin(t) + \cos(t)
-    \end{bmatrix} \, \text{,} \quad
-    \ma = \varnothing \, \text{.}
-  \end{array}
+  \begin{aligned}
+    \begin{split}
+      y = m(x - 2) + f(2) &= 9(x - 2) + f(2) \\
+      &= 9x + 8.
+    \end{split}
+  \end{aligned}
 \end{equation*}
 %
-The final form of the system is an index-0 \acp{DAE} system is then
+The final formula is obtained by expanding the right side of this last equation. This process can be automated using a \ac{CAS} programming language, as demonstrated in the following examples.
 %
-\begin{equation}
-  \label{chap3:eq:index_3_reduced}
-  \mF = \begin{bmatrix}
-    x^{\prime}_{2} - x_{1} - \cos(t) \\
-    x^{\prime}_{3} - x_{2} - \sin(t) \\
-    x^{\prime}_{1} - \cos(t) - 2\sin(t)
-  \end{bmatrix} \, \text{,}
-  %
-  \quad \text{with invariants} \quad
-  %
-  \mh = \begin{bmatrix}
-    \cos(t) - x_{3} \\
-    2\sin(t) - x_{2} \\
-    \sin(t) - 2\cos(t) - x_{1}
-  \end{bmatrix} \, \text{.}
-\end{equation}
+\begin{example}[Implementation of the \code{TangentLine} procedure in \Maple{}] \phantom{.} \\
+  \label{chap3:ex:maple_3}
+  \begin{mapleinline}
+TangentLine := proc(f, x, a)
+  local m, l;
+  m := subs(x = a,  diff(f, x));
+  l := expand(m*(x - a) + subs(x = a, f));
+  return l;
+end proc:
+  \end{mapleinline}
+\end{example}
 %
-Although the just presented example is not so complex and relevant for a real validation of the algorithm, it is useful to demonstrate the step-by-step results of the index reduction algorithm. Furthermore, the expression complexities encountered throughout the index reduction algorithm applied to the Index-3 problem are reported below in Table~\ref{chap3:tab:index_3}.
-
-\begin{table}
-  \caption{Expression complexity encountered throughout the index reduction of the index-3 step-by-step example problem~\cite{mathematica} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
-  \label{chap3:tab:index_3}
-  \centering
-  {\footnotesize\begin{tabular}{cccc}
-    \multicolumn{4}{c}{\textbf{Index-3 \acp{DAE}~\cite{mathematica}}} \\
-    \toprule
-    \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 10\cf + 5\ca$ \quad $\mh = 0$} \\
-    \midrule
-    \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
-    \midrule
-    Index-3 \acp{DAE} & $0$ & $4\cf + 2\ca$ & $2\cf + 1\ca$ \\
-    Index-2 \acp{DAE} & $0$ & $4\cf + 2\ca$ & $2\cf + 1\cm + 1\ca$ \\
-    Index-1 \acp{DAE} & $0$ & $4\cf + 2\ca$ & $3\cf + 1\cm + 1\ca$ \\
-    Index-0 \acp{DAE} & $0$ & $6\cf + 1\cm + 3\ca$ & $0$ \\
-    \midrule
-    \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 12\cf + 1\cm + 6\ca$ \quad $\mh = 7\cf + 2\cm + 4\ca$} \\
-    \bottomrule
-    \end{tabular}}
-\end{table}
-
-\subsection{Acknowledging some Algorithm Limitations}
-
-While the algorithm just presented is relatively straightforward to implement, it does have two major sources of potential issues that are both determined by the technology used and the fundamental theory.
+\begin{example}[Execution of the \code{TangentLine} procedure in \Maple{}] \phantom{.} \\
+  \label{chap3:ex:maple_4}
+  \begin{mapleinline}
+> TangentLine(x^2 + 5*x + 6, x, 2);
+    \end{mapleinline}
+    \begin{equation*}
+      9x + 2
+    \end{equation*}
+\end{example}
 %
-\begin{itemize}
-    \item \emph{Expression complexity}. Symbolic manipulation often leads to a growth in expression complexity. For this reason, expression simplification may not always be feasible due to software limitations or excessive \ac{CPU} time demands. Making the algorithm insensitive to expression swell is thus crucial to its effectiveness.
-    \item \emph{Numerical stability of symbolic matrix factorization}. The description of the algorithm involves the manipulation of matrices and vectors with either symbolic or mixed symbolic-numeric entries. Ensuring that symbolic matrix factorization maintains numerical stability is a critical requirement of the algorithm. In the case of \ac{LU} decomposition, inadequate pivoting strategies can lead to the generation of singular matrices, which in turn can cause the algorithm to fail~\cite{zhou2005implicit, zhou2007symbolic, giesbrecht2014symbolic}.
-\end{itemize}
-%
-These are the two main points that we acknowledge in the implementation of the algorithm. In the forthcoming sections, each of these matters is discussed in detail, with recommendations on techniques and open-source software solutions that are used to address them.
+In Example~\ref{chap3:ex:maple_3}, we provide a general procedure written in the \Maple{} computer algebra language, which performs computations for the tangent line. This procedure calculates the tangent line formula for any function $f$ at the point $x = a$. It utilizes the \code{diff} operator for differentiation and the \code{subs} operator for substitution. Additionally, the \code{expand} operator is used to simplify the output. Once this procedure is entered into the \Maple{} system, it can be accessed from the system's interactive mode, as shown in Example~\ref{chap3:ex:maple_4}.
 
-\section{Index Reduction Algorithm with Expression Swell Mitigation}
-
-The most interesting and relevant aspect to be explored is the connection between the hierarchical representation of expressions (see Section~\ref{chap2:sec:lem}) and the \ac{DAE} index reduction. The use of veiling variables may be used to hide some parts of the expressions by the collection of common sub-expressions. Even if this may appear to be a substantial improvement, it is not so frequent to encounter expressions that are common to all the equations of the \ac{DAE} system. Still, this concept can be extended to mitigate the expression swell during matrix factorization (see Section~\ref{chap2:sec:last}). The veiling variables $\mv$ would then include the states $\mx$ of the \ac{DAE} system. In this manner, the hierarchical representation of the expression serves as a system augmentation technique as well as a means to limit expression swell during the index reduction procedure. The augmented \ac{DAE} system would then be expressed as
-%
-\begin{equation}
-  \label{chap3:eq:augmented_dae}
-  \mFv = \mAv \, \mx^\prime - \mbv = \m{0} \, \text{,}
-  %
-  \qquad \text{where} \qquad
-  %
-  \mv = \begin{bmatrix}
-    v_{1}(\mx, t) \\
-    v_{2}(v_{1}, \mx, t) \\
-    \vdots \\
-    v_{n}(v_{1}, \dots, v_{n-1}, \mx, t) \\
-  \end{bmatrix} \, \text{.}
-\end{equation}
-%
-Notice that if the matrix $\mAv$ is non-singular, the augmented \ac{DAE} system~\eqref{chap3:eq:augmented_dae} has index-1. This is a crucial aspect to be taken into consideration since, as demonstrated in Section~\ref{chap3:sec:daes_complexity}, the final reduction to index-0 \acp{DAE} is costly. Furthermore, the vector $\mv$ and its Jacobian with respect to the states $\mx$ can be sequentially evaluated for additional reduction of the computational burden. Nonetheless, the augmented formulation~\eqref{chap3:eq:augmented_dae} allows for the full exploitation of the signature technique to detect null expressions without the need for symbolic simplification~\cite{monagan1994signature}. Eventually, this will be the subject of future research and implementations that will exploit index-1 \acp{DAE} integrators similarly to the other state-of-the-art \acp{DAE} solver presented in the Introduction. A pseudocode and a flowchart of the index reduction algorithm with expression swell mitigation can be found in Algorithm~\ref{chap3:alg:index_reduction_veil} and \figurename~\ref{chap3:fig:index_reduction_veil}, respectively.
-
-\begin{figure}[htp]
-  \centering
-  \includegraphics[angle=0, width=0.5\columnwidth]{dae_flowchart_veil}
-  \caption{Flowchart of the index reduction algorithm with expression swell mitigation.}
-  \label{chap3:fig:index_reduction_veil}
-\end{figure}
-
-\begin{breakablealgorithm}
-  \caption{Index reduction algorithm with expression swell mitigation.}
-  \label{chap3:alg:index_reduction_veil}
-  \begin{algorithmic}[1]
-    \State \textbf{Require:} A \ac{DAE} system of the form $\mFv \eqdef \mAv \, \mxp - \mbv = \m{0}$.
-    \Procedure{ReduceIndex}{$\mFv$} \Comment{Index reduction procedure}
-      \State $\mhiv \gets \varnothing$ \Comment{The set of invariants}
-      \State $\mv \gets \varnothing$ \Comment{The veiling variables vector}
-      \State $\mAv, \, \mbv \gets \mathrm{GenerateMatrix}(\mFv, \, \mxp)$ \Comment{The \ac{DAE} system matrix}
-      \State $m \gets \mathrm{Size}(\mx)$\Comment{The size of $\mx$}
-      \While{$\mAv$ is singular}
-        \State $\displaystyle\triangleright$ Differential and algebraic equations separation (Section~\ref{chap3:sec:separation})
-        \State $\mLv, \, \mUv, \, \mP, \, \mQ, \, \m{v}_d(\mx, \m{v}, \, t) \gets \mathrm{MatrixFactorization}(\mAv)$ \Comment{\ac{LU} or \ac{FFLU} decomposition of $\mAv$ with new veiling variables $\m{v}_d(\mx, \m{v}, \, t)$}
-        \State $\mv \gets \mv \cup \m{v}_d(\mx, \m{v}, \, t)$ \Comment{Update the veiling variables vector}
-        \State $r \gets \mathrm{Rank}(\mUv)$ \Comment{The rank of $\mUv$ is equal to the rank of $\mAv$}
-        \State $\mI_1 \gets \mathrm{IdentityMatrix}(r, \, r)$ \Comment{The upper identity matrix}
-        \State $\mI_2 \gets \mathrm{IdentityMatrix}(m-r, \, m-r)$ \Comment{The lower identity matrix}
-        \State $\mEv \gets \begin{bmatrix} \mI_1, \, \m{0} \end{bmatrix} \, \mUv \, \mQ^\top$ \Comment{The reordered part of $\mAv$}
-        \State $\mgv \gets \begin{bmatrix} \mI_1, \, \m{0} \end{bmatrix} \, \mLv^{-1} \, \mP \, \mbv$ \Comment{The differential part of $\mbv$}
-        \State $\mav \gets \begin{bmatrix} \m{0}, \, \mI_2 \end{bmatrix} \, \mLv^{-1} \, \mP \, \mbv$ \Comment{The algebraic part of $\mbv$}
-        \State $\displaystyle\triangleright$ Algebraic equations differentiation (Section~\ref{chap3:sec:differentiation})
-        \State $\jac{\m{v}}{\mx}(\mx, \m{v}, \, t) \gets \mathrm{Jacobian}(\mv, \, \mx)$ \Comment{The Jacobian of $\mav$ with respect to $\mx$}
-        \State $\mav \gets \mathrm{Diff}(\mav, \, t)$ \Comment{Differentiate the equations $\mav$}
-        \State $\mav \gets \mathrm{Substitute}(\jac{\m{v}}{\mx}(\mx, \m{v}, \, t), \mav)$ \Comment{Remove the $\mv$ derivatives from $\mav$}
-        \State $\mAdv, \, \mgdv \gets \mathrm{GenerateMatrix}(\mav, \, \mxp)$ \Comment{Differentiate the equations $\mav$}
-        \State $\mAv \gets \begin{bmatrix} \mEv \\ \mAdv \end{bmatrix}$ and $\mbv \gets \begin{bmatrix} \mgv \\ \mgdv \end{bmatrix}$
-        \Comment{The new matrix $\mAv$ and vector $\mbv$}
-        \State $\mhiv \gets \mhiv \cup \mav$ \Comment{Add the algebraic equations to the set of invariants}
-      \EndWhile \\
-      \Return $\mAv, \, \mbv, \, \mhiv, \, \mv$ \Comment{The \acp{DAE} reduced to an \ac{ODE} system with invariants}
-    \EndProcedure
-  \end{algorithmic}
-\end{breakablealgorithm}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-\section{Index Reduction and Numerical Integration Scheme}
-\label{chap3:sec:indigo}
+\section{Purposes and Applications of Computer Algebra}
 
-After this fairly long discussion on the actual implementation aspects of the index reduction algorithm, we can now present the \Indigo{} index reduction and integration toolbox~\cite{indigo}. This toolbox consists of two main components: a \Maple{} package to carry out symbolic index reduction of \ac{DAE} systems, and a \Matlab{} toolbox to perform numerical integration of the reduced-index system. \Indigo{} is designed to be used in conjunction with the \LEM{} package, to limit the expression swell, and the \LAST{} package, to conveniently factorize matrices. In the following paragraphs, we briefly discuss the usage of the \Indigo{} package.
+In their influential work ``{Mathematics Applied to Deterministic Problems in the Natural Sciences}'' (\cite{li1998making}, SIAM, 1988, pages 5-7), Lin and Segel delineate the objectives of applied mathematics: applied mathematics aims to clarify scientific concepts and depict scientific phenomena using mathematical tools, fostering the advancement of mathematics through such endeavors. They discuss three fundamental aspects of this process concerning the resolution of scientific challenges.
+%
+\begin{enumerate}
+  \setlength{\itemsep}{0.0em}
+  \item Formulating scientific problems in mathematical terms, which involves translating real-world scientific problems into mathematical language, enabling the application of mathematical tools for analysis and solution.
+  \item Solving the mathematical problems thus formulated using appropriate mathematical techniques, ranging from algebraic manipulation to differential equations and numerical methods.
+  \item Interpreting the solutions and empirically verifying them in the context of the original scientific problem and validated through empirical observation or experimentation.
+\end{enumerate}
+%
+The authors of~\cite{li1998making}, also emphasize the interconnected nature of this process.
+%
+\begin{enumerate}
+  \setlength{\itemsep}{0.0em}
+  \item[4] Generating scientifically relevant new mathematics by engaging in the formulation, generalization, abstraction, and axiomatic formulation of mathematical concepts and methods, applied mathematics contributes to the development of new mathematical theories and techniques that are pertinent to scientific inquiry.
+\end{enumerate}
+%
+While \acp{CAS} theoretically have the potential to facilitate steps~(1), (2), and (4) of this process, in practice, they primarily focus on step~(2), \ie{}, the actual solving of mathematical problems. Their role in steps~(1) and (4) is comparatively limited, serving more as tools for computation rather than for the conceptualization or creation of new mathematics. Specifically, \acp{CAS} are invaluable tools in scientific research for performing complex calculations, solving equations, and verifying mathematical identities, especially in cases where the calculations are too complex or tedious to be performed by hand. In the subsequent part of this section, we present some examples showcasing the application of computer algebra software in the problem-solving process. All of these are simple examples that are only meant to illustrate the main capabilities of \acp{CAS}, and are not intended to be exhaustive.
 
-\subsection{Index Reduction}
-
-The index reduction algorithm implemented in the \Indigo{} \Maple{} package is the one presented in Section~\ref{chap3:sec:algorithm}. To reduce the index of a \ac{DAE} system in the \Maple{} environment we need to first create an \Indigo{} object instance.
-%
-\begin{verbatim}
-> Indigo_obj := Object(Indigo);
-> Indigo_obj:-InitLAST();
-\end{verbatim}
-%
-Then, the system of \acp{DAE} \texttt{eqns} with coordinates \texttt{vars} is loaded.
-%
-\begin{verbatim}
-> Indigo_obj:-LoadEquations('Generic', eqns, vars);
-\end{verbatim}
-%
-The \texttt{Generic} symbol is used to specify the type of the system. Notice that in this example, we assume that the equations of the system are already available in the \Maple{} session. The automatic index reduction process can be performed by calling the \texttt{ReduceIndex} method, which iterates the separation and differentiation steps until an index-$0$ \ac{DAE} system is obtained.
-%
-\begin{verbatim}
-> Indigo_obj:-ReduceIndex();
-\end{verbatim}
-%
-Intermediate results of the process are stored internally in the \Indigo{} object and are available on demand. Once the index reduction process is completed, the user can generate the \texttt{SliderCrank} \Matlab{} class file to perform numerical integration of the reduced-index system.
-%
-\begin{verbatim}
-> Indigo_obj:-GenerateMatlabCode(name, type, data=pars);
-\end{verbatim}
-%
-A file \texttt{name.m} is generated in the current directory. As it is explained in the next section, The string parameter \texttt{type} can be either \texttt{Implicit}, \texttt{SemiExplicit} or \texttt{Explicit} depending on the desired numerical integration scheme. The optional parameter \texttt{data} introduces default internal object data.
-
-\subsection{Numerical Integration Scheme}
-
-The \Indigo{} \Matlab{} toolbox is an object-oriented library that allows the user to exploit the automatically generated code of the reduced-index system. It is capable of integrating systems of \acp{ODE} and \acp{DAE} using a variety of Runge-Kutta numerical integration schemes. In particular, the system of equations which is integrated is composed of the following elements.
-%
-\begin{itemize}
-  \setlength{\itemsep}{0pt}
-    \item A differential part, which can be expressed by one of the following classes:
-    %
-    \begin{equation*}
-        \begin{array}{ccl}
-            \m{F}(\mx, \mx^\prime, \m{v}, t) = \m{0} & \hspace{0.5cm} &
-            \text{\texttt{Implicit} system class,} \\[0.5mm]
-            \m{A}(\mx, \m{v}, t) \, \mx^\prime = \m{b}(\mx, \m{v}, t) & \hspace{0.5cm} &
-            \text{\texttt{SemiExplicit} system class,} \\[0.5mm]
-            \mx^\prime = \m{f}(\mx, \m{v}, t) & \hspace{0.5cm} &
-            \text{\texttt{Explicit} system class.}
-        \end{array}
-    \end{equation*}
-    %
-    \item The invariants, composed of the hidden constraints obtained from the index reduction process $\mhiv$, and optional user-defined invariants $\mhuv$, namely
-    %
-    \begin{equation}
-      \label{chap3:eq:inv_part}
-      \m{h}(\mx, \m{v}, t) = \begin{bmatrix}
-          \mhiv \\[0.5mm]
-          \mhuv
-      \end{bmatrix} = \m{0} \, \text{.}
-    \end{equation}
-    %
-    \item The veils, which are the set of the expression hierarchical representation variables used in \LEM{} to limit the expression swell
-    %
-    \begin{equation*}
-        \m{v}(\mx, t) = \begin{bmatrix}
-            v_{1}(\mx, t) \\[0.5mm]
-            v_{2}(v_{1}, \mx, t) \\
-            \vdots \\
-            v_{n}(v_{1}, \dots, v_{n-1}, \mx, t)
-        \end{bmatrix} \, \text{.}
-    \end{equation*}
-\end{itemize}
-
-To respect the invariants during the integration the \emph{standard projection} method is applied~\cite{hairer2000symmetric}. This method consists of projecting the solution $\mx$ of the numerically integrated reduced-index system onto the invariants manifold $\m{h}(\mx, \m{v}, t) = \m{0}$, which is equivalent to the following constrained minimization
+\begin{example}[Solution of a Linear System of Equations]
+Suppose we have the following system of equations
 %
 \begin{equation*}
-  \underset{\widetilde{\mx}}{\textrm{minimize}} \quad \dfrac{1}{2}\left(\mx - \widetilde{\mx}\right)^2
-    \quad \textrm{subject to} \quad
-    \m{h}(\mx, \m{v}, t) = \m{0}.
-\end{equation*}
-
-To integrate the system generated through the \Matlab{} package or a custom system \texttt{sys}, the user must first instantiate a \Indigo{} Runge-Kutta solver.
-%
-\begin{verbatim}
->>> solver = IndigoSolver('solver_name');
->>> solver.set_system(sys);
-\end{verbatim}
-%
-Once the solver is instantiated, it is only necessary to specify the \acp{IC} and the integration time vector.
-%
-\begin{verbatim}
->>> [x, t, v, h] = solver.solve(t_ini:d_t:t_end, ics);
-\end{verbatim}
-%
-The solver returns the solution of the system in the form of multiple outputs: \texttt{x} contains the integrated solution, \texttt{x\_dot} the states' time derivative, \texttt{t} the time vector, \texttt{v} the veiling variables, and finally \texttt{h} the values of the invariants over the specified time mesh \texttt{t\_ini:d\_t:t\_end}.
-
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-
-\section{Proofing the Symbolic-Numeric Scheme}
-\label{chap3:sec:example}
-
-In this section, we showcase an example of a high-index \ac{DAE} system: an index-3 problem with an analytical solution, which describes the motion of a particle on a 3D torus surface~\cite{campbell1995constraint}. This example is employed to validate the numerical stability of the reduced-index system, as well as the good conditioning of both the symbolic matrix factorization and the numerical integration scheme. To ease the understanding of the results, we purposely avoid the use of the veiling variables in this example. However, the veiling variables just add an evaluation layer to the expressions, and they do not affect the numerical properties of the integrator.
-
-\subsection{Expression Complexity of the Reduced-Index Systems}
-\label{chap3:sec:daes_complexity}
-
-As a first demonstration of the proposed index reduction algorithm capabilities, we first consider the given example from a purely symbolic perspective. In particular, we consider the computational cost of the expressions generated during the presented procedure, both with \ac{LU} and \ac{FFLU} factorization of the system matrix. The compactness of the expressions generated during the index reduction algorithm is a crucial aspect, as it ensures that limited computational overhead is introduced in the numerical integration of the reduced-index system, as well as in the projection of the solution on the hidden constraints. Specifically, the index reduction algorithm is applied to the \ac{DAE} system and reduced to index-0. For each reduction stage of the example considered, the computational cost is reported in Table~\ref{chap3:tab:torus}. Notably, the results show that the expression complexity is similar for both \ac{LU} and \ac{FFLU} factorization, with a slight increase in the number of multiplications and divisions for the latter.
-
-\begin{table}[htp]
-  \caption{Expression complexity encountered throughout the index reduction of the particle motion \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
-  \label{chap3:tab:torus}
-  \centering
-  {\footnotesize\begin{tabular}{cccc}
-    \multicolumn{4}{c}{\textbf{Particle Motion (LU Factorization)~\cite{campbell1995constraint}}} \\
-    \toprule
-    \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 47\cf + 30\cm + 23\ca$ \quad $\mh = 0$} \\
-    \midrule
-    \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
-    \midrule
-    Index-3 \acp{DAE} & $0$ & $39\cf + 36\cm + 13\ca$ & $7\cf + 10\cm + 6\ca$ \\
-    Index-2 \acp{DAE} & $0$ & $39\cf + 36\cm + 13\ca$ & $22\cf + 20\cm + 8\ca$ \\
-    Index-1 \acp{DAE} & $0$ & $39\cf + 36\cm + 13\ca$ & $68\cf + 72\cm + 33\ca$ \\
-    Index-0 \acp{DAE} & $388\cf + 424\cm + 180\ca$ & $79\cf + 77\cm + 26\ca$ & $0$ \\
-    \midrule
-    \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 258\cf + 239\cm + 109\ca$ \quad $\mh = 97\cf + 102\cm + 47\ca$} \\
-    \bottomrule \\[0.5em]
-    %
-    \multicolumn{4}{c}{\textbf{Particle Motion (FFLU Factorization)~\cite{campbell1995constraint}}} \\
-    \toprule
-    \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 47\cf + 30\cm + 23\ca$ \quad $\mh = 0$} \\
-    \midrule
-    \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
-    \midrule
-    Index-3 \acp{DAE} & $0$ & $39\cf + 36\cm + 13\ca$ & $7\cf + 10\cm + 6\ca$ \\
-    Index-2 \acp{DAE} & $0$ & $39\cf + 36\cm + 13\ca$ & $26\cf + 23\cm + 8\ca$ \\
-    Index-1 \acp{DAE} & $0$ & $39\cf + 36\cm + 13\ca$ & $68\cf + 72\cm + 33\ca$ \\
-    Index-0 \acp{DAE} & $388\cf + 424\cm + 180\ca$ & $79\cf + 77\cm + 26\ca$ & $0$ \\
-    \midrule
-    \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 258\cf + 239\cm + 109\ca$ \quad $\mh = 97\cf + 105\cm + 47\ca$} \\
-    \bottomrule
-    \end{tabular}}
-\end{table}
-
-\subsection{Numerical Integration of the Reduced-Index System}
-\label{chap3:sec:numerical_integration}
-
-The numerical stability and consistency of the reduced-index system are demonstrated by exploiting the analytical solution of the problem in~\cite{campbell1995constraint}. Specifically, the \ac{DAE} system consists of three position variables $[x_{1}, \, x_{2}, \, x_{3}]^\top$, three velocity variables $[u_{1}, \, u_{2}, \, u_{3}]^\top$, and one constraint with Lagrange multiplier $\lambda$. The solution manifold is 4D, and the exact solution is
-%
-\begin{equation}
-  \label{chap3:eq:torus_solution}
-  \mx_\text{exact} = \begin{bmatrix}
-    x_{1} \\ x_{2} \\ x_{3}
+  \begin{bmatrix}
+    a_{11} & a_{12} & a_{13} & a_{14} \\
+    a_{21} & a_{22} & a_{23} & a_{24} \\
+    a_{31} & a_{32} & a_{33} & a_{34} \\
+    a_{41} & a_{42} & a_{43} & a_{44}
+  \end{bmatrix} \begin{bmatrix}
+    x_1 \\ x_2 \\ x_3 \\ x_4
   \end{bmatrix} = \begin{bmatrix}
-    (\rho \cos(2\pi - t) + r) \cos(t) \\
-    (\rho \cos(2\pi - t) + r) \sin(t) \\
-    \rho \sin(2\pi - t)
-  \end{bmatrix} \, \text{.}
-\end{equation}
-%
-The initial value problem is defined as follows
-%
-\begin{equation}
-  \label{chap3:eq:torus}
-  \mF = \begin{bmatrix}
-    x^{\prime}_{1} - u_{1} \\
-    x^{\prime}_{2} - u_{2} \\
-    x^{\prime}_{3} - u_{3} \\
-    u^{\prime}_{1} - u_{3}\cos(t) + x_{3}\sin(t) + u_{2} - 2 c x_{1}\lambda \\
-    u^{\prime}_{2} - u_{3}\sin(t) - x_{3}\cos(t) - u_{1} - 2 c x_{2}\lambda \\
-    u^{\prime}_{3} + x_{3} - 2x_{3}\lambda \\
-    x_{1}^2 + x_{2}^2 + x_{3}^2 - 2r(x_{1}^2 + x_{2}^2)^{1/2} + r^2 - \rho^2
-  \end{bmatrix} \, \text{,}
-\end{equation}
-%
-with $c = 1 - {r} / {(x_{1}^2 + x_{2}^2)^{1/2}}$, states $\mx = [x_{1}, \, x_{2}, \, x_{3}, \, u_{1}, \, u_{2}, \, u_{3}, \, \lambda]^{\top}$, \acp{IC} $\mx_{0} = [15, \, 0, \, 0, \, 0, \, 15, \, -5, \, \lambda]^{\top}$, and parameters $\rho = 5$ and $r = 10$.
-
-The numerical integration of the reduced-index system is performed through Implicit Euler, RadauIIA3, and RadauIIA5 Runge-Kutta methods. To respect the invariants during the integration the \emph{standard projection} method is applied~\cite{hairer2000symmetric}. This method consists of projecting the solution $\mx$ of the numerically integrated system onto the invariants on the hidden constraints $\mh = \m{0}$, which is equivalent to the constrained minimization
-%
-\begin{equation*}
-  \underset{\tilde{\mx}}{\textrm{minimize}} \quad \dfrac{1}{2}\left(\mx - \tilde{\mx}\right)^2
-    \quad \textrm{subject to} \quad
-    \mh = \m{0} \, \text{.}
+    b_1 \\ b_2 \\ b_3 \\ b_4
+  \end{bmatrix}
 \end{equation*}
 %
-To verify that the projection is performed correctly and does not affect the order of the Runge-Kutta method, numerical integration is performed in the interval $t \in [0, \, 2\pi]$ seconds with different integration time steps $\Delta t$. The error of the numerical integration $\varepsilon = \| \, \mx - \mx_\text{exact} \, \|_{\infty}$ is reported in \figurename~\ref{chap3:fig:torus_order}. As can be seen, the implemented projection preserves the order of the method for all the integration time steps. It is important to highlight that to obtain such results the absolute error tolerances of the integrator and the projection are both set to $\varepsilon = 10^{-10}$. The same tolerances are used in the numerical integration of the reduced-index system in the interval $t \in [0, \, 400\pi]$ seconds with step $\Delta t = 0.025$ seconds. The results are reported in \figurename~\ref{chap3:fig:torus_integration}, where Implicit Euler, RadauIIA3, and RadauIIA5 Runge-Kutta methods are employed, and the projection on the hidden constraints $\mh$ is performed. The effect of the projection is highlighted on the bottom left plot.
+We want to find the symbolic solution for $x$ and $y$. We can use \Maple{} \ac{CAS} to solve this system symbolically.
 
-\begin{figure}[htp]
-  \centering
-  \includetikz{figures/chapter_3/torus_order.tex}
-  \includetikz{figures/chapter_3/torus_hidden.tex}
-  \caption{Numerical integration error $\varepsilon = \| \, \mx - \mx_\text{exact} \, \|_{\infty}$ of the \acp{DAE}~\eqref{chap3:eq:torus} over different integration time steps $\Delta t$, along with the computed order of the method (left). The projection on the hidden constraints is performed and the invariants violation $\| \, \mh \, \|_{\infty}$ is reported (right). Notice that the implemented projection preserves the order of the method for all the integration time steps. The tests are performed in the interval $t \in [0, \, 2\pi]$ seconds, using Implicit Euler, RadauIIA3, and RadauIIA5 Runge-Kutta methods.}
-  \label{chap3:fig:torus_order}
-\end{figure}
+\begin{mapleinline}
+# Define the system of equations
+> eq1 := 3*x + 2*y = 10;
+> eq2 := 4*x - 5*y = 20;
 
-\begin{figure}[htp]
-  \centering
-  \includetikz{figures/chapter_3/torus_implicit_euler.tex}
-  \includetikz{figures/chapter_3/torus_radauiia3.tex}
-  \includetikz{figures/chapter_3/torus_radauiia5.tex}
-  \includetikz{figures/chapter_3/torus_radauiia5_noproj.tex}
-  \caption{Numerically integrated solution of the \acp{DAE}~\eqref{chap3:eq:torus} in the interval $t \in [0, \, 400\pi]$ seconds, with step $\Delta t = 0.025$ seconds, using Implicit Euler (top left), RadauIIA3 (top right), and RadauIIA5 (bottom left and right) Runge-Kutta methods. The first three plots show the numerical integration of the reduced-index system with projection on the hidden constraints $\mh$ produced by the index reduction algorithm. On the bottom right plot, the numerical integration of the reduced-index system is performed without projection on the manifold $\mh$ and substantial drift is observed.}
-  \label{chap3:fig:torus_integration}
-\end{figure}
+# Solve the system symbolically
+> sol := solve({eq1, eq2}, {x, y});
+\end{mapleinline}
+
+In this code, we first define the system of equations \texttt{eq1} and \texttt{eq2}. We then use the \texttt{solve} function to find the symbolic solution for $x$ and $y$ and store the symbolic solution in the variable \texttt{sol}.
+\end{example}
+
+\begin{example}[Optimization of a Multivariable Function]
+Let us consider a more complex example involving a multivariable function. We minimize the Rosenbrock function, which is a commonly used test function for optimization algorithms.
+
+\begin{mapleinline}
+# Define the Rosenbrock function
+> rosenbrock := (x, y) -> (1 - x)^2 + 100 * (y - x^2)^2;
+
+# Use optimization package to minimize the Rosenbrock function
+> sol := Optimization:-Minimize(rosenbrock(x, y), {x = -2 .. 2, y = -1 .. 3});
+\end{mapleinline}
+
+In this example, we define the Rosenbrock function $f(x,y) = (1-x)^2 + 100(y-x^2)^2$, and then use \Maple{}'s optimization function \code{Optimization:-Minimize} to find the minimum value and the corresponding point of $(x,y)$. The result, stored in the variable \texttt{sol}, gives us the minimum value of the function and its corresponding point at which it occurs (the minimum point is $f(x, y) = 0$ at $(x,y) = (1,1)$).
+\end{example}
+
+\begin{example}[Solution of Ordinary Differential Equations]
+\acp{CAS} can also be used to obtain closed-form solutions of \acp{ODE}. For example, consider the following second-order \ac{ODE} representing a ball bouncing on a flat surface with a coefficient of restitution of $7/10$. The \ac{ODE} is given by
+%
+\begin{equation*}
+  \begin{cases}
+    y^{\prime\prime}(t) = -\dfrac{981}{100} \\[0.1em]
+    y(0) = 5, \quad y^{\prime}(0) = 0 \\[0.1em]
+    \mathrm{WhenEvent}(y(t) = 0, y'(t) = -\dfrac{7}{10}y'(t))
+  \end{cases}
+  \quad \text{with} \qquad t \in [0, 5] \, \text{.}
+\end{equation*}
+%
+We can use \Mathematica{} to solve this \ac{ODE} symbolically and obtain the closed-form solution for $y(t)$
+%
+\begin{equation*}
+  y(t) = \begin{cases}
+    5-\dfrac{981}{200}t^2 &
+      0\leq t\leq \dfrac{10 \sqrt{\dfrac{10}{109}}}{3} \\[0.1em]
+    \dfrac{3}{200} \left(-327 t^2+34 \sqrt{1090} t-800\right) &
+      \dfrac{10\sqrt{\dfrac{10}{109}}}{3}<t\leq 8 \sqrt{\dfrac{10}{109}} \\[0.1em]
+    \dfrac{3 \left(-1635 t^2+289 \sqrt{1090} t-13520\right)}{1000} &
+      8\sqrt{\dfrac{10}{109}}<t\leq \dfrac{169 \sqrt{\dfrac{2}{545}}}{3} \\[0.1em]
+    \dfrac{-49050 t^2+11169 \sqrt{1090} t-687154}{10000} &
+      \dfrac{169\sqrt{\dfrac{2}{545}}}{3}<t\leq \dfrac{2033}{15 \sqrt{1090}} \\[0.1em]
+    \dfrac{3 \left(-817500 t^2+215305 \sqrt{1090} t-15404041\right)}{500000} &
+      \dfrac{2033}{15\sqrt{1090}}<t\leq \dfrac{7577}{50 \sqrt{1090}} \\[0.1em]
+    \dfrac{3 \left(-81750000 t^2+23571350 \sqrt{1090} t-1849674509\right)}{50000000} &
+      \dfrac{7577}{50 \sqrt{1090}}<t\leq \dfrac{244117}{1500 \sqrt{1090}} \\[0.1em]
+    \dfrac{-24525000000 t^2+7499983500 \sqrt{1090} t-624651217823}{5000000000} &
+      \dfrac{244117}{1500 \sqrt{1090}}<t\leq 5
+    \end{cases} \, \text{.}
+\end{equation*}
+
+Even more complex \acp{ODE} can be solved using \acp{CAS} for design optimization, control systems, and other engineering applications. For example, \Mathematica{} can find the symbolic solution for a proportional-derivative controller keeping the position of a moving mass $x(t)$ constant through the control input $u(t)$, given by
+%
+\begin{equation*}
+  \begin{cases}
+    x^{\prime\prime}(t) + = u(t) \\[0.1em]
+    x(0) = x^{\prime}(0) = 0 \\[0.1em]
+    u(0) = 1 \\[0.1em]
+    \mathrm{WhenEvent}(\mathrm{mod}(t, \tau) = 0, u(t) = (1 - x(t) - x^{\prime}(t)))
+  \end{cases}
+  \quad \text{with} \qquad t \in [0, 15] \, \text{.}
+\end{equation*}
+%
+The solution for $x(t)$ and $u(t)$ is respectively given by
+%
+\begin{equation*}
+  x(t) = \begin{cases}
+    \dfrac{t^2}{2} & 0\leq t\leq 1 \\[0.1em]
+    \dfrac{1}{4} \left(-t^2+6 t-3\right) & 1<t\leq 2 \\[0.1em]
+    -\dfrac{3 t^2}{8}+2 t-\dfrac{5}{4} & 2<t\leq 3 \\[0.1em]
+    \dfrac{1}{16} \left(-t^2+2 t+25\right) & 3<t\leq 4 \\[0.1em]
+    \dfrac{1}{32} \left(5 t^2-52 t+162\right) & 4<t\leq 5 \\[0.1em]
+    \dfrac{1}{64} \left(7 t^2-74 t+249\right) & 5<t\leq 6 \\[0.1em]
+    \dfrac{1}{128} \left(-3 t^2+56 t-114\right) & 6<t\leq 7 \\[0.1em]
+    \dfrac{1}{256} \left(-17 t^2+266 t-767\right) & 7<t\leq 8 \\[0.1em]
+    \dfrac{1}{512} \left(-11 t^2+164 t-62\right) & 8<t\leq 9 \\[0.1em]
+    \dfrac{23 t^2-482 t+3521}{1024} & 9<t\leq 10 \\[0.1em]
+    \dfrac{45 t^2-944 t+6942}{2048} & 10<t\leq 11 \\[0.1em]
+    \dfrac{-t^2+114 t+2873}{4096} & 11<t\leq 12 \\[0.1em]
+    \dfrac{-91 t^2+2364 t-7070}{8192} & 12<t\leq 13 \\[0.1em]
+    \dfrac{-89 t^2+2310 t+1577}{16384} & 13<t\leq 14 \\[0.1em]
+    \dfrac{93 t^2-2968 t+56270}{32768} & 14<t\leq 15
+  \end{cases},
+  \quad \text{and} \quad u(t) = \begin{cases}
+    1 & 0\leq t\leq 1 \\[0.1em]
+    -\dfrac{1}{2} & 1<t\leq 2 \\[0.1em]
+    -\dfrac{3}{4} & 2<t\leq 3 \\[0.1em]
+    -\dfrac{1}{8} & 3<t\leq 4 \\[0.1em]
+    \dfrac{5}{16} & 4<t\leq 5 \\[0.1em]
+    \dfrac{7}{32} & 5<t\leq 6 \\[0.1em]
+    -\dfrac{3}{64} & 6<t\leq 7 \\[0.1em]
+    -\dfrac{17}{128} & 7<t\leq 8 \\[0.1em]
+    -\dfrac{11}{256} & 8<t\leq 9 \\[0.1em]
+    \dfrac{23}{512} & 9<t\leq 10 \\[0.1em]
+    \dfrac{45}{1024} & 10<t\leq 11 \\[0.1em]
+    -\dfrac{1}{2048} & 11<t\leq 12 \\[0.1em]
+    -\dfrac{91}{4096} & 12<t\leq 13 \\[0.1em]
+    -\dfrac{89}{8192} & 13<t\leq 14 \\[0.1em]
+    \dfrac{93}{16384} & 14<t\leq 15
+  \end{cases} \, \text{.}
+\end{equation*}
+\end{example}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\section{Expression Swell}
+\label{chap3:sec:expression_swell}
+
+Over the past four decades, \ac{CAS} have increasingly found applications in both teaching and research. The advantages of incorporating \ac{CAS} into teaching methodologies have been extensively documented. For instance, in \citet{stoutemyer1984radical}, general benefits of \ac{CAS} are outlined, while \citet{pavelle1985macsyma} provides numerous examples where \ac{CAS} quickly solves problems that were previously considered complicated or time-consuming to tackle by hand. However, \citet{mitic1994pitfalls} highlight an essential precondition for the effective and successful \ac{CAS} utilization: users must be aware of potential pitfalls and limitations, across all mathematical proficiency levels. Besides software bugs, the primary source of performance deterioration of \acp{CAS} is the \emph{expression swelling}.
+
+The expression swell is a common phenomenon of exact computations in which the size of numbers and expressions involved in a calculation grows dramatically as the calculation progresses, thereby slowing down the execution. While symbolic calculation software like \Maple{} and \Mathematica{} can handle substantial symbolic expressions, the growth of expression size during manipulation severely degrades the \acp{CAS} performance, resulting in prohibitively long \ac{CPU} times. During symbolic manipulation, it is not uncommon to find computations that are executed just once; once a result is obtained, recalculating it becomes unnecessary. However, the time required to obtain a result is often unknown. Predicting the memory and \ac{CPU} time prerequisites for a given calculation poses challenges since the size of expressions generated during computation is known only after the computation is completed. For these reasons, expression swell consistently poses a challenge, emerging as a major source of \ac{CAS} faults. It manifests in two forms: \emph{inherent} expression swell and \emph{intermediate} expression swell, each of which is discussed in the following sections.
+
+\subsection{Inherent Expression Swell}
+
+Inherent expression swell occurs when a calculation generates large expressions as a result of the problem itself. For example, the solution of a large system of linear equations can lead to large expressions. In this case, the problem is the large number of variables and equations, and the large expressions are a natural consequence of the problem. This type of expression swell is difficult both to mitigate and to spot, as it can arise from any problem, without any specific pattern.
+%
+\begin{example}[Inherent expression swell]
+  As an example, consider the following Hankel matrix
+  \begin{equation*}
+    \begin{bmatrix}
+      -1 & \phantom{+}1 & \phantom{+}1 & -1 & -1 & \phantom{+}1 & \phantom{+}1 & -1 & -1 \\
+      \phantom{+}1 & \phantom{+}1 & -1 & -1 & \phantom{+}1 & \phantom{+}1 & -1 & -1 & \phantom{+}1 \\
+      \phantom{+}1 & -1 & -1 & \phantom{+}1 & \phantom{+}1 & -1 & -1 & \phantom{+}1 & \phantom{+}1 \\
+      -1 & -1 & \phantom{+}1 & \phantom{+}1 & -1 & -1 & \phantom{+}1 & \phantom{+}1 & -1 \\
+      -1 & \phantom{+}1 & \phantom{+}1 & -1 & -1 & \phantom{+}1 & \phantom{+}1 & -1 & -1 \\
+      \phantom{+}1 & \phantom{+}1 & -1 & -1 & \phantom{+}1 & \phantom{+}1 & -1 & -1 & \phantom{+}1 \\
+      \phantom{+}1 & -1 & -1 & \phantom{+}1 & \phantom{+}1 & -1 & -1 & \phantom{+}1 & -1 \\
+      -1 & -1 & \phantom{+}1 & \phantom{+}1 & -1 & -1 & \phantom{+}1 & -1 & \phantom{+}1 \\
+      -1 & \phantom{+}1 & \phantom{+}1 & -1 & -1 & \phantom{+}1 & -1 & \phantom{+}1 & \phantom{+}1
+    \end{bmatrix}
+  \end{equation*}
+  %
+  which has the following characteristic polynomial
+  %
+  \begin{equation*}
+    \begin{aligned}
+      c(\lambda) &= \lambda^9 + \lambda^8 - 40\lambda^7 - 24\lambda^6 + 240\lambda^5+ 144\lambda^4 \\
+      &= \lambda^4 (\lambda + 6)(\lambda^4 - 5\lambda^3 - 10\lambda^2 + 36\lambda + 24)
+    \end{aligned}
+  \end{equation*}
+  %
+  The Hankel matrix has four zero eigenvalues $\lambda_{1,2,3,4} = 0$, one eigenvalue is $\lambda_5 = -6$, and the other four eigenvalues are roots of the seemingly simple-looking quartic polynomial
+  %
+  \begin{equation*}
+    \lambda^4 - 5\lambda^3 - 10\lambda^2 + 36\lambda + 24,
+  \end{equation*}
+  %
+  which are
+  %
+  \begin{equation*}
+    \begin{aligned}
+      \lambda_{6,7} &= \dfrac{5}{4} \pm \dfrac{\sqrt{3}}{12}\sqrt{{\dfrac{8a^{2}+155a+1856}{a}}} + \dfrac{\sqrt{6}}{12}\sqrt{{\dfrac{155a-4a^{2}-928}{a}} \pm {\dfrac{111\sqrt{3}}{\sqrt{{\dfrac{8a^{2}+155a+1856}{a}}}}}}, \\[0.2em]
+      \lambda_{8,9} &= \dfrac{5}{4} \pm \dfrac{\sqrt{3}}{12}\sqrt{{\dfrac{8a^{2}+155a+1856}{a}}} + \dfrac{\sqrt{6}}{12}\sqrt{{\dfrac{155a-4a^{2}-928}{a}} \pm {\dfrac{666\sqrt{3}}{\sqrt{{\dfrac{8a^{2}+155a+1856}{a}}}}}},
+    \end{aligned}
+  \end{equation*}
+  where $a = \sqrt[3]{3142+18i\sqrt{8071}}$
+\end{example}
+
+\subsection{Intermediate Expression Swell}
+
+Intermediate expression swell is an important special case of expression swell in which, during the middle stages of a calculation, intermediate expressions' size can grow substantially, along the way to a possibly and comparatively simple final results of the calculation.
+%
+\begin{example}[Intermediate expression swell]
+  Let us verify the Bianchi identity for a symmetric connection
+  %
+  \begin{equation*}
+    K^{\ell}_{j}{}_{hk;p} + K^{\ell}_{j}{}_{kp;j} + K^{\ell}_{j}{}_{ph;k} = 0
+  \end{equation*}
+  %
+  where $K$ is the Riemann curvature tensor. Expanding the left-hand side in terms of Christoffel symbols of the second kind, one obtains a sum os 72 terms, each of which is a product of 2 or 3 Christoffel symbols, for a total of 180 Christoffel symbols. However, upon simplifying this expression by consistently renaming the dummy indices, the simple result of zero is obtained, which verifies the identity.
+  %
+  %\begin{equation*}
+  %  \begin{aligned}
+  %    & -\Gamma_{\# 19}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 19}{ }_{\# 27} \Gamma_p{ }^{\# 27}{ }_k+\Gamma_j{ }^{\ell}{ }_{h, \# 25} \Gamma_p{ }^{\# 25}{ }_k+\Gamma_{\# 19}{ }^{\ell}{ }^{\# 22} \Gamma_j{ }^{\# 19}{ }_h \Gamma_p{ }^{\# 22}{ }_k-\Gamma_j{ }^{\ell}{ }_{\# 20, h} \Gamma_p{ }^{\# 20}{ }_k \\
+  %    & +\Gamma_j{ }^{\ell}{ }_{\# 18, k} \Gamma_p{ }^{\# 18}{ }_h+\Gamma_{\# 10}{ }_k \Gamma_j{ }^{\# 10}{ }_{\# 16} \Gamma_p{ }^{\# 16}{ }_h-\Gamma_{\# 10}{ }^{\ell}{ }_{\# 12} \Gamma_j{ }^{\# 10}{ }_k \Gamma_p{ }^{\# 12}{ }_h-\Gamma_j{ }^{\ell}{ }_{k, \# 11} \Gamma_p{ }^{\# 11}{ }_h \\
+  %    & +\Gamma_j{ }^{\ell}{ }_{\#, h} \Gamma_k{ }^{\# 9}{ }_p+\Gamma_{\# 1}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 1}{ }_{\# 7} \Gamma_k{ }^{\# 7}{ }_p-\Gamma_{\# 1}{ }_{\# 3} \Gamma_j{ }^{\# 1}{ }_h \Gamma_k{ }^{\# 3}{ }_p-\Gamma_j{ }^{\ell}{ }_{h, \# 2} \Gamma_k{ }^{\# 2}{ }_p+\Gamma_j{ }^{\ell}{ }_{p, \# 18} \Gamma_k{ }^{\# 18}{ }_h \\
+  %    & +\Gamma_{\# 10}{ }_{\# 15} \Gamma_j{ }^{\# 10}{ }_p \Gamma_k{ }^{\# 15}{ }_h-\Gamma_{\# 10}{ }_p{ }_p \Gamma_j{ }^{\# 10}{ }_{\# 13} \Gamma_k{ }^{\# 13}{ }_h-\Gamma_j{ }^{\ell}{ }_{\# 11, p} \Gamma_k{ }^{\# 11}{ }_h-\Gamma_h{ }^{\# 20}{ }_k \Gamma_j{ }^{\ell}{ }_{p, \# 20} \\
+  %    & +\Gamma_{\# 9}{ }^{\ell}, h{ }^{\ell} \Gamma_j{ }^{\# 9}{ }_p+\Gamma_{\# 1}{ }^{\ell}{ }_h \Gamma_{\# 7}{ }^{\# 1}{ }_k \Gamma_j{ }^{\# 7}{ }_p-\Gamma_{\# 1}{ }_k \Gamma_{\# 4}{ }^{\# 1}{ }_h \Gamma_j{ }^{\# 4}{ }_p+\Gamma_{\# 19}{ }_h \Gamma_{\# 27}{ }^{\# 19}{ }_k \Gamma_j{ }^{\# 27}{ }_p \\
+  %    & +\Gamma_{\# 20}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 20}{ }_{p, h}-\Gamma_{\# 2}{ }^{\ell}{ }_{h, k} \Gamma_j{ }_j^{\# 2}{ }_p+\Gamma_{\# 19}{ }_h{ }_h \Gamma_j{ }^{\# 19}{ }_{p, k}-\Gamma_{\# 19}{ }^{\ell}{ }_{\# 26} \Gamma_h{ }^{\# 26}{ }_k \Gamma_j{ }^{\# 19}{ }_p \\
+  %    & +\Gamma_{\# 19}{ }^{\# 26}{ }_h \Gamma_{\# 26}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 19}{ }_p-\Gamma_{\# 19}{ }^{\# 26}{ }_k \Gamma_{\# 26}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 19}{ }_p+\Gamma_{\# 19}{ }^{\ell}{ }_{h, k} \Gamma_j{ }^{\# 19}{ }_p-\Gamma_{\# 18}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 18}{ }_{p, k} \\
+  %    & -\Gamma_{\# 10}{ }^{\ell}{ }_k \Gamma_{\# 16}{ }^{\# 10}{ }_h \Gamma_j{ }^{\# 16}{ }_p-\Gamma_{\# 10}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 10}{ }_{p, h}+\Gamma_{\# 10}{ }^{\# 15}{ }_h \Gamma_{\# 15}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 10}{ }_p-\Gamma_{\# 10}{ }^{\# 15}{ }_k \Gamma_{\# 15}{ }_h{ }_h \Gamma_j{ }^{\# 10}{ }_p \\
+  %    & -\Gamma_{\# 10}{ }^{\ell}{ }_{k, h} \Gamma_j{ }^{\# 10}{ }_p+\Gamma_h{ }^{\# 9}{ }_p \Gamma_j{ }^{\ell}{ }_{k, \# 9}-\Gamma_{\# 9}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 9}{ }_{k, h}-\Gamma_{\# 1}{ }_h{ }_h \Gamma_{\# 7}{ }^{\# 1}{ }_p \Gamma_j{ }^{\# 7}{ }_k \\
+  %    & -\Gamma_{\# 19}{ }^{\ell}{ }_h \Gamma_{\# 27}{ }^{\# 19}{ }_p \Gamma_j{ }^{\# 27}{ }_k+\Gamma_{\# 25}{ }_{h, p}{ }^{\ell} \Gamma_j{ }^{\# 25}{ }_k+\Gamma_{\# 19}{ }_p{ }_p \Gamma_{\# 23}{ }^{\# 19}{ }_h \Gamma_j{ }^{\# 23}{ }_k-\Gamma_{\# 20}{ }_{p, h}{ }^{\ell} \Gamma_j{ }^{\# 20}{ }_k \\
+  %    & +\Gamma_{\# 10}{ }^{\ell}{ }_p \Gamma_{\# 13}{ }^{\# 10}{ }_h \Gamma_j \# 13{ }_k+\Gamma_{\# 11}{ }_h{ }_h \Gamma_j \# 11{ }_{k, p}+\Gamma_{\# 10}{ }_p \Gamma_j \Gamma^{\# 10}{ }_{k, h}-\Gamma_{\# 10}{ }^{\# 12}{ }_h \Gamma_{\# 12}{ }_p{ }_p \Gamma_j{ }^{\# 10}{ }_k \\
+  %    & +\Gamma_{\# 10}{ }^{\# 12}{ }_p \Gamma_{\# 12}{ }_h{ }_h \Gamma_j{ }^{\# 10}{ }_k+\Gamma_{\# 10}{ }^{\ell}{ }_{p, h} \Gamma_j{ }^{\# 10}{ }_k-\Gamma_{\# 1}{ }_h{ }_h \Gamma_j{ }^{\# 1}{ }_{k, p}+\Gamma_{\# 1}{ }_{\# 6} \Gamma_h{ }^{\# 6}{ }_p \Gamma_j{ }^{\# 1}{ }_k \\
+  %    & -\Gamma_{\# 1}{ }^{\# 6}{ }_h \Gamma_{\# 6}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 1}{ }_k+\Gamma_{\# 1}{ }^{\# 6}{ }_p \Gamma_{\# 6}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 1}{ }_k-\Gamma_{\# 1}{ }^{\ell}{ }_{h, p} \Gamma_j{ }^{\# 1}{ }_k+\Gamma_{\# 1}{ }^{\ell}{ }_k \Gamma_{\# 4}{ }^{\# 1}{ }_p \Gamma_j{ }^{\# 4}{ }_h \\
+  %    & -\Gamma_{\# 25}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 25}{ }_{h, p}-\Gamma_{\# 19}{ }^{\ell}{ }_p \Gamma_{\# 23}{ }^{\# 19}{ }_k \Gamma_j{ }^{\# 23}{ }_h+\Gamma_{\# 2}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 2}{ }_{h, k}-\Gamma_{\# 19}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 19}{ }_{h, k} \\
+  %    & +\Gamma_{\# 19}{ }^{\# 22}{ }_k \Gamma_{\# 22}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 19}{ }_h-\Gamma_{\# 19}{ }^{\# 22}{ }_p \Gamma_{\# 22}{ }_k{ }_k \Gamma_j{ }^{\# 19}{ }_h-\Gamma_{\# 19}{ }^{\ell}{ }_{p, k} \Gamma_j{ }^{\# 19}{ }_h+\Gamma_{\# 18}{ }^{\ell}{ }_{p, k} \Gamma_j{ }^{\# 18}{ }_h \\
+  %    & +\Gamma_{\# 10}{ }^{\ell}{ }_k \Gamma_{\# 16}{ }^{\# 10}{ }_p \Gamma_j{ }^{\# 16}{ }_h-\Gamma_{\# 10}{ }^{\ell}{ }_p \Gamma_{\# 13}{ }^{\# 10}{ }_k \Gamma_j{ }^{\# 13}{ }_h-\Gamma_{\# 11}{ }_{k, p}{ }^{\ell} \Gamma_j{ }^{\# 11}{ }_h+\Gamma_{\# 1}{ }_k{ }_k \Gamma_j{ }^{\# 1}{ }_{h, p} \\
+  %    & +\Gamma_{\# 1}{ }^{\# 3}{ }_k \Gamma_{\# 3}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 1}{ }_h-\Gamma_{\# 1}{ }^{\# 3}{ }_p \Gamma_{\# 3}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 1}{ }_h+\Gamma_{\# 1}{ }^{\ell}{ }_{k, p} \Gamma_j{ }^{\# 1}{ }_h-\Gamma_{\# 1}{ }_k{ }_k \Gamma_h{ }^{\# 4}{ }_p \Gamma_j{ }^{\# 1}{ }_{\# 4} \\
+  %    & +\Gamma_h{ }^{\# 25}{ }_k \Gamma_j{ }^{\ell}{ }^{25, p}+\Gamma_{\# 19}{ }_p{ }_p \Gamma_h{ }^{\# 23}{ }_k \Gamma_j{ }^{\# 19}{ }_{\# 23}-\Gamma_h{ }^{\# 2}{ }_p \Gamma_j{ }^{\ell}{ }_{\# 2, k}
+  %  \end{aligned}
+  %\end{equation*}
+  %
+  %This sum contains 72 terms, each of which is a product of 2 or 3 Christoffel symbols, for a total of 180 Christoffel symbols. However, upon simplifying this expression by consistently renaming the dummy indices, the simple result of zero is obtained, which verifies the identity.
+\end{example}
+
+\subsection{Mitigation Strategies}
+
+Although memory space, rather than time, is the main factor limiting the use of computer algebra, symbolic operations will obviously take considerably longer time than their numerical counterparts. It should be borne in mind that, in the case of symbolic manipulations, the execution time is strongly dependent, once again, on the degree of complexity and size of the input. As mentioned earlier, the production of large expressions during the computation in the form of inherent but especially as intermediate expression swell is, as stated in \citet{noor1979computerized} a serious problem in symbolic computation and may be its ultimate limitation. There, it was anticipated that future symbolic manipulation systems would automatically carry out remedial actions to alleviate this problem such as
+%
+\begin{itemize}
+  \setlength\itemsep{0em}
+  \item recognition of common sub-expressions in an expression and renaming them by a single parameter;
+  \item handling more expressions in a factored form rather than in an expanded form;
+  \item deferred expansion of a function or variable in an expression.
+\end{itemize}
+%
+On the other hand, it is interesting that, while \citet{korncoff1979symbolic} also recognizes this problem by stating that special problem formulation techniques will have to be adopted in light of symbolic manipulation. \citeauthor{korncoff1979symbolic} place the onus of its solution (or, at least, alleviation) on the user rather than the system, saying that as the use of symbolic processors increases, users will have to acquire the skills and insight required to formulate problems to best optimize the function of a particular processor. Up to now, the problem of expression swell has not yet been solved consistently. However, as we will see in the next section, some strategies have been introduced recently to mitigate the problem.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\section{Hierarchical Representation}
+\label{chap3:sec:lem}
+
+To mitigate the expression swell, one may use hierarchical representation techniques~\cite{carette2006linear, zhou2006hierarchical}.
+%
+\begin{definition}[Hierarchical Representation~\cite{zhou2007symbolic}]
+  A hierarchical representation over a generic domain $\mathbb{K}$ and a set of $n$ independent variables $\{x_1, \dots, x_n\}$ is an ordered list $[v_1, v_2, \dots, v_m]$ of $m$ symbols, together with an associated list $[d_1, d_2, \dots, d_m]$ of definitions of the symbols. For each $v_i$, with $i \geq 1$, the definition $d_i$ is of the form $d_i = f_i(\sigma_{i,1}, \sigma_{i,2}, \dots, \sigma_{i,k_i})$ where $f_i \in \mathbb{K}[\sigma_{i,1}, \sigma_{i,2}, \dots, \sigma_{i,k_i}]$, and each $\sigma_{i,j}$ is either a symbol in $[v_1, v_2, \dots, v_m]$ or an expression in the independent variables.
+\end{definition}
+%
+Hence, the main idea behind this hierarchical representation tool is to \emph{veil} complicated expressions from the user by using auxiliary variables called \emph{veil variables} or \emph{veilings} $[v_1, v_2, \dots, v_m]$, and to \emph{unveil} them by reapply their definitions, \ie{}, $v_1 = d_1$, $v_2 = d_2$, \dots, $v_m = d_m$ only when it is strictly necessary. In other words, the veil variables are used to represent the complicated expressions in a compact form, while the actual size of the expressions is hidden in the veil variables. Algorithms~\ref{chap3:alg:veil} describes the veiling procedure, which is the core of the hierarchical representation technique.
+
+\begin{breakablealgorithm}
+  \caption{Veil an expression.}
+  \label{chap3:alg:veil}
+  \begin{algorithmic}[1]
+    \State \textbf{Require:} An expression $e$, and the optional expression dependencies $\m{x}$
+    \Procedure{Veil}{$e$} \Comment{Veil an expression}
+    \State $c \gets \mathrm{Normalizer}(e)$ \Comment{Transform $e$ into factored normal form}
+    \If{$\mathrm{ExpressionCost}(e) > m$} \Comment{Check if $c$ complexity is above the threshold $m$}
+      \State \textbf{return} $c$ \Comment{Return the expression in factored normal form}
+    \EndIf
+    \State $i \gets \mathrm{IntegerContent}(e)$ \Comment{Retrieve the integer content without sign}
+    \State $s \gets \mathrm{Sign}(c)$ \Comment{Store the symbolic sign of $c$}
+    \If{$si = c$} \Comment{Check if the expression is a constant}
+      \State \textbf{return} $c$ \Comment{Return the expression in factored normal form}
+    \Else
+      \State $v \gets \mathrm{StoreVeil}(sc/i)$ \Comment{Store the veiled expression and return the veiling symbol}
+      \State \textbf{return} $siv(\m{x})$ \Comment{Return the veiled expression with its dependencies}
+    \EndIf
+    \EndProcedure
+  \end{algorithmic}
+\end{breakablealgorithm}
+
+Despite the simplicity of the idea, the implementation of the hierarchical representation is not straightforward. The main difficulty is to choose the right moment to veil and unveil the veil variables. Indeed, the user must decide when to do it by experience, and this decision has neither theoretical background nor specific rules to follow. As a rule of thumb, the expression veiling should occur only when they become just too large for further calculations. As a result, a metric of expression complexity and size must be introduced to choose the right moment to veil and unveil the veil variables.
+
+\subsection{Expression Complexity Metric}
+
+Choosing the complexity and size boundaries between intermediate expressions appropriately is of utmost importance in order not to produce too much expression swelling, but also not to have too many veiling levels. Therefore, a metric for measuring expression proneness to swell must be introduced first. It is important to note that the concepts of expression complexity and size are not synonymous, yet, they are both closely related to the expression swell phenomenon. For these reasons, more than one measure to quantify the complexity and size of an expression could be given.
+
+There exist two main metrics to measure the complexity and size of an expression, each with its own advantages and disadvantages.
+%
+\begin{itemize}
+  \setlength\itemsep{0em}
+  \item The \emph{length} of an expression, in terms of the number of characters used to internally represent the expression. A possible measure that exploits the length of an expression is the following
+  %
+  \begin{equation*}
+    N_\beta = \begin{cases}
+      \lfloor\log_{\beta}(|n|)\rfloor + 1 & n > 0 \\
+      0 & n = 0
+    \end{cases},
+  \end{equation*}
+  %
+  where $n \in \mathbb{Z}$ is a nonnegative integer representing the expression length, and $\beta \in \mathbb{N}$ is the base in which the length is measured.
+  Notably used in~\cite{carette2006linear, zhou2006hierarchical}, this metric is calculated through the \code{length} \Maple{} function. This metric is very helpful in understanding the amount of memory space required to store expressions, as well as the \ac{CPU} effort required to write, process, and read them. However, it does not provide any information about the operands and operations involved in the expression.
+  \item The \emph{computational cost} of an expression, calculated through the \code{cost} function of \code{codegen} package. This metric is somehow complementary to the previous one, and it provides insights into the computational cost of the expressions. Conversely, it does not provide any information about the amount of memory space required to store an expression.
+\end{itemize}
+%
+It is evident that it is not possible to use both metrics at the same time, as they are neither directly comparable nor convertible to each other. Hence, the choice of the metric to use is strictly dependent on the specific problem to solve.
+
+Previous works~\cite{carette2006linear, zhou2006hierarchical} on symbolic linear algebra have shown that the hierarchical representation of expressions is applied to matrix factorization tasks, and it has been proven to be effective in mitigating the expression swell problem. Nonetheless, the \LULEM{} package~\cite{carette2006linear}, which implements large expression management strategies in \ac{LU} decomposition, significantly outperforms the \Maple{}'s built-in matrix factorization routines. Instead, throughout this thesis we use the computational cost. As demonstrated in the following example, the latter metric is insensitive to the number of characters used to represent the expression itself and guarantees better control of the final expression size, regardless of the variables' names. Nonetheless, the computational cost also provides us with a better prediction of both the computational effort and growth of the expression size during a given symbolic operation.
+
+\begin{example}[Expression size and complexity calculation]
+  Let us consider two algebraically equivalent expressions stored in \code{expr\_1} and \code{expr\_2} variables.
+  %
+  \begin{mapleinline}
+> expr_1 := (x^2+y^2)^2/g(x)-z/f(x):
+> expr_2 := (x_tmp^2+y_tmp^2)^2/g_tmp(x)-z_tmp/f_tmp(x):
+  \end{mapleinline}
+  %
+  If we respectively calculate the expression complexity calculation through the \code{length} and \code{codegen:-cost} functions we obtain the following results.
+  %
+  \begin{mapleinline}
+> map(length, <expr_1, expr_2>);
+  \end{mapleinline}
+  \begin{equation*}
+    \begin{bmatrix}
+      53 \\
+      73
+    \end{bmatrix}
+  \end{equation*}
+  \begin{mapleinline}
+> map(codegen:-cost, <expr_1, expr_2>);
+  \end{mapleinline}
+  \begin{equation*}
+    \begin{bmatrix}
+      3\mathrm{multiplications} + 2\mathrm{additions} + 2\mathrm{divisions} + 2\mathrm{functions} \\
+      3\mathrm{multiplications} + 2\mathrm{additions} + 2\mathrm{divisions} + 2\mathrm{functions}
+    \end{bmatrix}
+  \end{equation*}
+  %
+  As it can be seen, the \code{length} function is sensitive to the characters that \Maple{} internally uses to represent the expression. Conversely, the \code{codegen}'s \code{cost} calculates the actual computational complexity of the two expressions and returns the same result.
+\end{example}
+
+\subsection{Large Expression Management}
+
+There exist specific modules to perform large expression management tasks and help the user handle hierarchical representations~\cite{carette2006linear,zhou2007symbolic}. The \Maple{} module \code{LargeExpressions} already does this job. However, from the authors' perspective, it has some minor limitations given by the chosen user interface rather than the underlying idea or the adopted programming technique. For this reason, the authors have reinterpreted it to a new object-oriented \LEM{} package~\cite{lem}. The new version does not differ much from its original version, but it allows more effective control and straightforward use of the veiling variables. The object-oriented feature also allows for the creation of multiple instances of \LEM{} objects, giving the ability to sharply separate veiling variables that could lead to conflicts if improperly used. Here an example is given to briefly illustrate the capabilities of the large expression management technique and, particularly, of the \LEM{} module.
+
+\begin{example}[Large expression management with \LEM{}~\cite{lem}]
+  Let us consider a random polynomial \code{p} generated by the \code{randpoly} function.
+  %
+  \begin{mapleinline}
+> p := randpoly([x,y,z], degree=3, dense):
+  \end{mapleinline}
+  %
+  Then, we create a \LEM{} object instance and set the veiling label to \code{X}.
+  %
+  \begin{mapleinline}
+> LEM_obj := Object(LEM):
+> LEM_obj:-SetVeilingLabel('X'):
+  \end{mapleinline}
+  %
+  The expressions are veiled to get a more compact hierarchical representation.
+  %
+  \begin{mapleinline}
+> p_X := collect(p, x, i -> LEM_obj:-Veil(i));
+  \end{mapleinline}
+  \begin{equation*}
+    p\_X := -7x^4 + (2,y - 55z - 94)x^3 + X[1]x^2 - X[2]x
+  \end{equation*}
+  %
+  The veiling variables are stored in the \LEM{} object and can be used to unveil the expression whenever necessary.
+  %
+  \begin{mapleinline}
+> <LEM_obj:-VeilList()>;
+  \end{mapleinline}
+  \begin{equation*}
+    \begin{bmatrix}
+      X[1] = 87y^2 - 56yz - 62z^2 + 97z - 73 \\[0.2em]
+      X[2] = 4y^3 + 83y^2z - 62yz^2 + 44z^3 + 10y^2 + 82yz - 71z^2 - 80y + 17z + 75
+    \end{bmatrix}
+  \end{equation*}
+  %
+  In addition to the few functions just presented, \LEM{} allows to customize the strategy and parameters used to control the veiling process. For further information on the \LEM{} package refer to the documentation in~\cite{lem}.
+\end{example}
+
+\subsection{Signature of a Hierarchical Representation}
+\label{chap3:sec:signature}
+
+In order to \emph{zero-test} for an expression in hierarchical representations, we use the probabilistic approach of \emph{signatures}~\cite{geddes1992algorithms}, which relies on the \emph{DeMillo-Lipton-Schwarz-Zippel lemma}~\cite{demillo1978probabilistic, schwartz1980fast, zippel1979probabilistic}. Signature functions verify the presence of equivalent expressions within thousands of sub-expressions through hashing techniques~\cite{char1984design, gonnet1984determining, gonnet1986results, monagan1994signature}. In \Maple{}, each expression is stored in the simplification table using its signature as a key. The signature of an expression is itself a hashing function, with one very important feature: equivalent expressions have identical signatures. In other words, the signature of an expression is a unique identifier that is computed from the expression itself.
+
+On the contrary of~\cite{carette2006linear, zhou2007symbolic}, we do not implement the signature function as a separate module. Instead, we employ the \Maple{}'s \code{signature} function to exploit the latest improvements in the symbolic computation engine. Given for granted that the signature function is a hashing function, it is possible to compute the define the signature of a hierarchical representation as follows.
+
+\begin{definition}[Signature of a Hierarchical Representation~\cite{zhou2007symbolic}]
+  Let $H$ denote a hierarchical representation with $n$ independent variables $\{x_1, \dots, x_n\}$, expressed as lists of symbols $[v_1, v_2, \dots, v_m]$ and definitions $[d_1, d_2, \dots, d_m]$, where $v_i = f_i(\sigma_{i,1}, \sigma_{i,2}, \dots, \sigma_{i,k_i})$ and $\sigma_{i,j}$ represents an expression in the independent or hierarchical variables. Take $p$ as a prime number. The signature of $v_i$ is recursively defined as follows.
+  %
+  \begin{itemize}
+    \setlength\itemsep{0.0em}
+    \item We define $s(v_i) = f_i(\delta_{i,j}, \dots, \delta_{i,k_i}) ~ \mathrm{mod} ~ p$.
+    \item If $\sigma_{i,j}$ is an expression in the independent variables only, then $\delta_{i,j} = s(\sigma_{i,j}, p)$.
+    \item If $\sigma_{i,j}$ is an expression in $[v_1, v_2, \dots, v_i-1]$, then we necessarily have $i > 1$. Let $h_{i,j} \in [1, \dots, i-1]$ such that $\sigma_{i,j} = v_{h_{i,j}}$, then $\delta_{i,j} = s(\sigma_{i,j}, p) = s(v_{h_{i,j}}, p)$, which is known by induction assumption.
+  \end{itemize}
+  %
+  Thereby, the signature of $H$ is $s(H) = [s(v_1), s(v_2), \dots, s(v_m)]$.
+\end{definition}
+
+The signature of the expression is computed before veiling an expression in hierarchical representation. This value then becomes the signature of the veiling symbol. When that symbol itself appears in an expression to be veiled, the signature of the symbol is used in the calculation of the new signature. In particular, it is not necessary to unveil any symbol in order to compute its signature. The main advantages of using such a technique are that it is fast, flexible, and can be adapted to different applications. Moreover, hierarchical representations can often lead to a more compact and elegant output, and the code can solve a wider class of problems and often ``reduces'' intermediate expression swell.
+
+\subsubsection{Extending Signatures Calculation}
+
+Calculating the signature hashing function of any expression in polynomial time is not always possible. In particular, trigonometric functions can present an obstacle to the signature computation. However, it is possible to use ad hoc \emph{coordinate changes} to transform trigonometric expressions into polynomials of which the signature computation can be computed with standard techniques. Nonetheless, the transformation into polynomials may facilitate the expression simplification, hence leading to a more compact and less swelling-prone output. In particular, for many multi-body applications, the only independent variable is time. Depending on the modeling choices, such \ac{DAE} systems may be made of trigonometric polynomials of the angles between different components. As shown in~\cite{zhou2005implicit}, one common method to convert such systems to rational form is the transformation
+%
+\begin{equation}
+  \label{chap3:eq:zhou}
+  \cos(\theta) = x, \quad
+  \sin(\theta) = y,
+  \qquad \text{where} \qquad
+  x^2 + y^2 = 1.
+\end{equation}
+%
+which has the disadvantage that an additional constraint is introduced. Another useful change of coordinates is the Weierstra{\ss} transformation~\cite{cox1994ideals}
+%
+\begin{equation}
+  \label{chap3:eq:weierstrass}
+  \cos(\theta) = \dfrac{1 - u^2}{1 + u^2}, \quad
+  \sin(\theta) = \dfrac{2u}{1 + u^2},
+  \qquad \text{where} \qquad
+  u = \tan\left(\dfrac{\theta}{2}\right).
+\end{equation}
+%
+If one solves for $u$, then the usual problem regarding the choice of an appropriate branch for the inverse arises. Still, this transformation has the advantage that the number of variables remains the same, with no additional introduced constraint. Please notice that the signature computation used in this work is implemented within the \SIG{} sub-package of \LEM{}~\cite{lem}. The \SIG{} sub-package is an improved object-oriented version of the signature computation package present in \LULEM{}~\cite{carette2006linear}.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\section{Symbolic Matrix Factorization}
+\label{chap3:sec:last}
+
+As previously mentioned, matrix factorization is a widely employed technique for addressing linear systems. There are several types of decompositions, each with distinct properties and characteristics. In the context of purely numerical matrices, the practice aligns well with the theoretical foundations of the algorithm. However, when dealing with matrices consisting of either symbolic or mixed symbolic-numeric entries, the situation becomes more intricate~\cite{zhou2007symbolic}. In exact symbolic linear algebra scenarios, the cost of each operation during factorization can vary due to uncontrolled expression swell~\cite{zhou2006hierarchical}. Furthermore, the presence of symbolic values hinders the guarantee of numerical stability. Consequently, a key objective is to derive an output format that retains the symbolic structure of the input matrix and ensures numerical stability. Nonetheless, in symbolic linear algebra, much effort has been devoted to controlling the growth of expression size by developing. Very little work has been done on the guarantee of numerical stability. The main reason is that the techniques that are helpful for the numeric case are often unstable or impractical for the purely symbolic case, ending in the pivoting on small quantities and resulting instability.
+
+In this section, we will focus on the full-pivoting \ac{LU} and \ac{FFLU} decompositions, which are the fundamental techniques that will be used in the next chapters, both for the large linear system solution and \acp{DAE} index reduction. It is important to note that, the \ac{LU} and \ac{FFLU} are preferred in symbolic linear algebra over the QR and \ac{GJ}, as \ac{LU} decomposition involves simpler operations, thereby mitigating the issue of expression swell. Additionally, as we will see, employing the \ac{LU} factorization with a minimum degree pivoting strategy proves superior in reducing fill-in and reducing the subsequent numeric and symbolic computational cost.
+
+\subsection[The Full-Pivoting LU Factorization]{The Full-Pivoting Lower-Upper Factorization}
+
+The full-pivoting \ac{LU} and \ac{FFLU} decompositions are widely used algorithms for solving linear systems with minimal computational effort. They are defined as follows.
+%
+\begin{definition}[Full-Pivoting \ac{LU} Decomposition]
+  Given a matrix $\m{A} \in \mathbb{R}^{m \times n}$, with $m \geq n$, the full-pivoting \ac{LU} decomposition is defined as the process of decomposing $\m{A}$ into the product of
+  %
+  \begin{itemize}
+    \setlength{\itemsep}{0.0em}
+    \item a $\m{L} \in \mathbb{R}^{m \times m}$ lower-triangular matrix with all diagonal entries equal to $1$;
+    \item a $\m{U} \in \mathbb{R}^{m \times n}$ upper-triangular matrix;
+    \item a $\m{P} \in \mathbb{R}^{m \times m}$ and a $\m{Q} \in \mathbb{R}^{n \times n}$ matrices for rows and columns permutation, respectively;
+  \end{itemize}
+  %
+  such that $\m{P}\m{A}\m{Q} = \m{L}\m{U}$.
+\end{definition}
+%
+\begin{definition}[Full-Pivoting \ac{FFLU} Decomposition]
+  Given a matrix $\m{A} \in \mathbb{R}^{m \times n}$, with $m \geq n$, the full-pivoting \ac{FFLU} decomposition is defined as the process of decomposing $\m{A}$ into the product of
+  %
+  \begin{itemize}
+    \setlength{\itemsep}{0.0em}
+    \item a lower-triangular matrix $\m{L} \in \mathbb{R}^{m \times m}$ with all diagonal entries equal to $1$;
+    \item a diagonal matrix $\m{D} \in \mathbb{R}^{m \times n}$;
+    \item a upper-triangular matrix $\m{U} \in \mathbb{R}^{m \times n}$;
+    \item a $\m{P} \in \mathbb{R}^{m \times m}$ and a $\m{Q} \in \mathbb{R}^{n \times n}$ matrices for rows and columns permutation, respectively;
+  \end{itemize}
+  %
+  such that $\m{P}\m{D}\m{A}\m{Q} = \m{L}\m{U}$.
+\end{definition}
+%
+Pivoting for \ac{LU} factorization is the process of systematically selecting pivots for Gaussian elimination during the \ac{LU} factorization of a matrix. The \ac{LU} factorization is closely related to Gaussian elimination, which is unstable in its pure form. To guarantee the elimination process goes to completion, we must ensure that there is a non-zero pivot at every step of the elimination process. This is the reason we need to pivot when computing \ac{LU} factorization. But we can do more with pivoting than just making sure Gaussian elimination is completed. To ensure the numerical stability of the \ac{LU}, we need to consider that the domain of the entries of the matrix $\m{A}$ is not only the real number set but also the more generic symbolic domain. Hence, we need to consider the symbolic stability of the \ac{LU} factorization from two different perspectives: the numerical one and the symbolic one.
+
+\subsubsection{The LU Factorization from a Numerical Computation Point of View}
+
+From a numerical perspective, we can reduce round-off errors during computation and improve the algorithm \emph{backward stability} by implementing the right pivoting strategy. Depending on the matrix $\m{A}$, some \ac{LU} decompositions may become numerically unstable if either numerically small pivots or symbolically zero pivots are used. Relatively small pivots cause instability because they operate very similar to zeros during Gaussian elimination. Through the process of pivoting, we can greatly reduce this instability by ensuring that we use the largest available entry as our pivot elements. This prevents large factors from appearing in the computed $\m{L}$ and $\m{U}$, which reduces round-off errors during computation. The following example illustrates the importance of pivoting in the \ac{LU} factorization.
+
+\begin{example}[Backward stability of \ac{LU} factorization]
+  When a calculation is undefined because of a division by zero, the same calculation will suffer numerical difficulties when there is a division by a non-zero number that is relatively small.
+  %
+  \begin{equation*}
+    \m{A} = \begin{bmatrix}
+      10^{-20} & 1 \\
+      1 & 2
+    \end{bmatrix}
+  \end{equation*}
+  %
+  When computing the factors L and U, the process does not fail in this case because there is no division by zero.
+  %
+  \begin{equation*}
+    \m{L} = \begin{bmatrix}
+      1 & 0 \\
+      10^{20} & 1
+    \end{bmatrix}, \quad \m{U} = \begin{bmatrix}
+      10^{-20} & 1 \\
+      0 & 2 - 10^{20}
+    \end{bmatrix}.
+  \end{equation*}
+  %
+  When these computations are performed in floating point arithmetic, the number $2 - 10^{-20}$ is not represented exactly but will be rounded to the nearest floating point number which we will say is $-10^{-20}$. This means that our matrices are now floating point matrices $\m{L}^\prime$ and $\m{U}^\prime$ where
+  %
+  %
+  \begin{equation*}
+    \m{L}^\prime = \begin{bmatrix}
+      1 & 0 \\
+      10^{20} & 1
+    \end{bmatrix}, \quad \m{U}^\prime = \begin{bmatrix}
+      10^{-20} & 1 \\
+      0 & -10^{20}
+    \end{bmatrix}.
+  \end{equation*}
+  %
+  The small change we made in $\m{U}$ to get $\m{U}^\prime$ shows its significance when we compute $\m{L}^\prime\m{U}^\prime$
+  %
+  \begin{equation*}
+    \m{L}^\prime\m{U}^\prime = \begin{bmatrix}
+      10^{-20} & 1 \\
+      1 & 0
+    \end{bmatrix} \neq \m{A},
+  \end{equation*}
+  %
+  thus when trying to solve a system such as $\m{A}\m{x} = \m{b}$ using the \ac{LU} factorization as the factors $\m{L}^\prime\m{U}^\prime$ suffer from a large error. This is a clear example of how the \ac{LU} factorization can be numerically unstable when small pivots are used.
+\end{example}
+
+After the \ac{LU} factorization of a sparse matrix $\m{A}$, it is common to observe that the joint non-zeroes pattern of $\m{L}$ and $\m{U}$ exhibit either equal or lower sparsity compared to the original non-zero pattern of $\m{A}$. The additional elements in $\m{L}$ and $\m{U}$ are known as the \emph{fill-in}. This phenomenon diminishes performance as the number of non-zero elements in the $\m{L}$ and $\m{U}$ factors is directly related to the number of operations required to solve a linear system using the \ac{LU} factorization. In other words, the more non-zero elements in the $\m{L}$ and $\m{U}$ factors, the more operations are required to solve a linear system. This is especially important when dealing with sparse matrices, where the number of non-zero elements in the $\m{L}$ and $\m{U}$ factors can be significantly reduced by using the right pivoting strategy. Indeed, specific reordering algorithms can be embedded in the pivoting strategy to minimize the fill-in of the factored matrix. These algorithms mainly include \emph{nested dissection}~\cite{george1973nested, lipton1979generalized} and \emph{minimum degree}~\cite{markowitz1957elimination, rose1970symmetric} techniques. The following example illustrates the importance of pivoting in reducing fill-in during the \ac{LU} factorization.
+
+\begin{example}[Fill-in reduction in \ac{LU} factorization]
+  Consider the \code{west0479} sparse unsymmetric matrix $\m{A} \in \mathbb{R}^{479 \times 479}$, having non-zero 1910 entries~\cite{matlab}. The sparsity pattern of the original matrix $\m{A}$ and the $\m{L}$ and $\m{U}$ factors with and without pivoting, using the minimum degree and nested dissection pivoting strategies, are shown in Figure~\ref{chap3:fig:sparsity_patterns}. As illustrated, the \ac{LU} factorization of $\m{A}$ with pivoting has significantly less fill-in than the \ac{LU} factorization of $\m{A}$ without pivoting, thus highlighting the relevance of pivoting in reducing fill-in during the \ac{LU} factorization.
+  %
+  \begin{figure}[!htb] % FIXME should be[H]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+      \centering
+      \includetikz{figures/chapter_2/sparsity_original_matrix.tex}
+      \caption{Original sparsity pattern of matrix $\m{A}$ (1887 non-zero elements).}
+    \end{subfigure}%
+    \hfill%
+    \begin{subfigure}[t]{0.45\textwidth}
+      \centering
+      \includetikz{figures/chapter_2/sparsity_lower_upper.tex}
+      \caption{Sparsity pattern of $\m{L}$ and $\m{U}$ factors using standard pivoting (15918 non-zero elements).}
+    \end{subfigure} \\[1.0em]
+    \begin{subfigure}[t]{0.45\textwidth}
+      \centering
+      \includetikz{figures/chapter_2/sparsity_minimum_degree.tex}
+      \caption{Sparsity pattern of $\m{L}$ and $\m{U}$ factors using minimum degree pivoting (13316 non-zero elements).}
+    \end{subfigure}%
+    \hfill%
+    \begin{subfigure}[t]{0.45\textwidth}
+      \centering
+      \includetikz{figures/chapter_2/sparsity_nested_dissection.tex}
+      \caption{Sparsity pattern of $\m{L}$ and $\m{U}$ factors using nested dissection pivoting (12216 non-zero elements).}
+    \end{subfigure}
+    \caption{Sparsity patterns of the original \code{west0479} matrix $\m{A} \in \mathbb{R}^{479 \times 479}$ and the $\m{L}$ and $\m{U}$ factors with and without pivoting, using the minimum degree and nested dissection pivoting strategies.}
+    \label{chap3:fig:sparsity_patterns}
+  \end{figure}
+\end{example}
+
+\subsubsection{The LU Factorization from a Symbolic Computation Standpoint}
+
+From a symbolic computation standpoint, \ie{}, when the entries of the matrix $\m{A}$ are not only real numbers but also symbolic expressions, the above considerations are not sufficient anymore. Indeed, in exact linear algebra, the cost of each operation during factorization can differ either for the fact that the expression size is not known a priori or for the uncontrolled expression swell~\cite{zhou2006hierarchical}. Moreover, numerical stability is not guaranteed due to the presence of undefined values. Therefore, an important goal is to obtain an output format that both maintains the symbolic structure of the input matrix and is also stable when numerically evaluated.
+
+Designing a pivoting strategy that is both numerically stable and symbolically viable in terms of expression growth is a challenging task. In this context, the main issue is that the choice of the pivot is not only related to the degrees of the matrix entries but also to the actual complexity of the expressions. Starting from the fill-in reduction, the minimum degree algorithm is preferred due to its ease of implementation. Conversely, the nested dissection is not yet considered as it involves working on the system's graph to identify graph separators, which is no easy task in the symbolic case. Secondly, the expression swell must be addressed both in terms of preventing the growth of the expression size and in terms of ensuring that the output symbolic code generated by the factorization is also numerically stable. The prevention of expression swell is achieved by the utilization of hierarchical representations with the aid of the \LEM{} package, which employs the computational cost metric to control the expression size. The numerical stability of the symbolic code is ensured by choosing pivots that are both good in terms of their degrees and their actual computation complexity.
+
+It is important to note that the expression may inevitably grow during the factorization process, thereby hindering the simplification of the expressions. This issue is mitigated by the \emph{zero-testing} capabilities of the previously presented signature functions, which are used to verify the presence of null expressions without the need for simplification. The zero-testing is a crucial detail in symbolic pivoting as it strongly improves numerical stability allowing for the detection of null expressions in a very efficient way. Other than the zero-testing, the \emph{Hybrid symbolic-numerical} or \emph{static pivoting approach} is also employed to validate the stability of symbolic code through random numerical evaluations. This approach may be computationally less efficient compared to the former method, but it yields satisfactory results. In other words, the ``choice of pivots is numerically good at most numerical specializations'' as emphasized in~\cite{giesbrecht2014symbolic}. However, signature-based zero-testing is preferred as it is a proven and effective technique in previous successful symbolic linear algebra works~\cite{carette2006linear, zhou2007symbolic}. It is worth noting that, to the authors' knowledge, there is still no well-established rule for determining whether a \emph{generic} expression is ``likely'' null. For this reason, this topic is still an open question.
+
+\begin{breakablealgorithm}
+  \caption{Symbolic \ac{LU} Factorization.}
+  \label{chap3:alg:lu}
+  \begin{algorithmic}[1]
+    \State \textbf{Require:} A $m \times n$ matrix $\m{A}$.
+    \Procedure{LU}{$\m{A}, \, k$} \Comment{Symbolic full-pivoting \ac{LU} procedure}
+    \State $\m{M} \gets \m{A}$ \Comment{Initialize the matrix $\m{M}$}
+    \State $rnk \gets \min(m, \, n)$ \Comment{Initialize the rank of $\m{M}$}
+    \For{$k$ \textbf{from} $1$ \textbf{to} $rnk$} \Comment{Perform Gaussian elimination}
+      \State $p, \, q, \, l \gets \mathrm{SymbolicPivoting}(\m{M}, \, k)$ \Comment{Find the best pivot for the $k$-th step}
+      \If{$p = 0$} \Comment{Check for null pivot}
+        \State $rnk \gets k-1$ \Comment{The rank of $\m{M}$ is $k-1$}
+        \State \textbf{break} \Comment{The matrix is singular}
+      \EndIf
+      \State $\m{r}_k, \, \m{c}_k \gets \, q, \, l$ \Comment{Store the pivot row and column indices}
+      \State $\m{M} \gets \mathrm{SwapRows}(\m{M}, \, k, \, q)$ \Comment{Swap the $k$-th and $q$-th rows}
+      \State $\m{M} \gets \mathrm{SwapColumns}(\m{M}, \, k, \, l)$ \Comment{Swap the $k$-th and $l$-th columns}
+      \For{$i$ \textbf{from} $k+1$ \textbf{to} $m$} \Comment{Compute the $k$-th column of $\m{L}$}
+        \State $M_{kk} \gets \mathrm{Veil}(M_{kk})$ \Comment{Veil the $k$-th pivot}
+        \State $M_{ik} \gets \mathrm{Veil}(\mathrm{Normalizer}(M_{ik}/M_{kk}))$ \Comment{Normalize the $k$-th pivot}
+        \For{$j$ \textbf{from} $k+1$ \textbf{to} $n$} \Comment{Compute the $k$-th row of $\m{U}$}
+          \State $M_{ij} \gets \mathrm{Veil}(\mathrm{Normalizer}(M_{ij} - M_{ik}M_{kj}))$ \Comment{Finalize the Schur complement}
+        \EndFor
+      \EndFor
+    \EndFor
+    \State $\m{P}, \, \m{Q} \gets \mathrm{PermutationMatrices}(\m{r}, \, \m{c})$ \Comment{Compute the permutation matrices}
+    \State $\m{L} \gets \mathrm{LowerTriangular}(\m{M})$ \Comment{Extract the lower-triangular part of $\m{M}$}
+    \State $\m{U} \gets \mathrm{UpperTriangular}(\m{M})$ \Comment{Extract the upper-triangular part of $\m{M}$}
+    \State \textbf{return} $\m{L}, \, \m{U}, \, \m{P}, \, \m{Q}, \, \m{r}, \, \m{c}, \, rnk$ \Comment{Return the factors and the rank of $\m{A}$}
+    \EndProcedure
+  \end{algorithmic}
+\end{breakablealgorithm}
+
+\begin{breakablealgorithm}
+  \caption{Solve a square linear system $\m{A}\m{x} = \m{b}$ using the \ac{LU} factorization.}
+  \label{chap3:alg:solve_lu}
+  \begin{algorithmic}[1]
+    \State \textbf{Require:} The \ac{LU} factors $\m{L}$, $\m{U}$, $\m{P}$, $\m{Q}$, and a vector $\m{b}$.
+    \Procedure{SolveLU}{$\m{L}, \, \m{U}, \, \m{P}, \, \m{Q}, \, \m{b}$} \Comment{Solve the linear system $\m{A}\m{x} = \m{b}$}
+    \State $\m{y} \gets \m{P}\m{b}$ \Comment{Apply the permutation matrix $\m{P}$ to the vector $\m{b}$}
+    \State $m, \, n \gets \mathrm{Size}(\m{L})$ \Comment{Get the size of $\m{L}$}
+    \For{$i$ \textbf{from} $2$ \textbf{to} $m$} \Comment{Solve $\m{L}\m{y} = \m{P}\m{b}$}
+      \State $y_i \gets \mathrm{Veil}\left(y_i - \displaystyle\sum_{j=1}^{i-1} L_{ij}y_j \right)$ \Comment{Perform forward substitution}
+    \EndFor
+    \State $x_n \gets \mathrm{Veil}(y_n/U_{nn})$ \Comment{Perform the first backward substitution}
+    \For{$i$ \textbf{from} $n-1$ \textbf{to} $1$} \Comment{Solve $\m{U}\m{x} = \m{y}$}
+      \State $x_i \gets \mathrm{Veil}\left(y_i - {\displaystyle\sum_{j=i+1}^{n}} U_{ij}x_j\right)$ \Comment{Perform backward substitution}
+      \State $x_i \gets \mathrm{Veil}(x_i/U_{ii})$
+    \EndFor
+    \State $\m{x} \gets \m{Q}^\top\m{x}$ \Comment{Apply the permutation matrix $\m{Q}^\top$ to the solution $\m{x}$}
+    \EndProcedure
+  \end{algorithmic}
+\end{breakablealgorithm}
+
+\begin{breakablealgorithm}
+  \caption{Symbolic \ac{FFLU} Factorization.}
+  \label{chap3:alg:fflu}
+  \begin{algorithmic}[1]
+    \State \textbf{Require:} A $m \times n$ matrix $\m{A}$.
+    \Procedure{FFLU}{$\m{A}, \, k$} \Comment{Symbolic full-pivoting \ac{FFLU} procedure}
+    \State $\m{M} \gets \m{A}$ \Comment{Initialize the matrix $\m{M}$}
+    \State $rnk \gets \min(m, \, n)$ \Comment{Initialize the rank of $\m{M}$}
+    \For{$k$ \textbf{from} $1$ \textbf{to} $rnk$} \Comment{Perform Gaussian elimination}
+      \State $p, \, q, \, l \gets \mathrm{SymbolicPivoting}(\m{M}, \, k)$ \Comment{Find the best pivot for the $k$-th step}
+      \If{$p = 0$} \Comment{Check for null pivot}
+        \State $rnk \gets k-1$ \Comment{The rank of $\m{M}$ is $k-1$}
+        \State \textbf{break} \Comment{The matrix is singular}
+      \EndIf
+      \State $\m{r}_k, \, \m{c}_k \gets \, q, \, l$ \Comment{Store the pivot row and column indices}
+      \State $\m{M} \gets \mathrm{SwapRows}(\m{M}, \, k, \, q)$ \Comment{Swap the $k$-th and $q$-th rows}
+      \State $\m{M} \gets \mathrm{SwapColumns}(\m{M}, \, k, \, l)$ \Comment{Swap the $k$-th and $l$-th columns}
+      \State $\m{D}_{kk} \gets M_{kk}$ \Comment{Veil the $k$-th pivot}
+      \For{$i$ \textbf{from} $k+1$ \textbf{to} $m$} \Comment{Compute the $k$-th column of $\m{L}$}
+        \For{$j$ \textbf{from} $k+1$ \textbf{to} $n$} \Comment{Compute the $k$-th row of $\m{U}$}
+          \State $M_{ij} \gets M_{kk}M_{ij} - M_{ik}M_{kj}$ \Comment{Pertorm the ``division-free'' elimination}
+          \State $M_{ij} \gets \mathrm{Veil}(\mathrm{Simplify}(M_{ij}))$ \Comment{Veil the simplified expression}
+        \EndFor
+      \EndFor
+    \EndFor
+    \State $\m{P}, \, \m{Q} \gets \mathrm{PermutationMatrices}(\m{r}, \, \m{c})$ \Comment{Compute the permutation matrices}
+    \State $\m{L} \gets \mathrm{LowerTriangular}(\m{M})$ \Comment{Extract the lower-triangular part of $\m{M}$}
+    \State $\m{U} \gets \mathrm{UpperTriangular}(\m{M})$ \Comment{Extract the upper-triangular part of $\m{M}$}
+    \State \textbf{return} $\m{L}, \, \m{U}, \, \m{D}, \, \m{P}, \, \m{Q}, \, \m{r}, \, \m{c}, \, rnk$ \Comment{Return the factors and the rank of $\m{A}$}
+    \EndProcedure
+  \end{algorithmic}
+\end{breakablealgorithm}
+
+\begin{breakablealgorithm}
+  \caption{Solve a square linear system $\m{A}\m{x} = \m{b}$ using the \ac{FFLU} factorization.}
+  \label{chap3:alg:solve_fflu}
+  \begin{algorithmic}[1]
+    \State \textbf{Require:} The \ac{FFLU} factors $\m{L}$, $\m{U}$, $\m{D}$, $\m{P}$, $\m{Q}$, and a vector $\m{b}$.
+    \Procedure{SolveFFLU}{$\m{L}, \, \m{U}, \, \m{D}, \, \m{P}, \, \m{Q}, \, \m{b}$} \Comment{Solve the linear system $\m{A}\m{x} = \m{b}$}
+    \State $\m{y} \gets \m{P}\m{b}$ \Comment{Apply the permutation matrix $\m{P}$ to the vector $\m{b}$}
+    \State $m, \, n \gets \mathrm{Size}(\m{L})$ \Comment{Get the size of $\m{L}$}
+    \For{$i$ \textbf{from} $1$ \textbf{to} $m-1$} \Comment{Solve $\m{L}\m{y} = \m{P}\m{b}$}
+      \State $y_i \gets \mathrm{Veil}\left(D_{ii}y_{i} - {\displaystyle\sum_{j=i+1}^{m}} L_{ij}y_j\right)$ \Comment{Perform forward substitution}
+    \EndFor
+    \State $x_n \gets \mathrm{Veil}(y_n/U_{nn})$ \Comment{Perform the first backward substitution}
+    \For{$i$ \textbf{from} $n-1$ \textbf{to} $1$} \Comment{Solve $\m{U}\m{x} = \m{y}$}
+      \State $x_i \gets \mathrm{Veil}\left(y_i - {\displaystyle\sum_{j=i+1}^{n}} U_{ij}x_j\right)$ \Comment{Perform backward substitution}
+      \State $x_i \gets \mathrm{Veil}(x_i/U_{ii})$
+    \EndFor
+    \State $\m{x} \gets \m{Q}^\top\m{x}$ \Comment{Apply the permutation matrix $\m{Q}^\top$ to the solution $\m{x}$}
+    \EndProcedure
+  \end{algorithmic}
+\end{breakablealgorithm}
+
+\begin{breakablealgorithm}
+  \caption{Compute permutation matrices $\m{P}$ and $\m{Q}$.}
+  \label{chap3:alg:permutation_matrices}
+  \begin{algorithmic}[1]
+    \State \textbf{Require:} The pivot row and column indices $\m{r}$ and $\m{c}$.
+    \Procedure{PermutationMatrices}{$\m{r}, \, \m{c}$} \Comment{Compute the permutation matrices}
+    \State $m, \, n \gets \mathrm{Size}(\m{r}), \, \mathrm{Size}(\m{c})$ \Comment{Retrieve the size of the permutation matrices}
+    \State $\m{P}, \, \m{Q} \gets \mathrm{Identity}(m), \, \mathrm{Identity}(n)$ \Comment{Initialize the permutation matrices}
+    \For{$i$ \textbf{from} $1$ \textbf{to} $m$} \Comment{Build the rows permutation matrix}
+      \State $\m{P} \gets \mathrm{SwapRows}(\m{P}, \, i, \, r_i)$ \Comment{Swap the $i$-th and $r_i$-th rows}
+    \EndFor
+    \For{$i$ \textbf{from} $1$ \textbf{to} $n$} \Comment{Build the columns permutation matrix}
+      \State $\m{Q} \gets \mathrm{SwapColumns}(\m{Q}, \, i, \, c_i)$ \Comment{Swap the $i$-th and $c_i$-th columns}
+    \EndFor
+    \State \textbf{return} $\m{P}, \, \m{Q}$ \Comment{Return permutation matrices}
+    \EndProcedure
+  \end{algorithmic}
+\end{breakablealgorithm}
+
+\subsection{An Improved Symbolic Pivoting Strategy}
+
+We have shown that a crucial detail of both \ac{LU} and \ac{FFLU} decomposition, either numerical or symbolic, is the pivoting strategy. This strategy hinges on two main considerations: the degrees of the elements within the matrix and the actual complexity of the expressions. From an operational standpoint, the pivoting process starts by arranging the elements in the matrix in descending order of their degrees. Then, the pivot of the least complexity is chosen. Sometimes these two features are conflicting. In such cases, the prioritization of the pivot with the lowest degree is preferred. It is important to notice that pivots consisting of numerical values take precedence over those with symbolic values, primarily due to their inherent minimum expression complexity. Throughout the pivoting process, the utilization of signatures is also employed whenever possible to confirm the presence of null expressions without the need for simplification. To summarize, the main steps of the pivoting strategy are the following.
+%
+\begin{enumerate}
+  \setlength{\itemsep}{0.0em}
+  \item The degree for each of the system matrix's entries is calculated.
+  \item The pivots are sorted by degree and a permutation is generated.
+  \item The pivots are iterated in the order of the permutation and a candidate pivot is selected at each step.
+  \item The candidate pivot is checked for null expressions with the aid of signatures.
+  \item If the candidate pivot signature is not null, the expression is simplified and their complexity is calculated.
+  \item If the candidate pivot is numeric, its numerical value is calculated, otherwise, it is set to infinity.
+  \item The candidate pivot with the lowest complexity or largest absolute numeric value is selected as the best pivot and returned.
+\end{enumerate}
+%
+A detailed description of the developed symbolic pivoting strategy is presented in Algorithm~\ref{chap3:alg:pivoting_strategy}.
+
+\begin{breakablealgorithm}
+  \caption{Symbolic Full-Pivoting Strategy.}
+  \label{chap3:alg:pivoting_strategy}
+  \begin{algorithmic}[1]
+    \State \textbf{Require:} A $m \times n$ matrix $\m{A}$.
+    \State \phantom{\textbf{Require:}} The $k$-th pivoting stage.
+    \Procedure{SymbolicPivoting}{$\m{A}$, $k$} \Comment{Symbolic pivoting procedure for the $k$-th pivot}
+    \State $\m{d}^r, \, \m{d}^c \gets \mathrm{ComputeDegrees}(\m{A})$ \Comment{Calculate the row and column degrees of $\m{A}$}
+    \For{$i$ \textbf{from} $k$ \textbf{to} $m$} \Comment{Iterate over the rows}
+      \For{$j$ \textbf{from} $k$ \textbf{to} $n$} \Comment{Iterate over the columns}
+        \State $D_{ij} \gets \infty$ \Comment{Set the combined degree matrix to infinity}
+        \IfThen{$A_{ij} \neq 0$}
+        {$D_{ij} \gets d^r_{i} \, \max(0, \, d^c_j-1) + d^c_j \, \max(0, \, d^r_i-1)$} \Comment{Compute the combined degree}
+      \EndFor
+    \EndFor
+    \State $\mathcal{P} \gets \mathrm{Sort}(\m{D})$ \Comment{Find the permutation that sorts the pivots list by degree cost}
+    \State $q, \, l \gets \, 0, \, 0$ \Comment{Initialize the temporary pivot row and column indices}
+    \State $p, \, p_c, \, p_n \gets \infty, \, \infty, \, \infty$ \Comment{Initialize the temporary pivot value, complexity and numerical value}
+    \For{\textbf{all} $(i, j)$ \textbf{in} $\mathcal{P}$} \Comment{Iterate on the permutation set}
+      \IfThen{$p_c \neq \infty$ \textbf{and} $D_{ij} > D_{ql}$}{\textbf{break}} \Comment{No more good pivots to check}
+      \State $t \gets A_{ij}$ \Comment{Get the pivot value}
+      \IfThen{$\mathrm{Signature}(t) = 0$}{\textbf{continue}} \Comment{Skip the next pivot}
+      \State $t \gets \mathrm{Simplify}(t)$ \Comment{Try to simplify the pivot expression}
+      \State $t_c \gets \mathrm{ExpressionComplexity}(t)$ \Comment{Calculate the computational cost of the pivot}
+      \State $t_n \gets \infty$ \Comment{Set the default numerical value of the pivot to infinity}
+      \IfThen{$t$ is numeric}{$t_n \gets \max(1, \, \mathrm{abs}(t))$} \Comment{Set the numerical value of the pivot}
+      \If{$t_c < p_c$ \textbf{or} ($t_c = p_c$ \textbf{and} $t_n > p_n$)} \Comment{If the pivot is better than the current one}
+        \State $q, \, l \gets i, \, j$ \Comment{Update the best pivot row and column indices}
+        \State $p, \, p_c, \, p_n \gets t, \, t_c, \, t_n$ \Comment{Update the best pivot value, complexity and numerical value}
+      \EndIf
+    \EndFor \\
+    \Return $p, \, q, \, l$ \Comment{The $k$-th pivot and its position}
+    \EndProcedure
+  \end{algorithmic}
+\end{breakablealgorithm}
+
+\begin{breakablealgorithm}
+  \caption{Matrix Degrees Computation.}
+  \label{chap3:alg:compute_degrees}
+  \begin{algorithmic}[1]
+    \State \textbf{Require:} A $m \times n$ matrix $\m{A}$.
+    \Procedure{ComputeDegrees}{$\m{A}$} \Comment{Compute the row and column degrees of $\m{A}$}
+    \State $\m{d}^r, \, \m{d}^c \gets \mathrm{ZerosVector}(m), \, \mathrm{ZerosVector}(n)$ \Comment{Initialize degree vectors}
+    \For{$i$ \textbf{from} $1$ \textbf{to} $m$} \Comment{Iterate over the rows}
+      \For{$j$ \textbf{from} $1$ \textbf{to} $n$} \Comment{Iterate over the columns}
+        \IfThen{$A_{ij} \neq 0$}{$d^r_i \gets d^r_i + 1$} \Comment{Increment the row degree}
+      \EndFor
+    \EndFor
+    \For{$j$ \textbf{from} $1$ \textbf{to} $n$} \Comment{Iterate over the columns}
+      \For{$i$ \textbf{from} $1$ \textbf{to} $m$} \Comment{Iterate over the rows}
+        \IfThen{$A_{ij} \neq 0$}{$d^c_j \gets d^c_j + 1$} \Comment{Increment the column degree}
+      \EndFor
+    \EndFor \\
+    \Return $\m{d}^r, \, \m{d}^c$ \Comment{Return the row and column degrees of $\m{A}$}
+    \EndProcedure
+  \end{algorithmic}
+\end{breakablealgorithm}
+
+\subsection{Linear Algebra Symbolic Toolbox}
+
+The considerations just made are the basis of the \LAST{} package~\cite{last}. This package is a \Maple{} toolbox for symbolic linear algebra. It is based on the original works in~\cite{carette2006linear,zhou2008fraction} and offers a set of routines for symbolic full-pivoting \ac{LU}, a \ac{FFLU}, QR decomposition, and \ac{GJ} factorization. The package \LAST{} is designed to be used in conjunction with the \LEM{} package~\cite{lem} to limit the expression swell.
+
+An important aspect of \ac{LU} decomposition is the pivoting strategy. In the \LAST{} package, the pivoting process is developed to take into account the aforementioned aspects of expression swell and numerical stability. In particular, the pivots are chosen based on the degree of the elements of the system matrix and the actual complexity of the expressions. The elements of the system matrix are sorted in descending order of their degree and the least complex element is chosen as the pivot. Pivots with numeric values are preferred over pivots with symbolic values due to their inherent numerical stability. During the pivoting procedure, whenever possible, signatures are also exploited to verify the presence of null expressions. Here a simple example is given to briefly illustrate the usage of the \LAST{} package.
+
+\begin{example}[Symbolic linear system solving with \LAST{}~\cite{last}]
+  Let us consider a simple linear system of equations in the form $\m{A}\mx = \m{b}$ and initialize them as follows.
+  %
+  \begin{mapleinline}
+> A := Matrix(3, symbol='a'):
+> B := Vector(3, symbol='b'):
+  \end{mapleinline}
+  %
+  Then we create a \LAST{} object and initialize the built-in \LEM{} object with label \code{V}.
+  %
+  \begin{mapleinline}
+> LAST_obj := Object(LAST):
+> LAST_obj:-InitLEM('V');
+  \end{mapleinline}
+  %
+  To solve the linear system with \LAST{} it is first necessary to perform one of the available decompositions, \emph{i.e.}, \ac{LU}, \ac{FFLU}, QR, or \ac{GJ}. The intermediate results of the decomposition are internally stored in the \LAST{} object and are available on demand. Once the decomposition is performed, the solution of the linear system can be obtained by calling the \code{GetResults} routine.
+  %
+  \begin{mapleinline}
+> LAST_obj:-LU(A):
+> 'L' = LAST_obj:-GetResults("L"),    'U' = LAST_obj:-GetResults("U");
+  'r' = LAST_obj:-GetResults("r")^%T, 'c' = LAST_obj:-GetResults("c")^%T;
+  \end{mapleinline}
+  \begin{equation*}
+    L = \begin{bmatrix}
+      1 & 0 & 0 \\
+      -\dfrac{a_{2,1}}{a_{1,1}} & 1 & 0 \\
+      -\dfrac{a_{2,1}}{a_{1,1}} & \dfrac{V_{2}}{V_{1}} & 1
+    \end{bmatrix}, ~
+    U = \begin{bmatrix}
+      a_{1,1} & a_{1,2} & a_{1,3} \\
+      0 & V_{1} & V_{3} \\
+      0 & 0 & V_{5}
+    \end{bmatrix}
+  \end{equation*}
+  \begin{equation*}
+    r = \begin{bmatrix}
+      1, & 2, & 3
+    \end{bmatrix}, ~
+    c = \begin{bmatrix}
+      1, & 2, & 3
+    \end{bmatrix}
+  \end{equation*}
+  %
+  where \code{r} and \code{c} are the row and column permutation vectors, respectively. Pivots chosen during the decomposition are also stored in the \LAST{} object and are available on demand
+  %
+  \begin{mapleinline}
+> LAST_obj:-GetResults("pivots")
+  \end{mapleinline}
+  \begin{equation*}
+    \begin{bmatrix}
+      a_{1,1}, & V_{1}, & V_{5}
+    \end{bmatrix}
+  \end{equation*}
+  %
+  The \LAST{} package also provides a routine to solve the linear system directly without the need to call the \code{GetResults} routine. This routine is called \code{SolveLinearSystem} and it is used as follows.
+  %
+  \begin{mapleinline}
+> LAST_obj:-SolveLinearSystem(B)^%T;
+  \end{mapleinline}
+  \begin{equation*}
+    \begin{bmatrix}
+      -\dfrac{V_{9}}{a_{1,1}}, &
+      -\dfrac{V_{8}}{V_{1}}, &
+      \dfrac{V_{7}}{V_{5}}
+    \end{bmatrix}
+  \end{equation*}
+  %
+  \begin{mapleinline}
+> LEM_obj := LAST_obj:-GetLEM(LAST_obj);
+> <LEM_obj:-VeilList(LEM_obj)>;
+  \end{mapleinline}
+  \begin{equation*}
+    \begin{bmatrix}
+      V_{1} = \dfrac{a_{2,2}a_{1,1}-a_{2,1}a_{1,2}}{a_{1,1}} \\
+      V_{2} = \dfrac{a_{3,2}a_{1,1}-a_{3,1}a_{1,2}}{a_{1,1}} \\
+      V_{3} = \dfrac{a_{2,3}a_{1,1}-a_{2,1}a_{1,3}}{a_{1,1}} \\
+      V_{4} = \dfrac{a_{3,3}a_{1,1}-a_{3,1}a_{1,3}}{a_{1,1}} \\
+      V_{5} = \dfrac{V_{4}V_{1}-V_{2}V_{3}}{V_{1}} \\
+      V_{6} = \dfrac{b_{2}a_{1,1}-a_{2,1}b_{1}}{a_{1,1}} \\
+      V_{7} = \dfrac{b_{3}a_{1,1}V_{1}-a_{3,1}b_{1}V_{1}-V_{2}V_{6}a_{1,1}}{a_{1,1}V_{1}} \\
+      V_{8} = \dfrac{V_{3}V_{7}-V_{6}V_{5}}{V_{5}} \\
+      V_{9} = \dfrac{b_{1}V_{1}V_{5}-a_{1,3}V_{7}V_{1}+a_{1,2}V_{8}V_{5}}{V_{1}V_{5}}
+    \end{bmatrix}
+  \end{equation*}
+  %
+
+  It must be noticed that in this example the size of the system is chosen to be small for the sake of simplicity. In practice, the \LAST{} package is designed to be used with large systems of equations. For further information on the \LAST{} package refer to the documentation in~\cite{last}.
+\end{example}
