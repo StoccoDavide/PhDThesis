@@ -606,18 +606,18 @@ To verify that the projection is performed correctly and does not affect the ord
 
 \begin{figure}[htp]
   \centering
-  \includetikz{figures/chapter_3/torus_order.tex}
-  \includetikz{figures/chapter_3/torus_hidden.tex}
+  \small{\includetikz{figures/chapter_4/torus_order.tex}}
+  \small{\includetikz{figures/chapter_4/torus_hidden.tex}}
   \caption{Numerical integration error $\varepsilon = \| \, \mx - \mx_\text{exact} \, \|_{\infty}$ of the \acp{DAE}~\eqref{chap4:eq:torus} over different integration time steps $\Delta t$, along with the computed order of the method (left). The projection on the hidden constraints is performed and the invariants violation $\| \, \mh \, \|_{\infty}$ is reported (right). Notice that the implemented projection preserves the order of the method for all the integration time steps. The tests are performed in the interval $t \in [0, \, 2\pi]$ seconds, using Implicit Euler, RadauIIA3, and RadauIIA5 Runge-Kutta methods.}
   \label{chap4:fig:torus_order}
 \end{figure}
 
 \begin{figure}[htp]
   \centering
-  \includetikz{figures/chapter_3/torus_implicit_euler.tex}
-  \includetikz{figures/chapter_3/torus_radauiia3.tex}
-  \includetikz{figures/chapter_3/torus_radauiia5.tex}
-  \includetikz{figures/chapter_3/torus_radauiia5_noproj.tex}
+  \small{\includetikz{figures/chapter_4/torus_implicit_euler.tex}}
+  \small{\includetikz{figures/chapter_4/torus_radauiia3.tex}}
+  \small{\includetikz{figures/chapter_4/torus_radauiia5.tex}}
+  \small{\includetikz{figures/chapter_4/torus_radauiia5_noproj.tex}}
   \caption{Numerically integrated solution of the \acp{DAE}~\eqref{chap4:eq:torus} in the interval $t \in [0, \, 400\pi]$ seconds, with step $\Delta t = 0.025$ seconds, using Implicit Euler (top left), RadauIIA3 (top right), and RadauIIA5 (bottom left and right) Runge-Kutta methods. The first three plots show the numerical integration of the reduced-index system with projection on the hidden constraints $\mh$ produced by the index reduction algorithm. On the bottom right plot, the numerical integration of the reduced-index system is performed without projection on the manifold $\mh$ and substantial drift is observed.}
   \label{chap4:fig:torus_integration}
 \end{figure}

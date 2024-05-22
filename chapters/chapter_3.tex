@@ -744,24 +744,24 @@ After the \ac{LU} factorization of a sparse matrix $\m{A}$, it is common to obse
     \centering
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
-      \includetikz{figures/chapter_2/sparsity_original_matrix.tex}
+      \small{\includetikz{figures/chapter_3/sparsity_original_matrix.tex}}
       \caption{Original sparsity pattern of matrix $\m{A}$ (1887 non-zero elements).}
     \end{subfigure}%
     \hfill%
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
-      \includetikz{figures/chapter_2/sparsity_lower_upper.tex}
+      \small{\includetikz{figures/chapter_3/sparsity_lower_upper.tex}}
       \caption{Sparsity pattern of $\m{L}$ and $\m{U}$ factors using standard pivoting (15918 non-zero elements).}
     \end{subfigure} \\[1.0em]
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
-      \includetikz{figures/chapter_2/sparsity_minimum_degree.tex}
+      \small{\includetikz{figures/chapter_3/sparsity_minimum_degree.tex}}
       \caption{Sparsity pattern of $\m{L}$ and $\m{U}$ factors using minimum degree pivoting (13316 non-zero elements).}
     \end{subfigure}%
     \hfill%
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
-      \includetikz{figures/chapter_2/sparsity_nested_dissection.tex}
+      \small{\includetikz{figures/chapter_3/sparsity_nested_dissection.tex}}
       \caption{Sparsity pattern of $\m{L}$ and $\m{U}$ factors using nested dissection pivoting (12216 non-zero elements).}
     \end{subfigure}
     \caption{Sparsity patterns of the original \code{west0479} matrix $\m{A} \in \mathbb{R}^{479 \times 479}$ and the $\m{L}$ and $\m{U}$ factors with and without pivoting, using the minimum degree and nested dissection pivoting strategies.}

@@ -281,7 +281,7 @@ are respectively the length of the left and right springs, $\ell_0$ is the relax
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.7\textwidth]{figures/chapter_4/car_axis}
+  \includegraphics[width=0.7\textwidth]{figures/chapter_5/car_axis}
   \caption{Car-axis dynamics problem~\cite{lioen1998test, mazzia2008test}. The car is modeled as springs connected to two bars. The bottom of the left tire is the origin. The car chassis is represented by a bar of mass $m$. The position of the chassis is given by $\m{q} = [x_l, y_l, x_r, y_r]^\top$. The left tire is always on a flat surface, while the right tire periodically goes over a sinusoidal bump of the form $y_b(t) = h\sin(\omega t)$. The distance between the wheels must always remain fixed, and the car chassis must always have a fixed length.}
   \label{chap5:fig:car_axis}
 \end{figure}
@@ -325,7 +325,7 @@ The car-axis \ac{DAE} system is solved using the proposed index reduction algori
 
 \begin{figure}[htb]
   \centering
-  \small{\includetikz{figures/chapter_4/car_axis_length.tex}}
+  \small{\includetikz{figures/chapter_5/car_axis_length.tex}}
   \caption{Springs length of the car-axis problem~\cite{lioen1998test, mazzia2008test}. \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} left spring $L_l$, \textcolor{mycolor2}{$\blacksquare$} right spring $L_r$.}
   \label{chap5:fig:tppc_initial}
 \end{figure}
@@ -578,7 +578,7 @@ The slider-crank mechanism \ac{DAE} system is solved with the aid of the propose
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=0.475\linewidth]{flexible_slider_crank}
+  \includegraphics[width=0.475\linewidth]{figures/chapter_5/flexible_slider_crank}
   \caption{Representation of the flexible slider-crank mechanism~\cite{lioen1998test, mazzia2008test}.}
   \label{chap5:fig:flexible_slider_crank}
 \end{figure}
@@ -646,14 +646,14 @@ The slider-crank mechanism \ac{DAE} system is solved with the aid of the propose
 
 \begin{figure}[htb]
   \centering
-  \small{\includetikz{figures/chapter_4/flexible_slider_crank.tex}}
+  \small{\includetikz{figures/chapter_5/flexible_slider_crank.tex}}
   \caption{Longitudinal displacement endpoint of the in the flexible slider-crank problem~\cite{lioen1998test, mazzia2008test}. \emph{Color legend}: \textcolor{mycolor2}{$\blacksquare$} longitudinal displacement $q_3$ at the rod midpoint, and \textcolor{mycolor1}{$\blacksquare$} longitudinal displacement $q_4$ at the rod endpoint. \emph{Line legend}: \textbf{---} linear beam model, and \textbf{--~--} nonlinear beam model.}
   \label{chap5:fig:flexible_slider_crank}
 \end{figure}
 
 \begin{figure}[htb]
   \centering
-  \small{\includetikz{figures/chapter_4/flexible_slider_crank_pivots.tex}}
+  \small{\includetikz{figures/chapter_5/flexible_slider_crank_pivots.tex}}
   \caption{Representation of the two pivots of the flexible slider-crank mechanism~\cite{lioen1998test, mazzia2008test} having minimum values. \emph{Color legend}: \textcolor{mycolor1}{$\blacksquare$} pivot 1, and \textcolor{mycolor2}{$\blacksquare$} pivot 2. \emph{Line legend}: \textbf{---} linear beam model, and \textbf{--~--} nonlinear beam model.}
   \label{chap5:fig:flexible_slider_crank_pivots}
 \end{figure}
@@ -798,7 +798,7 @@ It is worth noting that with $p = 4$ the maximum computational complexity that \
 
 \begin{figure}[htb]
   \centering
-  \small{\includetikz{figures/chapter_4/npendula_length.tex}}
+  \small{\includetikz{figures/chapter_5/npendula_length.tex}}
   \caption{Pendula lengths of the multi-pendula problem~\cite{nedialkov2008solvingIII} (up to 5 pendula). \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} 1\textsuperscript{st} pendulum length $\ell_1 = \ell$, \textcolor{mycolor2}{$\blacksquare$} 2\textsuperscript{nd} pendulum length $\ell_2 = \ell + c\lambda_1$, \textcolor{mycolor3}{$\blacksquare$} 3\textsuperscript{rd} pendulum length $\ell_3 = \ell + c\lambda_2$, \textcolor{mycolor4}{$\blacksquare$} 4\textsuperscript{th} pendulum length $\ell_4 = \ell + c\lambda_3$, and \textcolor{mycolor5}{$\blacksquare$} 5\textsuperscript{th} pendulum length $\ell_5 = \ell + c\lambda_4$.}
   \label{chap5:fig:npendula_length}
 \end{figure}
@@ -809,12 +809,12 @@ As a final example for this application field, we consider a double-wishbone sus
 
 \subsubsection{Suspension System Modeling}
 
-Double A-arm or double wishbone suspensions are independent suspension systems widely used in the automotive industry, especially in high-performance vehicles, due to their superior handling characteristics. The studied double A-arm suspension system, shown in Figure~\ref{chap5:fig:suspension_render} is characterized by two A-shaped arms, one upper and one lower, connected to the chassis at one end and to the wheel carrier at the other end forming, together with the tie rod, the principal kinematic chain of the suspension system. A second kinematic chain is formed by the push rod and the rocker, which transfer the vertical load from the wheel carrier to the shock absorber.
+Double A-arm or double-wishbone suspensions are independent suspension systems widely used in the automotive industry, especially in high-performance vehicles, due to their superior handling characteristics. The studied double A-arm suspension system, shown in Figure~\ref{chap5:fig:suspension_render} is characterized by two A-shaped arms, one upper and one lower, connected to the chassis at one end and to the wheel carrier at the other end forming, together with the tie rod, the principal kinematic chain of the suspension system. A second kinematic chain is formed by the push rod and the rocker, which transfer the vertical load from the wheel carrier to the shock absorber.
 
 \begin{figure}[htb]
   \begin{minipage}[c]{0.485\linewidth}
     \centering
-    \includegraphics[width=1.0\textwidth, trim={3.0cm 1.5cm 4.0cm 1.7cm}, clip]{figures/chapter_4/suspension_render.eps}
+    \includegraphics[width=1.0\textwidth, trim={3.0cm 1.5cm 4.0cm 1.7cm}, clip]{figures/chapter_5/suspension_render.eps}
   \end{minipage}
   %\hfill
   \begin{minipage}[c]{0.45\linewidth}
@@ -836,7 +836,7 @@ Double A-arm or double wishbone suspensions are independent suspension systems w
       \bottomrule
     \end{tabular}}
   \end{minipage}
-  \caption{Rendering and description of the \TrussMe{} elements \citep{trussme} used to model the rear left double wishbone suspension of the Formula SAE \textit{E-Agle Trento Racing Team} vehicle~\citep{eagle}.}
+  \caption{Rendering and description of the \TrussMe{} elements \citep{trussme} used to model the rear left double-wishbone suspension of the Formula SAE \textit{E-Agle Trento Racing Team} vehicle~\citep{eagle}.}
   \label{chap5:fig:suspension_render}
 \end{figure}
 
@@ -1029,17 +1029,17 @@ After the reduction process, the reduced system is numerically solved generating
   \centering
   \begin{subfigure}[c]{0.225\textwidth}
     \centering
-    \includegraphics[width=1.0\linewidth]{figures/chapter_4/suspension_mode_1}
+    \includegraphics[width=1.0\linewidth]{figures/chapter_5/suspension_mode_1}
     \caption{$f_1 = \SSI{7.6}{\hertz}$}
   \end{subfigure}
   \begin{subfigure}[c]{0.225\textwidth}
     \centering
-    \includegraphics[width=1.0\linewidth]{figures/chapter_4/suspension_mode_2}
+    \includegraphics[width=1.0\linewidth]{figures/chapter_5/suspension_mode_2}
     \caption{$f_2 = \SSI{88.5}{\hertz}$}
   \end{subfigure}
   \begin{subfigure}[c]{0.225\textwidth}
     \centering
-    \includegraphics[width=1.0\linewidth]{figures/chapter_4/suspension_mode_3}
+    \includegraphics[width=1.0\linewidth]{figures/chapter_5/suspension_mode_3}
     \caption{$f_3 = \SSI{159.7}{\hertz}$}
   \end{subfigure}
   \caption{First three modal shapes of the suspension.}
@@ -1048,7 +1048,7 @@ After the reduction process, the reduced system is numerically solved generating
 
 \begin{figure}[htbp]
   \centering
-  \small{\includetikz{figures/chapter_4/suspension_dynamic_deformations.tex}}
+  \small{\includetikz{figures/chapter_5/suspension_dynamic_deformations.tex}}
   \caption{Frequency response analysis of the suspension model is conducted, with tests performed under the equilibrium between the suspension system and a vertical force of \SI{500}{\newton} applied at the wheel hub. Frequency responses are assessed by applying input forces/torques at the wheel hub in the form of a linear chirp spanning frequencies from \SIrange{0}{200}{\hertz}, with a constant amplitude of \SI{5}{\newton}/\SI{5}{\newton\meter}. \emph{Legend:} {\color{mycolor1}$\blacksquare$} \Simulink{} multi-body simulation with full compliance dynamics contribution, {\color{mycolor2}$\blacksquare$} \Simulink{} multi-body with steady-state compliance contribution, {\color{mycolor3}$\blacksquare$} \Ansys{} \ac{FE} modal analysis.}
   \label{chap5:fig:suspension_dynamic_results}
 \end{figure}
@@ -1067,20 +1067,28 @@ The results of the simulation are shown in Figure~\ref{chap5:fig:test_bench}, wh
 
 \begin{figure}[!htp]
   \centering
-  \small{\includetikz{figures/chapter_4//test_bench.tex}}
+  \small{\includetikz{figures/chapter_5/test_bench.tex}}
   \caption{Tire lateral force $F_y$ during a side slip angle ramp simulation. Solid lines represent the results obtained with the \Simulink{} model, while dashed lines represent the difference between the various simulations (see legend below). \emph{Solid lines legend:}
   {\color{mycolor1}\raisebox{-.15pt}{$\blacksquare$}} kinematics, {\color{mycolor2}\raisebox{-.15pt}{$\blacksquare$}} kinematics and compliance, {\color{mycolor3}\raisebox{-.15pt}{$\blacksquare$}} kinematics and compliance ($-10\%$ rods diameter), {\color{mycolor5}\raisebox{-.15pt}{$\blacksquare$}} kinematics and compliance ($-20\%$ rods diameter).   \emph{Dashed lines legend:} {\color{mycolor1}\raisebox{-.15pt}{\scalebox{0.5}[1.0]{$\blacksquare$}}}{\color{mycolor2}\raisebox{-.15pt}{\scalebox{0.5}[1.0]{$\blacksquare$}}} = {\color{mycolor1}\raisebox{-.15pt}{$\blacksquare$}} $-$ {\color{mycolor2}\raisebox{-.15pt}{$\blacksquare$}}, {\color{mycolor1}\raisebox{-.15pt}{\scalebox{0.5}[1.0]{$\blacksquare$}}}{\color{mycolor3}\raisebox{-.15pt}{\scalebox{0.5}[1.0]{$\blacksquare$}}} = {\color{mycolor1}\raisebox{-.15pt}{$\blacksquare$}} $-$ {\color{mycolor3}\raisebox{-.15pt}{$\blacksquare$}},  {\color{mycolor1}\raisebox{-.15pt}{\scalebox{0.5}[1.0]{$\blacksquare$}}}{\color{mycolor5}\raisebox{-.15pt}{\scalebox{0.5}[1.0]{$\blacksquare$}}} = {\color{mycolor1}\raisebox{-.15pt}{$\blacksquare$}} $-$ {\color{mycolor5}\raisebox{-.15pt}{$\blacksquare$}}.
   }
   \label{chap5:fig:test_bench}
 \end{figure}
 
-Finally, to estimate what would be the impact of compliance in a racing vehicle, the telemetry and inputs of a full-vehicle simulation conducted on the \textit{Pista Azzurra} track in Jesolo (Italy), are applied to the modeled rear left double wishbone suspension. The simulation is conducted using the previously reduced \ac{MB}-\ac{DAE} system, the tire-ground enveloping model, and the tire model presented in Appendices~\ref{app2:enve} and~\ref{app3:tirex}, respectively. The results of the simulation are shown in Figure~\ref{chap5:fig:suspension_pista_azzurra}, where the suspension travel $z$ is shown in the first plot, while the translations $\delta$ and rotation $\theta$ components of the compliance contribution at the wheel hub are shown in the second and third plots, respectively. The results show that the compliance of the suspension system adds a non-negligible contribution to the wheel hub's positioning, especially in terms of rotations.
+Finally, to estimate what would be the impact of compliance in a racing vehicle, the telemetry and inputs of a full-vehicle simulation conducted on the \textit{Pista Azzurra} track in Jesolo (Italy), are applied to the modeled rear left double-wishbone suspension. The simulation is conducted using the previously reduced \ac{MB}-\ac{DAE} system, the tire-ground enveloping model, and the tire model presented in Appendices~\ref{app2:enve} and~\ref{app3:tirex}, respectively. The results of the simulation are shown in Figure~\ref{chap5:fig:suspension_pista_azzurra}, where the suspension travel $z$ is shown in the first plot, while the translations $\delta$ and rotation $\theta$ components of the compliance contribution at the wheel hub are shown in the second and third plots, respectively. On the other hand, Figure~\ref{chap5:fig:kine_compliance} shows the wheel hub trajectories during the track drive simulation on the \textit{Pista Azzurra} track in Jesolo (Italy). The pure kinematical trajectory of the wheel hub is shown in blue, while the overall position given by both the kinematic and compliance contributions is displayed in red. Both figures show that the compliance of the suspension system significantly affects the wheel hub's trajectory, especially in terms of rotations.
 
 \begin{figure}[htbp]
   \centering
-  \small{\includetikz{figures/chapter_4/suspension_pista_azzurra.tex}}
-  \caption{Simulation of the rear left double wishbone suspension of the Formula SAE \textit{E-Agle Trento Racing Team} vehicle~\cite{eagle} on the \textit{Pista Azzurra} track in Jesolo (Italy). The simulation is conducted using the index-reduced \ac{DAE} system, the tire-ground enveloping model, and the tire model presented in Appendices~\ref{app2:enve} and~\ref{app3:tirex}, respectively. In the first plot, the suspension travel $z$ is shown, while the second and third plots show the translations $\delta$ and rotation $\theta$ components of the compliance contribution at the wheel hub. \emph{Legend}: {\color{mycolor1}$\blacksquare$} $x$-axis component, {\color{mycolor2}$\blacksquare$} $y$-axis component, {\color{mycolor3}$\blacksquare$} $z$-axis component.}
+  \small{\includetikz{figures/chapter_5/suspension_pista_azzurra.tex}}
+  \caption{Simulation of the rear left double-wishbone suspension of the Formula SAE \textit{E-Agle Trento Racing Team} vehicle~\cite{eagle} on the \textit{Pista Azzurra} track in Jesolo (Italy). The simulation is conducted using the index-reduced \ac{DAE} system, the tire-ground enveloping model, and the tire model presented in Appendices~\ref{app2:enve} and~\ref{app3:tirex}, respectively. In the first plot, the suspension travel $z$ is shown, while the second and third plots show the translations $\delta$ and rotation $\theta$ components of the compliance contribution at the wheel hub. \emph{Legend}: {\color{mycolor1}$\blacksquare$} $x$-axis component, {\color{mycolor2}$\blacksquare$} $y$-axis component, {\color{mycolor3}$\blacksquare$} $z$-axis component.}
   \label{chap5:fig:suspension_pista_azzurra}
+\end{figure}
+
+\begin{figure}[!htp]
+  \centering
+  \small{\includetikz{figures/chapter_5/kine_compliance_1.tex}}
+  \small{\includetikz{figures/chapter_5/kine_compliance_2.tex}}
+  \caption{Wheel hub trajectories during the track drive simulation on the \emph{Pista Azzurra} track in Jesolo (Italy). The chars show the pure kinematical trajectory of the wheel hub in blue ({\color{mycolor1}$\blacksquare$}) juxtaposed to the overall position given by both the kinematic and compliance contributions displayed in red ({\color{mycolor2}$\blacksquare$}).}
+  \label{chap5:fig:kine_compliance}
 \end{figure}
 
 \section{Trajectory Prescribed Path Control}
@@ -1154,14 +1162,14 @@ The aerodynamic lift and drag coefficients, respectively $C_L(\alpha)$ and $C_D(
   \centering
   \begin{subfigure}[c]{0.475\textwidth}
     \centering
-    \includegraphics[width=1.0\linewidth]{figures/chapter_4/shuttle_frame.eps}
+    \includegraphics[width=1.0\linewidth]{figures/chapter_5/shuttle_frame.eps}
     \caption{Space shuttle reentry vehicle coordinate system.}
     \label{chap5:fig:shuttle_frame}
   \end{subfigure}%
   \hfill
   \begin{subfigure}[c]{0.475\textwidth}
     \centering
-    \includegraphics[width=1.0\linewidth]{figures/chapter_4/earth_frame.eps}
+    \includegraphics[width=1.0\linewidth]{figures/chapter_5/earth_frame.eps}
     \caption{Earth reference frame.}
     \label{chap5:fig:earth_frame}
   \end{subfigure}
@@ -1207,7 +1215,7 @@ To address this index-3 \acp{DAE}, we utilize the proposed index reduction algor
 
 \begin{figure}[htb]
   \centering
-  \small{\includetikz{figures/chapter_4/shuttle_index3_control.tex}}
+  \small{\includetikz{figures/chapter_5/shuttle_index3_control.tex}}
   \caption{Control history of the initial stage space shuttle reentry problem~\cite{brenan1995numerical}. The vehicle's trajectory is prescribed by the drag acceleration $D/m$ versus a relative velocity $V_r$ profile reported in~\eqref{chap5:eq:initial_drag}. The vehicle's state is controlled by the bank angle $\beta$ and the angle of attack is kept fixed at $\alpha = \SI{40}{\deg}$. \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} bank angle $\beta$, and \textcolor{mycolor2}{$\blacksquare$} angle of attack $\alpha$.}
   \label{chap5:fig:tppc_initial}
 \end{figure}
@@ -1249,7 +1257,7 @@ To solve the index-2 \ac{DAE} system, we apply the proposed index reduction algo
 
 \begin{figure}[htb]
   \centering
-  \small{\includetikz{figures/chapter_4/shuttle_index2_control.tex}}
+  \small{\includetikz{figures/chapter_5/shuttle_index2_control.tex}}
   \caption{Controls history of the space shuttle reentry problem~\cite{brenan1995numerical} in the time interval $t \in \RSI{0}{300}{\second}$. \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} bank angle $\beta$, and \textcolor{mycolor2}{$\blacksquare$} angle of attack $\alpha$.}
   \label{chap5:fig:tppc_final}
 \end{figure}
@@ -1296,7 +1304,7 @@ Figure~\ref{chap5:fig:robotic_arm} illustrates the robotic arm problem, as well 
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=0.4\linewidth]{figures/chapter_4/robotic_arm.eps}
+  \includegraphics[width=0.4\linewidth]{figures/chapter_5/robotic_arm.eps}
   \caption{Robot arm control problem.}
   \label{chap5:fig:robotic_arm}
 \end{figure}
@@ -1438,7 +1446,7 @@ where $g(x) = \beta(\exp(x/U_f) - 1)\,\USI{\ampere}$, and $U_e(t) = 0.1\sin(200 
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.7\textwidth]{figures/chapter_4/transistor_amplifier.eps}
+  \includegraphics[width=0.7\textwidth]{figures/chapter_5/transistor_amplifier.eps}
   \caption{Eight-node transistor-amplifier circuit~\cite{lioen1998test, mazzia2008test}.}
   \label{chap5:fig:transistor_amplifier}
 \end{figure}
@@ -1447,7 +1455,7 @@ The index reduction process is smoothly performed, and the complexity of the exp
 
 \begin{figure}[htb]
   \centering
-  \small{\includetikz{figures/chapter_4/transistor_amplifier.tex}}
+  \small{\includetikz{figures/chapter_5/transistor_amplifier.tex}}
   \caption{Transistor amplifier circuit integration results~\cite{lioen1998test, mazzia2008test} in the time interval $t \in \RSI{0}{0.2}{\second}$. Notice that the output signal $U_8$ is equal to the state variable $x_8$. \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} input signal $U_e(t)$, and \textcolor{mycolor2}{$\blacksquare$} output signal $U_8$.}
   \label{chap5:fig:transistor_amplifier_results}
 \end{figure}
@@ -1545,7 +1553,7 @@ Considering $C_s = 0$, the index reduction process is flawlessly performed throu
 
 \begin{figure}
   \centering
-  \includegraphics[width=1.0\textwidth]{figures/chapter_4/ring_modulator.eps}
+  \includegraphics[width=1.0\textwidth]{figures/chapter_5/ring_modulator.eps}
   \caption{Electric ring modulator circuit~\cite{lioen1998test, mazzia2008test}.}
   \label{chap5:fig:ring_modulator}
 \end{figure}
@@ -1572,7 +1580,7 @@ Considering $C_s = 0$, the index reduction process is flawlessly performed throu
 
 \begin{figure}[htb]
   \centering
-  \small{\includetikz{figures/chapter_4/ring_modulator.tex}}
+  \small{\includetikz{figures/chapter_5/ring_modulator.tex}}
   \caption{Electric ring modulator circuit integration results~\cite{lioen1998test, mazzia2008test} in the time interval $t \in \RSI{0}{1}{\milli\second}$. The lines represent the modulated output signal $U_2$, which is equal to the state variable $x_2$. \emph{Legend}: \textcolor{mycolor1}{$\blacksquare$} output signal $U_2$ with $C_s = \SSI{0}{\pico\farad}$ (\ac{DAE} system), \textcolor{mycolor2}{$\blacksquare$} output signal $U_2$ with $C_s = \SSI{2}{\pico\farad}$ (\ac{ODE} system).}
   \label{chap5:fig:ring_modulator_results}
 \end{figure}
@@ -1608,14 +1616,14 @@ Consistent \acp{IC} at $t = t_0$ can be easily obtained by evaluating the analyt
   \centering
   \begin{subfigure}[t]{0.26\textwidth}
     \centering
-    \includegraphics[width=1.0\textwidth]{figures/chapter_4/differential_amplifier_single.eps}
+    \includegraphics[width=1.0\textwidth]{figures/chapter_5/differential_amplifier_single.eps}
     \caption{Circuit with a single differential amplifier.}
     \label{chap:4:fig:diffamp_single}
   \end{subfigure}%
   \hfill%
   \begin{subfigure}[t]{0.72\textwidth}
     \centering
-    \includegraphics[width=1.0\textwidth]{figures/chapter_4/differential_amplifier_cascade.eps}
+    \includegraphics[width=1.0\textwidth]{figures/chapter_5/differential_amplifier_cascade.eps}
     \caption{Circuit with a cascade of $p$ differential amplifiers.}
     \label{chap:4:fig:diffamp_cascade}
   \end{subfigure}
