@@ -169,9 +169,9 @@ An explicit expression for the inverse matrix above can be obtained through tedi
 %
 Then, substituting~\eqref{chap5:eq:gen_vel} into~\eqref{chap5:eq:mbd_hidden_2} we obtain the following expression
 %
-\begin{equation}
+\begin{equation*}
   \hes{\bm{\Phi}}{\m{q}t}(\m{q}, t)\m{p} + \jac{\bm{\Phi}}{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{q}^{\prime}, t)^{-1} \jac{\bm{\Phi}}{\m{q}}(\m{q}, t)^{\top}\bm{\lambda} + \jac{\bm{\Phi}}{\m{q}}(\m{q}, t)\m{M}(\m{q}, \m{q}^{\prime}, t)^{-1} \m{f}(\m{q},\m{p},t)+\dif{\bm{\Phi}}{tt}(\m{q}, t) = 0 \, \text{.}
-\end{equation}
+\end{equation*}
 %
 Here the non-singular matrix in~\eqref{chap5:eq:compression} can be easily recognized, therefore the expression for the Lagrange multipliers is given by
 %
@@ -183,10 +183,10 @@ which can be either substituted into the explicit form of the \ac{DAE} system~\e
 %
 \begin{equation*}
   \text{a set of \acp{ODE}} \qquad
-  \begin{cases}
-    \m{q}^{\prime} = \m{p} \\
-    \m{p}^{\prime} = \dot{\m{p}}
-  \end{cases} \, \text{,} \\
+  \begin{system}
+    \m{q}^{\prime} &=& \m{p} \\
+    \m{p}^{\prime} &=& \dot{\m{p}}
+  \end{system} \, \text{,} \\
 \end{equation*}
 %
 where $\dot{\m{p}}$ is obtained by solving the linear system
@@ -281,7 +281,7 @@ are respectively the length of the left and right springs, $\ell_0$ is the relax
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.7\textwidth]{figures/chapter_5/car_axis}
+  \includegraphics[width=9cm]{figures/chapter_5/car_axis}
   \caption{Car-axis dynamics problem~\cite{lioen1998test, mazzia2008test}. The car is modeled as springs connected to two bars. The bottom of the left tire is the origin. The car chassis is represented by a bar of mass $m$. The position of the chassis is given by $\m{q} = [x_l, y_l, x_r, y_r]^\top$. The left tire is always on a flat surface, while the right tire periodically goes over a sinusoidal bump of the form $y_b(t) = h\sin(\omega t)$. The distance between the wheels must always remain fixed, and the car chassis must always have a fixed length.}
   \label{chap5:fig:car_axis}
 \end{figure}
@@ -339,7 +339,7 @@ The slider-crank mechanism presented in Figure~\ref{chap5:fig:flexible_slider_cr
     \m{M}(\m{p}, \m{q})\begin{bmatrix}\m{p}^{\prime\prime} \\ \m{q}^{\prime\prime}\end{bmatrix} - \jac{\bm{\Phi}}{\m{p},\m{q}}(\m{p}, \m{q}, t)^{\top}\bm{\lambda} = \m{f}(\m{p}, \m{p}^{\prime}, \m{q}, \m{q}^{\prime}) \\
     \bm{\Phi}(\m{p}) = \m{0}
   \end{cases} \, \text{,}
-  \qquad \text{with} \qquad \jac{\bm{\Phi}}{\m{p},\m{q}}(\m{p}, \m{q}, t) = \dfrac{\partial}{\partial(\m{p}, \m{q})}\bm{\Phi}(\m{p}, \m{q}, t)
+  \qquad \text{with} \qquad \jac{\bm{\Phi}}{\m{p},\m{q}}(\m{p}, \m{q}, t) = \dfrac{\partial\bm{\Phi}(\m{p}, \m{q}, t)}{\partial(\m{p}, \m{q})}
   \, \text{,}
 \end{equation*}
 %
@@ -350,11 +350,11 @@ where the position or gross motion coordinates are
     \phi_1 \\
     \phi_2 \\
     x_3
-  \end{bmatrix} \quad \begin{matrix}
+  \end{bmatrix} \quad \begin{array}{l}
     \text{crank angle,} \\
     \text{connecting rod angle,} \\
     \text{sliding block displacement.}
-  \end{matrix}
+  \end{array}
 \end{equation*}
 %
 The deformation coordinates of the flexible connecting rod are
@@ -365,29 +365,29 @@ The deformation coordinates of the flexible connecting rod are
     q_2 \\
     q_3 \\
     q_4
-  \end{bmatrix} \quad \begin{matrix}
+  \end{bmatrix} \quad \begin{array}{l}
     \text{first lateral mode} \sin(\pi x/\ell_2) \, \text{,} \\
     \text{second lateral mode} \sin(2\pi x/\ell_2) \, \text{,} \\
     \text{longitudinal displacement midpoint,} \\
     \text{longitudinal displacement endpoint.}
-  \end{matrix}
+  \end{array}
 \end{equation*}
 %
 The mass matrix $\m{M}(\m{p}, \m{q})$, and the force vector $\m{f}(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime)$ are given by
 %
-\begin{equation}
+\begin{equation*}
   \m{M}(\m{p}, \m{q}) = \begin{bmatrix}
     \m{M}_r(\m{p}) + \m{M}_e(\m{p}, \m{q}) & \m{C}(\m{p}, \m{q})^\top \\
     \m{C}(\m{p}, \m{q})                    & \m{M}_{d}
   \end{bmatrix} \, \text{,}
-\end{equation}
+\end{equation*}
 %
 with rigid motion mass matrix
 %
 \begin{equation*}
   \m{M}_r(\m{p}) = \begin{bmatrix}
-    J_1+m_2 \ell_1^2 & \ell_1 \ell_2 m_2 \cos(\phi_1 - \phi_2)/2 & 0 \\
-    \ell_1 \ell_2 m_2 \cos(\phi_1 - \phi_2)/2 & J_2 & 0 \\
+    J_1+m_2 \ell_1^2 & \ell_1 \ell_2 m_2 \cos(\phi_{12})/2 & 0 \\
+    \ell_1 \ell_2 m_2 \cos(\phi_{12})/2 & J_2 & 0 \\
     0 & 0 & m_3
   \end{bmatrix} \, \text{,}
 \end{equation*}
@@ -395,18 +395,18 @@ with rigid motion mass matrix
 coupling blocks
 %
 \begin{equation*}
-  \m{M}_e(\m{p}, \m{q}) = \small{\begin{bmatrix}
-    0 & \rho \ell_1(\cos(\phi_1 - \phi_2)\m{c}_1^\top + \sin(\phi_1 - \phi_2)\m{c}_2^\top) \m{q} & 0 \\
-    \rho \ell_1(\cos(\phi_1 - \phi_2)\m{c}_1^\top + \sin(\phi_1 - \phi_2)\m{c}_2^\top) \m{q} & \m{q}^\top\m{M}_{d}\m{q} + 2\rho\m{c}_{12}^\top\m{q} & 0 \\
+  \m{M}_e(\m{p}, \m{q}) = \begin{bmatrix}
+    0 & \rho \ell_1(\cos(\phi_{12})\m{c}_1^\top + \sin(\phi_{12})\m{c}_2^\top) \m{q} & 0 \\
+    \rho \ell_1(\cos(\phi_{12})\m{c}_1^\top + \sin(\phi_{12})\m{c}_2^\top) \m{q} & \m{q}^\top\m{M}_{d}\m{q} + 2\rho\m{c}_{12}^\top\m{q} & 0 \\
     0 & 0 & 0
-  \end{bmatrix}}
+  \end{bmatrix}
 \end{equation*}
 %
 and
 %
 \begin{equation*}
   \m{C}(\m{p}, \m{q})^\top = \begin{bmatrix}
-    \rho \ell_1(\cos(\phi_1 - \phi_2)\m{c}_2^\top - \sin(\phi_1 - \phi_2)\m{c}_1^\top) \\
+    \rho \ell_1(\cos(\phi_{12})\m{c}_2^\top - \sin(\phi_{12})\m{c}_1^\top) \\
     \rho\m{c}_{21}^\top + \rho\m{q}^\top\m{B} \\
     \m{0}^\top
   \end{bmatrix} \, \text{,}
@@ -425,39 +425,39 @@ as well as elastic body space discretization mass matrix
 %
 The force vector is given by
 %
-\begin{equation}
+\begin{equation*}
   \m{f}(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime) = \begin{bmatrix}
     \m{f}_r(\m{p}, \m{p}^\prime) + \m{f}_e(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime) \\
     \m{f}_{d}(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime) - \mathrm{grad}(\m{W}_{d}(\m{q})) - \m{D}_{d} \m{q}^\prime
   \end{bmatrix} \, \text{.}
-\end{equation}
+\end{equation*}
 %
 where the rigid motion terms are collected in
 %
 \begin{equation*}
   \m{f}_r(\m{p}, \m{p}^\prime) = \begin{bmatrix}
-    -\ell_1(\gamma(m_1 + 2m_2) \cos(\phi_1)/2 + \ell_2 m_2 \phi_2^{\prime2} \sin(\phi_1 - \phi_2)) \\
-    -\ell_2 \gamma m_2 \cos(\phi_2)/2 + \ell_1 \ell_2 m_2 \phi_1^{\prime2} \sin(\phi_1 - \phi_2)/2 \\
+    -\ell_1(\gamma(m_1 + 2m_2) \cos(\phi_1)/2 + \ell_2 m_2 \phi_2^{\prime2} \sin(\phi_{12})) \\
+    -\ell_2 \gamma m_2 \cos(\phi_2)/2 + \ell_1 \ell_2 m_2 \phi_1^{\prime2} \sin(\phi_{12})/2 \\
     0
   \end{bmatrix} \, \text{.}
 \end{equation*}
 %
-For the force term $\m{f}_e(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime)$ the expression is
+and $phi_{12} = \phi_1 - \phi_2$. For the force term $\m{f}_e(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime)$ the expression is
 %
 \begin{equation*}
-  \m{f}_e(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime) = \small{\begin{bmatrix}
-    \rho \ell_1 \phi_2^{\prime2}(\cos(\phi_1 - \phi_2)\m{c}_2^\top - \sin(\phi_1 - \phi_2)\m{c}_1^\top) \m{q}-2 \rho \ell_1 \phi_2^\prime(\cos(\phi_1 - \phi_2)\m{c}_1^\top + \sin(\phi_1 - \phi_2)\m{c}_2^\top) \m{q}^\prime \\[0.5em]
-    \rho \ell_1 \phi_1^{\prime2}(\sin(\phi_1 - \phi_2)\m{c}_1^\top - \cos(\phi_1 - \phi_2)\m{c}_2^\top) \m{q}-2 \rho \phi_2^\prime \m{c}_{12}^\top \m{q}^\prime-2 \phi_2^\prime {\m{q}^\prime}^\top \m{M}_{d} \m{q} \dots\\
-    -\rho {\m{q}^\prime}^\top \m{B} \m{q}^\prime - \rho \gamma(\cos(\phi_2) \m{c}_1^\top \m{q} - \sin \phi_2 \m{c}_2^\top \m{q}) \\[0.5em]
-    0
-\end{bmatrix}} \, \text{,}
+  \m{f}_e(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime) = \begin{bmatrix}
+      \rho \ell_1 \phi_2^{\prime2}(\cos(\phi_{12})\m{c}_2^\top - \sin(\phi_{12})\m{c}_1^\top) \m{q}-2 \rho \ell_1 \phi_2^\prime(\cos(\phi_{12})\m{c}_1^\top + \sin(\phi_{12})\m{c}_2^\top) \m{q}^\prime \\[0.5em]
+      \rho \ell_1 \phi_1^{\prime2}(\sin(\phi_{12})\m{c}_1^\top - \cos(\phi_{12})\m{c}_2^\top) \m{q}-2 \rho \phi_2^\prime \m{c}_{12}^\top \m{q}^\prime-2 \phi_2^\prime {\m{q}^\prime}^\top \m{M}_{d} \m{q} \dots\\
+      -\rho {\m{q}^\prime}^\top \m{B} \m{q}^\prime - \rho \gamma(\cos(\phi_2) \m{c}_1^\top \m{q} - \sin \phi_2 \m{c}_2^\top \m{q}) \\[0.5em]
+      0
+  \end{bmatrix} \, \text{,}
 \end{equation*}
 %
 and for $f_{d}(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime)$ the expression is
 %
 \begin{align*}
-  f_{d}(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime) &= \phi_2^{\prime2} \m{M}_{d} \m{q}+\rho(\phi_2^{\prime2} \m{c}_{12}+\ell_1 \phi_1^{\prime2}(\cos(\phi_1 - \phi_2) \m{c}_1 \dots \\
-  &+ \sin(\phi_1 - \phi_2) \m{c}_2)+2 \phi_2^\prime \m{B} \m{q}^\prime)-\rho \gamma\left(\sin \phi_2 \m{c}_1+\cos(\phi_2) \m{c}_2\right) \, \text{.}
+  f_{d}(\m{p}, \m{q}, \m{p}^\prime, \m{q}^\prime) &= \phi_2^{\prime2} \m{M}_{d} \m{q}+\rho(\phi_2^{\prime2} \m{c}_{12}+\ell_1 \phi_1^{\prime2}(\cos(\phi_{12}) \m{c}_1 \dots \\
+  &+ \sin(\phi_{12}) \m{c}_2)+2 \phi_2^\prime \m{B} \m{q}^\prime)-\rho \gamma\left(\sin \phi_2 \m{c}_1+\cos(\phi_2) \m{c}_2\right) \, \text{.}
 \end{align*}
 
 The gradient of the elastic potential $\m{W}_{d}(\m{q})$ in case of linear elasticity is $\mathrm{grad}(\m{W}_{d}(\m{q})) = \m{K}_{d} \m{q}$ with the stiffness matrix
@@ -500,12 +500,12 @@ The damping matrix $\m{D}_{d}$ is by default zero. The coupling matrices and vec
 and
 %
 \begin{equation*}
-  \begin{matrix}
-    \m{c}_{1}  = d h \ell_2  \left[ 0,     0,         2/3, 1/6 \right]^\top \, \text{,} \\
-    \m{c}_{2}  = d h \ell_2  \left[ 2/\pi, 0,         0,   0   \right]^\top \, \text{,} \\
-    \m{c}_{12} = d h \ell_2^2\left[ 0,     0,         1/3, 1/6 \right]^\top \, \text{,} \\
-    \m{c}_{21} = d h \ell_2^2\left[ 1/\pi, -1/(2\pi), 0,   0   \right]^\top \, \text{.}
-  \end{matrix}
+  \begin{array}{r@{~}c@{~}l}
+    \m{c}_{1}  &=& d h \ell_2  \, \left[ 0,     0,         2/3, 1/6 \right]^\top \, \text{,} \\
+    \m{c}_{2}  &=& d h \ell_2  \, \left[ 2/\pi, 0,         0,   0   \right]^\top \, \text{,} \\
+    \m{c}_{12} &=& d h \ell_2^2\, \left[ 0,     0,         1/3, 1/6 \right]^\top \, \text{,} \\
+    \m{c}_{21} &=& d h \ell_2^2\, \left[ 1/\pi, -1/(2\pi), 0,   0   \right]^\top \, \text{.}
+  \end{array}
 \end{equation*}
 %
 The constraints of the slider-crank mechanism are given by
@@ -521,19 +521,19 @@ The constraints of the slider-crank mechanism are given by
 For the simulation, the following parameters are used:
 %
 \begin{equation*}
-  \begin{matrix}
-    \ell_1 = \SSI{0.15}{\meter} & \text{body 1 length,} \\
-    \ell_2 = \SSI{0.30}{\meter} & \text{body 2 length,} \\
-    m_1 = \SSI{0.36}{\kilo\gram} & \text{body 1 mass,} \\
-    m_2 = \SSI{0.151104}{\kilo\gram} & \text{body 2 mass,} \\
-    m_3 = \SSI{0.075552}{\kilo\gram} & \text{body 3 mass,} \\
-    J_1 = \SSI{0.002727}{\kilo\gram\meter\squared} & \text{body 1 moment of inertia,} \\
-    J_2 = \SSI{0.0045339259}{\kilo\gram\meter\squared} & \text{body 2 moment of inertia,} \\
-    \rho = \SSI{7870}{\kilo\gram\per\meter\cubed} & \text{rod density,} \\
-    E = \SSI{200}{\giga\newton\per\meter\squared} & \text{rod Young's modulus,} \\
-    \gamma = 0 & \text{gravity constant,} \\
-    \Omega = \SSI{150}{\radian\per\second} & \text{prescribed crank angular velocity.} \\
-  \end{matrix}
+  \begin{array}{r@{~}c@{~}ll}
+    \ell_1 &=& \SSI{0.15}{\meter}                           & \text{body 1 length,} \\
+    \ell_2 &=& \SSI{0.30}{\meter}                           & \text{body 2 length,} \\
+    m_1    &=& \SSI{0.36}{\kilo\gram}                       & \text{body 1 mass,} \\
+    m_2    &=& \SSI{0.151104}{\kilo\gram}                   & \text{body 2 mass,} \\
+    m_3    &=& \SSI{0.075552}{\kilo\gram}                   & \text{body 3 mass,} \\
+    J_1    &=& \SSI{0.002727}{\kilo\gram\meter\squared}     & \text{body 1 moment of inertia,} \\
+    J_2    &=& \SSI{0.0045339259}{\kilo\gram\meter\squared} & \text{body 2 moment of inertia,} \\
+    \rho   &=& \SSI{7870}{\kilo\gram\per\meter\cubed}       & \text{rod density,} \\
+    E      &=& \SSI{200}{\giga\newton\per\meter\squared}    & \text{rod Young's modulus,} \\
+    \gamma &=& 0                                            & \text{gravity constant,} \\
+    \Omega &=& \SSI{150}{\radian\per\second}                & \text{prescribed crank angular velocity.} \\
+  \end{array}
 \end{equation*}
 %
 The \acp{IC} according to~\cite{lioen1998test, mazzia2008test} are
@@ -574,11 +574,11 @@ The \acp{IC} according to~\cite{lioen1998test, mazzia2008test} are
 %
 with an integration time interval of $t \in \RSI{0}{0.1}{\second}$.
 
-The slider-crank mechanism \ac{DAE} system is solved with the aid of the proposed index reduction algorithm. Specifically, both the linear and nonlinear flexible beam models are considered. The results in terms of expression complexity encountered throughout the index reduction are similar for both formulations, and they are summarized in Table~\ref{chap5:tab:flexible_slider_crank}. As shown in the table, the expression complexity increases significantly during the index reduction process, which is expected due to the inherent complexity of the problem. Hierarchical representation is also employed to limit the expression swelling, and the results are summarized in Table~\ref{chap5:tab:flexible_slider_crank_veil}. The results show that the hierarchical representation reduces the expression complexity by an order of magnitude, which is beneficial for the numerical solution of the \ac{DAE} system. Nevertheless, it must be highlighted that, despite the mitigation of the expression complexity, the hierarchical representation does not prevent the expression complexity from increasing significantly during the index reduction process, which allows us to conclude that this problem is affected by inherent expression swelling. The results of the numerical simulation are shown in Figure~\ref{chap5:fig:flexible_slider_crank}, where the longitudinal displacements $q_3$ and $q_4$ of the flexible beam are illustrated. The results show that the flexible beam undergoes significant and fast deformation during the motion of the slider-crank mechanism, confirming the high stiffness of the \ac{DAE} system. In particular, the nonlinear beam model shows a more pronounced and fast deformation compared to the linear beam model, which makes the numerical solution more challenging. Indeed, the numerical solution of the slider-crank mechanism with the nonlinear beam model exhibits an overflow error after $t = \SI{0.05}{\second}$, which is likely due to either the high stiffness of the \ac{DAE} system or strongly undamped oscillations. The linear beam model, on the other hand, does not exhibit such issues and is successfully solved. It should be noticed from Figure~\ref{chap5:fig:flexible_slider_crank_pivots} that the ac{LU} pivots having minimum values are neither crossing nor getting close to zero, which is a good indicator of the numerical stability of the \ac{LU} factorization and thereby of the efficacy of the symbolic pivoting strategy.
+The slider-crank mechanism \ac{DAE} system is solved with the aid of the proposed index reduction algorithm. Specifically, both the linear and nonlinear flexible beam models are considered. The results in terms of expression complexity encountered throughout the index reduction are similar for both formulations, and they are summarized in Table~\ref{chap5:tab:flexible_slider_crank}. As shown in the table, the expression complexity increases significantly during the index reduction process, which is expected due to the inherent complexity of the problem. Hierarchical representation is also employed to limit the expression swelling, and the results are summarized in Table~\ref{chap5:tab:flexible_slider_crank_veil}. The results show that the hierarchical representation reduces the expression complexity by an order of magnitude, which is beneficial for the numerical solution of the \ac{DAE} system. Nevertheless, it must be highlighted that, despite the mitigation of the expression complexity, the hierarchical representation does not prevent the expression complexity from increasing significantly during the index reduction process, which allows us to conclude that this problem is affected by inherent expression swelling. The results of the numerical simulation are shown in Figure~\ref{chap5:fig:flexible_slider_crank}, where the longitudinal displacements $q_3$ and $q_4$ of the flexible beam are illustrated. The results show that the flexible beam undergoes significant and fast deformation during the motion of the slider-crank mechanism, confirming the high stiffness of the \ac{DAE} system. In particular, the nonlinear beam model shows a more pronounced and fast deformation compared to the linear beam model, which makes the numerical solution more challenging. Indeed, the numerical solution of the slider-crank mechanism with the nonlinear beam model exhibits an overflow error after $t = \SI{0.05}{\second}$, which is likely due to either the high stiffness of the \ac{DAE} system or strongly undamped oscillations. The linear beam model, on the other hand, does not exhibit such issues and is successfully solved. It should be noticed from Figure~\ref{chap5:fig:flexible_slider_crank_pivots} that the \ac{LU} pivots having minimum values are neither crossing nor getting close to zero, which is a good indicator of the numerical stability of the \ac{LU} factorization and thereby of the efficacy of the symbolic pivoting strategy.
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=0.475\linewidth]{figures/chapter_5/flexible_slider_crank}
+  \includegraphics[width=6.0cm]{figures/chapter_5/flexible_slider_crank}
   \caption{Representation of the flexible slider-crank mechanism~\cite{lioen1998test, mazzia2008test}.}
   \label{chap5:fig:flexible_slider_crank}
 \end{figure}
@@ -664,21 +664,21 @@ The multi-pendula system consists of a chain of $p$ coupled pendula. The first p
 pendulum $p$, for $i = 2, \dots, p$. The first-order equations of motion for the multi-pendula system are the following~\cite{nedialkov2008solvingIII}
 %
 \begin{equation}
-  \begin{cases}
-    u_1^{\prime} = x_1 \\
-    v_1^{\prime} = y_1 \\
-    x_1^{\prime} = -\lambda_1 x_1 \\
-    y_1^{\prime} = -\lambda_1 y_1 - g \\
-    x_1^2 + y_1^2 = \ell^2 \\
-  \end{cases}
+  \begin{system}
+    u_1^{\prime} &=& x_1 \\
+    v_1^{\prime} &=& y_1 \\
+    x_1^{\prime} &=& -\lambda_1 x_1 \\
+    y_1^{\prime} &=& -\lambda_1 y_1 - g \\
+    0            &=& x_1^2 + y_1^2 - \ell^2 \\
+  \end{system}
   \quad \text{and} \qquad
-  \begin{cases}
-    u_i^{\prime} = x_i \\
-    v_i^{\prime} = y_i \\
-    x_i^{\prime} = -\lambda_p x_i \\
-    y_i^{\prime} = -\lambda_p y_i - g \\
-    x_i^2 + y_i^2 = (\ell + c\lambda_{i-1})^2
-  \end{cases}
+  \begin{system}
+    u_i^{\prime} &=& x_i \\
+    v_i^{\prime} &=& y_i \\
+    x_i^{\prime} &=& -\lambda_p x_i \\
+    y_i^{\prime} &=& -\lambda_p y_i - g \\
+    0            &=& x_i^2 + y_i^2 - (\ell + c\lambda_{i-1})^2
+  \end{system}
   \quad \text{for} \quad i = 2, \dots, p \, \text{.}
   \label{chap5:eq:multi_pendula}
 \end{equation}
@@ -842,7 +842,7 @@ Double A-arm or double-wishbone suspensions are independent suspension systems w
 
 In this example, the double A-arm suspension compliance is modeled using macro elements, which are modeled through the \TrussMe{} package~\cite{trussme}, which is a \Maple{} package for the symbolic modeling of compliant structures. Details on the modeling of the compliant elements are reported in Appendix~\ref{app4:trussme}. With the approach there presented, two suspension compliance models are generated one does not include the bushings compliance, while the other does. The linear systems have different sizes depending on the number of \acp{DOF} considered. In the case of the suspension without bushings, the system is composed of 78 \acp{DOF}, and has the following form
 %
-\begin{equation}
+\begin{equation*}
   \begin{bmatrix}
     \m{K}_{ff ,\, 42 \times 42}(\mathbb{R}) & \m{K}_{fs ,\, 42 \times 36}(\mathbb{R}) \\
     \m{K}_{sf ,\, 36 \times 42}(\mathbb{R}) & \m{K}_{ss ,\, 36 \times 36}(\mathbb{R})
@@ -852,11 +852,11 @@ In this example, the double A-arm suspension compliance is modeled using macro e
     \m{f}_{f ,\, 42 \times 1}(\mathbb{R}) \\ \m{f}_{s ,\, 36 \times 1}(\mathbb{R})
   \end{bmatrix}
   \, \text{.}
-\end{equation}
+\end{equation*}
 %
 On the other hand, the suspension model with the bushings influence is composed of 138 \acp{DOF}
 %
-\begin{equation}
+\begin{equation*}
   \begin{bmatrix}
     \m{K}_{ff ,\, 72 \times 72}(\mathbb{R}) & \m{K}_{fs ,\, 72 \times 66}(\mathbb{R}) \\
     \m{K}_{sf ,\, 66 \times 72}(\mathbb{R}) & \m{K}_{ss ,\, 66 \times 66}(\mathbb{R})
@@ -866,7 +866,7 @@ On the other hand, the suspension model with the bushings influence is composed 
     \m{f}_{f ,\, 72 \times 1}(\mathbb{R}) \\ \m{f}_{s ,\, 66 \times 1}(\mathbb{R})
   \end{bmatrix}
   \, \text{,}
-\end{equation}
+\end{equation*}
 %
 where the additional 60 \acp{DOF} are related to the compliance of the bushings. Both systems are solved using the technique presented in Appendix~\ref{app4:trussme}, which given the generic compliant mechanism described by the linear system of equations
 %
@@ -907,7 +907,7 @@ The dynamic characteristic of the system is modeled through a \ac{DAE} system of
   \end{equation}
 \end{subequations}
 %
-where $\m{q}$ is the state vector, and $t$ is the time. The quantity $\m{d}$ represents the compliance contribution of the mechanism members' deformation. States and deformations are conveniently condensed in a single variable $\m{y}$ as in~\eqref{chap5:eq:sy}. Equation~\eqref{chap5:eq:cr} represents the compliance contribution to the dynamics of the system, where $\m{K}_c$, and $\m{C}_c$ are the stiffness and damping matrices of the compliant bodies, respectively. The matrix $\m{M}$ represents the mass of the mechanism, while $\m{f}$ is the vector of external forces. For convenience, we collect $\m{r}$ in Equation~\eqref{chap5:eq:emf} as the vector of internal forces at the compliant joint. Notice that the product $\m{K}_c(\m{q}) \m{d}$ can be computed through the symbolic solution of the linear systems~\eqref{chap5:eq:macrofe}. Equation~\eqref{chap5:eq:em} represents the equilibrium equations between the rigid and compliant parts of the suspension. Specifically, $\boldsymbol{\Phi}_{\m{q}}$ is the Jacobian matrix of the constraint vector $\boldsymbol{\Phi}$ with respect to the coordinates $\m{q}$, while $\m{b}$ is the vector of external forces applied to the rigid part of the suspension. Lastly, Equation~\eqref{chap5:eq:bc} represents the kinematic constraints of the system. The pick-up points of the modeled suspension are reported in Table~\ref{chap5:tab:positions}. It is possible to derive the lengths of the various elements from these coordinates and to impose constraints to ensure a proper assembling of the mechanism. Components and materials specifications are reported in Tables~\ref{chap5:tab:components} and~\ref{chap5:tab:materials}, respectively.
+where $\m{q}$ is the state vector, and $t$ is the time. The quantity $\m{d}$ represents the compliance contribution of the mechanism members' deformation. States and deformations are conveniently condensed in a single variable $\m{y}$ as in~\eqref{chap5:eq:sy}. Equation~\eqref{chap5:eq:cr} represents the compliance contribution to the dynamics of the system, where $\m{K}_c$, and $\m{C}_c$ are the stiffness and damping matrices of the compliant bodies, respectively. The matrix $\m{M}$ represents the masses of the mechanism, while $\m{f}$ is the vector of external forces. For convenience, we collect $\m{r}$ in Equation~\eqref{chap5:eq:emf} as the vector of internal forces at the compliant joint. Notice that the product $\m{K}_c(\m{q}) \m{d}$ can be computed through the symbolic solution of the linear systems~\eqref{chap5:eq:macrofe}. Equation~\eqref{chap5:eq:em} represents the equilibrium equations between the rigid and compliant parts of the suspension. Specifically, $\boldsymbol{\Phi}_{\m{q}}$ is the Jacobian matrix of the constraint vector $\boldsymbol{\Phi}$ with respect to the coordinates $\m{q}$, while $\m{b}$ is the vector of external forces applied to the rigid part of the suspension. Lastly, Equation~\eqref{chap5:eq:bc} represents the kinematic constraints of the system. The pick-up points of the modeled suspension are reported in Table~\ref{chap5:tab:positions}. It is possible to derive the lengths of the various elements from these coordinates and to impose constraints to ensure a proper assembling of the mechanism. Components and materials specifications are reported in Tables~\ref{chap5:tab:components} and~\ref{chap5:tab:materials}, respectively.
 
 It is important to note that one may consider the compliance contribution as a superposed effect. To this end, we first assume that the influence of the members' deformation $\m{d}$ is small with respect to the dimensions of the mechanism itself, and thus to the state vector $\m{q}$, \ie{}, $\m{d} \ll \m{q}$. From~\eqref{chap5:eq:sy} it follows that $\m{M}(\m{y}) \approx \m{M}(\m{q})$. It is then possible to split the resolution of the \acp{DAE}~\eqref{chap5:eq:daes} into two stages. Firstly, the implicit differential equation~\eqref{chap5:eq:em} and the manifold~\eqref{chap5:eq:bc} are integrated. Nonetheless, these equations are of an index-3 \ac{MB} \acp{DAE} system of the type~\eqref{chap5:eq:mbd_fo}, which can be reduced to an index-0 or index-1 \acp{DAE} system and solved as above explained. Then, the second stage consists of adding the stationary contribution of the members' deformation $\m{d}$ to the state vector $\m{q}$, that is $\m{y} = \m{q} + \m{d} = \m{q} + \m{K}_c(\m{q})^{-1} (\m{f}(t) - \m{M}(\m{q})\m{q}^{\prime\prime})$.
 
@@ -1085,8 +1085,7 @@ Finally, to estimate what would be the impact of compliance in a racing vehicle,
 
 \begin{figure}[!htp]
   \centering
-  \small{\includetikz{figures/chapter_5/kine_compliance_1.tex}}
-  \small{\includetikz{figures/chapter_5/kine_compliance_2.tex}}
+  \small{\includetikz{figures/chapter_5/kine_compliance.tex}}
   \caption{Wheel hub trajectories during the track drive simulation on the \emph{Pista Azzurra} track in Jesolo (Italy). The chars show the pure kinematical trajectory of the wheel hub in blue ({\color{mycolor1}$\blacksquare$}) juxtaposed to the overall position given by both the kinematic and compliance contributions displayed in red ({\color{mycolor2}$\blacksquare$}).}
   \label{chap5:fig:kine_compliance}
 \end{figure}
@@ -1099,10 +1098,10 @@ The \ac{TPPC} category is characterized by \ac{DAE} systems that describe the mo
 The \ac{DAE} systems arising from \ac{TPPC} simulations has typically the Hessenberg form~\cite{brenan1986numerical}
 %
 \begin{equation*}
-  \begin{cases}
-    \m{x}^\prime = \m{f}(\m{x}, \m{u}, t) & \text{differential equations} \\
-    \m{0}        = \m{g}(\m{x}, \m{u}, t) & \text{path constraints}
-  \end{cases} \, \text{,}
+  \begin{system}
+    \m{x}^\prime &=& \m{f}(\m{x}, \m{u}, t) \quad \text{differential equations} \\
+    \m{0}        &=& \m{g}(\m{x}, \m{u}, t) \quad \text{path constraints}
+  \end{system}
   \quad \text{with} \quad \jac{\m{g}}{\m{x}} \, \jac{\m{f}}{\m{u}} ~ \text{non-singular}
   \label{chap5:eq:tppc_dae_index2}
 \end{equation*}
@@ -1110,11 +1109,11 @@ The \ac{DAE} systems arising from \ac{TPPC} simulations has typically the Hessen
 for index-2 problems, and
 %
 \begin{equation*}
-  \begin{cases}
-    \m{x}^\prime = \m{f}(\m{x}, \m{y}, \m{u}, t) \\
-    \m{y}^\prime = \m{g}(\m{x}, \m{y}, t) \\
-    \m{0}        = \m{h}(\m{y}, t)
-  \end{cases} \, \text{,}
+  \begin{system}
+    \m{x}^\prime &=& \m{f}(\m{x}, \m{y}, \m{u}, t) \\
+    \m{y}^\prime &=& \m{g}(\m{x}, \m{y}, t) \\
+    \m{0}        &=& \m{h}(\m{y}, t)
+  \end{system}
   \quad \text{with} \quad \jac{\m{h}}{\m{y}} \, \jac{\m{g}}{\m{x}} \, \jac{\m{f}}{\m{u}} ~ \text{non-singular}
   \label{chap5:eq:tppc_dae_index3}
 \end{equation*}
@@ -1128,32 +1127,32 @@ In space applications, \ac{TPPC} problems aid in vehicle performance analysis du
 The discussion is confined to a reentry vehicle in the absence of propulsive forces, where we simplify the simulation to model solely spherical geopotential and spherical earth. The equations of motion in relative coordinates are thus expressed as follows
 %
 \begin{equation}
-  \begin{cases}
-  H^{\prime}       = V_r\sin(\gamma) \\
-  \xi^{\prime}     = \dfrac{V_r\cos(\gamma) \sin(A)}{r \cos(\lambda)} \\
-  \lambda^{\prime} = \dfrac{V_r}{r} \cos(\gamma) \cos(A) \\
-  V_r^{\prime}     = -\dfrac{D}{m} - g\sin(\gamma) - \Omega_e^2 r \cos(\lambda)(\sin(\lambda) \cos(A) \cos(\gamma)-\cos(\lambda) \sin(\gamma)) \\
-  \gamma^{\prime}  = \dfrac{L\cos(\beta)}{m V_r}+\dfrac{\cos(\gamma)}{V_r}\left(\dfrac{V_r^2}{r}-g\right) + 2\Omega_e \cos(\lambda) \sin(A)\dots \\
-  \qquad + \dfrac{\Omega_e^2 r \cos(\lambda)}{V_r}(\sin(\lambda) \cos(A) \sin(\gamma)+\cos(\lambda) \cos(\gamma)) \\
-  A^{\prime}       = \dfrac{L\sin(\beta)}{m V_r \cos(\gamma)}+\dfrac{V_r}{r} \cos(\gamma) \sin(A) \tan(\lambda) - 2\Omega_e(\cos(\lambda) \cos(A) \tan(\gamma) - \sin(\lambda)) \dots \\
-  \qquad + \dfrac{\Omega_e^2 r \cos(\lambda) \sin(\lambda) \sin(A)}{V_r \cos(\gamma)}
-  \end{cases} \, \text{,}
+  \begin{system}
+  H^{\prime}       &=& V_r\sin(\gamma) \\
+  \xi^{\prime}     &=& \dfrac{V_r\cos(\gamma) \sin(A)}{r \cos(\lambda)} \\
+  \lambda^{\prime} &=& \dfrac{V_r}{r} \cos(\gamma) \cos(A) \\
+  V_r^{\prime}     &=& -\dfrac{D}{m} - g\sin(\gamma) - \Omega_e^2 r \cos(\lambda)(\sin(\lambda) \cos(A) \cos(\gamma)-\cos(\lambda) \sin(\gamma)) \\
+  \gamma^{\prime}  &=& \dfrac{L\cos(\beta)}{m V_r}+\dfrac{\cos(\gamma)}{V_r}\left(\dfrac{V_r^2}{r}-g\right) + 2\Omega_e \cos(\lambda) \sin(A)\dots \\
+                   & & +\dfrac{\Omega_e^2 r \cos(\lambda)}{V_r}(\sin(\lambda) \cos(A) \sin(\gamma)+\cos(\lambda) \cos(\gamma)) \\
+  A^{\prime}       &=& \dfrac{L\sin(\beta)}{m V_r \cos(\gamma)}+\dfrac{V_r}{r} \cos(\gamma) \sin(A) \tan(\lambda) - 2\Omega_e(\cos(\lambda) \cos(A) \tan(\gamma) - \sin(\lambda)) \dots \\
+                   & & +\dfrac{\Omega_e^2 r \cos(\lambda) \sin(\lambda) \sin(A)}{V_r \cos(\gamma)}
+  \end{system} \, \text{,}
   \label{chap5:eq:space_shuttle_reentry}
 \end{equation}
 %
 where the state variables are $\m{x} = [H, \xi, \lambda, V_r, \gamma, A]^\top$. The parameters are the following
 %
 \begin{equation*}
-  \begin{aligned}
-    r           & = H + r_e, & \text{distance from the earth center,} \\
-    r_e         & = \SI{20902900}{\feet} & \text{earth radius,} \\
-    g           & = \mu/r^2 & \text{gravity force,} \\
-    \mu         & = \SI{1.407653916\times 10^16}{\cubic\feet\per\second\squared} & \text{gravitational constant,} \\
-    \Omega_e    & = \SI{360/(24\cdot60\cdot60)}{\deg\per\second} & \text{earth angular speed,} \\
-    \rho(H)     & = 0.002378\exp(-H/23800) & \text{atmospheric density,} \\
-    L(V_r)      & = 1/2 \rho C_L S V_r^2 & \text{aerodynamic lift force,} \\
-    D(V_r)      & = 1/2 \rho C_D S V_r^2 & \text{aerodynamic drag force.}
-  \end{aligned}
+  \begin{array}{r@{~}c@{~}ll}
+    r        &=& H + r_e,               & \text{distance from the earth center,} \\
+    r_e      &=& \SI{20902900}{\feet}   & \text{earth radius,} \\
+    g        &=& \mu/r^2                & \text{gravity force,} \\
+    \mu      &=& \SI{1.407653916\times 10^16}{\cubic\feet\per\second\squared} & \text{gravitational constant,} \\
+    \Omega_e &=& \SI{360/(24\cdot60\cdot60)}{\deg\per\second} & \text{earth angular speed,} \\
+    \rho(H)  &=& 0.002378\exp(-H/23800) & \text{atmospheric density,} \\
+    L(V_r)   &=& 1/2 \rho C_L S V_r^2   & \text{aerodynamic lift force,} \\
+    D(V_r)   &=& 1/2 \rho C_D S V_r^2   & \text{aerodynamic drag force.}
+  \end{array}
 \end{equation*}
 %
 The aerodynamic lift and drag coefficients, respectively $C_L(\alpha)$ and $C_D(\alpha)$, as well as the vehicle cross-sectional area $S$ and mass $m$, will be later specified on the specific test. The control variables, which dictate both the magnitude and direction of the aerodynamic force applied to the vehicle, are assessed within the body coordinate system (refer to Figure~\ref{chap5:fig:shuttle_frame}). The bank angle $\beta$ corresponds to a rotation or \emph{roll} about the vehicle's $x$-axis, while the angle of attack $\alpha$ is measured from the relative velocity vector of the vehicle to the body $x$-axis, representing a rotation or \emph{pitch} about the body $y$-axis. For a more detailed explanation of these parameters and the coordinate system on the presented tests, please refer to~\cite{brenan1983stability}. Nonetheless, figure~\ref{chap5:fig:shuttle_reentry} illustrates the space shuttle coordinate system, as well as the vehicle's position with respect to the earth reference frame.
@@ -1266,23 +1265,23 @@ To solve the index-2 \ac{DAE} system, we apply the proposed index reduction algo
 
 Another example of a \ac{TPPC} problem is the control of a robot arm, described as an index-5 \ac{DAE} system~\cite{pryce1998solving}. The system describes the path control of a two-link, flexible joint, planar robotic arm from~\cite{campbell1988general}. This system, which is frequently used as a \acp{DAE} benchmark test, is characterized by a high index -- typical of \ac{TPPC} problems -- as well as by the presence of various singularities~\cite{schwarz2020singularities}. The problem is a semi-explicit \acp{DAE} of dimension 8 with 2 path constraints. The system is described by the following equations
 %
-\begin{equation}
-  \begin{cases}
-    x_1^{\prime} = x_4 \\
-    x_2^{\prime} = x_5 \\
-    x_3^{\prime} = x_6 \\
-    x_4^{\prime} = 2c(x_3)(x_4+x_6)^2 - x_4^2d(x_3) - (2x_3-x_2)(a(x_3)+2b(x_3)) - a(x_3)(u_1-u_2) \\
-    x_5^{\prime} = 2c(x_3)(x_4+x_6)^2 - x_4^2d(x_3) + (2 x_3-x_2)(1-3a(x_3)-2b(x_3)) - a(x_3)(u_1-u_2) + u_2 \\
-    x_6^{\prime} = 2c(x_3)(x_4+x_6)^2 - x_4^2d(x_3) + (2 x_3-x_2)(a(x_3)-9b(x_3)) - (a(x_3)+b(x_3))(u_1-u_2) \dots \\
-    \qquad - d(x_3)(x_4+x_6)^2 - 2x_4^2c(x_3) \\
-    0 = \cos(x_1) + \cos(x_1+x_3) - p_1(t) \\
-    0 = \sin(x_1) + \sin(x_1+x_3) - p_2(t)
-  \end{cases} \, \text{,}
-\end{equation}
+\begin{equation*}
+  \begin{system}
+    x_1^{\prime} &=& x_4 \\
+    x_2^{\prime} &=& x_5 \\
+    x_3^{\prime} &=& x_6 \\
+    x_4^{\prime} &=& 2c(x_3)(x_4+x_6)^2 - x_4^2d(x_3) - (2x_3-x_2)(a(x_3)+2b(x_3)) - a(x_3)(u_1-u_2) \\
+    x_5^{\prime} &=& 2c(x_3)(x_4+x_6)^2 - x_4^2d(x_3) + (2 x_3-x_2)(1-3a(x_3)-2b(x_3)) - a(x_3)(u_1-u_2) + u_2 \\
+    x_6^{\prime} &=& 2c(x_3)(x_4+x_6)^2 - x_4^2d(x_3) + (2 x_3-x_2)(a(x_3)-9b(x_3)) - (a(x_3)+b(x_3))(u_1-u_2) \dots \\
+                 & & -d(x_3)(x_4+x_6)^2 - 2x_4^2c(x_3) \\
+    0 &=& \cos(x_1) + \cos(x_1+x_3) - p_1(t) \\
+    0 &=& \sin(x_1) + \sin(x_1+x_3) - p_2(t)
+  \end{system} \, \text{,}
+\end{equation*}
 %
 with
 %
-\begin{equation}
+\begin{equation*}
   a(z) = \dfrac{2}{2-\cos(z)^2} \, \text{,}
   \quad
   b(z) = \dfrac{\cos(z)}{2-\cos(z)^2} \, \text{,}
@@ -1290,21 +1289,21 @@ with
   c(z) = \dfrac{\sin(z)}{2-\cos(z)^2} \, \text{,}
   \quad \text{and} \quad
   d(z) = \dfrac{\cos(z)\sin(z)}{2-\cos(z)^2} \, \text{.}
-\end{equation}
+\end{equation*}
 %
-Here, the variables $[x_1, x_2, x_3]$ represent the angular coordinates of the end effector, while $[x_4, x_5, x_6]$ are their derivatives. The control variables are $[u_1, u_2]$, which represent the torques applied to the joints. The end effector path constraints are given by
+Here, the variables $[x_1, x_2, x_3]^\top$ represent the angular coordinates of the end effector, while $[x_4, x_5, x_6]^\top$ are their derivatives. The control variables are $[u_1, u_2]^\top$, which represent the torques applied to the joints. The end effector path constraints are given by
 %
-\begin{equation}
+\begin{equation*}
   p_1(t) = \cos(\exp(t) - 1) + \cos(t - 1) \, \text{,}
   \quad \text{and} \quad
   p_2(t) = \sin(1 - \exp(t)) + \sin(1 - t) \, \text{.}
-\end{equation}
+\end{equation*}
 %
 Figure~\ref{chap5:fig:robotic_arm} illustrates the robotic arm problem, as well as its variables and control parameters.
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=0.4\linewidth]{figures/chapter_5/robotic_arm.eps}
+  \includegraphics[width=6.0cm]{figures/chapter_5/robotic_arm.eps}
   \caption{Robot arm control problem.}
   \label{chap5:fig:robotic_arm}
 \end{figure}
@@ -1383,17 +1382,17 @@ The numerical integration of the reduced \ac{DAE} system is performed using both
 
 Historically, the \acp{DAE} of electrical networks stimulated the study of \acp{DAE} and their solutions since the early 70s~\cite{gear1971simultaneous}. \acp{DAE} encountered in this domain exhibit a distinct structure, somewhat different from those arising from mechanical systems or \ac{TPPC} problems. Typically, these \acp{DAE} are large and sparse, often linear, although non-linearities may arise from certain circuit components. Our focus here is not to give a detailed account of circuit design, but rather to illustrate the types of \acp{DAE} that may arise and how various aspects of the circuit influence \ac{DAE} system properties such as index, solvability, and numerical solution.
 
-Consider an electrical network comprising $b$ branches connected to $n$ nodes. Assigning a current variable $i_b$ to each branch and a voltage variable $v_n$ to each node, the circuit equations stem from Kirchoff's laws, \ie{} the algebraic sum of currents into a node is zero, and the algebraic sum of the voltage drops around a loop is zero. By convention, current denotes the net flow of positive charge, with a designated current direction along each branch assigned by designating one node as negative and the other as positive (with current flowing from positive to negative). The circuit's topology can be described by a $b \times n$ network incidence matrix $\m{A}$. The $(i,j)$ element of $\m{A}$ is $\pm1$ if node $j$ is the $\pm$ node for the $i$-th branch. Denoting $\m{i}_b$ as the vector of current variables, Kirchoff's current law simply states that $\m{A}^\top\m{i}_b = 0$. The voltage drop across each branch is defined as the difference between the voltage at the positive node and that at the negative node. These branch voltages $\m{v}_b$ can be expressed in terms of the nodal voltages $\m{v}_n$ as $\m{v}_b = \m{A}\m{v}_n$.
+Consider an electrical network comprising $b$ branches connected to $n$ nodes. Assigning a current variable $i_b$ to each branch and a voltage variable $v_n$ to each node, the circuit equations stem from Kirchoff's laws, \ie{} the algebraic sum of currents into a node is zero, and the algebraic sum of the voltage drops around a loop is zero. By convention, current denotes the net flow of positive charge, with a designated current direction along each branch assigned by designating one node as negative and the other as positive (with current flowing from positive to negative). The circuit's topology can be described by a $b \times n$ network incidence matrix $\m{A}$. The $(i,j)$ element of $\m{A}$ is $\pm1$ if node $j$ is the $\pm$ node for the $i$-th branch. Denoting $\m{i}_b$ as the vector of current variables, Kirchoff's current law simply states that $\m{A}^\top\m{i}_b = 0$. The voltage drop across each branch is defined as the difference between the voltage at the positive node and that at the negative node. These branch voltages $\m{p}_b$ can be expressed in terms of the nodal voltages $\m{p}_n$ as $\m{p}_b = \m{A}\m{p}_n$.
 
-Linear circuits composed of resistors, capacitors, and inductors can result in large sparse linear \acp{DAE}. In these circuits, the voltage-current relationship across a resistor branch follows Ohm's law, $v_r = Ri_r$, with a positive resistance $R$. Similarly, the voltage-current characteristics of linear capacitors and inductors satisfy $i_c = C\de{}v_c/\de{}t$ and $v_l = L\de{}i_l/\de{}t$, respectively. However, the inclusion of transistors or unicursal elements tends to introduce non-linearity into \ac{DAE} systems. The solvability of \acp{DAE} arising from linear circuits lacking operational amplifiers is solely influenced by the network topology. However, circuits containing differential amplifiers, typically realized using operational amplifiers, may give rise to \acp{DAE} of arbitrarily high index. \acp{DAE} arising from linear circuits incorporating operational amplifiers depends on the specific voltage-current characteristics of the circuit components for solvability. Moreover, the number of independent \acp{IC} may vary depending on specific circuit parameter values. The potential for arbitrarily high-index \acp{DAE} originating from circuits is demonstrated in examples such as a cascade of differential amplifiers. Furthermore, high-index \acp{DAE} may emerge when different variables are designated as inputs and outputs. For example, whether a device functions as a differentiator or an integrator depends on the designation of inputs and outputs~\cite{brenan1995numerical}.
+Linear circuits composed of resistors, capacitors, and inductors can result in large sparse linear \acp{DAE}. In these circuits, the voltage-current relationship across a resistor branch follows Ohm's law, $v_r = Ri_r$, with a positive resistance $R$. Similarly, the voltage-current characteristics of linear capacitors and inductors satisfy $i_c = C(\de{}v_c/\de{}t)$ and $v_l = L(\de{}i_l/\de{}t)$, respectively. However, the inclusion of transistors or unicursal elements tends to introduce non-linearity into \ac{DAE} systems. The solvability of \acp{DAE} arising from linear circuits lacking operational amplifiers is solely influenced by the network topology. However, circuits containing differential amplifiers, typically realized using operational amplifiers, may give rise to \acp{DAE} of arbitrarily high index. \acp{DAE} arising from linear circuits incorporating operational amplifiers depends on the specific voltage-current characteristics of the circuit components for solvability. Moreover, the number of independent \acp{IC} may vary depending on specific circuit parameter values. The potential for arbitrarily high-index \acp{DAE} originating from circuits is demonstrated in examples such as a cascade of differential amplifiers. Furthermore, high-index \acp{DAE} may emerge when different variables are designated as inputs and outputs. For example, whether a device functions as a differentiator or an integrator depends on the designation of inputs and outputs~\cite{brenan1995numerical}.
 
 In the following, we present three examples of electrical circuits, the first being an eight-node transistor amplifier, the second an electric ring modulator, and the third a cascade of differential amplifiers. The first two examples are taken from~\cite{lioen1998test, mazzia2008test}, while the third is taken from~\cite{brenan1995numerical}.
 
 \subsection{Eight-Node Transistor-Amplifier}
 
-This problem originates from electrical circuit analysis, and it is a model for the transistor amplifier. The diagram of the circuit is given in Figure~\ref{chap5:fig:transistor_amplifier}. Here $U_e$ is the input signal and the amplified output signal can be found in point 8. The circuit is described by a system of \acp{DAE} of index-1, consisting of 8 equations, which ca be written in matrix form as $\m{M}\m{x}^\prime = \m{f}(\m{x},t)$, where $\m{x} = [x_1, \dots, x_8]^\top$, $\m{M}$ and $\m{f}(\m{x},t)$ given by
+This problem originates from electrical circuit analysis, and it is a model for the transistor amplifier. The diagram of the circuit is given in Figure~\ref{chap5:fig:transistor_amplifier}. Here $U_e$ is the input signal and the amplified output signal can be found in point 8. The circuit is described by a system of \acp{DAE} of index-1, consisting of 8 equations, which can be written in matrix form as $\m{M}\m{x}^\prime = \m{f}(\m{x},t)$, where $\m{x} = [x_1, \dots, x_8]^\top$, $\m{M}$ and $\m{f}(\m{x},t)$ given by
 %
-\begin{equation}
+\begin{equation*}
   \m{M} = \begin{bmatrix}
     -C_1 & C_1 & 0 & 0 & 0 & 0 & 0 & 0 \\
     C_1 & -C_1 & 0 & 0 & 0 & 0 & 0 & 0 \\
@@ -1404,9 +1403,9 @@ This problem originates from electrical circuit analysis, and it is a model for 
     0 & 0 & 0 & 0 & 0 & 0 & -C_5 & C_5 \\
     0 & 0 & 0 & 0 & 0 & 0 & C_5 & -C_5
   \end{bmatrix} \, \text{,}
-\end{equation}
+\end{equation*}
 %
-\begin{equation}
+\begin{equation*}
   \m{f}(\m{x},t) = \begin{bmatrix}
     -\dfrac{U_e(t)}{R_0} + \dfrac{x_1}{R_0} \\
     -\dfrac{U_b}{R_2} + x_2\left(\dfrac{1}{R_1}+\dfrac{1}{R_2}\right) - (\alpha-1)g(x_2-x_3) \\
@@ -1417,7 +1416,7 @@ This problem originates from electrical circuit analysis, and it is a model for 
     -\dfrac{U_b}{R_8} + \dfrac{x_7}{R_8} + \alpha g(x_5-x_6) \\
     \dfrac{x_8}{R_9}
   \end{bmatrix} \, \text{,}
-\end{equation}
+\end{equation*}
 %
 where $g(x) = \beta(\exp(x/U_f) - 1)\,\USI{\ampere}$, and $U_e(t) = 0.1\sin(200 \pi t)\,\USI{\volt}$. \acp{IC} at $t = 0$ and parameters are given by
 %
@@ -1433,20 +1432,20 @@ where $g(x) = \beta(\exp(x/U_f) - 1)\,\USI{\ampere}$, and $U_e(t) = 0.1\sin(200 
     0 \\
   \end{bmatrix} \, \text{,}
   \qquad \text{and} \qquad
-  \begin{array}{l}
-    U_b = \SI{6}{\volt} \, \text{,} \\
-    U_f = \SI{0.026}{\volt} \, \text{,} \\
-    \alpha = 0.99 \, \text{,} \\
-    \beta = \SI{10^-6}{\ampere} \, \text{,} \\
-    R_0 = \SI{1}{\kilo\ohm} \, \text{,} \\
-    R_k = \SI{9}{\kilo\ohm} ~ \text{with} ~ k=1, \dots, 9 \, \text{,} \\
-    C_k = \SI{k}{\micro\farad} ~ \text{with} ~ k=1, \dots, 9 \, \text{.} \\
+  \begin{array}{r@{~}c@{~}l}
+    U_b    &=& \SI{6}{\volt} \, \text{,} \\
+    U_f    &=& \SI{0.026}{\volt} \, \text{,} \\
+    \alpha &=& 0.99 \, \text{,} \\
+    \beta  &=& \SI{10^-6}{\ampere} \, \text{,} \\
+    R_0    &=& \SI{1}{\kilo\ohm} \, \text{,} \\
+    R_k    &=& \SI{9}{\kilo\ohm} ~ \text{with} ~ k=1, \dots, 9 \, \text{,} \\
+    C_k    &=& \SI{k}{\micro\farad} ~ \text{with} ~ k=1, \dots, 9 \, \text{.} \\
   \end{array} \, \text{.}
 \end{equation*}
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.7\textwidth]{figures/chapter_5/transistor_amplifier.eps}
+  \includegraphics[width=9.0cm]{figures/chapter_5/transistor_amplifier.eps}
   \caption{Eight-node transistor-amplifier circuit~\cite{lioen1998test, mazzia2008test}.}
   \label{chap5:fig:transistor_amplifier}
 \end{figure}
@@ -1483,11 +1482,11 @@ The index reduction process is smoothly performed, and the complexity of the exp
 
 The electric ring modulator is an interesting example of a system whose structure depends on the specific values of the parameters. The system is in the form $\m{M}\m{x}^\prime = \m{f}(\m{x},t)$, where $\m{x} = [x_1, \dots, x_{15}]^\top$, $\m{M}$ and $\m{f}(\m{x},t)$ being given by
 %
-\begin{equation}
+\begin{equation*}
   \m{M} = \mathrm{diag}(C, C, C_s, C_s, C_s, C_s, C_p, L_h, L_h, L_{s2}, L_{s3}, L_{s2}, L_{s3}, L_{s1}, L_{s1}) \, \text{,}
-\end{equation}
+\end{equation*}
 %
-\begin{equation}
+\begin{equation*}
   \m{f}(\m{x},t) = \begin{bmatrix}
     x_8 - (x_{10} + x_{11})/2 + x_{14} - x_1/R \\
     x_9 - (x_{12} + x_{13})/2 + x_{15} - x_2/R \\
@@ -1505,45 +1504,45 @@ The electric ring modulator is an interesting example of a system whose structur
     -x_1 + U_{in1}(t) - (R_i + R_{g1})x_{14} \\
     -x_2 - (R_c+R_{g1})x_{15}
   \end{bmatrix} \, \text{,}
-\end{equation}
+\end{equation*}
 %
 where
 %
 \begin{equation*}
-  \begin{array}{l}
-    U_{d1} = x_3 - x_5 - x_7 - U_{in2}(t) \, \text{,} \\
-    U_{d2} = -x_4 + x_6 - x_7 - U_{in2}(t) \, \text{,} \\
-    U_{d3} = x_4 + x_5 + x_7 + U_{in2}(t) \, \text{,} \\
-    U_{d4} = -x_3 - x_6 + x_7 + U_{in2}(t) \, \text{,} \\
-    q(U) = \gamma(exp(\delta U) - 1) \, \text{,} \\
-    U_{in1}(t) = 1/2 \sin(2000 \pi t) \, \text{,} \\
-    U_{in2}(t) = 2 \sin(20000 \pi t) \, \text{.}
+  \begin{array}{r@{~}c@{~}l}
+    U_{d1}     &=& x_3 - x_5 - x_7 - U_{in2}(t) \, \text{,} \\
+    U_{d2}     &=& -x_4 + x_6 - x_7 - U_{in2}(t) \, \text{,} \\
+    U_{d3}     &=& x_4 + x_5 + x_7 + U_{in2}(t) \, \text{,} \\
+    U_{d4}     &=& -x_3 - x_6 + x_7 + U_{in2}(t) \, \text{,} \\
+    q(U)       &=& \gamma(\exp(\delta U) - 1) \, \text{,} \\
+    U_{in1}(t) &=& 0.5 \sin(2000 \pi t) \, \text{,} \\
+    U_{in2}(t) &=& 2 \sin(20000 \pi t) \, \text{.}
   \end{array}
 \end{equation*}
 %
 \acp{IC} at $t = 0$ and parameters are given by $\m{x}_0 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]^\top$, and
 %
 \begin{equation*}
-  \begin{array}{l}
-    C = \SI{16}{\nano\farad} \, \text{,} \\
-    C_s = 0~\text{or}~\SI{2}{\pico\farad} \, \text{,} \\
-    C_p = \SI{100}{\nano\farad} \, \text{,} \\
-    L_h = \SI{4.45}{\henry} \, \text{,} \\
-    L_{s1} = \SI{2}{\milli\henry} \, \text{,} \\
-    L_{s2} = \SI{0.5}{\milli\henry} \, \text{,} \\
-    L_{s3} = \SI{0.5}{\milli\henry} \, \text{,} \\
-    \gamma = 40.67286402 \, \text{,} \\
+  \begin{array}{r@{~}c@{~}l}
+    C      &=& \SI{16}{\nano\farad} \, \text{,} \\
+    C_s    &=& 0~\text{or}~\SI{2}{\pico\farad} \, \text{,} \\
+    C_p    &=& \SI{100}{\nano\farad} \, \text{,} \\
+    L_h    &=& \SI{4.45}{\henry} \, \text{,} \\
+    L_{s1} &=& \SI{2}{\milli\henry} \, \text{,} \\
+    L_{s2} &=& \SI{0.5}{\milli\henry} \, \text{,} \\
+    L_{s3} &=& \SI{0.5}{\milli\henry} \, \text{,} \\
+    \gamma &=& 40.67286402 \, \text{,} \\
   \end{array}
   \qquad
-  \begin{array}{l}
-    R = \SI{25}{\kilo\ohm} \, \text{,} \\
-    R_p = \SI{50}{\ohm} \, \text{,} \\
-    R_{g1} = \SI{36.3}{\ohm} \, \text{,} \\
-    R_{g2} = \SI{17.3}{\ohm} \, \text{,} \\
-    R_{g3} = \SI{17.3}{\ohm} \, \text{,} \\
-    R_{i} = \SI{50}{\ohm} \, \text{,} \\
-    R_{c} = \SI{600}{\ohm} \, \text{,} \\
-    \delta = 17,7493332 \, \text{.} \\
+  \begin{array}{r@{~}c@{~}l}
+    R      &=& \SI{25}{\kilo\ohm} \, \text{,} \\
+    R_p    &=& \SI{50}{\ohm} \, \text{,} \\
+    R_{g1} &=& \SI{36.3}{\ohm} \, \text{,} \\
+    R_{g2} &=& \SI{17.3}{\ohm} \, \text{,} \\
+    R_{g3} &=& \SI{17.3}{\ohm} \, \text{,} \\
+    R_{i}  &=& \SI{50}{\ohm} \, \text{,} \\
+    R_{c}  &=& \SI{600}{\ohm} \, \text{,} \\
+    \delta &=& 17.7493332 \, \text{.} \\
   \end{array} \, \text{.}
 \end{equation*}
 %
@@ -1587,28 +1586,28 @@ Considering $C_s = 0$, the index reduction process is flawlessly performed throu
 
 \subsection{Cascade of Differential Amplifiers}
 
-The cascade of differential amplifiers is an example of a system whose index can be arbitrarily high, depending on how many operational amplifiers are cascaded. If we consider a circuit with one differential amplifier as shown in Figure~\ref{chap:4:fig:diffamp_single} and, assuming that the operational amplifier is ideal, the circuit equations lead to the relation $x(t) = -C R U(t)^{\prime}$ where $U(t)$ is the generator voltage. Since the solution to the circuit equations involves at least one derivative of the input function, the system must be index-1. By cascading a series of $p \in \mathcal{N}$ differential amplifiers in a circuit as in Figure~\ref{chap:4:fig:diffamp_cascade}, we can see that the resulting \acp{DAE} index is equal to $p$. Specifically, the voltage at the output of the $p$-th differential amplifier is given by $x_p(t) = -C_p R_p x_{p-1}(t)^{\prime}$, where $v(t) = -C_1 R_1 U(t)^{\prime}$. Thence the following system of equations is obtained
+The cascade of differential amplifiers is an example of a system whose index can be arbitrarily high, depending on how many operational amplifiers are cascaded. If we consider a circuit with one differential amplifier as shown in Figure~\ref{chap:4:fig:diffamp_single} and, assuming that the operational amplifier is ideal, the circuit equations lead to the relation $x = -C R U{\,}^{\prime}(t)$ where $U(t)$ is the generator voltage. Since the solution to the circuit equations involves at least one derivative of the input function, the system must be index-1. By cascading a series of $p \in \mathcal{N}$ differential amplifiers in a circuit as in Figure~\ref{chap:4:fig:diffamp_cascade}, we can see that the resulting \acp{DAE} index is equal to $p$. Specifically, the voltage at the output of the $p$-th differential amplifier is given by $x_p = -C_p R_p x_{p-1}^{\prime}$, where $v = -C_1 R_1 U{\,}^{\prime}(t)$. Thence the following system of equations is obtained
 %
 \begin{equation*}
-  \begin{cases}
-    x_1(t) = -C_1 R_1 U(t)^{\prime} \\
-    x_2(t) = -C_2 R_2 x_1(t)^{\prime} \\
-    ~\vdots \\
-    x_p(t) = -C_p R_p x_{p-1}(t)^{\prime}
-  \end{cases}
+  \begin{system}
+    x_1 &=& -C_1 R_1 U{\,}^{\prime}(t) \\
+    x_2 &=& -C_2 R_2 x_1^{\prime} \\
+    &\vdots& \\
+    x_p &=& -C_p R_p x_{p-1}^{\prime}
+  \end{system}
   %
   \quad \text{whose analytical solution is} \quad
   %
-  x_i(t) = \prod_{j=1}^{i} (-C_j R_j) \dfrac{\de{}^{i}}{\de{}t^{i}}U(t) \, \text{.}
+  x_i = \prod_{j=1}^{i} (-C_j R_j) U{\,}^{(i)}(t) \, \text{.}
 \end{equation*}
 %
 Consistent \acp{IC} at $t = t_0$ can be easily obtained by evaluating the analytical solution at $t = t_0$, \ie{},
 %
 \begin{equation*}
   \m{x}_0 = \begin{bmatrix}
-    -C_1 R_1 \left.\dfrac{\de{}}{\de{}t}U(t)\right|_{t=t_0} \\
+    -C_1 R_1 U{\,}^{\prime}(t) \big|_{t = t_0} \\
     \vdots \\
-    \displaystyle\prod_{j=1}^{p} (-C_j R_j) \left.\dfrac{\de{}^{p}}{\de{}t^{p}}U(t)\right|_{t=t_0}
+    \displaystyle\prod_{j=1}^{p} (-C_j R_j) U{\,}^{(p)}(t) \big|_{t = t_0}
   \end{bmatrix} \, \text{.}
 \end{equation*}
 
@@ -1631,13 +1630,13 @@ Consistent \acp{IC} at $t = t_0$ can be easily obtained by evaluating the analyt
   \label{chap:4:fig:diffamp_all}
 \end{figure}
 
-The index reduction of such a system, which falls under the category of linear \acp{DAE}, is pretty much straightforward. \Indigo{} can reduce to index-0 systems made of up to $p = 100$ differential amplifiers, even if the performance of the reduction process is strongly linked to the capabilities of \Maple{} symbolic kernel to deal with sparse large matrices. An interesting aspect that this last application brings to light is how systematically the index reduction process is performed through \Indigo{}. The system is transformed in the form $\mE \, \mxp = \mg$ with $\ma = \m{0}$, which is explicitly given by
+The index reduction of such a system, which falls under the category of linear \acp{DAE}, is straightforward. \Indigo{} can reduce to index-0 systems made of up to $p = 100$ differential amplifiers, even if the performance of the reduction process is strongly linked to the capabilities of \Maple{} symbolic kernel to deal with sparse large matrices. An interesting aspect that this last application brings to light is how systematically the index reduction process is performed through \Indigo{}. The system is transformed in the form $\mE \, \mxp = \mg$ with $\ma = \m{0}$, which is explicitly given by
 %
 \begin{equation*}
   \left[\begin{array}{ccc|c}
     -C_2 R_2 & & & 0 \\
     & \ddots & & \vdots \\
-    & & -C_p R_p & 0 \\
+    & & -C_p R_p & 0
   \end{array}\right]
   %
   \left[\begin{array}{c}
@@ -1649,7 +1648,7 @@ The index reduction of such a system, which falls under the category of linear \
   \quad \text{with} \quad
   %
   \ma = \begin{bmatrix}
-    - x_1 - C_1 R_1 \dfrac{\de{}}{\de{}t}U(t)
+    - x_1 - C_1 R_1 U{\,}^{\prime}(t)
   \end{bmatrix} \, \text{.}
 \end{equation*}
 %
@@ -1671,11 +1670,11 @@ Then the index reduction is performed $p$ times, and the system $\mE \, \mxp = \
     x_{k+2}^{\prime} \\ \vdots \\ x_{p-1}^{\prime} \\ \hline
     x_p^{\prime}
   \end{array}\right] = \left[\begin{array}{c}
-    -C_1R_1 \dfrac{\de{}^2}{\de{}t^2}U(t) \\
+    -C_1 R_1 U{\,}^{\prime\prime}(t) \\
     \vdots \\
-    \displaystyle\prod_{j=1}^{k-1} (-C_j R_j) \dfrac{\de{}^k}{\de{}t^k}U(t) \\ \hline
+    \displaystyle\prod_{j=1}^{k-1} (-C_j R_j) U{\,}^{(k)}(t) \\ \hline
     x_{k+2} \\ \vdots \\ x_p \\ \hline
-    \displaystyle\prod_{j=1}^{k} (-C_j R_j) \dfrac{\de{}^{k+1}}{\de{}t^{k+1}}U(t)
+    \displaystyle\prod_{j=1}^{k} (-C_j R_j) U{\,}^{(k+1)}(t)
   \end{array}\right] \, \text{,}
 \end{equation*}
 %
@@ -1683,15 +1682,15 @@ with algebraic equations $\ma = \m{0}$ and hidden constraints $\mh = \m{0}$ give
 %
 \begin{equation*}
   \ma = \begin{bmatrix}
-    -x_{k+1} + \displaystyle\prod_{j=1}^{k+1} (-C_j R_j) \dfrac{\de{}^{k+1}}{\de{}t^{k+1}}U(t)
+    -x_{k+1} + \displaystyle\prod_{j=1}^{k+1} (-C_j R_j) U{\,}^{(k+1)}(t)
   \end{bmatrix}
   %
   \quad \text{and} \quad
   %
   \mh = \begin{bmatrix}
-    -x_{1} - C_1R_1 \dfrac{\de{}}{\de{}t}U(t) \\
+    -x_{1} - C_1 R_1 U{\,}^{\prime}(t) \\
     \vdots \\
-    -x_k + \displaystyle\prod_{j=1}^{k} (-C_j R_j) \dfrac{\de{}^{k}}{\de{}t^{k}}U(t)
+    -x_k + \displaystyle\prod_{j=1}^{k} (-C_j R_j) U{\,}^{(k)}(t)
   \end{bmatrix} \, \text{.}
 \end{equation*}
 %
@@ -1707,17 +1706,17 @@ Finally, at the $p$\textsuperscript{th} step, the reduced index-0 system is writ
   \begin{bmatrix}
     x_1^{\prime} \\ \vdots \\ x_p^{\prime}
   \end{bmatrix} = \left[\begin{array}{c}
-    -C_1R_1 \dfrac{\de{}^{2}}{\de{}t^{2}}U(t) \\
+    -C_1 R_1 U{\,}^{\prime\prime}(t) \\
     \vdots \\
-    \displaystyle\prod_{j=1}^{p-1} (-C_j R_j) \dfrac{\de{}^{p}}{\de{}t^{p}}U(t)
+    \displaystyle\prod_{j=1}^{p-1} (-C_j R_j) U{\,}^{(p)}(t)
   \end{array}\right]
   %
   \quad \text{with} \quad
   %
   \mh = \begin{bmatrix}
-    -x_{1} - C_1R_1 \dfrac{\de{}}{\de{}t}U(t) \\
+    -x_{1} - C_1 R_1 U{\,}^{\prime}(t) \\
     \vdots \\
-    -x_k + \displaystyle\prod_{j=1}^{p} (-C_j R_j) \dfrac{\de{}^{p}}{\de{}t^{p}}U(t)
+    -x_k + \displaystyle\prod_{j=1}^{p} (-C_j R_j) U{\,}^{(p)}(t)
   \end{bmatrix} \, \text{.}
 \end{equation*}
 %

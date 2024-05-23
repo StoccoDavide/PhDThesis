@@ -45,7 +45,7 @@ Comprehensive documentation is available on the provided website, encompassing b
 
 \Acme{} supports a limited number of geometrical entities, carefully chosen to maintain the library's essential nature for efficiency and easy maintenance. The chosen classes specifically describe and manipulate virtual ground surfaces and tires. While the library is intentionally kept minimal, it is extensible according to the needs of end-users. The geometric entities are systematically organized into classes, each being within the \Acme{} namespace and publicly inheriting from the virtual superclass \Entity{}. The derived classes, representing the homonyms geometric entities are \Point{}, \Line{}, \Ray{}, \Plane{}, \Segment{}, \Triangle{}, \Disk{}, and \Ball{}, are integral components of the library. In Figure~\ref{app1:fig:acme_entities}, a representation of all \Acme{} basic \Entity{} objects is shown. A concise mathematical description of each data type in the software follows.
 
-\begin{figure}[htp]
+\begin{figure}[htb]
   \centering
   \def\svgwidth{9cm}
   \input{./figures/appendix_1/acme_entities_1.pdf_tex} \\[1.0em]
@@ -119,7 +119,7 @@ In addition to the fundamental data types presented, we also provide other class
 \paragraph{\Collection{}}
 The \Collection{} object consists of a vector of \SharedPointer{} to \Entity{} type objects. This class can be used when a substantial number of \Entity{} object instances need to be grouped into a single object. The grouping, coupled with the usage of \SharedPointer{} objects, facilitates effective data manipulation and ensures safe memory management. Nonetheless, the \Collection{} object is not a geometric entity and does not have any geometric meaning. It is merely a container for \Entity{} objects that can be used to perform operations on a large number of \Entity{} objects simultaneously. In Figure~\ref{app1:fig:acme_collection}, an example of two \Collection{} objects bounded in two different \Aabb{}s is reported.
 
-\begin{figure}[htp]
+\begin{figure}[htb]
   \centering
   \def\svgwidth{9cm}
   \input{./figures/appendix_1/acme_collection.pdf_tex}
@@ -162,7 +162,7 @@ Specific algorithms for basic intersections are not discussed here for the sake 
 \subsection{Software Functionalities}
 The \Acme{} geometry library consists of a \cpp{} core and a \Matlab{} \Mex{} wrapper. The library is built to efficiently \emph{create}, \emph{intersect} and \emph{destroy} basic geometry entities objects. It is possible to check geometrical conditions between objects, like \emph{parallelism}, \emph{orthogonality}, \emph{collinearity} and \emph{coplanarity}. The intersections that can be performed with the \Acme{} library are limited to those that potentially return a \emph{single} \Acme{}::\Entity{} object. For example, the intersection of a coplanar disk and a triangle may potentially return a circular arc and two segments, making it unsuitable for direct execution through the \Acme{} library. The sets of geometrical condition tests and intersections that can be performed are summarized in Tables~\ref{app1:tab:acme_conditions} and~\ref{app1:tab:acme_intersections} respectively.
 
-\begin{table}[!htb]
+\begin{table}[htb]
   \centering
   \begin{tabular}{ccccccccc}
     \toprule
@@ -186,7 +186,7 @@ The \Acme{} geometry library consists of a \cpp{} core and a \Matlab{} \Mex{} wr
   \label{app1:tab:acme_conditions}
 \end{table}
 
-\begin{table}[!htb]
+\begin{table}[htb]
   \centering
   \begin{tabular}{ccccccccc}
     \toprule
@@ -219,7 +219,7 @@ Thanks to the \Matlab{} \Mex{}, objects can also be manipulated and \emph{visual
 Table~\ref{app1:tab:acme_timing} presents a comparison of timing performances between the \CGAL{} and \Acme{} libraries in a \cpp{} environment. As evident from the results, there is a notable increase in speed. This could be attributed to the greater complexity of the \CGAL{} library, which, in addition to having a much more intricate and comprehensive framework than \Acme{}, likely carries out additional checks or dynamic allocations on the objects in use.
 
 
-\begin{table}[!htb]
+\begin{table}[htb]
   \centering
   \begin{tabular}{cccccc}
     \toprule
@@ -320,5 +320,3 @@ e1.plot(f1, 'green');
 \end{minipage}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-
-% That's all folks!

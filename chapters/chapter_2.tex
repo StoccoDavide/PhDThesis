@@ -89,10 +89,10 @@ Given that a \ac{DAE} encompasses both differential equations and constraints, a
   constitutes a \ac{DAE} with a differential index of 1, as it requires one differentiation to yield the \ac{ODE} $x^{\prime} = y^{\prime}$. Similarly, for the system
   %
   \begin{equation}
-    \begin{cases}
-      x_1 = y \\
-      x_2 = x_1^{\prime}
-    \end{cases} \quad \text{,}
+    \begin{system}
+      x_1 &=& y \\
+      x_2 &=& x_1^{\prime}
+    \end{system} \quad \text{,}
     \label{chap2:eq:dae_index_2}
   \end{equation}
   %
@@ -114,14 +114,14 @@ The structural index was initially introduced in the linear constant coefficient
 Relevant studies, such as~\cite{lamour2013differential}, reveal that the index may vary depending on a specific solution. An example is the following \ac{DAE} system.
 
 \begin{example}[Differential Index Dependency on Solution]
-  Consider the \ac{DAE} system in semi-explicit form
+  Consider the \ac{DAE} system in the semi-explicit form
   %
   \begin{equation*}
-    \begin{cases}
-    x_1^{\prime} = x_3 \\
-    0 = x_2(1 - x_2) \\
-    0 = x_1x_2 + x_3(1 - x_2) - t
-    \end{cases} \, \text{.}
+    \begin{system}
+    x_1^{\prime} &=& x_3 \\
+    0            &=& x_2(1 - x_2) \\
+    0            &=& x_1x_2 + x_3(1 - x_2) - t
+    \end{system} \, \text{.}
   \end{equation*}
   %
   The second equation admits two solutions: $x_2 = 0$ and $x_2 = 1$. If $x_2$ is continuous, the system does not transition between these values. For $x_2 = 0$, the system is semi-explicit with an index of 1, while for $x_2 = 1$, the index becomes 2. Unlike the index-1 scenario, no \ac{IC} on $x_1$ is necessary. Replacing the algebraic equation involving $x_2$ with $x_2^{\prime} = 0$, leads the index of the modified \ac{DAE} system to depend on the \ac{IC}. Specifically, if $x_2(0) = 1$, the index is 2; otherwise, it remains 1~\cite[Section 3.3]{lamour2013differential}.
@@ -146,10 +146,10 @@ As will be better detailed in the forthcoming section, the implicit \ac{DAE} sys
   \item The \emph{Hessenberg index-1} \ac{DAE} system is represented as
   %
   \begin{equation*}
-    \begin{cases}
-      \m{x}^{\prime} = \m{f}(\m{x}, \m{z}, t) \\
-      \m{0} = \m{g}(\m{x}, \m{z}, t)
-    \end{cases} \, \text{,}
+    \begin{system}
+      \m{x}^{\prime} &=& \m{f}(\m{x}, \m{z}, t) \\
+      \m{0}          &=& \m{g}(\m{x}, \m{z}, t)
+    \end{system} \, \text{,}
   \end{equation*}
   %
   with $\m{x} \in \mathbb{R}^n$, $\m{z} \in \mathbb{R}^m$, $\m{f}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{n}$, $\m{g}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, and where the Jacobian $\jac{\m{g}}{\m{z}}$ is assumed non-singular for all $t$. This configuration closely resembles the semi-explicit index-1 \ac{DAE} system~\eqref{chap2:eq:semiexplicit_dae} discussed earlier. Semi-explicit index-1 \acp{DAE} shares similarities with implicit \acp{ODE}. While it is theoretically feasible to solve for $\m{z}$ in the algebraic equation (using the implicit function theorem) and then substitute it into the differential equation to derive the underlying \ac{ODE} in terms of $\m{x}$ (though uniqueness is not guaranteed), this approach is not universally recommended for numerical solutions due to potential ill-conditioning and stability issues. An example of a Hessenberg index-1 \ac{DAE} system is in the formulation of \acp{TPPC} problems~\cite{brenan1995numerical}.
@@ -157,10 +157,10 @@ As will be better detailed in the forthcoming section, the implicit \ac{DAE} sys
   \item The \emph{Hessenberg index-2} \ac{DAE} system is expressed as
   %
   \begin{equation*}
-    \begin{cases}
-      \m{x}^{\prime} = \m{f}(\m{x}, \m{z}, t) \\
-      \m{0} = \m{g}(\m{x}, t)
-    \end{cases} \, \text{,}
+    \begin{system}
+      \m{x}^{\prime} &=& \m{f}(\m{x}, \m{z}, t) \\
+      \m{0}          &=& \m{g}(\m{x}, t)
+    \end{system} \, \text{,}
   \end{equation*}
   %
   with $\m{x} \in \mathbb{R}^n$, $\m{z} \in \mathbb{R}^m$, $\m{f}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{n}$, $\m{g}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, and where the product of Jacobians $\jac{\m{g}}{\m{y}} \, \jac{\m{f}}{\m{z}}$ is assumed non-singular for all $t$. It is important to observe that the algebraic variable $\m{z}$ does not appear in the second equation. This arrangement characterizes a pure index-2 \ac{DAE}, where all algebraic variables act as index-2 variables. An example of Hessenberg index-2 \acp{DAE} arises from the modeling of incompressible fluid flow through discretized Navier-Stokes equations~\cite{ascher1998computer}.
@@ -168,11 +168,11 @@ As will be better detailed in the forthcoming section, the implicit \ac{DAE} sys
   \item The \emph{Hessenberg index-3} \ac{DAE} system is formulated as
   %
   \begin{equation*}
-    \begin{cases}
-      \m{x}^\prime = \m{f}(\m{x}, \m{y}, \m{z}, t) \\
-      \m{y}^\prime = \m{g}(\m{x}, \m{y}, t) \\
-      \m{0}        = \m{h}(\m{y}, t)
-    \end{cases} \, \text{,}
+    \begin{system}
+      \m{x}^\prime &=& \m{f}(\m{x}, \m{y}, \m{z}, t) \\
+      \m{y}^\prime &=& \m{g}(\m{x}, \m{y}, t) \\
+      \m{0}        &=& \m{h}(\m{y}, t)
+    \end{system} \, \text{,}
   \end{equation*}
   %
   with $\m{x} \in \mathbb{R}^n$, $\m{z} \in \mathbb{R}^m$, $\m{f}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{n}$, $\m{g}: \mathbb{R}^{n} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, $\m{h}: \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, and where the product $\jac{\m{h}}{\m{y}} \, \jac{\m{g}}{\m{x}} \, \jac{\m{f}}{\m{z}}$ is non-singular for all $t$. Determining the index of a Hessenberg \acp{DAE} follows a similar differentiation process to the general case. However, only algebraic constraints need to be differentiated~\cite{ascher1991projected}. These index-3 \ac{DAE} systems are frequently encountered in practical scenarios, notably in the fields of \ac{MBD}, \acp{TPPC}, and various engineering applications~\cite{ascher1998computer,brenan1995numerical}.
@@ -180,14 +180,14 @@ As will be better detailed in the forthcoming section, the implicit \ac{DAE} sys
   \item The \emph{Hessenberg index-($r+2$)} \ac{DAE} system is formulated as
   %
   \begin{equation*}
-    \begin{cases}
-      \m{x}_r^\prime = \m{f}_r(\m{x}_1, \m{x}_2, \dots, \m{x}_r, \m{y}, \m{z}, t) \\
-      \vdots \\
-      \m{x}_2^\prime = \m{f}_2(\m{x}_1, \m{x}_2, \m{x}_3, \m{y}, t) \\
-      \m{x}_1^\prime = \m{f}_1(\m{x}_1, \m{x}_2, \m{y}, t) \\
-      \m{y}^\prime = \m{g}(\m{x}_1, \m{y}, t) \\
-      \m{0}        = \m{h}(\m{y}, t)
-    \end{cases} \quad \text{for} \quad r = 1, 2, \dots, r \, \text{,}
+    \begin{system}
+      \m{x}_r^\prime &=& \m{f}_r(\m{x}_1, \m{x}_2, \dots, \m{x}_r, \m{y}, \m{z}, t) \\
+      &\vdots& \\
+      \m{x}_2^\prime &=& \m{f}_2(\m{x}_1, \m{x}_2, \m{x}_3, \m{y}, t) \\
+      \m{x}_1^\prime &=& \m{f}_1(\m{x}_1, \m{x}_2, \m{y}, t) \\
+      \m{y}^\prime   &=& \m{g}(\m{x}_1, \m{y}, t) \\
+      \m{0}          &=& \m{h}(\m{y}, t)
+    \end{system} \quad \text{for} \quad r = 1, 2, \dots, r \, \text{,}
   \end{equation*}
   %
   with $\m{x}_i \in \mathbb{R}^{n_i}$, $\m{y} \in \mathbb{R}^m$, $\m{z} \in \mathbb{R}^m$, $\m{f}_i: \mathbb{R}^{n_i} \times \mathbb{R}^{n_{i+1}} \times \dots \times \mathbb{R}^{n_r} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{n_i}$, $\m{g}: \mathbb{R}^{n_1} \times \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, $\m{h}: \mathbb{R}^{m} \times \mathbb{R} \rightarrow \mathbb{R}^{m}$, and where the product $\jac{\m{h}}{\m{y}} \, \jac{\m{g}}{\m{x}_1} \, \jac{\m{f}}{1\m{x}_2} \dots \jac{\m{f}}{r-1\m{x}_r} \, \jac{\m{f}}{r\m{z}}$ is non-singular for all $t$~\cite[Section 3.5]{lamour2013differential}.
@@ -204,10 +204,10 @@ The literature on \ac{DAE} solution methods is vast and varied, with numerous ap
 Direct discretization is preferred due to its simplicity and computational efficiency, as index reduction methods can be time-consuming and computationally expensive, often requiring more user inputs and interventions. However, direct discretization is most effective for index-1, index-2, and index-3 Hessenberg \ac{DAE} systems. Usually, many practical \acp{DAE} fall into these categories or can be transformed into simple combinations of Hessenberg systems. Despite this, challenges may still arise, and even for these restricted classes of problems, direct application of numerical \ac{ODE} methods may lead to insufficient results and instabilities. For \acp{DAE} with an index greater than 2, employing index reduction techniques to solve the problem in a lower-index form is often considered the most effective approach. Similar considerations arise in cases resembling singularly perturbed \ac{ODE} systems, such as
 %
 \begin{equation}
-  \begin{cases}
-  \m{y}^{\prime} = \m{f}(\m{y}, \m{z}, t) \\
-  \varepsilon \m{z}^{\prime} = \m{g}(\m{y}, \m{z}, t)
-  \end{cases} \, \text{,}
+  \begin{system}
+  \m{y}^{\prime}             &=& \m{f}(\m{y}, \m{z}, t) \\
+  \varepsilon \m{z}^{\prime} &=& \m{g}(\m{y}, \m{z}, t)
+  \end{system} \, \text{,}
   \label{chap2:eq:singularly_perturbed}
 \end{equation}
 %

@@ -3,7 +3,7 @@
 \chapter{Essential Concepts and Techniques of Symbolic Computation}
 \label{chap3:symbolic_computation}
 
-Symbolic linear algebra plays a crucial role in the index reduction of \acp{DAE}. Nonetheless, it is also a powerful tool to handle complex mathematical tasks involving extensive algebraic and calculus operations. However, symbolic computation brings its own challenges. In particular, expression swelling is a common issue when intensively working with symbolic expressions. In this chapter, we discuss the expression swell phenomenon and discuss strategies for its mitigation through hierarchical representation techniques. Additionally, we tackle the solution of linear systems of equations using novel matrix factorization methods. Practical implementation details, including strategies for managing large expressions during symbolic matrix decomposition, are demonstrated using the newly developed \LEM{} and \LAST{} \Maple{} packages. These packages provide improved symbolic linear algebra capabilities with expression swell mitigation. But before we delve into the details of these packages, let us first introduce the concept of computer algebra and its applications in scientific computing.
+Symbolic linear algebra plays a crucial role in the index reduction of \acp{DAE}. Nonetheless, it is a powerful tool to handle complex mathematical tasks involving extensive algebraic and calculus operations. However, symbolic computation brings its own challenges. In particular, expression swelling is a common issue when intensively working with symbolic expressions. In this chapter, we discuss the expression swell phenomenon and discuss strategies for its mitigation through hierarchical representation techniques. Additionally, we tackle the solution of linear systems of equations using novel matrix factorization methods. Using the newly developed \LEM{} and \LAST{} \Maple{} packages, practical implementation details are demonstrated, showcasing improved symbolic linear algebra capabilities with expression swell mitigation. Nevertheless,  Before we delve into the details of these packages, let us first introduce the concept of computer algebra and its applications in scientific computing.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
@@ -24,13 +24,14 @@ Over the past 15 years, we have witnessed the development and widespread dissemi
 %
 \begin{itemize}
   \setlength{\itemsep}{0.0em}
-  \item \Axiom{}: A comprehensive \ac{CAS} developed during the 1970s at IBM under the name of Scratchpad, later sold to the Numerical Algorithms Group (NAG) in England and became the \Axiom{} commercial system. NAG withdrew it from the market 2001 and released it as free software. Further details about \Axiom{} can be found in~\citet{jenks1992axiom}.
+  \item \Axiom{}: A comprehensive \ac{CAS} developed during the 1970s at IBM under the name of Scratchpad, later sold to the Numerical Algorithms Group (NAG) in England and became the \Axiom{} commercial system. NAG withdrew it from the market 2001 and released it as free software. Further details about \Axiom{} can be found in~\cite{jenks1992axiom}.
   \item \Derive{}: A compact \ac{CAS} originally crafted by Soft Warehouse Inc. for personal computer use. \Derive{} has also been integrated into Texas Instruments Inc.'s TI-89 and TI-92 handheld calculators. More information about \Derive{} is available online, yet the software is no longer actively maintained.
-  \item \Macsyma{}: A robust \ac{CAS} initially conceived at the Massachusetts Institute of Technology during the late 1960s and 1970s. Various versions of the original \Macsyma{} system are currently in circulation. Additional insights into \Macsyma{} can be gleaned from~\citet{wester1999computer}.
-  \item \Maple{}: A highly sophisticated \ac{CAS} initially developed by the Symbolic Computation Group at the University of Waterloo (Canada) and presently distributed by Waterloo \Maple{} Inc. For more information about \Maple{}, refer to~\citet{heck2003introduction} or visit the website~\cite{maple}.
-  \item \Mathematica{}: An advanced \ac{CAS} created by Wolfram Research Inc. Further details about \Mathematica{} are provided in~\citet{wolfram2003mathematica} or on the website~\cite{mathematica}.
-  \item \MuPAD{}: A sizable \ac{CAS} developed by the University of Paderborn (Germany) and SciFace Software GmbH \& Co. KG. Refer to~\citet{creutzig2004mupad}. Later versions of \MuPAD{} are distributed by MathWorks Inc. and currently constitute the \Matlab{} \ac{CAS}.
-  \item \Reduce{}: One of the earliest \acp{CAS}, developed in the late 1960s and 1970s. Further information about \Reduce{} can be found in~\citet{rayna1987reduce}.
+  \item \Macsyma{}: A robust \ac{CAS} initially conceived at the Massachusetts Institute of Technology during the late 1960s and 1970s. Various versions of the original \Macsyma{} system are currently in circulation. Additional insights into \Macsyma{} can be gleaned from~\cite{wester1999computer}.
+  \item \Maple{}: A highly sophisticated \ac{CAS} initially developed by the Symbolic Computation Group at the University of Waterloo (Canada) and presently distributed by Waterloo \Maple{} Inc. For more information about \Maple{}, refer to~\cite{heck2003introduction} or visit the website~\cite{maple}.
+  \item \Mathematica{}: An advanced \ac{CAS} created by Wolfram Research Inc. Further details about \Mathematica{} are provided in~\cite{wolfram2003mathematica} or on the website~\cite{mathematica}.
+  \item \MuPAD{}: A sizable \ac{CAS} developed by the University of Paderborn (Germany) and SciFace Software GmbH \& Co. KG. Refer to~\cite{creutzig2004mupad}. Later versions of \MuPAD{} are distributed by MathWorks Inc. and currently constitute the \Matlab{} \ac{CAS}.
+  \item \Reduce{}: One of the earliest \acp{CAS}, developed in the late 1960s and 1970s. Further information about \Reduce{} can be found in~\cite{rayna1987reduce}.
+  \item \SymPy{}: A Python library for symbolic mathematics that aims to become a full-featured \ac{CAS}. \SymPy{} is open-source and freely available.
 \end{itemize}
 %
 Specialized \acp{CAS} are also available for specific mathematical domains, such as the system developed for physics applications from the 1970s onward. These include, but are not limited to:
@@ -47,7 +48,7 @@ Each of these software packages constitutes an integrated mathematics problem-so
 
 \subsection{The Maple Language}
 
-As we have just shown, there exist several commercial \acp{CAS} that provide a wide range of symbolic computation capabilities. Among these, \Maple{} is a powerful system developed by \MapleSoft{} that offers a comprehensive suite of mathematical tools. The \Maple{} system is equipped with a high-level programming language that allows users to interact with the system in an intuitive manner. The \Maple{} language is designed to facilitate the execution of symbolic computations, enabling users to perform complex mathematical operations with ease. The language is equipped with a wide range of built-in functions and operators that can be used to manipulate mathematical expressions, solve equations, and perform various other mathematical tasks. In the following examples, we illustrate an interactive session with the \Maple{} \ac{CAS}. User inputs, denoted by the prompt (\code{>}) at the line beginning, are entered at a computer workstation. Commands such as \code{factor}, \code{convert}, \code{compoly}, and \code{simplify} are among the mathematical operators available in the \Maple{} system. Upon receiving these commands, the program carries out the corresponding mathematical operations and displays the results using notation akin to conventional mathematical expressions.
+As we have just shown, there exist several commercial \acp{CAS} that provide a wide range of symbolic computation capabilities. Among these, \Maple{} is a powerful system developed by \MapleSoft{} that offers a comprehensive suite of mathematical tools. The \Maple{} system is equipped with a high-level programming language that allows users to interact with the system in an intuitive manner. The \Maple{} language is designed to facilitate the execution of symbolic computations, enabling users to perform complex mathematical operations with ease. The language is equipped with a wide range of built-in functions and operators that can be used to manipulate mathematical expressions, solve equations, and perform various other mathematical tasks. In the following examples, we illustrate an interactive session with the \Maple{} \ac{CAS}. User inputs, denoted by the prompt (\code{>}) at the line beginning, are entered at a computer workstation. Commands such as \code{factor}, \code{convert}, \code{compoly}, and \code{simplify} are among the mathematical operators available in the \Maple{} system. Upon receiving these commands, the program carries out the corresponding mathematical operations and displays the results using notation similar to conventional mathematical expressions.
 
 \begin{example}[Symbolic operations from algebra and trigonometry in \Maple{}] \phantom{.} \\
   \label{chap3:ex:maple_1}
@@ -357,7 +358,7 @@ The solution for $x(t)$ and $u(t)$ is respectively given by
 \section{Expression Swell}
 \label{chap3:sec:expression_swell}
 
-Over the past four decades, \ac{CAS} have increasingly found applications in both teaching and research. The advantages of incorporating \ac{CAS} into teaching methodologies have been extensively documented. For instance, in \citet{stoutemyer1984radical}, general benefits of \ac{CAS} are outlined, while \citet{pavelle1985macsyma} provides numerous examples where \ac{CAS} quickly solves problems that were previously considered complicated or time-consuming to tackle by hand. However, \citet{mitic1994pitfalls} highlight an essential precondition for the effective and successful \ac{CAS} utilization: users must be aware of potential pitfalls and limitations, across all mathematical proficiency levels. Besides software bugs, the primary source of performance deterioration of \acp{CAS} is the \emph{expression swelling}.
+Over the past four decades, \ac{CAS} have increasingly found applications in both teaching and research. The advantages of incorporating \ac{CAS} into teaching methodologies have been extensively documented. For instance, in~\citet{stoutemyer1984radical}, general benefits of \ac{CAS} are outlined, while~\citet{pavelle1985macsyma} provides numerous examples where \ac{CAS} quickly solves problems that were previously considered complicated or time-consuming to tackle by hand. However,~\citet{mitic1994pitfalls} highlight an essential precondition for the effective and successful \ac{CAS} utilization: users must be aware of potential pitfalls and limitations, across all mathematical proficiency levels. Besides software bugs, the primary source of performance deterioration of \acp{CAS} is the \emph{expression swelling}.
 
 The expression swell is a common phenomenon of exact computations in which the size of numbers and expressions involved in a calculation grows dramatically as the calculation progresses, thereby slowing down the execution. While symbolic calculation software like \Maple{} and \Mathematica{} can handle substantial symbolic expressions, the growth of expression size during manipulation severely degrades the \acp{CAS} performance, resulting in prohibitively long \ac{CPU} times. During symbolic manipulation, it is not uncommon to find computations that are executed just once; once a result is obtained, recalculating it becomes unnecessary. However, the time required to obtain a result is often unknown. Predicting the memory and \ac{CPU} time prerequisites for a given calculation poses challenges since the size of expressions generated during computation is known only after the computation is completed. For these reasons, expression swell consistently poses a challenge, emerging as a major source of \ac{CAS} faults. It manifests in two forms: \emph{inherent} expression swell and \emph{intermediate} expression swell, each of which is discussed in the following sections.
 
@@ -418,37 +419,37 @@ Intermediate expression swell is an important special case of expression swell i
     K^{\ell}_{j}{}_{hk;p} + K^{\ell}_{j}{}_{kp;j} + K^{\ell}_{j}{}_{ph;k} = 0
   \end{equation*}
   %
-  where $K$ is the Riemann curvature tensor. Expanding the left-hand side in terms of Christoffel symbols of the second kind, one obtains a sum os 72 terms, each of which is a product of 2 or 3 Christoffel symbols, for a total of 180 Christoffel symbols. However, upon simplifying this expression by consistently renaming the dummy indices, the simple result of zero is obtained, which verifies the identity.
+  where $K$ is the Riemann curvature tensor. Expanding the left-hand side in terms of Christoffel symbols of the second kind, one obtains a sum of 72 terms, each of which is a product of 2 or 3 Christoffel symbols, for a total of 180 Christoffel symbols. However, upon simplifying this expression by consistently renaming the dummy indices, the simple result of zero is obtained, which verifies the identity.
   %
   %\begin{equation*}
-  %  \begin{aligned}
-  %    & -\Gamma_{\# 19}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 19}{ }_{\# 27} \Gamma_p{ }^{\# 27}{ }_k+\Gamma_j{ }^{\ell}{ }_{h, \# 25} \Gamma_p{ }^{\# 25}{ }_k+\Gamma_{\# 19}{ }^{\ell}{ }^{\# 22} \Gamma_j{ }^{\# 19}{ }_h \Gamma_p{ }^{\# 22}{ }_k-\Gamma_j{ }^{\ell}{ }_{\# 20, h} \Gamma_p{ }^{\# 20}{ }_k \\
-  %    & +\Gamma_j{ }^{\ell}{ }_{\# 18, k} \Gamma_p{ }^{\# 18}{ }_h+\Gamma_{\# 10}{ }_k \Gamma_j{ }^{\# 10}{ }_{\# 16} \Gamma_p{ }^{\# 16}{ }_h-\Gamma_{\# 10}{ }^{\ell}{ }_{\# 12} \Gamma_j{ }^{\# 10}{ }_k \Gamma_p{ }^{\# 12}{ }_h-\Gamma_j{ }^{\ell}{ }_{k, \# 11} \Gamma_p{ }^{\# 11}{ }_h \\
-  %    & +\Gamma_j{ }^{\ell}{ }_{\#, h} \Gamma_k{ }^{\# 9}{ }_p+\Gamma_{\# 1}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 1}{ }_{\# 7} \Gamma_k{ }^{\# 7}{ }_p-\Gamma_{\# 1}{ }_{\# 3} \Gamma_j{ }^{\# 1}{ }_h \Gamma_k{ }^{\# 3}{ }_p-\Gamma_j{ }^{\ell}{ }_{h, \# 2} \Gamma_k{ }^{\# 2}{ }_p+\Gamma_j{ }^{\ell}{ }_{p, \# 18} \Gamma_k{ }^{\# 18}{ }_h \\
-  %    & +\Gamma_{\# 10}{ }_{\# 15} \Gamma_j{ }^{\# 10}{ }_p \Gamma_k{ }^{\# 15}{ }_h-\Gamma_{\# 10}{ }_p{ }_p \Gamma_j{ }^{\# 10}{ }_{\# 13} \Gamma_k{ }^{\# 13}{ }_h-\Gamma_j{ }^{\ell}{ }_{\# 11, p} \Gamma_k{ }^{\# 11}{ }_h-\Gamma_h{ }^{\# 20}{ }_k \Gamma_j{ }^{\ell}{ }_{p, \# 20} \\
-  %    & +\Gamma_{\# 9}{ }^{\ell}, h{ }^{\ell} \Gamma_j{ }^{\# 9}{ }_p+\Gamma_{\# 1}{ }^{\ell}{ }_h \Gamma_{\# 7}{ }^{\# 1}{ }_k \Gamma_j{ }^{\# 7}{ }_p-\Gamma_{\# 1}{ }_k \Gamma_{\# 4}{ }^{\# 1}{ }_h \Gamma_j{ }^{\# 4}{ }_p+\Gamma_{\# 19}{ }_h \Gamma_{\# 27}{ }^{\# 19}{ }_k \Gamma_j{ }^{\# 27}{ }_p \\
-  %    & +\Gamma_{\# 20}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 20}{ }_{p, h}-\Gamma_{\# 2}{ }^{\ell}{ }_{h, k} \Gamma_j{ }_j^{\# 2}{ }_p+\Gamma_{\# 19}{ }_h{ }_h \Gamma_j{ }^{\# 19}{ }_{p, k}-\Gamma_{\# 19}{ }^{\ell}{ }_{\# 26} \Gamma_h{ }^{\# 26}{ }_k \Gamma_j{ }^{\# 19}{ }_p \\
-  %    & +\Gamma_{\# 19}{ }^{\# 26}{ }_h \Gamma_{\# 26}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 19}{ }_p-\Gamma_{\# 19}{ }^{\# 26}{ }_k \Gamma_{\# 26}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 19}{ }_p+\Gamma_{\# 19}{ }^{\ell}{ }_{h, k} \Gamma_j{ }^{\# 19}{ }_p-\Gamma_{\# 18}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 18}{ }_{p, k} \\
-  %    & -\Gamma_{\# 10}{ }^{\ell}{ }_k \Gamma_{\# 16}{ }^{\# 10}{ }_h \Gamma_j{ }^{\# 16}{ }_p-\Gamma_{\# 10}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 10}{ }_{p, h}+\Gamma_{\# 10}{ }^{\# 15}{ }_h \Gamma_{\# 15}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 10}{ }_p-\Gamma_{\# 10}{ }^{\# 15}{ }_k \Gamma_{\# 15}{ }_h{ }_h \Gamma_j{ }^{\# 10}{ }_p \\
-  %    & -\Gamma_{\# 10}{ }^{\ell}{ }_{k, h} \Gamma_j{ }^{\# 10}{ }_p+\Gamma_h{ }^{\# 9}{ }_p \Gamma_j{ }^{\ell}{ }_{k, \# 9}-\Gamma_{\# 9}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 9}{ }_{k, h}-\Gamma_{\# 1}{ }_h{ }_h \Gamma_{\# 7}{ }^{\# 1}{ }_p \Gamma_j{ }^{\# 7}{ }_k \\
-  %    & -\Gamma_{\# 19}{ }^{\ell}{ }_h \Gamma_{\# 27}{ }^{\# 19}{ }_p \Gamma_j{ }^{\# 27}{ }_k+\Gamma_{\# 25}{ }_{h, p}{ }^{\ell} \Gamma_j{ }^{\# 25}{ }_k+\Gamma_{\# 19}{ }_p{ }_p \Gamma_{\# 23}{ }^{\# 19}{ }_h \Gamma_j{ }^{\# 23}{ }_k-\Gamma_{\# 20}{ }_{p, h}{ }^{\ell} \Gamma_j{ }^{\# 20}{ }_k \\
-  %    & +\Gamma_{\# 10}{ }^{\ell}{ }_p \Gamma_{\# 13}{ }^{\# 10}{ }_h \Gamma_j \# 13{ }_k+\Gamma_{\# 11}{ }_h{ }_h \Gamma_j \# 11{ }_{k, p}+\Gamma_{\# 10}{ }_p \Gamma_j \Gamma^{\# 10}{ }_{k, h}-\Gamma_{\# 10}{ }^{\# 12}{ }_h \Gamma_{\# 12}{ }_p{ }_p \Gamma_j{ }^{\# 10}{ }_k \\
-  %    & +\Gamma_{\# 10}{ }^{\# 12}{ }_p \Gamma_{\# 12}{ }_h{ }_h \Gamma_j{ }^{\# 10}{ }_k+\Gamma_{\# 10}{ }^{\ell}{ }_{p, h} \Gamma_j{ }^{\# 10}{ }_k-\Gamma_{\# 1}{ }_h{ }_h \Gamma_j{ }^{\# 1}{ }_{k, p}+\Gamma_{\# 1}{ }_{\# 6} \Gamma_h{ }^{\# 6}{ }_p \Gamma_j{ }^{\# 1}{ }_k \\
-  %    & -\Gamma_{\# 1}{ }^{\# 6}{ }_h \Gamma_{\# 6}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 1}{ }_k+\Gamma_{\# 1}{ }^{\# 6}{ }_p \Gamma_{\# 6}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 1}{ }_k-\Gamma_{\# 1}{ }^{\ell}{ }_{h, p} \Gamma_j{ }^{\# 1}{ }_k+\Gamma_{\# 1}{ }^{\ell}{ }_k \Gamma_{\# 4}{ }^{\# 1}{ }_p \Gamma_j{ }^{\# 4}{ }_h \\
-  %    & -\Gamma_{\# 25}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 25}{ }_{h, p}-\Gamma_{\# 19}{ }^{\ell}{ }_p \Gamma_{\# 23}{ }^{\# 19}{ }_k \Gamma_j{ }^{\# 23}{ }_h+\Gamma_{\# 2}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 2}{ }_{h, k}-\Gamma_{\# 19}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 19}{ }_{h, k} \\
-  %    & +\Gamma_{\# 19}{ }^{\# 22}{ }_k \Gamma_{\# 22}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 19}{ }_h-\Gamma_{\# 19}{ }^{\# 22}{ }_p \Gamma_{\# 22}{ }_k{ }_k \Gamma_j{ }^{\# 19}{ }_h-\Gamma_{\# 19}{ }^{\ell}{ }_{p, k} \Gamma_j{ }^{\# 19}{ }_h+\Gamma_{\# 18}{ }^{\ell}{ }_{p, k} \Gamma_j{ }^{\# 18}{ }_h \\
-  %    & +\Gamma_{\# 10}{ }^{\ell}{ }_k \Gamma_{\# 16}{ }^{\# 10}{ }_p \Gamma_j{ }^{\# 16}{ }_h-\Gamma_{\# 10}{ }^{\ell}{ }_p \Gamma_{\# 13}{ }^{\# 10}{ }_k \Gamma_j{ }^{\# 13}{ }_h-\Gamma_{\# 11}{ }_{k, p}{ }^{\ell} \Gamma_j{ }^{\# 11}{ }_h+\Gamma_{\# 1}{ }_k{ }_k \Gamma_j{ }^{\# 1}{ }_{h, p} \\
-  %    & +\Gamma_{\# 1}{ }^{\# 3}{ }_k \Gamma_{\# 3}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 1}{ }_h-\Gamma_{\# 1}{ }^{\# 3}{ }_p \Gamma_{\# 3}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 1}{ }_h+\Gamma_{\# 1}{ }^{\ell}{ }_{k, p} \Gamma_j{ }^{\# 1}{ }_h-\Gamma_{\# 1}{ }_k{ }_k \Gamma_h{ }^{\# 4}{ }_p \Gamma_j{ }^{\# 1}{ }_{\# 4} \\
-  %    & +\Gamma_h{ }^{\# 25}{ }_k \Gamma_j{ }^{\ell}{ }^{25, p}+\Gamma_{\# 19}{ }_p{ }_p \Gamma_h{ }^{\# 23}{ }_k \Gamma_j{ }^{\# 19}{ }_{\# 23}-\Gamma_h{ }^{\# 2}{ }_p \Gamma_j{ }^{\ell}{ }_{\# 2, k}
-  %  \end{aligned}
+  %  \begin{array}{c}
+  %    -\Gamma_{\# 19}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 19}{ }_{\# 27} \Gamma_p{ }^{\# 27}{ }_k+\Gamma_j{ }^{\ell}{ }_{h, \# 25} \Gamma_p{ }^{\# 25}{ }_k+\Gamma_{\# 19}{ }^{\ell}{ }^{\# 22} \Gamma_j{ }^{\# 19}{ }_h \Gamma_p{ }^{\# 22}{ }_k-\Gamma_j{ }^{\ell}{ }_{\# 20, h} \Gamma_p{ }^{\# 20}{ }_k \\
+  %    +\Gamma_j{ }^{\ell}{ }_{\# 18, k} \Gamma_p{ }^{\# 18}{ }_h+\Gamma_{\# 10}{ }_k \Gamma_j{ }^{\# 10}{ }_{\# 16} \Gamma_p{ }^{\# 16}{ }_h-\Gamma_{\# 10}{ }^{\ell}{ }_{\# 12} \Gamma_j{ }^{\# 10}{ }_k \Gamma_p{ }^{\# 12}{ }_h-\Gamma_j{ }^{\ell}{ }_{k, \# 11} \Gamma_p{ }^{\# 11}{ }_h \\
+  %    +\Gamma_j{ }^{\ell}{ }_{\#, h} \Gamma_k{ }^{\# 9}{ }_p+\Gamma_{\# 1}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 1}{ }_{\# 7} \Gamma_k{ }^{\# 7}{ }_p-\Gamma_{\# 1}{ }_{\# 3} \Gamma_j{ }^{\# 1}{ }_h \Gamma_k{ }^{\# 3}{ }_p-\Gamma_j{ }^{\ell}{ }_{h, \# 2} \Gamma_k{ }^{\# 2}{ }_p+\Gamma_j{ }^{\ell}{ }_{p, \# 18} \Gamma_k{ }^{\# 18}{ }_h \\
+  %    +\Gamma_{\# 10}{ }_{\# 15} \Gamma_j{ }^{\# 10}{ }_p \Gamma_k{ }^{\# 15}{ }_h-\Gamma_{\# 10}{ }_p{ }_p \Gamma_j{ }^{\# 10}{ }_{\# 13} \Gamma_k{ }^{\# 13}{ }_h-\Gamma_j{ }^{\ell}{ }_{\# 11, p} \Gamma_k{ }^{\# 11}{ }_h-\Gamma_h{ }^{\# 20}{ }_k \Gamma_j{ }^{\ell}{ }_{p, \# 20} \\
+  %    +\Gamma_{\# 9}{ }^{\ell}, h{ }^{\ell} \Gamma_j{ }^{\# 9}{ }_p+\Gamma_{\# 1}{ }^{\ell}{ }_h \Gamma_{\# 7}{ }^{\# 1}{ }_k \Gamma_j{ }^{\# 7}{ }_p-\Gamma_{\# 1}{ }_k \Gamma_{\# 4}{ }^{\# 1}{ }_h \Gamma_j{ }^{\# 4}{ }_p+\Gamma_{\# 19}{ }_h \Gamma_{\# 27}{ }^{\# 19}{ }_k \Gamma_j{ }^{\# 27}{ }_p \\
+  %    +\Gamma_{\# 20}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 20}{ }_{p, h}-\Gamma_{\# 2}{ }^{\ell}{ }_{h, k} \Gamma_j{ }_j^{\# 2}{ }_p+\Gamma_{\# 19}{ }_h{ }_h \Gamma_j{ }^{\# 19}{ }_{p, k}-\Gamma_{\# 19}{ }^{\ell}{ }_{\# 26} \Gamma_h{ }^{\# 26}{ }_k \Gamma_j{ }^{\# 19}{ }_p \\
+  %    +\Gamma_{\# 19}{ }^{\# 26}{ }_h \Gamma_{\# 26}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 19}{ }_p-\Gamma_{\# 19}{ }^{\# 26}{ }_k \Gamma_{\# 26}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 19}{ }_p+\Gamma_{\# 19}{ }^{\ell}{ }_{h, k} \Gamma_j{ }^{\# 19}{ }_p-\Gamma_{\# 18}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 18}{ }_{p, k} \\
+  %    -\Gamma_{\# 10}{ }^{\ell}{ }_k \Gamma_{\# 16}{ }^{\# 10}{ }_h \Gamma_j{ }^{\# 16}{ }_p-\Gamma_{\# 10}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 10}{ }_{p, h}+\Gamma_{\# 10}{ }^{\# 15}{ }_h \Gamma_{\# 15}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 10}{ }_p-\Gamma_{\# 10}{ }^{\# 15}{ }_k \Gamma_{\# 15}{ }_h{ }_h \Gamma_j{ }^{\# 10}{ }_p \\
+  %    -\Gamma_{\# 10}{ }^{\ell}{ }_{k, h} \Gamma_j{ }^{\# 10}{ }_p+\Gamma_h{ }^{\# 9}{ }_p \Gamma_j{ }^{\ell}{ }_{k, \# 9}-\Gamma_{\# 9}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 9}{ }_{k, h}-\Gamma_{\# 1}{ }_h{ }_h \Gamma_{\# 7}{ }^{\# 1}{ }_p \Gamma_j{ }^{\# 7}{ }_k \\
+  %    -\Gamma_{\# 19}{ }^{\ell}{ }_h \Gamma_{\# 27}{ }^{\# 19}{ }_p \Gamma_j{ }^{\# 27}{ }_k+\Gamma_{\# 25}{ }_{h, p}{ }^{\ell} \Gamma_j{ }^{\# 25}{ }_k+\Gamma_{\# 19}{ }_p{ }_p \Gamma_{\# 23}{ }^{\# 19}{ }_h \Gamma_j{ }^{\# 23}{ }_k-\Gamma_{\# 20}{ }_{p, h}{ }^{\ell} \Gamma_j{ }^{\# 20}{ }_k \\
+  %    +\Gamma_{\# 10}{ }^{\ell}{ }_p \Gamma_{\# 13}{ }^{\# 10}{ }_h \Gamma_j \# 13{ }_k+\Gamma_{\# 11}{ }_h{ }_h \Gamma_j \# 11{ }_{k, p}+\Gamma_{\# 10}{ }_p \Gamma_j \Gamma^{\# 10}{ }_{k, h}-\Gamma_{\# 10}{ }^{\# 12}{ }_h \Gamma_{\# 12}{ }_p{ }_p \Gamma_j{ }^{\# 10}{ }_k \\
+  %    +\Gamma_{\# 10}{ }^{\# 12}{ }_p \Gamma_{\# 12}{ }_h{ }_h \Gamma_j{ }^{\# 10}{ }_k+\Gamma_{\# 10}{ }^{\ell}{ }_{p, h} \Gamma_j{ }^{\# 10}{ }_k-\Gamma_{\# 1}{ }_h{ }_h \Gamma_j{ }^{\# 1}{ }_{k, p}+\Gamma_{\# 1}{ }_{\# 6} \Gamma_h{ }^{\# 6}{ }_p \Gamma_j{ }^{\# 1}{ }_k \\
+  %    -\Gamma_{\# 1}{ }^{\# 6}{ }_h \Gamma_{\# 6}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 1}{ }_k+\Gamma_{\# 1}{ }^{\# 6}{ }_p \Gamma_{\# 6}{ }^{\ell}{ }_h \Gamma_j{ }^{\# 1}{ }_k-\Gamma_{\# 1}{ }^{\ell}{ }_{h, p} \Gamma_j{ }^{\# 1}{ }_k+\Gamma_{\# 1}{ }^{\ell}{ }_k \Gamma_{\# 4}{ }^{\# 1}{ }_p \Gamma_j{ }^{\# 4}{ }_h \\
+  %    -\Gamma_{\# 25}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 25}{ }_{h, p}-\Gamma_{\# 19}{ }^{\ell}{ }_p \Gamma_{\# 23}{ }^{\# 19}{ }_k \Gamma_j{ }^{\# 23}{ }_h+\Gamma_{\# 2}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 2}{ }_{h, k}-\Gamma_{\# 19}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 19}{ }_{h, k} \\
+  %    +\Gamma_{\# 19}{ }^{\# 22}{ }_k \Gamma_{\# 22}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 19}{ }_h-\Gamma_{\# 19}{ }^{\# 22}{ }_p \Gamma_{\# 22}{ }_k{ }_k \Gamma_j{ }^{\# 19}{ }_h-\Gamma_{\# 19}{ }^{\ell}{ }_{p, k} \Gamma_j{ }^{\# 19}{ }_h+\Gamma_{\# 18}{ }^{\ell}{ }_{p, k} \Gamma_j{ }^{\# 18}{ }_h \\
+  %    +\Gamma_{\# 10}{ }^{\ell}{ }_k \Gamma_{\# 16}{ }^{\# 10}{ }_p \Gamma_j{ }^{\# 16}{ }_h-\Gamma_{\# 10}{ }^{\ell}{ }_p \Gamma_{\# 13}{ }^{\# 10}{ }_k \Gamma_j{ }^{\# 13}{ }_h-\Gamma_{\# 11}{ }_{k, p}{ }^{\ell} \Gamma_j{ }^{\# 11}{ }_h+\Gamma_{\# 1}{ }_k{ }_k \Gamma_j{ }^{\# 1}{ }_{h, p} \\
+  %    +\Gamma_{\# 1}{ }^{\# 3}{ }_k \Gamma_{\# 3}{ }^{\ell}{ }_p \Gamma_j{ }^{\# 1}{ }_h-\Gamma_{\# 1}{ }^{\# 3}{ }_p \Gamma_{\# 3}{ }^{\ell}{ }_k \Gamma_j{ }^{\# 1}{ }_h+\Gamma_{\# 1}{ }^{\ell}{ }_{k, p} \Gamma_j{ }^{\# 1}{ }_h-\Gamma_{\# 1}{ }_k{ }_k \Gamma_h{ }^{\# 4}{ }_p \Gamma_j{ }^{\# 1}{ }_{\# 4} \\
+  %    +\Gamma_h{ }^{\# 25}{ }_k \Gamma_j{ }^{\ell}{ }^{25, p}+\Gamma_{\# 19}{ }_p{ }_p \Gamma_h{ }^{\# 23}{ }_k \Gamma_j{ }^{\# 19}{ }_{\# 23}-\Gamma_h{ }^{\# 2}{ }_p \Gamma_j{ }^{\ell}{ }_{\# 2, k} \, \text{.}
+  %  \end{array}
   %\end{equation*}
-  %
+  %%
   %This sum contains 72 terms, each of which is a product of 2 or 3 Christoffel symbols, for a total of 180 Christoffel symbols. However, upon simplifying this expression by consistently renaming the dummy indices, the simple result of zero is obtained, which verifies the identity.
 \end{example}
 
 \subsection{Mitigation Strategies}
 
-Although memory space, rather than time, is the main factor limiting the use of computer algebra, symbolic operations will obviously take considerably longer time than their numerical counterparts. It should be borne in mind that, in the case of symbolic manipulations, the execution time is strongly dependent, once again, on the degree of complexity and size of the input. As mentioned earlier, the production of large expressions during the computation in the form of inherent but especially as intermediate expression swell is, as stated in \citet{noor1979computerized} a serious problem in symbolic computation and may be its ultimate limitation. There, it was anticipated that future symbolic manipulation systems would automatically carry out remedial actions to alleviate this problem such as
+Although memory space, rather than time, is the main factor limiting the use of computer algebra, symbolic operations will take considerably longer time than their numerical counterparts. It should be borne in mind that, in the case of symbolic manipulations, the execution time is strongly dependent, once again, on the degree of complexity and size of the input. As mentioned earlier, the production of large expressions during the computation in the form of inherent but especially as intermediate expression swell is, as stated in~\citet{noor1979computerized} a serious problem in symbolic computation and maybe its ultimate limitation. There, it was anticipated that future symbolic manipulation systems would automatically carry out remedial actions to alleviate this problem such as
 %
 \begin{itemize}
   \setlength\itemsep{0em}
@@ -457,7 +458,7 @@ Although memory space, rather than time, is the main factor limiting the use of 
   \item deferred expansion of a function or variable in an expression.
 \end{itemize}
 %
-On the other hand, it is interesting that, while \citet{korncoff1979symbolic} also recognizes this problem by stating that special problem formulation techniques will have to be adopted in light of symbolic manipulation. \citeauthor{korncoff1979symbolic} place the onus of its solution (or, at least, alleviation) on the user rather than the system, saying that as the use of symbolic processors increases, users will have to acquire the skills and insight required to formulate problems to best optimize the function of a particular processor. Up to now, the problem of expression swell has not yet been solved consistently. However, as we will see in the next section, some strategies have been introduced recently to mitigate the problem.
+On the other hand, it is interesting that while~\citet{korncoff1979symbolic} also recognizes this problem by stating that special problem formulation techniques will have to be adopted in light of symbolic manipulation~\citeauthor{korncoff1979symbolic} place the onus of its solution (or, at least, alleviation) on the user rather than the system, saying that as the use of symbolic processors increases, users will have to acquire the skills and insight required to formulate problems to best optimize the function of a particular processor. Up to now, the problem of expression swell has not yet been solved consistently. However, as we will see in the next section, some strategies have been introduced recently to mitigate the problem.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
@@ -508,13 +509,13 @@ There exist two main metrics to measure the complexity and size of an expression
   %
   \begin{equation*}
     N_\beta = \begin{cases}
-      \lfloor\log_{\beta}(|n|)\rfloor + 1 & n > 0 \\
-      0 & n = 0
+      \lfloor\log_{\beta}(|n|)\rfloor + 1 & \quad n > 0 \\
+      0                                   & \quad n = 0
     \end{cases},
   \end{equation*}
   %
   where $n \in \mathbb{Z}$ is a nonnegative integer representing the expression length, and $\beta \in \mathbb{N}$ is the base in which the length is measured.
-  Notably used in~\cite{carette2006linear, zhou2006hierarchical}, this metric is calculated through the \code{length} \Maple{} function. This metric is very helpful in understanding the amount of memory space required to store expressions, as well as the \ac{CPU} effort required to write, process, and read them. However, it does not provide any information about the operands and operations involved in the expression.
+  Notably used in \citet{carette2006linear} and \citet{zhou2006hierarchical}, this metric is calculated through the \code{length} \Maple{} function. This metric is very helpful in understanding the amount of memory space required to store expressions, as well as the \ac{CPU} effort required to write, process, and read them. However, it does not provide any information about the operands and operations involved in the expression.
   \item The \emph{computational cost} of an expression, calculated through the \code{cost} function of \code{codegen} package. This metric is somehow complementary to the previous one, and it provides insights into the computational cost of the expressions. Conversely, it does not provide any information about the amount of memory space required to store an expression.
 \end{itemize}
 %
@@ -624,20 +625,20 @@ Calculating the signature hashing function of any expression in polynomial time 
 %
 \begin{equation}
   \label{chap3:eq:zhou}
-  \cos(\theta) = x, \quad
-  \sin(\theta) = y,
+  \cos(\theta) = x \, text{,} \quad
+  \sin(\theta) = y \, text{,}
   \qquad \text{where} \qquad
-  x^2 + y^2 = 1.
+  x^2 + y^2 = 1 \, text{.}
 \end{equation}
 %
 which has the disadvantage that an additional constraint is introduced. Another useful change of coordinates is the Weierstra{\ss} transformation~\cite{cox1994ideals}
 %
 \begin{equation}
   \label{chap3:eq:weierstrass}
-  \cos(\theta) = \dfrac{1 - u^2}{1 + u^2}, \quad
-  \sin(\theta) = \dfrac{2u}{1 + u^2},
+  \cos(\theta) = \dfrac{1 - u^2}{1 + u^2} \, text{,} \quad
+  \sin(\theta) = \dfrac{2u}{1 + u^2} \, text{,}
   \qquad \text{where} \qquad
-  u = \tan\left(\dfrac{\theta}{2}\right).
+  u = \tan\left(\dfrac{\theta}{2}\right) \, text{.}
 \end{equation}
 %
 If one solves for $u$, then the usual problem regarding the choice of an appropriate branch for the inverse arises. Still, this transformation has the advantage that the number of variables remains the same, with no additional introduced constraint. Please notice that the signature computation used in this work is implemented within the \SIG{} sub-package of \LEM{}~\cite{lem}. The \SIG{} sub-package is an improved object-oriented version of the signature computation package present in \LULEM{}~\cite{carette2006linear}.
@@ -740,7 +741,7 @@ After the \ac{LU} factorization of a sparse matrix $\m{A}$, it is common to obse
 \begin{example}[Fill-in reduction in \ac{LU} factorization]
   Consider the \code{west0479} sparse unsymmetric matrix $\m{A} \in \mathbb{R}^{479 \times 479}$, having non-zero 1910 entries~\cite{matlab}. The sparsity pattern of the original matrix $\m{A}$ and the $\m{L}$ and $\m{U}$ factors with and without pivoting, using the minimum degree and nested dissection pivoting strategies, are shown in Figure~\ref{chap3:fig:sparsity_patterns}. As illustrated, the \ac{LU} factorization of $\m{A}$ with pivoting has significantly less fill-in than the \ac{LU} factorization of $\m{A}$ without pivoting, thus highlighting the relevance of pivoting in reducing fill-in during the \ac{LU} factorization.
   %
-  \begin{figure}[!htb] % FIXME should be[H]
+  \begin{figure}[htb] % FIXME should be[H]
     \centering
     \begin{subfigure}[t]{0.45\textwidth}
       \centering

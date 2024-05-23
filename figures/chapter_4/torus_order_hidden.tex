@@ -1,4 +1,111 @@
+
 \begin{tikzpicture}
+
+\begin{axis}[%
+  title={Runge-Kutta Methods Order},
+  title style={font=\bfseries},
+  minor tick num=1,
+  minor grid style={dashed, line width=0.1pt, draw=gray!45},
+  major grid style={line width=0.2pt, draw=gray!60},
+  width=5.0cm,
+  height=5.0cm,
+  at={(0.0in,0.0in)},
+  scale only axis,
+  xmode=log,
+  xmin=0.005,
+  xmax=0.5,
+  xminorticks=true,
+  xlabel style={font=\color{black}},
+  xlabel={$\Delta t$},
+  ymode=log,
+  ymin=5.0e-16,
+  ymax=20.0,
+  yminorticks=true,
+  ylabel style={font=\color{black}},
+  ylabel={$\varepsilon$},
+  axis background/.style={fill=none},
+  xmajorgrids,
+  xminorgrids,
+  ymajorgrids,
+  yminorgrids,
+  legend style={at={(0.97,0.03)}, anchor=south east, legend cell align=left, align=left, draw=black}
+]
+
+\addplot[color=mycolor1, line width=0.5pt, mark=*, mark options={fill, scale=0.5, mycolor1}]
+  table[row sep=crcr]{%
+  0.005 1.879399452620709e-01\\
+  0.06 1.711573027753681e+00\\
+  0.115 3.063916890081130e+00\\
+  0.17 4.231237958056623e+00\\
+  0.225 6.302317678343108e+00\\
+  0.28 8.762767335676816e+00\\
+  0.335 1.028329978855519e+01\\
+  0.39 1.252649980402613e+01\\
+  0.445 9.207336428245306e+00\\
+  0.5 1.299428017259284e+01\\
+};
+\addlegendentry{Implicit Euler}
+
+\addplot[color=mycolor2, line width=0.5pt, mark=*, mark options={fill, scale=0.5, mycolor2}]
+  table[row sep=crcr]{%
+  0.005 1.992528035899e-07\\
+  0.06 0.000337631444430997\\
+  0.115 0.00233186668661123\\
+  0.17 0.00737183144006526\\
+  0.225 0.0166514146938725\\
+  0.28 0.0314018007261607\\
+  0.335 0.0510617453643611\\
+  0.39 0.0786646899717534\\
+  0.445 0.11675270797915\\
+  0.5 0.170354895882445\\
+};
+\addlegendentry{RadauIIA3}
+
+\addplot[color=mycolor4, line width=0.5pt, mark=*, mark options={fill, scale=0.5, mycolor4}]
+  table[row sep=crcr]{%
+  0.005 6.75015598972095e-14\\
+  0.06 1.52360311034272e-08\\
+  0.115 3.82347098870639e-07\\
+  0.17 2.62977937026676e-06\\
+  0.225 1.20705485162631e-05\\
+  0.28 3.98898559916816e-05\\
+  0.335 0.000112061177007128\\
+  0.39 0.000269397467860699\\
+  0.445 0.000580087484554959\\
+  0.5 0.00113800574884237\\
+};
+\addlegendentry{RadauIIA5}
+
+\addplot[area legend, draw=none, fill=mycolor1, fill opacity=0.5, forget plot]
+  table[row sep=crcr] {%
+  x y\\
+  0.005 0.187939945262071\\
+  0.015 0.187939945262071\\
+  0.015 0.494964142080998\\
+}--cycle;
+
+\addplot[area legend, draw=none, fill=mycolor2, fill opacity=0.5, forget plot]
+  table[row sep=crcr] {%
+  x y\\
+  0.005 1.992528035899e-07\\
+  0.015 1.992528035899e-07\\
+  0.015 5.45505603722094e-06\\
+}--cycle;
+
+\addplot[area legend, draw=none, fill=mycolor4, fill opacity=0.5, forget plot]
+  table[row sep=crcr] {%
+  x y\\
+  0.005 6.75015598972095e-14\\
+  0.015 6.75015598972095e-14\\
+  0.015 1.57024270189941e-11\\
+}--cycle;
+
+\node[draw, fill=white] at (1.01e-2, 2.30e-02) {$p = 0.932$};
+\node[draw, fill=white] at (1.01e-2, 2.40e-08) {$p = 2.958$};
+\node[draw, fill=white] at (1.01e-2, 0.85e-14) {$p = 5.095$};
+
+\end{axis}
+
 
 \begin{axis}[%
   title={Projection Error},
@@ -6,9 +113,9 @@
   minor tick num=1,
   minor grid style={dashed, line width=0.1pt, draw=gray!45},
   major grid style={line width=0.2pt, draw=gray!60},
-  width=2.25in,
-  height=2.25in,
-  at={(0.0in,0.0in)},
+  width=5.0cm,
+  height=5.0cm,
+  at={(5.25cm,0.0in)},
   scale only axis,
   xmin=0,
   xmax=6.28318530717959,

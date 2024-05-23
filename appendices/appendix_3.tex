@@ -32,15 +32,15 @@ Pneumatic radial tires are inflated composite structures whose primary structura
 
 Let us consider a reference frame $\pt{H}xyz$ with unit vectors ($\et{h}_x$, $\et{h}_y$, $\et{h}_z$),  having its origin $\pt{H}$ located at the wheel hub. The axes are oriented according to the ISO 8855:2011 standard~\cite{iso88552011}. The $x$-axis is directed towards the longitudinal direction of motion, the $z$-axis points upward, and the $y$-axis is oriented so that the coordinate system is right-handed (refer to \figurename~\ref{app3:fig:tire_iso}).  Geometrically, the tire is characterized as axially symmetric (about the axis $\et{h}_y$), convex, and closed set $\sett{T}$ defined as
 %
-\begin{equation}
+\begin{equation*}
   \sett{T} = \left\{ \begin{bmatrix} x\\ y\\ z \end{bmatrix} \in \mathbb{R}^3, ~ y \in \left[ y_l, y_r \right], ~ R(y):\mathbb{R} \mapsto \mathbb{R} ~\big|~ \sqrt{x^2+z^2} \leq R(y) \right\} \, \text{.}
-\end{equation}
+\end{equation*}
 %
 Here, the function $R(y)$ can be chosen arbitrarily to reconstruct the desired outermost shape of the tire. On the other hand, the road is modeled as a closed half-space $\sett{R}$ whose boundary is defined by the plane passing through the point $\pt{p}$ with unit normal $\et{n}$, \ie{},
 %
-\begin{equation}
+\begin{equation*}
   \sett{R} = \left\{\undx{}\in\mathbb{R}^3 ~|~ (\undx{}-\pt{p})\cdot\et{n} \leq 0 \right\} \, \text{,}
-\end{equation}
+\end{equation*}
 %
 where $\undx{} = [x,y,z]^\top$. The contact patch region is defined as a closed set $\sett{P}$ comprising all the points of the tire $\sett{T}$ which are also interior points of the road boundary surface $\boundary{R}$, \ie{}, $\sett{P} = \sett{T} \cap \boundary{R}$. The contact patch reference frame $\pt{O}xyz$ has the origin in $\pt{O}$, which corresponds to the centroid of the region $\sett{P}$. Its unit vectors ($\et{e}_x$, $\et{e}_y$, $\et{e}_z$) are defined as $\et{e}_x = \et{h}_x$, $\et{e}_y = \et{n} \times \et{e}_x$, and $\et{e}_z = \et{n}$.
 
@@ -68,9 +68,9 @@ where $\undx{} = [x,y,z]^\top$. The contact patch region is defined as a closed 
 
 When the contact patch set is not empty (\ie{}, $\sett{P} \neq \varnothing$) there is a multitude of contact points $\undx{} = [x,y,z]^\top \in \sett{P}$. At each point, the stress component along the $z$-axis (also known as normal stress) $q_z(\undx{},t)$ is applied. The integral of the normal stress distribution over the entire contact patch region is equal to the tire's vertical load $F_z(t)$. The vertical normal stress distribution is extremely difficult to calculate analytically, and it depends on the tread pattern properties, carcass stiffness, friction and inflation pressure~\cite{nakajima2019advanced}. To easily model the tire's vertical characteristics, we employ a single-contact point approach. The total vertical tire stiffness is calculated as
 %
-\begin{equation}
+\begin{equation*}
   k_z(\omega, \gamma, p) = k_z^s + k_z^p p + k_z^\omega \omega + k_z^\gamma \gamma^2 \, \text{.}
-\end{equation}
+\end{equation*}
 %
 Here, $k_z^s$ represents the structural vertical stiffness, $k_z^p$ denotes the vertical stiffness dependence on inflation pressure, $k_z^\omega$ indicates the vertical stiffness dependence on rolling speed, and $k_z^\gamma$ is the vertical stiffness dependence on camber angle. The total vertical force is thereby calculated as
 %
@@ -81,9 +81,9 @@ Here, $k_z^s$ represents the structural vertical stiffness, $k_z^p$ denotes the 
 %
 where $F_z \in \mathbb{R}_{\geq 0}$, $\rho(t) \in \mathbb{R}_{\geq 0}$ represents the deflection at the tire contact point, $\rho_b$ represents the bottoming threshold, $c_z$ is the vertical damping coefficient, and $k_z^b$ indicates the bottoming vertical stiffness. Specifically, the tire contact point deflection $\rho(t)$ is calculated with the method outlined in~\cite{stocco2024novel, stocco2021acme}. This technique not only facilitates efficient and robust computation of the contact point deflection $\rho(t)$ but also allows us to compute the tire deflection $\varrho(y,t)$ at a specific lateral coordinate $y$ and time $t$. Alternatively, for cases where the technique outlined in~\cite{stocco2024novel} is not employed, a viable approximation, particularly for small camber angles ($|\gamma(t)| < \pi/10$), is
 %
-\begin{equation}
+\begin{equation*}
   \rho(t) = \max_{y \, \in \, [y_l, y_r]} \varrho(y,t) \qquad \text{(refer to \figurename~\ref{app3:fig:belt_section})} \, \text{.}
-\end{equation}
+\end{equation*}
 
 \subsubsection{Contact Patch Length}
 \label{app3:sec:contact_patch}
@@ -105,9 +105,9 @@ The pressure distribution is one of the most complex, challenging-to-model facto
 \begin{equation}
   \begin{cases}
     \dfrac{\mathrm{d}^2}{\mathrm{d}\chi^2}\Upsilon\left(\dfrac{1}{2}\right) = -\lambda & \text{convexity at the center of the contact patch $\chi = \dfrac{1}{2}$,}
-    \\[1em]
+    \\[1.0em]
     \displaystyle\int_{0}^{1} \Upsilon(\chi)\,\mathrm{d}\chi = 1 & \text{normalization condition for the total contact force over the contact patch,}
-    \\[1em]
+    \\[1.0em]
     \displaystyle\int_{0}^{1} \Upsilon(\chi)\chi\,\mathrm{d}\chi = \dfrac{1}{2} - \delta & \text{barycentre shift with respect to the center of the contact patch $\chi = \dfrac{1}{2}$,}
     \\[1.5em]
     \Upsilon(0) = \Upsilon(-1) = 0 & \text{absence of pressure at the edges of the contact patch $\chi = 0$ and $\chi = 1$.}
@@ -120,10 +120,10 @@ Then, we solve for $c_0, \dots, c_4$, and the solution of the system is
 %
 \begin{equation*}
   c_0 = 0, \quad
-  c_1 = -\dfrac{1}{3}\lambda + 10 + 60\delta, \quad
-  c_2 = 2\lambda - 30 - 180\delta, \quad
-  c_3 = -\dfrac{10}{3}\lambda + 40 + 120\delta, \quad \text{and} \quad
-  c_4 = \dfrac{5}{3}\lambda - 20.
+  c_1 = -\dfrac{1}{3}\lambda + 10 + 60\delta \, \text{,} \quad
+  c_2 = 2\lambda - 30 - 180\delta \, \text{,} \quad
+  c_3 = -\dfrac{10}{3}\lambda + 40 + 120\delta \, \text{,} \quad \text{and} \quad
+  c_4 = \dfrac{5}{3}\lambda - 20 \, \text{.}
 \end{equation*}
 %
 Here, $\lambda \in \mathbb{R}$ and $\delta \in \mathbb{R}$ respectively denote the convexity and longitudinal barycentre shift of the base curve $\Upsilon(\chi)$. The only drawback of this approach is that for certain values of $\delta$ and $\lambda$, the condition of positive pressure $\Upsilon(\chi) \ge 0$ within the range $\chi \in [0,1]$ is not always guaranteed and must be numerically checked in the software implementation. Thus, a careful selection of these parameters is essential. On the other hand, the use of a polynomial to describe the pressure distribution over the contact patch allows us to adopt some numerically robust algorithms and efficient evaluations for some of the calculations that will follow. Given the objective of achieving real-time applicability for the numerical tire model, this aspect should not be overlooked. The vertical contact stress distribution $q_z(\undx{},t)$ is then written as
@@ -135,9 +135,9 @@ Here, $\lambda \in \mathbb{R}$ and $\delta \in \mathbb{R}$ respectively denote t
 %
 where $\undx{} = [x,y,z]^\top \in \sett{P}$, $F_z$ denotes the tire's vertical load, and $A_\sett{P}$ represents the contact patch area, defined as
 %
-\begin{equation}
+\begin{equation*}
   A_\sett{P}(t) = \displaystyle\int_{y_r}^{y_l} \ell(y,t)\,\mathrm{d}y \, \text{.}
-\end{equation}
+\end{equation*}
 %
 It must be stressed that the contact patch region $\sett{P}$ is a function of time $t$ and of the lateral coordinate $y$. This variability arises because the contact patch is not fixed but rather a function of the tire-road contact geometry.
 
@@ -186,7 +186,7 @@ As mentioned at the beginning of this, the carcass is the subcomponent of a tire
 %
 where
 %
-\begin{equation}
+\begin{equation*}
   \vt{F}(\vt{c},t) =
   \begin{bmatrix}
     F_{ax}(\vt{c},t) \\[0.2em]
@@ -197,22 +197,22 @@ where
     F_{sy}(\vt{c},t) \\[0.2em]
     M_{sz}(\vt{c},t)
   \end{bmatrix} \, \text{,}
-\end{equation}
+\end{equation*}
 %
 and the matrix $\pt{K}$ represents the carcass stiffness matrix, which is assumed to be a diagonal matrix of the form
 %
-\begin{equation}
+\begin{equation*}
   \pt{K}(\vt{c}) =
   \begin{bmatrix}
     K_x(p,x_c) & 0 & 0 \\
     0 & K_y(p,y_c) & 0 \\
     0 & 0 & K_\theta(p,\theta_c)
   \end{bmatrix} \, \text{.}
-\end{equation}
+\end{equation*}
 %
 The entries $K_x(p,x_c)$, $K_y(p,t_c)$, and $K_\theta(p,\theta_c)$ are the longitudinal, lateral and twisting carcass stiffnesses, respectively. These values are influenced by the tire construction technology and inflation pressure $p$, as well as the deformation of the tire carcass. They can be expressed as follows
 %
-\begin{equation}
+\begin{equation*}
   \begin{split}
     \begin{aligned}
       K_x(p,x_c)           &= k_x^s      + p \, k_x^p      + k_x^b \, h(x_c, x_b, h_x) \, \text{,} \\
@@ -220,23 +220,23 @@ The entries $K_x(p,x_c)$, $K_y(p,t_c)$, and $K_\theta(p,\theta_c)$ are the longi
       K_\theta(p,\theta_c) &= k_\theta^s + p \, k_\theta^p + k_\theta^b \, h(\theta_c, \theta_b, h_\theta) \, \text{.} \\
     \end{aligned}
   \end{split}
-\end{equation}
+\end{equation*}
 %
 Here, the function $h(x,b,h)$ is defined as
 %
-\begin{equation}
+\begin{equation*}
   h(x,b,h) = \left(\mathrm{pos}(-x-b, h) + \mathrm{pos}(x-b, h)\right)^2 \, \text{,}
-\end{equation}
+\end{equation*}
 %
 where
 %
-\begin{equation}
+\begin{equation*}
   \mathrm{pos}(x,h) =
   \begin{cases}
     \dfrac{\sqrt{x^2 + h^2}}{2}+x    & x > 0 \\[0.5em]
     \dfrac{h^2}{2(\sqrt{x^2+h^2}-x)} & \mathrm{otherwise}
   \end{cases}
-\end{equation}
+\end{equation*}
 %
 is a regularized function of the positive part. Notice that the deformation of the tire carcass has a physical limit given by the maximum deformation of the sidewalls. For this reason, the parameters $k_x^b$, $k_y^b$, and $k_\theta^b$ are introduced to model the longitudinal, lateral and twisting bottoming stiffnesses, respectively.
 
@@ -261,29 +261,22 @@ is a regularized function of the positive part. Notice that the deformation of t
 
 For each point $\undx{} \in \sett{P}$, given a carcass pose $\vt{c}$, we associate a speed field $\pt{v}(\undx{}, t)$ and a displacement vector $\vt{u}(\undx{}, \vt{c}, t)$. The speed field $\pt{v}$ represents the relative speed between the outer tread layer and the road, while the displacement vector $\vt{u}$ represents the deformation of the material point (also referred to as a \emph{bristle}) located at the coordinate $\undx{}$. Additionally, each material point is also subjected to an external force $\vt{q}(\undx{}, \vt{c}, t)$ generated by the tire-road contact.
 
-We define the generic tangential position as $\undt{}
- = x\et{e}_x + y\et{e}_y$, the tangential velocity field as $\vt{v}_{\undt{}
-}(\undx{}, \vt{c}, t) = v_x(\undx{}, \vt{c}, t)\et{e}_x + v_y(\undx{},\vt{c},t)\et{e}_y$, the tangential displacement vectors as $\vt{u}_{\undt{}
-}(\undx{},\vt{c},t) = u_x(\undx{},\vt{c},t)\et{e}_x + u_y(\undx{},\vt{c},t)\et{e}_y$, and the tangential stress vector as $vt{q}_{\undt{}
-}(\undx{},\vt{c},t) = q_x(\undx{},\vt{c},t)\et{e}_x + q_y(\undx{},\vt{c},t)\et{e}_y$, in a such a way that
+We define the generic tangential position as $\undt{} = x\et{e}_x + y\et{e}_y$, the tangential velocity field as $\vt{v}{\undt{}}(\undx{}, \vt{c}, t) = v_x(\undx{}, \vt{c}, t)\et{e}_x + v_y(\undx{},\vt{c},t)\et{e}_y$, the tangential displacement vectors as $\vt{u}{\undt{}}(\undx{},\vt{c},t) = u_x(\undx{},\vt{c},t)\et{e}_x + u_y(\undx{},\vt{c},t)\et{e}_y$, and the tangential stress vector as $vt{q}{\undt{}}(\undx{},\vt{c},t) = q_x(\undx{},\vt{c},t)\et{e}_x + q_y(\undx{},\vt{c},t)\et{e}_y$, in a such a way that
 %
 \begin{equation}
   \vt{v} =
   \begin{bmatrix}
-    \vt{v}_{\undt{}
-} \\
+    \vt{v}{\undt{}} \\
     v_z
-  \end{bmatrix}, \qquad
+  \end{bmatrix} \, text{,} \qquad
   \vt{u} =
   \begin{bmatrix}
-    \vt{u}_{\undt{}
-} \\
+    \vt{u}{\undt{}} \\
     u_z
-  \end{bmatrix}, \qquad \text{and} \qquad
+  \end{bmatrix} \, text{,} \qquad \text{and} \qquad
   \vt{q} =
   \begin{bmatrix}
-    \vt{q}_{\undt{}
-} \\
+    \vt{q}{\undt{}} \\
     q_z
   \end{bmatrix} \, \text{.}
   \label{app3:eq:ut}
@@ -291,28 +284,25 @@ We define the generic tangential position as $\undt{}
 %
 The bristles tangential \emph{micro-sliding speed} is defined as
 %
-\begin{equation}
+\begin{equation*}
   \vt{v}_s(\undx{},\vt{c},t) =
   \begin{bmatrix}
     v_{sx}(\undx{},\vt{c},t) \\
     v_{sy}(\undx{},\vt{c},t)
   \end{bmatrix} \, \text{,}
-\end{equation}
+\end{equation*}
 %
 which represents the relative speed between a material point within the contact patch $\sett{P}$ and the road surface $\boundary{R}$. In the following, we will employ an isotropic steady-state Coulomb friction model, which enables us to write the equations governing the contact mechanics between the tire tread layer and the road surface as
 %
 \begin{equation}
-  \vt{v}_s = 0 \iff \|\pt{q}_{\undt{}
-}\| \leq \mu_s q_z
+  \vt{v}_s = 0 \iff \|\pt{q}{\undt{}}\| \leq \mu_s q_z
   \qquad \text{and} \qquad
-  \vt{q}_{\undt{}
-} = -\mu_d q_z \dfrac{\vt{v}_s}{\|\vt{v}_s\|}
+  \vt{q}{\undt{}} = -\mu_d q_z \dfrac{\vt{v}_s}{\|\vt{v}_s\|}
   \iff \vt{v}_s \neq 0 \, \text{.}
   \label{app3:eq:fundamental_eqns}
 \end{equation}
 %
-In these equations, $\mu_s$ represents the static friction coefficient and $\mu_d(\undx{}, \vt{c}, t)$ denotes the ``dynamic'' friction coefficient. It is important to note that~\eqref{app3:eq:fundamental_eqns} is only valid under the assumption of memory-less friction, meaning there is a one-to-one map between the tangential stress and the micro-sliding speed~\cite{canudasdewit2003dynamic}. To solve~\eqref{app3:eq:fundamental_eqns}, two additional sets of equations are necessary. The first set consists of the so-called \emph{tire-road kinematic equations}, which link the wheel hub's relative motion to the deformation field over the contact patch area. The second set includes the \emph{constitutive relations}, which correlate the bristles deformation field to the generated tangential stress $\vt{q}_{\undt{}
-}$.
+In these equations, $\mu_s$ represents the static friction coefficient and $\mu_d(\undx{}, \vt{c}, t)$ denotes the ``dynamic'' friction coefficient. It is important to note that~\eqref{app3:eq:fundamental_eqns} is only valid under the assumption of memory-less friction, meaning there is a one-to-one map between the tangential stress and the micro-sliding speed~\cite{canudasdewit2003dynamic}. To solve~\eqref{app3:eq:fundamental_eqns}, two additional sets of equations are necessary. The first set consists of the so-called \emph{tire-road kinematic equations}, which link the wheel hub's relative motion to the deformation field over the contact patch area. The second set includes the \emph{constitutive relations}, which correlate the bristles deformation field to the generated tangential stress $\vt{q}{\undt{}}$.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
@@ -323,9 +313,9 @@ Friction significantly affects tire behavior. As noted in prior works~\cite{seli
 
 Numerous physical formulations aim to capture the relationship between the friction coefficient and sliding speed. One of the most important is the \emph{Savkoor friction law}, which includes the so-called \emph{Stribeck effect}~\cite{savkoor1965friction, savkoor1966some, savkoor1987dry}. When accounting for contact pressure dependency, the ``dynamic'' friction coefficient $\mu_d(\undx{})$ can be expressed as
 %
-\begin{equation}
+\begin{equation*}
   \mu_d = \mu_w (\mu_{p_0} + \mu_{p_1} \exp( -\mu_{p_2} q_z )) (\mu_k + (\mu_s - \mu_k)) \exp\left( -\mu_{v_0}^2 \log^2 \left( \dfrac{\|\vt{v}_s\|}{v_\mu} + \mu_{v_1} \exp\left(-\dfrac{\|\vt{v}_s\|}{v_\mu}\right)\right)\right) \, \text{,}
-\end{equation}
+\end{equation*}
 %
 where
 %
@@ -347,16 +337,13 @@ where
 The relative velocity between the bristles and the road, first introduced with the name of micro-sliding velocity $\vt{v}_s$, are expressed in Eulerian form similar to that in~\cite{romano2019novel, romano2020unsteadystate, romano2022brush, romano2022analytical, pacejka2012tire, guiggiani2014science, limebeer2018dynamics}. Hence, using~\eqref{app3:eq:parabola} and~\eqref{app3:eq:ut}, $\vt{v}_s$ can be written as
 %
 \begin{equation}
-  \vt{v}_s = V_r\left(\bm{\sigma} + \varphi\et{e}_z \times \left(\sett{L} + \undt{}
-\right) + \dfrac{\mathrm{d}}{\mathrm{d}x}\sett{L}\,\right) + \dfrac{\mathrm{d}}{\mathrm{d}t}\vt{u}_{\undt{}
-}
-  \label{app3:eq:v_s} \, \text{,}
+  \vt{v}_s = V_r\left(\bm{\sigma} + \varphi\et{e}_z \times \left(\sett{L} + \undt{}\right) + \dfrac{\mathrm{d}}{\mathrm{d}x}\sett{L}\,\right) + \dfrac{\mathrm{d}}{\mathrm{d}t}\vt{u}{\undt{}} \, \text{,}
+  \label{app3:eq:v_s}
 \end{equation}
 %
-where the material point deformation $\vt{u}_{\undt{}
-}$ is assumed to be small. For a comprehensive description and derivation of such sliding refer to~\cite{rill2020road, pacejka2012tire, guiggiani2014science, limebeer2018dynamics, romano2019novel, romano2022brush, romano2022analytical}. The \emph{theoretical translational slips} $\bm{\sigma}$ represent the normalized difference between the longitudinal and lateral components of the speed of the wheel hub and that of the tire periphery $V_r(y,t) = \omega(t)R_r(y,t)$. Therefore, they are defined as
+where the material point deformation $\vt{u}{\undt{}}$ is assumed to be small. For a comprehensive description and derivation of such sliding refer to~\cite{rill2020road, pacejka2012tire, guiggiani2014science, limebeer2018dynamics, romano2019novel, romano2022brush, romano2022analytical}. The \emph{theoretical translational slips} $\bm{\sigma}$ represent the normalized difference between the longitudinal and lateral components of the speed of the wheel hub and that of the tire periphery $V_r(y,t) = \omega(t)R_r(y,t)$. Therefore, they are defined as
 %
-\begin{equation}
+\begin{equation*}
   \bm{\sigma}(y,t) =
   \begin{bmatrix}
     \sigma_x(y,t) \\[0.2em]
@@ -367,23 +354,23 @@ where the material point deformation $\vt{u}_{\undt{}
     V_x(t) - V_r(y,t) + \dot{x}_c(t) \\[0.2em]
     V_y(t) - R_z(t)\dot{\gamma}(t) + \dot{y}_c(t)
   \end{bmatrix} \, \text{,}
-\end{equation}
+\end{equation*}
 %
 where $\sigma_x$ and $\sigma_y$ are referred to as the \emph{longitudinal} and the \emph{lateral theoretical slips}. The \emph{theoretical spin slip} $\varphi$ is obtained from
 %
-\begin{equation}
+\begin{equation*}
   \varphi(y,t) = -\dfrac{\dot{\psi}(t) + \omega(t)\sin(\gamma(t)) + \dot{\theta}_c(t)}{|V_r(y,t)|} \, \text{.}
-\end{equation}
+\end{equation*}
 %
 The quantity $R_r$ represents the so-called \emph{real rolling radius}, which is calculated as
 %
-\begin{equation}
+\begin{equation*}
   R_r(y,t) = R(y) - \dfrac{\varrho(y,t)}{3} \, \text{.}
-\end{equation}
+\end{equation*}
 %
 Other definitions of slips are available in the literature, such as the \emph{practical longitudinal slip} $\kappa$ and \emph{slip angle} $\alpha$~\cite{pacejka2012tire}, which are defined as
 %
-\begin{equation}
+\begin{equation*}
   \begin{bmatrix}
     \kappa(y,t) \\[0.2em]
     \alpha(y,t)
@@ -394,11 +381,11 @@ Other definitions of slips are available in the literature, such as the \emph{pr
     V_x(t) - V_r(y,t) + \dot{x}_c(t) \\[0.2em]
     \arctan{V_y(t) - R_z(t)\dot{\gamma}(t) + \dot{y}_c(t)}
   \end{bmatrix} \, \text{,}
-\end{equation}
+\end{equation*}
 %
 and thus
 %
-\begin{equation}
+\begin{equation*}
   \begin{bmatrix}
     \sigma_x \\[0.2em]
     \sigma_y
@@ -409,53 +396,38 @@ and thus
     \kappa \\[0.2em]
     -\tan(\alpha)
   \end{bmatrix} \, \text{.}
-\end{equation}
+\end{equation*}
 
 Since we are using the same Eulerian form of~\cite{romano2022analytical}, the total time derivative is given by
 %
-\begin{equation}
-  \dfrac{\mathrm{d}}{\mathrm{d}t} =  \dfrac{\partial}{\partial t} + \vt{v}_{\undt{}
-} \cdot\nabla_{\undt{}
-} \, \text{,}
-\end{equation}
+\begin{equation*}
+  \dfrac{\mathrm{d}}{\mathrm{d}t} =  \dfrac{\partial}{\partial t} + \vt{v}{\undt{}} \cdot\nabla{\undt{}} \, \text{,}
+\end{equation*}
 %
-where $\nabla_{\undt{}
-}$ collects the tangential components of the gradient, and $\partial/\partial t = 0$ since we are neglecting the viscous component of the Kelvin-Voigt element representing the rubber material point~\cite{meyers2008mechanical}. Neglecting the viscous effect of the tread rubber material eliminates any explicit time dependence in the formulation of brush model forces and torques. Consequently, the tread rubber always operates under stationary conditions. Considering these points, the total derivative of the material point can be explicitly expressed as
+where $\nabla{\undt{}}$ collects the tangential components of the gradient, and $\partial/\partial t = 0$ since we are neglecting the viscous component of the Kelvin-Voigt element representing the rubber material point~\cite{meyers2008mechanical}. Neglecting the viscous effect of the tread rubber material eliminates any explicit time dependence in the formulation of brush model forces and torques. Consequently, the tread rubber always operates under stationary conditions. Considering these points, the total derivative of the material point can be explicitly expressed as
 %
-\begin{equation}
-  \dfrac{\mathrm{d}}{\mathrm{d}t}\vt{u}_{\undt{}
-} = \underbrace{\dfrac{\partial}{\partial t}\vt{u}_{\undt{}
-}}_{=0} + \vt{v}_{\undt{}
-}\cdot\nabla_{\undt{}
-}\vt{u}_{\undt{}
-} \, \text{,}
-\end{equation}
+\begin{equation*}
+  \dfrac{\mathrm{d}}{\mathrm{d}t}\vt{u}{\undt{}} = \underbrace{\dfrac{\partial}{\partial t}\vt{u}{\undt{}}}_{=0} + \vt{v}{\undt{}}\cdot\nabla{\undt{}}\vt{u}{\undt{}} \, \text{,}
+\end{equation*}
 %
-where the tangential gradient is given by $\nabla_{\undt{}
-} = [\partial/\partial x, \partial/\partial y]^\top$. The velocity field $\vt{v}_{\undt{}
-}$ of the tread rubber is formulated as
+where the tangential gradient is given by $\nabla{\undt{}} = [\partial/\partial x, \partial/\partial y]^\top$. The velocity field $\vt{v}{\undt{}}$ of the tread rubber is formulated as
 %
-\begin{equation}
-  \vt{v}_{\undt{}
-} = -V_r \dfrac{\dfrac{\mathrm{d}}{\mathrm{d}x} \sett{L}}{\Big\|\dfrac{\mathrm{d}}{\mathrm{d}x} \sett{L}\,\Big\|} \, \text{.}
-\end{equation}
+\begin{equation*}
+  \vt{v}{\undt{}} = -V_r \dfrac{\dfrac{\mathrm{d}}{\mathrm{d}x} \sett{L}}{\Big\|\dfrac{\mathrm{d}}{\mathrm{d}x} \sett{L}\,\Big\|} \, \text{.}
+\end{equation*}
 %
 Given the assumption of small carcass deformations (approximatively $|x_c| < \rho_b$, $|y_c| < \rho_b$, and $|\theta_c| < \pi/10$) and small tire camber angles ($|\gamma(t)| < \pi/10$) the following relationships holds~\cite{romano2022advanced}
 %
-\begin{equation}
+\begin{equation*}
   \dfrac{\mathrm{d}}{\mathrm{d}x} \sett{L}_x \approx 1 \qquad \text{and} \qquad \dfrac{\mathrm{d}}{\mathrm{d}x} \sett{L}_y \approx 0 \, \text{.}
-  \label{app3:eq:approx}
-\end{equation}
+\end{equation*}
 %
-The trajectories of the bristles moving within the contact patch are straightened in the longitudinal direction. Therefore, the formulation is constrained to a velocity field of the form $\vt{v}_{\undt{}
-} = [-V_r, 0]^\top$
+The trajectories of the bristles moving within the contact patch are straightened in the longitudinal direction. Therefore, the formulation is constrained to a velocity field of the form $\vt{v}{\undt{}} = [-V_r, 0]^\top$
 
 By separating the longitudinal and tangential displacements of the bristles, we derive the bristle micro-sliding speed formulated as
 %
 \begin{equation}
-  \vt{v}_s = V_r\left( \vt{\bm{\sigma}} + \varphi\huvec_z \times \left(\sett{L} + \undt{}
-\right) + \dfrac{\mathrm{d}}{\mathrm{d}x}\sett{L} - \dfrac{\mathrm{d}}{\mathrm{d}x}\vt{u}_{\undt{}
-} \right) \, \text{.}
+  \vt{v}_s = V_r\left( \vt{\bm{\sigma}} + \varphi\huvec_z \times \left(\sett{L} + \undt{}\right) + \dfrac{\mathrm{d}}{\mathrm{d}x}\sett{L} - \dfrac{\mathrm{d}}{\mathrm{d}x}\vt{u}{\undt{}} \right) \, \text{.}
   \label{app3:eq:v_s_int}
 \end{equation}
 
@@ -468,15 +440,12 @@ In the present work, we assume that -- from a frictional perspective -- two regi
 
 \paragraph{Adhesion Region}
 
-Each individual, material point, acting independently of others,  enters the contact patch through the leading edge in an undeformed state.  As a result of van der Waals molecular bonding and rubber indentation at the rubber/ground interface, the tip of the bristles sticks to the ground. However, due to the micro-sliding velocity $\vt{v}_s$ between the root of the bristles and the road, a tangential deflection $\vt{u}_{\undt{}
-}$ starts to build up, along with tangential stress $\vt{q}_{\undt{}
-}$. Initially null, this bristle deformation increases gradually along the contact length until it reaches the transition line $\xi_s(\bm{\xi},\vt{c})$. This transition line represents the contact length coordinate at which the local force exerted by the bristle deformation in adhesion equals the maximum possible static friction force.
+Each individual, material point, acting independently of others,  enters the contact patch through the leading edge in an undeformed state.  As a result of van der Waals molecular bonding and rubber indentation at the rubber/ground interface, the tip of the bristles sticks to the ground. However, due to the micro-sliding velocity $\vt{v}_s$ between the root of the bristles and the road, a tangential deflection $\vt{u}{\undt{}}$ starts to build up, along with tangential stress $\vt{q}{\undt{}}$. Initially null, this bristle deformation increases gradually along the contact length until it reaches the transition line $\xi_s(\bm{\xi},\vt{c})$. This transition line represents the contact length coordinate at which the local force exerted by the bristle deformation in adhesion equals the maximum possible static friction force.
 
 It is important to note that within the adhesion region, the tips of the bristles do not slide relative to the ground, resulting in a zero micro-sliding velocity. Consequently, the deformation of the bristles increases along the contact length direction with a spatial derivative equal to
 %
 \begin{equation}
-  \dfrac{\mathrm{d}}{\mathrm{d}x}\vt{u}_{\undt{}
-} =
+  \dfrac{\mathrm{d}}{\mathrm{d}x}\vt{u}{\undt{}} =
   \dfrac{\mathrm{d}}{\mathrm{d}x}
   \begin{bmatrix}
     u_x \\[0.2em]
@@ -489,7 +458,7 @@ which is easily found from~\eqref{app3:eq:v_s_int} by imposing $\vt{v}_s = 0$.
 
 We now introduce a new contact patch coordinate system (also depicted in \figurename~\ref{app3:fig:contact_patch_vertical})
 %
-\begin{equation}
+\begin{equation*}
   \bm{\xi}(y,t) =
   \begin{bmatrix}
     \xi(x,y,t) \\[0.2em]
@@ -502,14 +471,12 @@ We now introduce a new contact patch coordinate system (also depicted in \figure
     y \\[0.2em]
     z
   \end{bmatrix} \, \text{.}
-\end{equation}
+\end{equation*}
 %
-The variable $\xi$ represents the distance from the entrance to the longitudinal coordinate, measured longitudinally from the contact patch leading edge. From now on, we will use the superscript ``$\,\bm{\xi}\,$'' to denote variables described in reference system $\bm{\xi}$, \eg{}, $\vt{u}_{\undt{}
-}(\bm{\xi},\vt{c})$. Substituting $\bm{\xi}$ in~\eqref{app3:eq:u_dx} we obtain
+The variable $\xi$ represents the distance from the entrance to the longitudinal coordinate, measured longitudinally from the contact patch leading edge. From now on, we will use the superscript ``$\,\bm{\xi}\,$'' to denote variables described in reference system $\bm{\xi}$, \eg{}, $\vt{u}{\undt{}}(\bm{\xi},\vt{c})$. Substituting $\bm{\xi}$ in~\eqref{app3:eq:u_dx} we obtain
 %
 \begin{equation}
-  \dfrac{\mathrm{d}}{\mathrm{d}\xi}\vt{u}_{\undt{}
-}^{\bm{\xi}} =
+  \dfrac{\mathrm{d}}{\mathrm{d}\xi}\vt{u}{\undt{}}^{\bm{\xi}} =
   \dfrac{\mathrm{d}}{\mathrm{d}\xi}
   \begin{bmatrix}
     u_{x}^{\bm{\xi}} \\[0.2em]
@@ -518,52 +485,40 @@ The variable $\xi$ represents the distance from the entrance to the longitudinal
   \label{app3:eq:u_dxi}
 \end{equation}
 %
-The specific deformation $\vt{u}_{\undt{}
-}^{\bm{\xi}}$ at a contact length coordinate $\xi$ and lateral coordinate $y$ is obtained from integrating~\eqref{app3:eq:u_dxi} over space, while imposing the boundary condition $\vt{u}_{\undt{}
-}(\undx{} = [0,y,0]^\top,\vt{c}) = 0$, namely
+The specific deformation $\vt{u}{\undt{}}^{\bm{\xi}}$ at a contact length coordinate $\xi$ and lateral coordinate $y$ is obtained from integrating~\eqref{app3:eq:u_dxi} over space, while imposing the boundary condition $\vt{u}{\undt{}}(\undx{} = [0,y,0]^\top,\vt{c}) = 0$, namely
 %
 \begin{equation}
-  \vt{u}_{\undt{}
-}^{\bm{\xi}} = \int_0^\xi \dfrac{\mathrm{d}}{\mathrm{d}\zeta}\vt{u}_{\undt{}
-}(\zeta,\vt{c}) \,\mathrm{d}\zeta.
+  \vt{u}{\undt{}}^{\bm{\xi}} = \int_0^\xi \dfrac{\mathrm{d}}{\mathrm{d}\zeta}\vt{u}{\undt{}}(\zeta,\vt{c}) \,\mathrm{d}\zeta.
   \label{app3:eq:u_xi}
 \end{equation}
 %
 The infinitesimal adherence force at a specific contact length coordinate $\xi$ is determined by the product between~\eqref{app3:eq:u_xi} and the tread tangential stiffness matrix $\pt{k}$
 %
-\begin{equation}
-  \vt{q}_{\undt{}
-}^{\bm{\xi}} = -\nu\pt{K}_{\undt{}
-}\vt{u}_{\undt{}
-}^{\bm{\xi}} \, \text{.}
-  \label{app3:eq:fa}
-\end{equation}
+\begin{equation*}
+  \vt{q}{\undt{}}^{\bm{\xi}} = -\nu\pt{K}{\undt{}}\vt{u}{\undt{}}^{\bm{\xi}} \, \text{.}
+\end{equation*}
 %
-Here, $\nu$ represents the tread pattern void ratio, and $\pt{K}_{\undt{}
-}$ denotes the tangential stiffness matrix. This latter is typically expressed as
+Here, $\nu$ represents the tread pattern void ratio, and $\pt{K}{\undt{}}$ denotes the tangential stiffness matrix. This latter is typically expressed as
 %
-\begin{equation}
-  \pt{K}_{\undt{}
-} =
+\begin{equation*}
+  \pt{K}{\undt{}} =
   \begin{bmatrix}
     k_{xx} & k_{yx} \\[0.2em]
     k_{yx} & k_{yy}
   \end{bmatrix} \, \text{,}
-\end{equation}
+\end{equation*}
 %
 where $k_{xy} \approx k_{yx} \ll k_{xx} \approx k_{yy}$, as proofed by \citet{okonieski2003simpified}. The total bristles force induced by the deformation in adherence is obtained by integrating the following over the entire adhesion region \adh{}
 %
 \begin{equation}
-  \vt{F}_a(\vt{c},t) = \int_{\adh} \vt{q}_{\undt{}
-}^{\bm{\xi}} \mathrm{d}\bm{\xi} \, \text{.}
+  \vt{F}_a(\vt{c},t) = \int_{\adh} \vt{q}{\undt{}}^{\bm{\xi}} \mathrm{d}\bm{\xi} \, \text{.}
   \label{app3:eq:F_a}
 \end{equation}
 
 In the original brush model presented in~\cite{pacejka2012tire}, the self-aligning moment is attributed solely to the asymmetrical distribution of lateral shear stress along the contact length. However, in this study, we will also consider that the difference in longitudinal force on each side of the contact patch contributes to the generation of the self-aligning moment. Thereby, the adhesive self-aligning moment is defined as the cross-product between forces induced by deformation and the position vector (the sum of bristle position and carcass baseline position vectors), which reads
 %
 \begin{equation}
-  \vt{M}_{a}(\vt{c},t) = \int_{\adh} \vt{q}_{\undt{}
-}^{\bm{\xi}} \times \left(\sett{L}^{\bm{\xi}} + \bm{\xi}\right) \mathrm{d}\bm{\xi} \, \text{.}
+  \vt{M}_{a}(\vt{c},t) = \int_{\adh} \vt{q}{\undt{}}^{\bm{\xi}} \times \left(\sett{L}^{\bm{\xi}} + \bm{\xi}\right) \mathrm{d}\bm{\xi} \, \text{.}
   \label{app3:eq:M_a}
 \end{equation}
 
@@ -571,29 +526,25 @@ In the original brush model presented in~\cite{pacejka2012tire}, the self-aligni
 
 When the local force induced by bristle deformation in adhesion is greater than the local maximum explicable static friction force, the bristle tips begin to slide over the ground with a micro-sliding velocity $\vt{v}_s^{\bm{\xi}} \neq 0$. The local force exerted by bristle deformation in sliding opposes the micro-sliding velocity. Thus, its direction is denoted as
 %
-\begin{equation}
-  \vt{d}_{\undt{}
-}(\bm{\xi},\vt{c}) =
+\begin{equation*}
+  \vt{d}_{\undt{}}(\bm{\xi},\vt{c}) =
   \begin{bmatrix}
     d_{tx}(\bm{\xi},\vt{c}) \\[0.2em]
     d_{ty}(\bm{\xi},\vt{c})
-  \end{bmatrix} =
-  -\dfrac{\vt{v}_s^{\bm{\xi}}}{\|{\vt{v}_s^{\bm{\xi}}}\|} \, \text{.}
-\end{equation}
+  \end{bmatrix} = -\dfrac{\vt{v}_s^{\bm{\xi}}}{\|{\vt{v}_s^{\bm{\xi}}}\|} \, \text{.}
+\end{equation*}
 %
 The total bristles force induced by the deformation in sliding is determined by integrating the following expression over the entire sliding region \sli{}
 %
 \begin{equation}
-  \vt{F}_s(\vt{c},t) = \int_{\sli} \mu_d^{\bm{\xi}}\,q_z^{\bm{\xi}}\,\vt{d}_{\undt{}
-}^{\bm{\xi}} \, \mathrm{d}\bm{\xi} \, \text{.}
+  \vt{F}_s(\vt{c},t) = \int_{\sli} \mu_d^{\bm{\xi}}\,q_z^{\bm{\xi}}\,\vt{d}{\undt{}}^{\bm{\xi}} \, \mathrm{d}\bm{\xi} \, \text{.}
   \label{app3:eq:F_s}
 \end{equation}
 %
 Similar to the adhesive scenario, the self-aligning moment is defined as the cross-product between the local force induced by the sliding and the position vector
 %
 \begin{equation}
-  \vt{M}_s(\vt{c},t) = \int_{\sli} \mu_d^{\bm{\xi}}\,q_z^{\bm{\xi}}\,\vt{d}_{\undt{}
-}^{\bm{\xi}} \times \left(\sett{L}^{\bm{\xi}} + \bm{\xi}\right) \mathrm{d}\bm{\xi} \, \text{.}
+  \vt{M}_s(\vt{c},t) = \int_{\sli} \mu_d^{\bm{\xi}}\,q_z^{\bm{\xi}}\,\vt{d}{\undt{}}^{\bm{\xi}} \times \left(\sett{L}^{\bm{\xi}} + \bm{\xi}\right) \mathrm{d}\bm{\xi} \, \text{.}
   \label{app3:eq:M_s}
 \end{equation}
 
@@ -606,21 +557,21 @@ Due to the complexity of the problem outlined in the preceding sections, finding
 
 \subsection{Tire-Road Contact Discretization}
 
-An essential characteristic of the contact patch set $\sett{P}$ is its constant compactness and D-convexity along the $\et{e}x$ direction~~\cite{romano2022analytical, matouvsek2001directional}. Leveraging the D-convexity properties enables us to discretize the contact patch into longitudinal sections. To optimize the intersection of the tire and road sets, we discretized the tire set $\sett{T}$ into a series of $n_\sett{D}$ ribs, similarly to the approach in~\cite{chollet2012model, stocco2024novel}. Each tire rib, denoted as $\sett{D}$, is characterized as a conical frustum which is located in $\pt{o}= [0,y_\sett{D},0]^\top$ in the $\pt{H}xyz$ coordinate system, with a radius of $R(y_\sett{D})$ and a width of $w_\sett{D}$
+An essential characteristic of the contact patch set $\sett{P}$ is its constant compactness and D-convexity along the $\et{e}x$ direction~~\cite{romano2022analytical, matouvsek2001directional}. Leveraging the D-convexity properties enables us to discretize the contact patch into longitudinal sections. To optimize the intersection of the tire and road sets, we discretized the tire set $\sett{T}$ into a series of $n_\sett{D}$ ribs, similarly to the approach in~\cite{chollet2012model, stocco2024novel}. Each tire rib, denoted as $\sett{D}$, is characterized as a conical frustum which is located in $\pt{o}= [0, y_\sett{D}, 0]^\top$ in the $\pt{H}xyz$ coordinate system, with a radius of $R(y_\sett{D})$ and a width of $w_\sett{D}$
 %
-\begin{equation}
+\begin{equation*}
   \sett{D} = \left\{ w_\sett{D}, y_\sett{D} \in \mathbb{R}, \pt{x} = \left[ x, y, z \right]^\top \in \mathbb{R}^3 ~|~ \sqrt{x^2+z^2} \leq R(y_\sett{D}), |y-y_\sett{D}| \leq \dfrac{w_\sett{D}}{2} \right\} \, \text{.}
-\end{equation}
+\end{equation*}
 %
 This new representation allows us to build the discretized tire set $\sett{T}_\sett{D}$ as
 %
-\begin{equation}
+\begin{equation*}
   \sett{T}_\sett{D} = \left\{ \sett{D}_1, \sett{D}_2, \dots, \sett{D}_{n_\sett{D}-1}, \sett{D}_{n_\sett{D}} \right\} \, \text{.}
-\end{equation}
+\end{equation*}
 %
 Notice that we will employ a set of contact patch coordinate systems $\bm{\xi}_i$ equal to the ribs $n_\sett{D}$. These coordinate systems are redefined as
 %
-\begin{equation}
+\begin{equation*}
   \bm{\xi}_i(x, y_i, t) =
   \begin{bmatrix}
     \xi_i(x, y_i, t) \\
@@ -633,7 +584,7 @@ Notice that we will employ a set of contact patch coordinate systems $\bm{\xi}_i
     y_i \\
     z_i(x)
   \end{bmatrix} \, \text{,}
-\end{equation}
+\end{equation*}
 %
 where $z_i(x)$ represents the height of the rib $i$ at the point $x$, considering the possibility of the contact patch being sloped in the longitudinal direction. Similar to our previous approach, the variables described in the reference system $\bm{\xi}_i$ will be denoted with the superscript ``$\,\bm{\xi}_{i}\,$'', \eg{}, $\vt{u}_{\pt{t}}(\bm{\xi}_{i}, \vt{c})$. It is worth noting that this tire representation is fully adjustable in scale, allowing for the density of ribs representing the tire to be tailored based on the required accuracy and computational speed for a specific simulation.
 
@@ -652,77 +603,11 @@ Due to the complexity of the pressure distribution model and the shear field des
 
 \subsection{Tire Nonlinear System and Solution Method}
 
-As mentioned earlier, the tire significantly impacts vehicle handling behavior, with carcass compliance being crucial for both steady-state and transient tire behaviors. However, most tire models similar to the one presented in this appendix lack or miss sufficient discussion on the numerical method's performance in computing carcass deformation. This involves balancing forces generated by the carcass state against the stresses of the tread state deformation. In this section, we introduce a numerical scheme designed to address this task efficiently, comparing its performance with existing methods in the literature.
-
-The carcass equilibrium equation in matrix form is written as
-%
-\begin{equation}
-  \vt{G}(\vt{c}) = \pt{K}(\vt{c}) \vt{c} - \vt{F}(\vt{c},t) = 0 \, \text{,}
-  \label{app3:eq:nls}
-\end{equation}
-%
-where
-%
-\begin{equation}
-  \vt{F}(\vt{c},t) =
-  \begin{bmatrix}
-    F_{ax}(\vt{c},t) \\[0.2em]
-    F_{ay}(\vt{c},t) \\[0.2em]
-    M_{az}(\vt{c},t)
-  \end{bmatrix} + \begin{bmatrix}
-    F_{sx}(\vt{c},t) \\[0.2em]
-    F_{sy}(\vt{c},t) \\[0.2em]
-    M_{sz}(\vt{c},t)
-  \end{bmatrix} \, \text{,}
-\end{equation}
-%
-and the matrix $\pt{K}$ represents the carcass stiffness matrix, which is assumed to be a diagonal matrix of the form
-%
-\begin{equation}
-  \pt{K}(\vt{c}) =
-  \begin{bmatrix}
-    K_x(p,x_c) & 0 & 0 \\
-    0 & K_y(p,y_c) & 0 \\
-    0 & 0 & K_\theta(p,\theta_c)
-  \end{bmatrix} \, \text{.}
-\end{equation}
-%
-The entries $K_x(p,x_c)$, $K_y(p,t_c)$, and $K_\theta(p,\theta_c)$ are the longitudinal, lateral and twisting carcass stiffnesses, respectively. These values are influenced by the tire construction technology and inflation pressure $p$, as well as the deformation of the tire carcass. They can be expressed as follows
-%
-\begin{equation}
-  \begin{split}
-    \begin{aligned}
-      K_x(p,x_c)           &= k_x^s      + p \, k_x^p      + k_x^b \, h(x_c, x_b, h_x), \\
-      K_y(p,y_c)           &= k_y^s      + p \, k_y^p      + k_y^b \, h(y_c, y_b, h_y), \\
-      K_\theta(p,\theta_c) &= k_\theta^s + p \, k_\theta^p + k_\theta^b \, h(\theta_c, \theta_b, h_\theta) \, \text{.} \\
-    \end{aligned}
-  \end{split}
-\end{equation}
-%
-Here, the function $h(x,b,h)$ is defined as
-%
-\begin{equation}
-  h(x,b,h) = \left(\mathrm{pos}(-x-b, h) + \mathrm{pos}(x-b, h)\right)^2 \, \text{,}
-\end{equation}
-%
-where
-%
-\begin{equation}
-  \mathrm{pos}(x,h) =
-  \begin{cases}
-    \dfrac{\sqrt{x^2 + h^2}}{2}+x    & x > 0 \\[0.5em]
-    \dfrac{h^2}{2(\sqrt{x^2+h^2}-x)} & \mathrm{otherwise}
-  \end{cases}
-\end{equation}
-%
-is a regularized function of the positive part. Notice that the deformation of the tire carcass has a physical limit given by the maximum deformation of the sidewalls. For this reason, the parameters $k_x^b$, $k_y^b$, and $k_\theta^b$ are introduced to model the longitudinal, lateral and twisting bottoming stiffnesses, respectively.
-
 To solve~\eqref{app3:eq:nls}, an efficient iterative approach satisfying real-time constraints is necessary. Many tire models, such as those in~\cite{gruber2012normalI, gruber2012normalII, miyashita2010tire, miyashita2003analytical, miyashita2006new, kabe2006new, miyashita2015study}, employ Picard's Iteration Method (also known as the Fixed-Point Method), which is simple to implement but suffers from a slow convergence rate, potentially compromising model robustness. Alternatively, \TaMeTire{} employs a mixed Newton/quasi-Newton iterative method~\cite{fevrier2013method}. If the Jacobian $\vt{J}_\pt{G}$\footnote{$\vt{J}_\pt{G}(\vt{c}) = \partial\vt{G}(\vt{c})/\partial\vt{c}$.} is unavailable, \emph{quasi-Newton} methods can be utilized, albeit with a slight decrease in convergence rate and robustness. Notice that the Frobenius norm\footnote{For a matrix $\pt{A}\in\mathbb{R}^{n \times m}$, the Frobenius norm is defined as $\|\pt{A}\|_\mathrm{F}=\sqrt{\sum_{ij}A_{ij}^2}$.} of the Jacobian $\vt{J}_\pt{F}$\footnote{$\vt{J}_\pt{F}(\vt{c}) = \partial\vt{F}(\vt{c})/\partial\vt{c}$.} is typically small ($\|\vt{J}_\pt{F}\|_\mathrm{F} \ll 1$), while the Frobenius norm of the carcass stiffness matrix Jacbobian $\vt{J}_\pt{K}$ is usually large ($\|\vt{J}_\pt{K}\|_\mathrm{F} \gg 1$). Therefore, a good first approximation of $\vt{J}_\pt{G}$ is given by
 %
-\begin{equation}
+\begin{equation*}
   \vt{J}_\pt{G} = \vt{J}_\pt{K} - \vt{J}_\pt{F} \approx \vt{J}_\pt{K} \, \text{.}
-  \label{app3:eq:jacobian_approx}
-\end{equation}
+\end{equation*}
 %
 If we set the initial iteration point at $\vt{c} = [0,0,0]^\top$, the bottoming effect of the carcass stiffness is absent. As a consequence, the initial estimation of the Jacobian $\vt{J}_\pt{G}$ can be straightforwardly computed by accounting solely for the structural and inflation pressure components of the carcass stiffness.
 
@@ -766,5 +651,3 @@ To demonstrate the effectiveness of the proposed fitting procedure, we validate 
 \end{figure}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-
-% That's all folks!

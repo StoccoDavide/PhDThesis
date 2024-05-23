@@ -1,6 +1,6 @@
 %!TEX root = ../main.tex
 
-\chapter{Solution of Dynamic Systems Described by Differential-Algebraic Equations}
+\chapter[Solution of Dynamic Systems Described by DAEs]{Solution of Dynamic Systems Described by Differential-Algebraic Equations}
 \label{chap4:daes}
 
 In this chapter, we present an algorithm for the index reduction of first-order \acp{DAE}. The proposed approach can be applied to generic \acp{DAE} and exploits neither a priori knowledge nor ad hoc techniques to leverage the specific formulation of the system. The index reduction is performed only by using symbolic manipulation and linear algebra techniques. It is based on the successive separation of the differential and algebraic equations of the system and the subsequent differentiation of the algebraic part. Improved symbolic matrix factorization is used to perform the \acp{DAE} partitioning, ensure numerical stability, and limit the expression swell of the reduced-index system. The effectiveness of the algorithm will be validated in the next chapter through a set of examples on a wide range of systems, including physical systems, engineering applications, and ``artificial'' \acp{DAE} with specific properties. The proposed symbolic index reduction algorithm is implemented in \Maple{} as part of an open-source library.
@@ -43,10 +43,10 @@ We denote the cokernel and its orthogonal complement of $\mA$ with $\mK$ and $\m
 %
 \begin{equation}
   \label{chap4:eq:separated_daes}
-  \begin{cases}
-    \mE \, \mxp = \mg \\[0.1em]
-    \ma = \m{0}
-  \end{cases} \text{,} \quad \text{where} \qquad \mA = \begin{bmatrix}
+  \begin{system}
+    \mE \, \mxp &=& \mg \\[0.1em]
+    \ma         &=& \m{0}
+  \end{system} \text{,} \quad \text{where} \qquad \mA = \begin{bmatrix}
     \mE \\[0.2em]
     \m{0}
   \end{bmatrix} \text{,}
@@ -60,7 +60,7 @@ We denote the cokernel and its orthogonal complement of $\mA$ with $\mK$ and $\m
 The separated equations of the \acp{DAE} are obtained by the left product of $\mK$ and $\mN$ as
 %
 \begin{equation*}
-  \begin{array}{l@{~}c@{~}l}
+  \begin{array}{r@{~}c@{~}l}
     \mE &=& \mN \, \mA \, \text{,} \\[0.1em]
     \mg &=& \mN \, \mb \, \text{,} \\[0.1em]
     \ma &=& \mK \, \mb \, \text{.}
@@ -181,19 +181,17 @@ Then, the subspaces $\m{N}$ and $\m{K}$ are computed as in the \ac{LU} case.
 
 The algebraic equations in the \ac{DAE} system~\eqref{chap4:eq:separated_daes} are now differentiated as
 %
-\begin{equation}
-  \label{chap4:eq:diff_daes}
+\begin{equation*}
   \dfrac{\mathrm{d}}{\mathrm{d}t} \ma = \mAd \, \mxp - \mgd \, \text{.}
-\end{equation}
+\end{equation*}
 %
 The \acp{DAE}~\eqref{chap4:eq:separated_daes} after differentiation of algebraic equations now take a form similar to that of~\eqref{chap4:eq:daes}, where
 %
-\begin{equation}
-  \label{chap4:eq:reduced_daes}
+\begin{equation*}
   \mA = \begin{bmatrix} \mE \\[0.2em] \mAd\end{bmatrix} \, \text{,}
   \quad \text{and} \quad
   \mb = \begin{bmatrix} \mg \\[0.2em] \mgd\end{bmatrix} \, \text{.}
-\end{equation}
+\end{equation*}
 %
 The set of invariants, which are collected in $\mh$, is updated adding the algebraic equations $\ma$
 %
@@ -302,8 +300,7 @@ with states $\mx = [x_{1}, \, x_{2}, \, x_{3}]^\top$ and \acp{IC} $\mx_{0} = [-1
 %
 The final form of the system is an index-0 \acp{DAE} system is then
 %
-\begin{equation}
-  \label{chap4:eq:index_3_reduced}
+\begin{equation*}
   \mF = \begin{bmatrix}
     x^{\prime}_{2} - x_{1} - \cos(t) \\
     x^{\prime}_{3} - x_{2} - \sin(t) \\
@@ -317,7 +314,7 @@ The final form of the system is an index-0 \acp{DAE} system is then
     2\sin(t) - x_{2} \\
     \sin(t) - 2\cos(t) - x_{1}
   \end{bmatrix} \, \text{.}
-\end{equation}
+\end{equation*}
 %
 Although the just presented example is not so complex and relevant for a real validation of the algorithm, it is useful to demonstrate the step-by-step results of the index reduction algorithm. Furthermore, the expression complexities encountered throughout the index reduction algorithm applied to the Index-3 problem are reported below in Table~\ref{chap4:tab:index_3}.
 
@@ -373,9 +370,9 @@ The most interesting and relevant aspect to be explored is the connection betwee
 %
 Notice that if the matrix $\mAv$ is non-singular, the augmented \ac{DAE} system~\eqref{chap4:eq:augmented_dae} has index-1. This is a crucial aspect to be taken into consideration since, as demonstrated in Section~\ref{chap4:sec:daes_complexity}, the final reduction to index-0 \acp{DAE} is costly. Furthermore, the vector $\mv$ and its Jacobian with respect to the states $\mx$ can be sequentially evaluated for additional reduction of the computational burden. Nonetheless, the augmented formulation~\eqref{chap4:eq:augmented_dae} allows for the full exploitation of the signature technique to detect null expressions without the need for symbolic simplification~\cite{monagan1994signature}. Eventually, this will be the subject of future research and implementations that will exploit index-1 \acp{DAE} integrators similarly to the other state-of-the-art \acp{DAE} solver presented in the Introduction. A pseudocode and a flowchart of the index reduction algorithm with expression swell mitigation can be found in Algorithm~\ref{chap4:alg:index_reduction_veil} and \figurename~\ref{chap4:fig:index_reduction_veil}, respectively.
 
-\begin{figure}[htp]
+\begin{figure}[htb]
   \centering
-  \includegraphics[angle=0, width=0.5\columnwidth]{dae_flowchart_veil}
+  \includegraphics[angle=0, width=9cm]{dae_flowchart_veil}
   \caption{Flowchart of the index reduction algorithm with expression swell mitigation.}
   \label{chap4:fig:index_reduction_veil}
 \end{figure}
@@ -471,13 +468,12 @@ The \Indigo{} \Matlab{} toolbox is an object-oriented library that allows the us
     %
     \item The invariants, composed of the hidden constraints obtained from the index reduction process $\mhiv$, and optional user-defined invariants $\mhuv$, namely
     %
-    \begin{equation}
-      \label{chap4:eq:inv_part}
+    \begin{equation*}
       \m{h}(\mx, \m{v}, t) = \begin{bmatrix}
           \mhiv \\[0.5mm]
           \mhuv
       \end{bmatrix} = \m{0} \, \text{.}
-    \end{equation}
+    \end{equation*}
     %
     \item The veils, which are the set of the expression hierarchical representation variables used in \LEM{} to limit the expression swell
     %
@@ -526,7 +522,7 @@ In this section, we showcase an example of a high-index \ac{DAE} system: an inde
 
 As a first demonstration of the proposed index reduction algorithm capabilities, we first consider the given example from a purely symbolic perspective. In particular, we consider the computational cost of the expressions generated during the presented procedure, both with \ac{LU} and \ac{FFLU} factorization of the system matrix. The compactness of the expressions generated during the index reduction algorithm is a crucial aspect, as it ensures that limited computational overhead is introduced in the numerical integration of the reduced-index system, as well as in the projection of the solution on the hidden constraints. Specifically, the index reduction algorithm is applied to the \ac{DAE} system and reduced to index-0. For each reduction stage of the example considered, the computational cost is reported in Table~\ref{chap4:tab:torus}. Notably, the results show that the expression complexity is similar for both \ac{LU} and \ac{FFLU} factorization, with a slight increase in the number of multiplications and divisions for the latter.
 
-\begin{table}[htp]
+\begin{table}[htb]
   \caption{Expression complexity encountered throughout the index reduction of the particle motion \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:torus}
   \centering
@@ -566,8 +562,7 @@ As a first demonstration of the proposed index reduction algorithm capabilities,
 
 The numerical stability and consistency of the reduced-index system are demonstrated by exploiting the analytical solution of the problem in~\cite{campbell1995constraint}. Specifically, the \ac{DAE} system consists of three position variables $[x_{1}, \, x_{2}, \, x_{3}]^\top$, three velocity variables $[u_{1}, \, u_{2}, \, u_{3}]^\top$, and one constraint with Lagrange multiplier $\lambda$. The solution manifold is 4D, and the exact solution is
 %
-\begin{equation}
-  \label{chap4:eq:torus_solution}
+\begin{equation*}
   \mx_\text{exact} = \begin{bmatrix}
     x_{1} \\ x_{2} \\ x_{3}
   \end{bmatrix} = \begin{bmatrix}
@@ -575,7 +570,7 @@ The numerical stability and consistency of the reduced-index system are demonstr
     (\rho \cos(2\pi - t) + r) \sin(t) \\
     \rho \sin(2\pi - t)
   \end{bmatrix} \, \text{.}
-\end{equation}
+\end{equation*}
 %
 The initial value problem is defined as follows
 %
@@ -604,19 +599,20 @@ The numerical integration of the reduced-index system is performed through Impli
 %
 To verify that the projection is performed correctly and does not affect the order of the \ac{RK} method, numerical integration is performed in the interval $t \in [0, \, 2\pi]$ seconds with different integration time steps $\Delta t$. The error of the numerical integration $\varepsilon = \| \, \mx - \mx_\text{exact} \, \|_{\infty}$ is reported in \figurename~\ref{chap4:fig:torus_order}. As it can be seen, the implemented projection preserves the order of the method for all the integration time steps. It is important to highlight that to obtain such results the absolute error tolerances of the integrator and the projection are both set to $\varepsilon = 10^{-10}$. The same tolerances are used in the numerical integration of the reduced-index system in the interval $t \in [0, \, 400\pi]$ seconds with step $\Delta t = 0.025$ seconds. The results are reported in \figurename~\ref{chap4:fig:torus_integration}, where Implicit Euler, RadauIIA3, and RadauIIA5 \ac{RK} methods are employed, and the projection on the hidden constraints $\mh$ is performed. The effect of the projection is highlighted on the bottom left plot.
 
-\begin{figure}[htp]
+\begin{figure}[htb]
   \centering
-  \small{\includetikz{figures/chapter_4/torus_order.tex}}
-  \small{\includetikz{figures/chapter_4/torus_hidden.tex}}
+  \small{\includetikz{figures/chapter_4/torus_order_hidden.tex}}
   \caption{Numerical integration error $\varepsilon = \| \, \mx - \mx_\text{exact} \, \|_{\infty}$ of the \acp{DAE}~\eqref{chap4:eq:torus} over different integration time steps $\Delta t$, along with the computed order of the method (left). The projection on the hidden constraints is performed and the invariants violation $\| \, \mh \, \|_{\infty}$ is reported (right). Notice that the implemented projection preserves the order of the method for all the integration time steps. The tests are performed in the interval $t \in [0, \, 2\pi]$ seconds, using Implicit Euler, RadauIIA3, and RadauIIA5 Runge-Kutta methods.}
   \label{chap4:fig:torus_order}
 \end{figure}
 
-\begin{figure}[htp]
+\begin{figure}[htb]
   \centering
-  \small{\includetikz{figures/chapter_4/torus_implicit_euler.tex}}
+  \small{\includetikz{figures/chapter_4/torus_implicit_euler.tex}}%
+  \hspace{0.25cm}%
   \small{\includetikz{figures/chapter_4/torus_radauiia3.tex}}
-  \small{\includetikz{figures/chapter_4/torus_radauiia5.tex}}
+  \small{\includetikz{figures/chapter_4/torus_radauiia5.tex}}%
+  \hspace{0.25cm}%
   \small{\includetikz{figures/chapter_4/torus_radauiia5_noproj.tex}}
   \caption{Numerically integrated solution of the \acp{DAE}~\eqref{chap4:eq:torus} in the interval $t \in [0, \, 400\pi]$ seconds, with step $\Delta t = 0.025$ seconds, using Implicit Euler (top left), RadauIIA3 (top right), and RadauIIA5 (bottom left and right) Runge-Kutta methods. The first three plots show the numerical integration of the reduced-index system with projection on the hidden constraints $\mh$ produced by the index reduction algorithm. On the bottom right plot, the numerical integration of the reduced-index system is performed without projection on the manifold $\mh$ and substantial drift is observed.}
   \label{chap4:fig:torus_integration}

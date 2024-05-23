@@ -42,7 +42,7 @@ To derive the global stiffness matrix $\mathbf{K}^{n}$ in~\eqref{app4:eq:system}
 
 The stiffness matrix $\Ke$ delineates how an element reacts when subjected to unit displacements imposed at each of its nodes' \acp{DOF}. Typically, when deriving such a matrix, it is assumed that the element is rigidly connected at each of its nodes' \acp{DOF}, thus possessing no internal \acp{DOF}. However, in certain structures, internal \acp{DOF} may arise due to links that allow for specific movements at nodes while constraining others. To address this scenario, the matrix $\Ke$ must be adjusted accordingly~\cite{logan2002first}. This adjustment, known as \emph{condensation}, involves reordering rows and columns of the matrix $\Ke$ such that rows and columns corresponding to free nodal \acp{DOF} are relocated to the bottom-right corner of the matrix. This reordering, executed via a permutation matrix $\Pe$, facilitates the elimination of stiffness entries associated with free nodal \acp{DOF} from the original matrix $\Ke$. Consequently, a new condensed stiffness matrix ${\Ke}_{,c} \in \mathbb{R}^{{\Ne}_{,c} \times {\Ne}_{,c}}$ is derived, where ${\Ne}_{,c}$ denotes the number of constrained \acp{DOF} of the element. The condensed stiffness matrix ${\Ke}_{,c}$ is then computed through the following operations
 %
-\begin{equation}
+\begin{equation*}
   \Pe \, \Ke \, \Pe^\top= \left[\,\begin{matrix}
     {\Ke}_{,11} & {\Ke}_{,12} \\
     {\Ke}_{,21} & {\Ke}_{,22}
@@ -51,7 +51,7 @@ The stiffness matrix $\Ke$ delineates how an element reacts when subjected to un
     {\Ke}_{,11} - {\Ke}_{,12} \, {{\Ke}_{,22}}^{-1} \, {\Ke}_{,21} & 0 \\
     0 & 0
   \end{matrix}\,\right] \, \text{.}
-\end{equation}
+\end{equation*}
 %
 It is important to apply condensation to each element of the structure as needed. Subsequently, the subscript $c$ in ${\Ke}_{,c}$ is dropped, and the condensed stiffness matrix is denoted simply as $\Ke$.
 
@@ -59,35 +59,34 @@ It is important to apply condensation to each element of the structure as needed
 
 The global stiffness matrix $\mathbf{K}^{g}$ is constructed by aggregating the stiffness contributions from individual elements of the structure. The superscript $g$ signifies that these quantities are expressed in the global reference frame. To achieve this, the element's stiffness matrix $\Ke^{g}$ is initially derived by transforming $\Ke$ from the element reference frame to the global reference frame as follows
 %
-\begin{equation}
-  \label{app4:eq:element_stiffness_matrix}
+\begin{equation*}
   \Ke^{g} = \Te^\top \, \Ke \, \Te \, \text{,} \qquad \text{where} \qquad \Te = \mathrm{diag}\left( \Re, \dots, \Re \right) \, \text{.}
-\end{equation}
+\end{equation*}
 %
 Note that $\Re$ represents the rotation matrix from the $e$-th element reference frame to the global reference frame. Each transformed stiffness matrix $\Ke^{g}$ is then integrated into the global stiffness matrix $\mathbf{K}^{g}$ by incorporating the contributions of individual elements into their respective positions corresponding to the structure's \acp{DOF}. Consequently, the matrix $\Ke^{g}$ is multiplied by the injection matrix $\Je \in \mathbb{R}^{\Ne \times N}$, which is a matrix of zeros except for the positions corresponding to the structure's \acp{DOF}, which are set to one. Thus, the global stiffness matrix $\mathbf{K}^{g}$ is formulated as follows
 %
-\begin{equation}
+\begin{equation*}
   \mathbf{K}^{g} = \sum_{e \, \in \, \mathcal{E}} \Je^\top \, \Ke^{g} \, \Je
    = \sum_{e \, \in \, \mathcal{E}} \Je^\top \, \Te^\top\,\Ke \, \Te \, \Je \, \text{,}
-\end{equation}
+\end{equation*}
 %
 where $\mathcal{E}$ is the set of elements of the structure.
 
 Following this transformation, we arrive at the linear system of equations~\eqref{app4:eq:system} expressed in the global reference frame, denoted as $\mathbf{K}^{g} \, \mathbf{d}^{g} = \mathbf{f}^{g}$, where $\mathbf{d}^{g}$ and $\mathbf{f}^{g}$ represent the displacement and force vectors in the global reference frame, respectively. However, \acp{BC} for displacements and forces are typically applied in the nodes' reference frames. Consequently, to account for this, the system of equations~\eqref{app4:eq:system} must be adjusted by incorporating the nodes' rotations $\mathbf{Q}_{i}$ with respect to the global reference frame, which are expressed in the block diagonal matrix $\mathbf{Q}$. This adjustment allows us to express the system~\eqref{app4:eq:system} as
 %
-\begin{equation}
+\begin{equation*}
   \underbrace{\mathbf{Q} \, \mathbf{K}^{g} \, \mathbf{Q}^\top}_{\displaystyle\mathbf{K}^{n}} \, \underbrace{\mathbf{Q} \, \mathbf{d}^{g}}_{\displaystyle\mathbf{d}^{n}} = \underbrace{\mathbf{Q} \, \mathbf{f}^{g}}_{\displaystyle\mathbf{f}^{n}} \, \text{,} \qquad \text{where} \qquad \mathbf{Q} = \mathrm{diag}\left( \mathbf{Q}_{1}, \dots, \mathbf{Q}_{N} \right) \, \text{,}
-\end{equation}
+\end{equation*}
 %
 and $\mathcal{N}$ is the number of nodes of the structure.
 
 To construct the nodal force vector $\mathbf{f}^{n}$ and displacement vector $\mathbf{d}^{n}$, it is necessary to incorporate the individual nodes' \acp{BC} into their corresponding \acp{DOF}. This process involves multiplying the $i$-th nodal force vector $\mathbf{f}^{n}_{i}$ and displacement vector $\mathbf{d}^{n}_{i}$ by the injection matrix $\mathbf{J}_{i} \in \mathbb{R}^{N_i \times N}$, where $N_i$ represents the number of \acp{DOF} of the node. Consequently, the vectors $\mathbf{f}^{n}$ and $\mathbf{d}^{n}$ are respectively derived as
 %
-\begin{equation}
+\begin{equation*}
   \mathbf{f}^{n} = \sum_{i \, \in \, \mathcal{N}} \mathbf{J}_{i}^\top \, \mathbf{f}^{n}_{i}
   \qquad \text{and} \qquad
   \mathbf{d}^{n} = \sum_{i \, \in \, \mathcal{N}} \mathbf{J}_{i}^\top \, \mathbf{d}^{n}_{i} \, \text{.}
-\end{equation}
+\end{equation*}
 
 \subsection{Linear System Partitioning and Solution}
 
@@ -343,14 +342,14 @@ Mechanisms involving motion are prevalent in engineering applications. Typically
 
 This example application explores the inclusion of suspension compliance in vehicle simulation using a hybrid symbolic-numerical approach. This methodology facilitates easy generalization and real-time modification of model parameters without the need for code regeneration. The suspension's dynamic characteristics are modeled through a system of differential-algebraic equations, integrated using methods described in~\cite{larcher2024imece_symbolic}. Depending on the modeling approach, suspension pick-up points' positions and tire force at the hub are extracted either through semi-analytical solutions or numerical integration. These are then utilized to calculate the suspension's compliance characteristics. The compliance contribution can be incorporated into the overall suspension system displacement as either a \emph{steady-state} or \emph{full dynamic} contribution~\cite{larcher2024imece_symbolic}. The former approach reduces computational costs, while the latter yields accurate simulations at a higher computational expense. Results from this approach are compared with simulation data from commercial software \Ansys{}, showing good agreement under both static (Figure~\ref{app4:fig:rotations} and Figure~\ref{app4:fig:translations}) and dynamic conditions (Figure~\ref{chap5:fig:suspension_dynamic_results} in Chapter~\ref{chap5:applications}).
 
-\begin{figure}[htp]
+\begin{figure}[htb]
   \centering
   \small{\includetikz{figures/appendix_4/translations.tex}}
   \caption{Displacements of the wheel carrier reference frame in the $x$-, $y$-, and $z$-axes directions for different loads applied at the wheel hub. In the left-hand side of the figure, the forces are applied and torques are null. Conversely, the right-hand half side of the figure reports the results where torques are applied and forces are null. \emph{Legend:} {\color{mycolor1}$\blacksquare$}~$F_x = \SSI{4.0}{\kilo\newton}$, {\color{mycolor2}$\blacksquare$}~$F_y = \SSI{4.0}{\kilo\newton}$, {\color{mycolor3}$\blacksquare$}~$F_z = \SSI{4.0}{\kilo\newton}$, with $M_x = M_y = M_z = \SSI{0.0}{\kilo\newton\meter}$. {\color{mycolor4}$\blacksquare$}~$M_x = \SSI{0.4}{\kilo\newton\meter}$, {\color{mycolor5}$\blacksquare$}~$M_y = \SSI{0.4}{\kilo\newton\meter}$, {\color{mycolor6}$\blacksquare$}~$M_z = \SSI{0.4}{\kilo\newton\meter}$, with $F_x = F_y = F_z = \SSI{0.0}{\kilo\newton}$.}
   \label{app4:fig:translations}
 \end{figure}
 
-\begin{figure}[htp]
+\begin{figure}[htb]
   \centering
   \small{\includetikz{figures/appendix_4/rotations.tex}}
   \caption{Rotations of the wheel carrier reference frame around the $x$-, $y$-, and $z$-axes directions for different loads applied at the wheel hub. In the left-hand side of the figure, the forces are applied and torques are null. Conversely, the right-hand half side of the figure reports the results where torques are applied and forces are null. \emph{Legend:} {\color{mycolor1}$\blacksquare$}~$F_x = \SSI{4.0}{\kilo\newton}$, {\color{mycolor2}$\blacksquare$}~$F_y = \SSI{4.0}{\kilo\newton}$, {\color{mycolor3}$\blacksquare$}~$F_z = \SSI{4.0}{\kilo\newton}$, with $M_x = M_y = M_z = \SSI{0.0}{\kilo\newton\meter}$. {\color{mycolor4}$\blacksquare$}~$M_x = \SSI{0.4}{\kilo\newton\meter}$, {\color{mycolor5}$\blacksquare$}~$M_y = \SSI{0.4}{\kilo\newton\meter}$, {\color{mycolor6}$\blacksquare$}~$M_z = \SSI{0.4}{\kilo\newton\meter}$, with $F_x = F_y = F_z = \SSI{0.0}{\kilo\newton}$.}

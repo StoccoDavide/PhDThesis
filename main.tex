@@ -55,17 +55,17 @@
   Refname={Example}
 ]{example}
 
-\renewenvironment{bmatrix}
-  {\left[\hspace{-.75\arraycolsep}\array{*{\value{MaxMatrixCols}}{c}}}
+\renewenvironment{bmatrix}%
+  {\left[\hspace{-.75\arraycolsep}\array{*{\value{MaxMatrixCols}}{c}}}%
   {\endarray\hspace{-.75\arraycolsep}\right]}
 
+\newenvironment{system}%
+  {\left\{\begin{array}{@{}r@{~}c@{~}l}}%
+    {\end{array}\hspace{-.75\arraycolsep}\right.}
+
 \renewenvironment{cases}%
-  {\left\{
-    \begin{array}{@{}l@{\;}lr@{}}
-  }%
-  {\end{array}
-    \hspace{-.75\arraycolsep}\right.
-  }
+  {\left\{\begin{array}{@{}l@{\;}lr@{}}}%
+  {\end{array}\hspace{-.75\arraycolsep}\right.}
 
 % Document settings ------------------------------------------------------------
 \usepackage{geometry}            % change margins of the document
@@ -363,6 +363,7 @@
 \newcommand{\Simulink}{\textsc{Simulink}\textsuperscript{\textregistered}}
 \newcommand{\Mex}{\textsc{Mex}}
 \newcommand{\SFunction}{\textsc{S-Function}}
+\newcommand{\SymPy}{\textsc{SymPy}}
 \newcommand{\Axiom}{\textsc{Axiom}}
 \newcommand{\Derive}{\textsc{Derive}}
 \newcommand{\Macsyma}{\textsc{Macsyma}}
