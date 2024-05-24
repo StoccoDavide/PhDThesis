@@ -60,7 +60,7 @@ It is important to apply condensation to each element of the structure as needed
 The global stiffness matrix $\mathbf{K}^{g}$ is constructed by aggregating the stiffness contributions from individual elements of the structure. The superscript $g$ signifies that these quantities are expressed in the global reference frame. To achieve this, the element's stiffness matrix $\Ke^{g}$ is initially derived by transforming $\Ke$ from the element reference frame to the global reference frame as follows
 %
 \begin{equation*}
-  \Ke^{g} = \Te^\top \, \Ke \, \Te \, \text{,} \qquad \text{where} \qquad \Te = \mathrm{diag}\left( \Re, \dots, \Re \right) \, \text{.}
+  \Ke^{g} = \Te^\top \, \Ke \, \Te \, \text{,} \quad \text{where} \quad \Te = \mathrm{diag}\left( \Re, \dots, \Re \right) \, \text{.}
 \end{equation*}
 %
 Note that $\Re$ represents the rotation matrix from the $e$-th element reference frame to the global reference frame. Each transformed stiffness matrix $\Ke^{g}$ is then integrated into the global stiffness matrix $\mathbf{K}^{g}$ by incorporating the contributions of individual elements into their respective positions corresponding to the structure's \acp{DOF}. Consequently, the matrix $\Ke^{g}$ is multiplied by the injection matrix $\Je \in \mathbb{R}^{\Ne \times N}$, which is a matrix of zeros except for the positions corresponding to the structure's \acp{DOF}, which are set to one. Thus, the global stiffness matrix $\mathbf{K}^{g}$ is formulated as follows
@@ -75,7 +75,7 @@ where $\mathcal{E}$ is the set of elements of the structure.
 Following this transformation, we arrive at the linear system of equations~\eqref{app4:eq:system} expressed in the global reference frame, denoted as $\mathbf{K}^{g} \, \mathbf{d}^{g} = \mathbf{f}^{g}$, where $\mathbf{d}^{g}$ and $\mathbf{f}^{g}$ represent the displacement and force vectors in the global reference frame, respectively. However, \acp{BC} for displacements and forces are typically applied in the nodes' reference frames. Consequently, to account for this, the system of equations~\eqref{app4:eq:system} must be adjusted by incorporating the nodes' rotations $\mathbf{Q}_{i}$ with respect to the global reference frame, which are expressed in the block diagonal matrix $\mathbf{Q}$. This adjustment allows us to express the system~\eqref{app4:eq:system} as
 %
 \begin{equation*}
-  \underbrace{\mathbf{Q} \, \mathbf{K}^{g} \, \mathbf{Q}^\top}_{\displaystyle\mathbf{K}^{n}} \, \underbrace{\mathbf{Q} \, \mathbf{d}^{g}}_{\displaystyle\mathbf{d}^{n}} = \underbrace{\mathbf{Q} \, \mathbf{f}^{g}}_{\displaystyle\mathbf{f}^{n}} \, \text{,} \qquad \text{where} \qquad \mathbf{Q} = \mathrm{diag}\left( \mathbf{Q}_{1}, \dots, \mathbf{Q}_{N} \right) \, \text{,}
+  \underbrace{\mathbf{Q} \, \mathbf{K}^{g} \, \mathbf{Q}^\top}_{\displaystyle\mathbf{K}^{n}} \, \underbrace{\mathbf{Q} \, \mathbf{d}^{g}}_{\displaystyle\mathbf{d}^{n}} = \underbrace{\mathbf{Q} \, \mathbf{f}^{g}}_{\displaystyle\mathbf{f}^{n}} \, \text{,} \quad \text{where} \quad \mathbf{Q} = \mathrm{diag}\left( \mathbf{Q}_{1}, \dots, \mathbf{Q}_{N} \right) \, \text{,}
 \end{equation*}
 %
 and $\mathcal{N}$ is the number of nodes of the structure.
@@ -84,7 +84,7 @@ To construct the nodal force vector $\mathbf{f}^{n}$ and displacement vector $\m
 %
 \begin{equation*}
   \mathbf{f}^{n} = \sum_{i \, \in \, \mathcal{N}} \mathbf{J}_{i}^\top \, \mathbf{f}^{n}_{i}
-  \qquad \text{and} \qquad
+  \quad \text{and} \quad
   \mathbf{d}^{n} = \sum_{i \, \in \, \mathcal{N}} \mathbf{J}_{i}^\top \, \mathbf{d}^{n}_{i} \, \text{.}
 \end{equation*}
 
@@ -111,8 +111,8 @@ where $\mathbf{P}^{n}$ denotes the permutation matrix responsible for rearrangin
 \begin{subequations}
   \label{app4:eq:macrosol}
   \begin{align}
-    \textrm{[solve for $\mathbf{d}^{n}_{f}$]} \qquad &\mathbf{K}^{n}_{ff}\mathbf{d}^{n}_{f} = \mathbf{f}^{n}_{f} - \mathbf{K}^{n}_{fs}\,\mathbf{d}^{n}_{s} \label{app4:eq:macrodf} \, \text{,} \\
-    \textrm{[compute $\mathbf{f}^{n}_{s}$]} \qquad &\mathbf{f}^{n}_{s} = \mathbf{K}^{n}_{sf}\,\mathbf{d}^{n}_{f} + \mathbf{K}^{n}_{ss}\,\mathbf{d}^{n}_{s} - \mathbf{f}^{n}_{r} \, \text{.} \label{app4:eq:macrosolfs}
+    \textrm{[solve for $\mathbf{d}^{n}_{f}$]} \quad &\mathbf{K}^{n}_{ff}\mathbf{d}^{n}_{f} = \mathbf{f}^{n}_{f} - \mathbf{K}^{n}_{fs}\,\mathbf{d}^{n}_{s} \label{app4:eq:macrodf} \, \text{,} \\
+    \textrm{[compute $\mathbf{f}^{n}_{s}$]} \quad &\mathbf{f}^{n}_{s} = \mathbf{K}^{n}_{sf}\,\mathbf{d}^{n}_{f} + \mathbf{K}^{n}_{ss}\,\mathbf{d}^{n}_{s} - \mathbf{f}^{n}_{r} \, \text{.} \label{app4:eq:macrosolfs}
   \end{align}
 \end{subequations}
 %
@@ -228,7 +228,7 @@ Since the symbolic solution of~\eqref{app4:eq:macrodf} may not always be feasibl
 %
 \begin{minipage}[t]{0.49\textwidth}
   \begin{itemize}
-  \setlength{\itemsep}{-0.25em}
+  \setlength{\itemsep}{0.0em}
   \item stiffness matrix $\mathbf{K}^{n}$;
   \item free-free stiffness matrix $\mathbf{K}^{n}_{ff}$;
   \item free-specified stiffness matrix $\mathbf{K}^{n}_{fs}$;
@@ -241,7 +241,7 @@ Since the symbolic solution of~\eqref{app4:eq:macrodf} may not always be feasibl
 \hfill
 \begin{minipage}[t]{0.49\textwidth}
   \begin{itemize}
-  \setlength{\itemsep}{-0.25em}
+  \setlength{\itemsep}{0.0em}
   \item specified displacement vector $\mathbf{d}^{n}_{s}$;
   \item force vector $\mathbf{f}$*;
   \item free force vector $\mathbf{f}^{n}_{f}$;
@@ -340,7 +340,7 @@ Mechanisms involving motion are prevalent in engineering applications. Typically
 
 \subsection{Efficient Simulation of Parametric Mechanisms Using Model Reduction}
 
-This example application explores the inclusion of suspension compliance in vehicle simulation using a hybrid symbolic-numerical approach. This methodology facilitates easy generalization and real-time modification of model parameters without the need for code regeneration. The suspension's dynamic characteristics are modeled through a system of differential-algebraic equations, integrated using methods described in~\cite{larcher2024imece_symbolic}. Depending on the modeling approach, suspension pick-up points' positions and tire force at the hub are extracted either through semi-analytical solutions or numerical integration. These are then utilized to calculate the suspension's compliance characteristics. The compliance contribution can be incorporated into the overall suspension system displacement as either a \emph{steady-state} or \emph{full dynamic} contribution~\cite{larcher2024imece_symbolic}. The former approach reduces computational costs, while the latter yields accurate simulations at a higher computational expense. Results from this approach are compared with simulation data from commercial software \Ansys{}, showing good agreement under both static (Figure~\ref{app4:fig:rotations} and Figure~\ref{app4:fig:translations}) and dynamic conditions (Figure~\ref{chap5:fig:suspension_dynamic_results} in Chapter~\ref{chap5:applications}).
+This example application explores the inclusion of suspension compliance in vehicle simulation using a hybrid symbolic-numerical approach. This methodology facilitates easy generalization and \ac{RT} modification of model parameters without the need for code regeneration. The suspension's dynamic characteristics are modeled through a system of differential-algebraic equations, integrated using methods described in~\cite{larcher2024imece_symbolic}. Depending on the modeling approach, suspension pick-up points' positions and tire force at the hub are extracted either through semi-analytical solutions or numerical integration. These are then utilized to calculate the suspension's compliance characteristics. The compliance contribution can be incorporated into the overall suspension system displacement as either a \emph{steady-state} or \emph{full dynamic} contribution~\cite{larcher2024imece_symbolic}. The former approach reduces computational costs, while the latter yields accurate simulations at a higher computational expense. Results from this approach are compared with simulation data from commercial software \Ansys{}, showing good agreement under both static (Figure~\ref{app4:fig:rotations} and Figure~\ref{app4:fig:translations}) and dynamic conditions (Figure~\ref{chap5:fig:suspension_dynamic_results} in Chapter~\ref{chap5:applications}).
 
 \begin{figure}[htb]
   \centering

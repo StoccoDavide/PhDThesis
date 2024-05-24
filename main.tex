@@ -569,6 +569,10 @@
 \pagestyle{headings}}
 
 \let\ps@plain\ps@empty% remove page numbers from chapter pages
+
+\newcommand*\std@chapter{} % use long titles in toc and short one in headers
+\let\std@chapter=\@chapter
+\renewcommand*\@chapter[2][]{\std@chapter[#2]{#2}\chaptermark{#1}}
 \makeatother
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -590,6 +594,7 @@
 The content of this thesis is the result of the author's original research work. Permission to include the following published material for non-commercial purposes is granted from the publishers' copyright policy. The published works are cited in the bibliography and are listed below.
 %
 \begin{itemize}
+  \setlength{\itemsep}{0.0em}
   \item \fullcite{stocco2021acme}
   \item \fullcite{stocco2024symbolic}
   \item \fullcite{stocco2024matrix}
@@ -602,6 +607,7 @@ The content of this thesis is the result of the author's original research work.
 This thesis contains material that is currently submitted for publication. The material has not yet been published previously, and a short adapted version of the content is provided in the thesis. The submitted works are cited in the bibliography and are listed below.
 %
 \begin{itemize}
+  \setlength{\itemsep}{0.0em}
   \item \fullcite{stocco2024trussme}
   \item \fullcite{stocco2024imece_solution}
   \item \fullcite{larcher2024imece_symbolic}
@@ -678,7 +684,7 @@ This thesis contains material that is currently submitted for publication. The m
     \acro{MBS}{Multi-Body System}
     \acro{MPL}{Mathematical Pseudo-Language}
     \acro{NASA}{National Aeronautics and Space Administration}
-    \acro{NLP}{Non-Linear Programming}
+    \acro{NLP}{nonlinear Programming}
     \acro{OC}{Optimal Control}
     \acro{OCP}{Optimal Control Problem}
     \acro{ODE}{Ordinary Differential Equation}

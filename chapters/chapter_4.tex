@@ -10,9 +10,9 @@ In this chapter, we present an algorithm for the index reduction of first-order 
 \section{Differential-Algebraic Equations Index Reduction and Solution}
 \label{chap4:sec:introduction}
 
-As we already mentioned in Chapter~\ref{chap2:brief_daes}, \acp{DAE} are extensively used in dynamic system modeling. The challenge in numerically solving a \ac{DAE} system is assessed through its differentiation index, commonly referred to as ``the'' index~\cite{campbell1995index, campbell1995highindex}. Achieving accurate simulations necessitates converting high-index \acp{DAE} into low-index counterparts, posing a well-recognized challenge~\cite{petzold1982differential}. This process involves transforming a \ac{DAE} system into an equivalent system with a lower index through successive differentiation of the system equations. For this reason, the differentiation index is roughly defined as the number of times algebraic equations are differentiated to obtain an equivalent system of \acp{ODE} with invariants. Index reduction is a crucial step prior to the numerical integration of \acp{DAE}, as integrating high-index systems can be impractical. The primary obstacle lies in the necessity to solve non-linear systems of equations at each integration step, which can be computationally expensive and, in certain cases, numerically unstable. Specific numerical techniques, introduced in~\cite{petzold1982differential, thomsen1999numerical, baumgarte1972stabilization}, have been developed to address this challenge. However, these methods are not universally effective and may be inapplicable to some high-index \acp{DAE}. Consequently, index reduction becomes an indispensable preliminary stage before numerical integration~\cite{lamour2013differential}.
+As we already mentioned in Chapter~\ref{chap2:brief_daes}, \acp{DAE} are extensively used in dynamic system modeling. The challenge in numerically solving a \ac{DAE} system is assessed through its differentiation index, commonly referred to as ``the'' index~\cite{campbell1995index, campbell1995highindex}. Achieving accurate simulations necessitates converting high-index \acp{DAE} into low-index counterparts, posing a well-recognized challenge~\cite{petzold1982differential}. This process involves transforming a \ac{DAE} system into an equivalent system with a lower index through successive differentiation of the system equations. For this reason, the differentiation index is roughly defined as the number of times algebraic equations are differentiated to obtain an equivalent system of \acp{ODE} with invariants. Index reduction is a crucial step prior to the numerical integration of \acp{DAE}, as integrating high-index systems can be impractical. The primary obstacle lies in the necessity to solve nonlinear systems of equations at each integration step, which can be computationally expensive and, in certain cases, numerically unstable. Specific numerical techniques, introduced in~\cite{petzold1982differential, thomsen1999numerical, baumgarte1972stabilization}, have been developed to address this challenge. However, these methods are not universally effective and may be inapplicable to some high-index \acp{DAE}. Consequently, index reduction becomes an indispensable preliminary stage before numerical integration~\cite{lamour2013differential}.
 
-Given its complicated nature, index reduction has been the subject of extensive research and is often carried out by leveraging the specific formulation of the \ac{DAE} system, like in the multi-body modeling~\cite{zhou2005implicit, zhou2007symbolic, zhou2007symbolicseq, bayo1988modified, wehage1982generalized}. When the specific formulation of the \ac{DAE} system is not known a priori, or the system is not in a specific form, the index reduction process becomes more challenging. Many current simulation software packages for dynamic systems use index-reduction algorithms based on the \ac{SA} of the system, such as the Pantelides algorithm~\cite{pantelides1988consistent} and the dummy derivatives method~\cite{mattsson1993index}, which are subcases of the Pryce's $\Sigma$-method~\cite{pryce1998solving, pryce2001simple, nedialkov2007solvingI, nedialkov2007solvingII, nedialkov2008solvingIII, nedialkov2015algorithm, tan2016symbolic, mckenzie2017structural}. These algorithms are effective in reducing the index of most of the systems, but they can fail either for numerical cancellations~\cite{iwata2019index} or underestimation of the differentiation index~\cite{pantelides1988consistent, unger1995structural}, like in the case of Rei{\ss}ig's \acp{DAE} family~\cite{reissig2000differential}. Symbolic manipulation is proven to be successful in restating a \acp{DAE} on which the $\Sigma$-method fails to a \acp{DAE} on which the \ac{SA} may succeed~\cite{tan2016symbolic}.
+Given its complicated nature, index reduction is the subject of extensive research and is often carried out by leveraging the specific formulation of the \ac{DAE} system, like in the multi-body modeling~\cite{zhou2005implicit, zhou2007symbolic, zhou2007symbolicseq, bayo1988modified, wehage1982generalized}. When the specific formulation of the \ac{DAE} system is not known a priori, or the system is not in a specific form, the index reduction process becomes more challenging. Many current simulation software packages for dynamic systems use index-reduction algorithms based on the \ac{SA} of the system, such as the Pantelides algorithm~\cite{pantelides1988consistent} and the dummy derivatives method~\cite{mattsson1993index}, which are subcases of the Pryce's $\Sigma$-method~\cite{pryce1998solving, pryce2001simple, nedialkov2007solvingI, nedialkov2007solvingII, nedialkov2008solvingIII, nedialkov2015algorithm, tan2016symbolic, mckenzie2017structural}. These algorithms are effective in reducing the index of most of the systems, but they can fail either for numerical cancellations~\cite{iwata2019index} or underestimation of the differentiation index~\cite{pantelides1988consistent, unger1995structural}, like in the case of Rei{\ss}ig's \acp{DAE} family~\cite{reissig2000differential}. Symbolic manipulation is proven to be successful in restating a \acp{DAE} on which the $\Sigma$-method fails to a \acp{DAE} on which the \ac{SA} may succeed~\cite{tan2016symbolic}.
 
 Index reduction based on symbolic-numeric aided \ac{SA} has been successful in handling failures of the Pryce's $\Sigma$-method~\cite{tan2016symbolic} as well as in performing symbolically-informed \ac{SA}~\cite{chowdhry2004symbolic}. This latter \ac{SA} approach, which is named $\sigma v$-method, uses symbolic-numeric \ac{LU} factorization for variable substitution and rank determination on linear constant coefficient \acp{DAE}. A valuable attempt to use pure symbolic manipulation in \acp{DAE} index reduction is presented in~\cite{zhou2005implicit, zhou2007symbolic, zhou2007symbolicseq}, where implicit involutive form and \ac{LU} decomposition are successfully used to reduce the index of a simple constrained multi-body system. It is clear that index reduction algorithms based on pure symbolic matrix factorization represent a viable alternative to classic \ac{SA} techniques. However, symbolic matrix factorization feasibility is strongly tied to the performance of the symbolic computation kernel and its capabilities~\cite{zhou2008fraction}. Large expressions can lead to strong performance degradation of the kernel. Techniques aimed at limiting this decrease of performance while performing symbolic linear algebra operations are presented in~\cite{zhou2006hierarchical, zhou2007symbolic, zhou2007symbolicseq}. In these works, the hierarchical representation of expressions is applied to matrix factorization tasks. Nonetheless, the \LULEM{} package~\cite{carette2006linear}, which implements large expression management strategies in \ac{LU} decomposition, significantly outperforms the \Maple{}'s built-in matrix factorization routines.
 
@@ -46,7 +46,7 @@ We denote the cokernel and its orthogonal complement of $\mA$ with $\mK$ and $\m
   \begin{system}
     \mE \, \mxp &=& \mg \\[0.1em]
     \ma         &=& \m{0}
-  \end{system} \text{,} \quad \text{where} \qquad \mA = \begin{bmatrix}
+  \end{system} \quad \text{where} \quad \mA = \begin{bmatrix}
     \mE \\[0.2em]
     \m{0}
   \end{bmatrix} \text{,}
@@ -121,7 +121,7 @@ we can write
   \begin{bmatrix} \mI_1 & \m{0} \end{bmatrix}
   \begin{bmatrix} \m{U}_1 \\[0.2em] \m{0} \end{bmatrix} \mQ^\top = \m{U}_1 \mQ^\top \text{,}
   %
-  \qquad \text{and} \qquad
+  \quad \text{and} \quad
   %
   \begin{bmatrix} \m{0} & \mI_2 \end{bmatrix} \, \m{M}\m{A} =
   \begin{bmatrix} \m{0} & \mI_2 \end{bmatrix}
@@ -344,8 +344,9 @@ Although the just presented example is not so complex and relevant for a real va
 While the algorithm just presented is relatively straightforward to implement, it does have two major sources of potential issues that are both determined by the technology used and the fundamental theory.
 %
 \begin{itemize}
-    \item \emph{Expression complexity}. Symbolic manipulation often leads to a growth in expression complexity. For this reason, expression simplification may not always be feasible due to software limitations or excessive \ac{CPU} time demands. Making the algorithm insensitive to expression swell is thus crucial to its effectiveness.
-    \item \emph{Numerical stability of symbolic matrix factorization}. The description of the algorithm involves the manipulation of matrices and vectors with either symbolic or mixed symbolic-numeric entries. Ensuring that symbolic matrix factorization maintains numerical stability is a critical requirement of the algorithm. In the case of \ac{LU} decomposition, inadequate pivoting strategies can lead to the generation of singular matrices, which in turn can cause the algorithm to fail~\cite{zhou2005implicit, zhou2007symbolic, giesbrecht2014symbolic}.
+  \setlength{\itemsep}{0.0em}
+  \item \emph{Expression complexity}. Symbolic manipulation often leads to a growth in expression complexity. For this reason, expression simplification may not always be feasible due to software limitations or excessive \ac{CPU} time demands. Making the algorithm insensitive to expression swell is thus crucial to its effectiveness.
+  \item \emph{Numerical stability of symbolic matrix factorization}. The description of the algorithm involves the manipulation of matrices and vectors with either symbolic or mixed symbolic-numeric entries. Ensuring that symbolic matrix factorization maintains numerical stability is a critical requirement of the algorithm. In the case of \ac{LU} decomposition, inadequate pivoting strategies can lead to the generation of singular matrices, which in turn can cause the algorithm to fail~\cite{zhou2005implicit, zhou2007symbolic, giesbrecht2014symbolic}.
 \end{itemize}
 %
 These are the two main points that we acknowledge in the implementation of the algorithm. In the forthcoming sections, each of these matters is discussed in detail, with recommendations on techniques and open-source software solutions that are used to address them.
@@ -358,7 +359,7 @@ The most interesting and relevant aspect to be explored is the connection betwee
   \label{chap4:eq:augmented_dae}
   \mFv = \mAv \, \mx^\prime - \mbv = \m{0} \, \text{,}
   %
-  \qquad \text{where} \qquad
+  \quad \text{where} \quad
   %
   \mv = \begin{bmatrix}
     v_{1}(\mx, t) \\
@@ -452,39 +453,39 @@ A file \texttt{name.m} is generated in the current directory. As it is explained
 The \Indigo{} \Matlab{} toolbox is an object-oriented library that allows the user to exploit the automatically generated code of the reduced-index system. It is capable of integrating systems of \acp{ODE} and \acp{DAE} using a variety of \ac{RK} numerical integration schemes. In particular, the system of equations which is integrated is composed of the following elements.
 %
 \begin{itemize}
-  \setlength{\itemsep}{0pt}
-    \item A differential part, which can be expressed by one of the following classes:
-    %
-    \begin{equation*}
-        \begin{array}{ccl}
-            \m{F}(\mx, \mx^\prime, \m{v}, t) = \m{0} & \hspace{0.5cm} &
-            \text{\texttt{Implicit} system class,} \\[0.5mm]
-            \m{A}(\mx, \m{v}, t) \, \mx^\prime = \m{b}(\mx, \m{v}, t) & \hspace{0.5cm} &
-            \text{\texttt{SemiExplicit} system class,} \\[0.5mm]
-            \mx^\prime = \m{f}(\mx, \m{v}, t) & \hspace{0.5cm} &
-            \text{\texttt{Explicit} system class.}
-        \end{array}
-    \end{equation*}
-    %
-    \item The invariants, composed of the hidden constraints obtained from the index reduction process $\mhiv$, and optional user-defined invariants $\mhuv$, namely
-    %
-    \begin{equation*}
-      \m{h}(\mx, \m{v}, t) = \begin{bmatrix}
-          \mhiv \\[0.5mm]
-          \mhuv
-      \end{bmatrix} = \m{0} \, \text{.}
-    \end{equation*}
-    %
-    \item The veils, which are the set of the expression hierarchical representation variables used in \LEM{} to limit the expression swell
-    %
-    \begin{equation*}
-        \m{v}(\mx, t) = \begin{bmatrix}
-            v_{1}(\mx, t) \\[0.5mm]
-            v_{2}(v_{1}, \mx, t) \\
-            \vdots \\
-            v_{n}(v_{1}, \dots, v_{n-1}, \mx, t)
-        \end{bmatrix} \, \text{.}
-    \end{equation*}
+  \setlength{\itemsep}{0.0em}
+  \item A differential part, which can be expressed by one of the following classes:
+  %
+  \begin{equation*}
+      \begin{array}{ccl}
+          \m{F}(\mx, \mx^\prime, \m{v}, t) = \m{0} & \hspace{0.5cm} &
+          \text{\texttt{Implicit} system class,} \\[0.5mm]
+          \m{A}(\mx, \m{v}, t) \, \mx^\prime = \m{b}(\mx, \m{v}, t) & \hspace{0.5cm} &
+          \text{\texttt{SemiExplicit} system class,} \\[0.5mm]
+          \mx^\prime = \m{f}(\mx, \m{v}, t) & \hspace{0.5cm} &
+          \text{\texttt{Explicit} system class.}
+      \end{array}
+  \end{equation*}
+  %
+  \item The invariants, composed of the hidden constraints obtained from the index reduction process $\mhiv$, and optional user-defined invariants $\mhuv$, namely
+  %
+  \begin{equation*}
+    \m{h}(\mx, \m{v}, t) = \begin{bmatrix}
+        \mhiv \\[0.5mm]
+        \mhuv
+    \end{bmatrix} = \m{0} \, \text{.}
+  \end{equation*}
+  %
+  \item The veils, which are the set of the expression hierarchical representation variables used in \LEM{} to limit the expression swell
+  %
+  \begin{equation*}
+      \m{v}(\mx, t) = \begin{bmatrix}
+          v_{1}(\mx, t) \\[0.5mm]
+          v_{2}(v_{1}, \mx, t) \\
+          \vdots \\
+          v_{n}(v_{1}, \dots, v_{n-1}, \mx, t)
+      \end{bmatrix} \, \text{.}
+  \end{equation*}
 \end{itemize}
 
 To respect the invariants during the integration the \emph{standard projection} method is applied~\cite{hairer2000symmetric}. This method consists of projecting the solution $\mx$ of the numerically integrated reduced-index system onto the invariants manifold $\m{h}(\mx, \m{v}, t) = \m{0}$, which is equivalent to the following constrained minimization

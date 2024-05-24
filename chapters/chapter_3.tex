@@ -277,7 +277,7 @@ In this example, we define the Rosenbrock function $f(x,y) = (1-x)^2 + 100(y-x^2
     y(0) = 5, \quad y^{\prime}(0) = 0 \\[0.1em]
     \mathrm{WhenEvent}(y(t) = 0, y'(t) = -\dfrac{7}{10}y'(t))
   \end{cases}
-  \quad \text{with} \qquad t \in [0, 5] \, \text{.}
+  \quad \text{with} \quad t \in [0, 5] \, \text{.}
 \end{equation*}
 %
 We can use \Mathematica{} to solve this \ac{ODE} symbolically and obtain the closed-form solution for $y(t)$
@@ -310,7 +310,7 @@ Even more complex \acp{ODE} can be solved using \acp{CAS} for design optimizatio
     u(0) = 1 \\[0.1em]
     \mathrm{WhenEvent}(\mathrm{mod}(t, \tau) = 0, u(t) = (1 - x(t) - x^{\prime}(t)))
   \end{cases}
-  \quad \text{with} \qquad t \in [0, 15] \, \text{.}
+  \quad \text{with} \quad t \in [0, 15] \, \text{.}
 \end{equation*}
 %
 The solution for $x(t)$ and $u(t)$ is respectively given by
@@ -452,7 +452,7 @@ Intermediate expression swell is an important special case of expression swell i
 Although memory space, rather than time, is the main factor limiting the use of computer algebra, symbolic operations will take considerably longer time than their numerical counterparts. It should be borne in mind that, in the case of symbolic manipulations, the execution time is strongly dependent, once again, on the degree of complexity and size of the input. As mentioned earlier, the production of large expressions during the computation in the form of inherent but especially as intermediate expression swell is, as stated in~\citet{noor1979computerized} a serious problem in symbolic computation and maybe its ultimate limitation. There, it was anticipated that future symbolic manipulation systems would automatically carry out remedial actions to alleviate this problem such as
 %
 \begin{itemize}
-  \setlength\itemsep{0em}
+  \setlength\itemsep{0.0em}
   \item recognition of common sub-expressions in an expression and renaming them by a single parameter;
   \item handling more expressions in a factored form rather than in an expanded form;
   \item deferred expansion of a function or variable in an expression.
@@ -504,7 +504,7 @@ Choosing the complexity and size boundaries between intermediate expressions app
 There exist two main metrics to measure the complexity and size of an expression, each with its own advantages and disadvantages.
 %
 \begin{itemize}
-  \setlength\itemsep{0em}
+  \setlength\itemsep{0.0em}
   \item The \emph{length} of an expression, in terms of the number of characters used to internally represent the expression. A possible measure that exploits the length of an expression is the following
   %
   \begin{equation*}
@@ -625,20 +625,20 @@ Calculating the signature hashing function of any expression in polynomial time 
 %
 \begin{equation}
   \label{chap3:eq:zhou}
-  \cos(\theta) = x \, text{,} \quad
-  \sin(\theta) = y \, text{,}
-  \qquad \text{where} \qquad
-  x^2 + y^2 = 1 \, text{.}
+  \cos(\theta) = x \, \text{,} \quad
+  \sin(\theta) = y \, \text{,}
+  \quad \text{where} \quad
+  x^2 + y^2 = 1 \, \text{.}
 \end{equation}
 %
 which has the disadvantage that an additional constraint is introduced. Another useful change of coordinates is the Weierstra{\ss} transformation~\cite{cox1994ideals}
 %
 \begin{equation}
   \label{chap3:eq:weierstrass}
-  \cos(\theta) = \dfrac{1 - u^2}{1 + u^2} \, text{,} \quad
-  \sin(\theta) = \dfrac{2u}{1 + u^2} \, text{,}
-  \qquad \text{where} \qquad
-  u = \tan\left(\dfrac{\theta}{2}\right) \, text{.}
+  \cos(\theta) = \dfrac{1 - u^2}{1 + u^2} \, \text{,} \quad
+  \sin(\theta) = \dfrac{2u}{1 + u^2} \, \text{,}
+  \quad \text{where} \quad
+  u = \tan\left(\dfrac{\theta}{2}\right) \, \text{.}
 \end{equation}
 %
 If one solves for $u$, then the usual problem regarding the choice of an appropriate branch for the inverse arises. Still, this transformation has the advantage that the number of variables remains the same, with no additional introduced constraint. Please notice that the signature computation used in this work is implemented within the \SIG{} sub-package of \LEM{}~\cite{lem}. The \SIG{} sub-package is an improved object-oriented version of the signature computation package present in \LULEM{}~\cite{carette2006linear}.
@@ -652,7 +652,7 @@ As previously mentioned, matrix factorization is a widely employed technique for
 
 In this section, we will focus on the full-pivoting \ac{LU} and \ac{FFLU} decompositions, which are the fundamental techniques that will be used in the next chapters, both for the large linear system solution and \acp{DAE} index reduction. It is important to note that, the \ac{LU} and \ac{FFLU} are preferred in symbolic linear algebra over the QR and \ac{GJ}, as \ac{LU} decomposition involves simpler operations, thereby mitigating the issue of expression swell. Additionally, as we will see, employing the \ac{LU} factorization with a minimum degree pivoting strategy proves superior in reducing fill-in and reducing the subsequent numeric and symbolic computational cost.
 
-\subsection[The Full-Pivoting LU Factorization]{The Full-Pivoting Lower-Upper Factorization}
+\subsection{The Full-Pivoting Lower-Upper Factorization}
 
 The full-pivoting \ac{LU} and \ac{FFLU} decompositions are widely used algorithms for solving linear systems with minimal computational effort. They are defined as follows.
 %
@@ -685,7 +685,7 @@ The full-pivoting \ac{LU} and \ac{FFLU} decompositions are widely used algorithm
 %
 Pivoting for \ac{LU} factorization is the process of systematically selecting pivots for Gaussian elimination during the \ac{LU} factorization of a matrix. The \ac{LU} factorization is closely related to Gaussian elimination, which is unstable in its pure form. To guarantee the elimination process goes to completion, we must ensure that there is a non-zero pivot at every step of the elimination process. This is the reason we need to pivot when computing \ac{LU} factorization. But we can do more with pivoting than just making sure Gaussian elimination is completed. To ensure the numerical stability of the \ac{LU}, we need to consider that the domain of the entries of the matrix $\m{A}$ is not only the real number set but also the more generic symbolic domain. Hence, we need to consider the symbolic stability of the \ac{LU} factorization from two different perspectives: the numerical one and the symbolic one.
 
-\subsubsection{The LU Factorization from a Numerical Computation Point of View}
+\subsubsection{The Lower-Upper Factorization from a Numerical Computation Point of View}
 
 From a numerical perspective, we can reduce round-off errors during computation and improve the algorithm \emph{backward stability} by implementing the right pivoting strategy. Depending on the matrix $\m{A}$, some \ac{LU} decompositions may become numerically unstable if either numerically small pivots or symbolically zero pivots are used. Relatively small pivots cause instability because they operate very similar to zeros during Gaussian elimination. Through the process of pivoting, we can greatly reduce this instability by ensuring that we use the largest available entry as our pivot elements. This prevents large factors from appearing in the computed $\m{L}$ and $\m{U}$, which reduces round-off errors during computation. The following example illustrates the importance of pivoting in the \ac{LU} factorization.
 
@@ -770,7 +770,7 @@ After the \ac{LU} factorization of a sparse matrix $\m{A}$, it is common to obse
   \end{figure}
 \end{example}
 
-\subsubsection{The LU Factorization from a Symbolic Computation Standpoint}
+\subsubsection{The Lower-Upper Factorization from a Symbolic Computation Standpoint}
 
 From a symbolic computation standpoint, \ie{}, when the entries of the matrix $\m{A}$ are not only real numbers but also symbolic expressions, the above considerations are not sufficient anymore. Indeed, in exact linear algebra, the cost of each operation during factorization can differ either for the fact that the expression size is not known a priori or for the uncontrolled expression swell~\cite{zhou2006hierarchical}. Moreover, numerical stability is not guaranteed due to the presence of undefined values. Therefore, an important goal is to obtain an output format that both maintains the symbolic structure of the input matrix and is also stable when numerically evaluated.
 
