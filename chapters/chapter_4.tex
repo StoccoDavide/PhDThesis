@@ -10,7 +10,7 @@ In this chapter, we present an algorithm for the index reduction of first-order 
 \section{Differential-Algebraic Equations Index Reduction and Solution}
 \label{chap4:sec:introduction}
 
-As we already mentioned in Chapter~\ref{chap2:brief_daes}, \acp{DAE} are extensively used in dynamic system modeling. The challenge in numerically solving a \ac{DAE} system is assessed through its differentiation index, commonly referred to as ``the'' index~\cite{campbell1995index, campbell1995highindex}. Achieving accurate simulations necessitates converting high-index \acp{DAE} into low-index counterparts, posing a well-recognized challenge~\cite{petzold1982differential}. This process involves transforming a \ac{DAE} system into an equivalent system with a lower index through successive differentiation of the system equations. For this reason, the differentiation index is roughly defined as the number of times algebraic equations are differentiated to obtain an equivalent system of \acp{ODE} with invariants. Index reduction is a crucial step prior to the numerical integration of \acp{DAE}, as integrating high-index systems can be impractical. The primary obstacle lies in the necessity to solve nonlinear systems of equations at each integration step, which can be computationally expensive and, in certain cases, numerically unstable. Specific numerical techniques, introduced in~\cite{petzold1982differential, thomsen1999numerical, baumgarte1972stabilization}, have been developed to address this challenge. However, these methods are not universally effective and may be inapplicable to some high-index \acp{DAE}. Consequently, index reduction becomes an indispensable preliminary stage before numerical integration~\cite{lamour2013differential}.
+As we already mentioned in the previous chapters, \acp{DAE} are extensively used in dynamic system modeling. The challenge in numerically solving a \ac{DAE} system is assessed through its differentiation index, commonly referred to as ``the'' index~\cite{campbell1995index, campbell1995highindex}. Achieving accurate simulations necessitates converting high-index \acp{DAE} into low-index counterparts, posing a well-recognized challenge~\cite{petzold1982differential}. This process involves transforming a \ac{DAE} system into an equivalent system with a lower index through successive differentiation of the system equations. For this reason, the differentiation index is roughly defined as the number of times algebraic equations are differentiated to obtain an equivalent system of \acp{ODE} with invariants. Index reduction is a crucial step prior to the numerical integration of \acp{DAE}, as integrating high-index systems can be impractical. The primary obstacle lies in the necessity to solve nonlinear systems of equations at each integration step, which can be computationally expensive and, in certain cases, numerically unstable. Specific numerical techniques, introduced in~\cite{petzold1982differential, thomsen1999numerical, baumgarte1972stabilization}, have been developed to address this challenge. However, these methods are not universally effective and may be inapplicable to some high-index \acp{DAE}. Consequently, index reduction becomes an indispensable preliminary stage before numerical integration~\cite{lamour2013differential}.
 
 Given its complicated nature, index reduction is the subject of extensive research and is often carried out by leveraging the specific formulation of the \ac{DAE} system, like in the multi-body modeling~\cite{zhou2005implicit, zhou2007symbolic, zhou2007symbolicseq, bayo1988modified, wehage1982generalized}. When the specific formulation of the \ac{DAE} system is not known a priori, or the system is not in a specific form, the index reduction process becomes more challenging. Many current simulation software packages for dynamic systems use index-reduction algorithms based on the \ac{SA} of the system, such as the Pantelides algorithm~\cite{pantelides1988consistent} and the dummy derivatives method~\cite{mattsson1993index}, which are subcases of the Pryce's $\Sigma$-method~\cite{pryce1998solving, pryce2001simple, nedialkov2007solvingI, nedialkov2007solvingII, nedialkov2008solvingIII, nedialkov2015algorithm, tan2016symbolic, mckenzie2017structural}. These algorithms are effective in reducing the index of most of the systems, but they can fail either for numerical cancellations~\cite{iwata2019index} or underestimation of the differentiation index~\cite{pantelides1988consistent, unger1995structural}, like in the case of Rei{\ss}ig's \acp{DAE} family~\cite{reissig2000differential}. Symbolic manipulation is proven to be successful in restating a \acp{DAE} on which the $\Sigma$-method fails to a \acp{DAE} on which the \ac{SA} may succeed~\cite{tan2016symbolic}.
 
@@ -95,7 +95,7 @@ If $\m{M}$ is defined such that $\m{M} = \m{L}^{-1}\mP$, then the following rela
     = \m{L}^{-1}\mP\m{A}\mQ\mQ^\top
     = \m{L}^{-1}\m{L}\m{U}\mQ^\top
     = \m{U}\mQ^\top
-    = \begin{bmatrix} \m{U}_1 \\[0.2em] \m{0} \end{bmatrix}\mQ^\top \text{.}
+    = \begin{bmatrix} \m{U}_1 \\[0.2em] \m{0} \end{bmatrix}\mQ^\top \, \text{.}
 \end{equation*}
 %
 If the identity matrix $\mI$ is partitioned as
@@ -110,7 +110,7 @@ If the identity matrix $\mI$ is partitioned as
   %
   \begin{array}{l}
     \mI_1 \in \mathbb{R}^{m \times m} \quad \text{and} \quad
-    \mI_2 \in \mathbb{R}^{(m-n)\times(m-n)}\text{,}
+    \mI_2 \in \mathbb{R}^{(m-n)\times(m-n)} \, \text{,}
   \end{array}
 \end{equation*}
 %
@@ -119,13 +119,13 @@ we can write
 \begin{equation*}
   \begin{bmatrix} \mI_1 & \m{0} \end{bmatrix} \, \m{M}\m{A} =
   \begin{bmatrix} \mI_1 & \m{0} \end{bmatrix}
-  \begin{bmatrix} \m{U}_1 \\[0.2em] \m{0} \end{bmatrix} \mQ^\top = \m{U}_1 \mQ^\top \text{,}
+  \begin{bmatrix} \m{U}_1 \\[0.2em] \m{0} \end{bmatrix} \mQ^\top = \m{U}_1 \mQ^\top \, \text{,}
   %
   \quad \text{and} \quad
   %
   \begin{bmatrix} \m{0} & \mI_2 \end{bmatrix} \, \m{M}\m{A} =
   \begin{bmatrix} \m{0} & \mI_2 \end{bmatrix}
-  \begin{bmatrix} \m{U}_2 \\[0.2em] \m{0} \end{bmatrix} \mQ^\top = \m{0} \text{.}
+  \begin{bmatrix} \m{U}_2 \\[0.2em] \m{0} \end{bmatrix} \mQ^\top = \m{0} \, \text{.}
 \end{equation*}
 %
 Eventually, the matrices $\m{N}$ and $\m{K}$ have the following form
@@ -135,7 +135,7 @@ Eventually, the matrices $\m{N}$ and $\m{K}$ have the following form
   %
   \quad \text{and} \quad
   %
-  \m{K} = \begin{bmatrix} \m{0} & \mI_2 \end{bmatrix} \, \m{M},
+  \m{K} = \begin{bmatrix} \m{0} & \mI_2 \end{bmatrix} \, \m{M} \, \text{,}
 \end{equation*}
 %
 where
@@ -171,7 +171,7 @@ The procedure for computing the cokernel of a matrix $\m{A}$ using the \ac{FFLU}
   = \m{L}^{-1}\mP\m{D}\m{A}
   = \m{L}^{-1}\mP\m{D}\m{A}\mQ\mQ^\top
   = \m{L}^{-1}\m{L}\m{U}\mQ^\top
-  = \m{U}\mQ^\top = \begin{bmatrix} \m{U}_1 \\[0.2em] \m{0} \end{bmatrix}\mQ^\top \text{.}
+  = \m{U}\mQ^\top = \begin{bmatrix} \m{U}_1 \\[0.2em] \m{0} \end{bmatrix}\mQ^\top \, \text{.}
 \end{equation*}
 %
 Then, the subspaces $\m{N}$ and $\m{K}$ are computed as in the \ac{LU} case.
@@ -251,11 +251,11 @@ with states $\mx = [x_{1}, \, x_{2}, \, x_{3}]^\top$ and \acp{IC} $\mx_{0} = [-1
     \text{Index-3 \acp{DAE}:} \quad \mE = \begin{bmatrix}
       0 & 1 & 0 \\
       0 & 0 & 1
-    \end{bmatrix}, \quad
+    \end{bmatrix} \, \text{,} \quad
     \mg = \begin{bmatrix}
       \sin(t) - x_{1} \\
       \sin(t) - x_{2}
-    \end{bmatrix}, \quad
+    \end{bmatrix} \, \text{,} \quad
     \ma = \begin{bmatrix}
       \cos(t) - x_{3}
     \end{bmatrix} \, \text{.} \\[1.0em]
@@ -263,11 +263,11 @@ with states $\mx = [x_{1}, \, x_{2}, \, x_{3}]^\top$ and \acp{IC} $\mx_{0} = [-1
     \text{Index-2 \acp{DAE}:} \quad \mE = \begin{bmatrix}
       0 & 1 & 0 \\
       0 & 0 & 1
-    \end{bmatrix}, \quad
+    \end{bmatrix} \, \text{,} \quad
     \mg = \begin{bmatrix}
       \sin(t) - x_{1} \\
       \sin(t) - x_{2}
-    \end{bmatrix}, \quad
+    \end{bmatrix} \, \text{,} \quad
     \ma = \begin{bmatrix}
       2\sin(t) - x_{2}
     \end{bmatrix} \, \text{.} \\[1.0em]
@@ -275,11 +275,11 @@ with states $\mx = [x_{1}, \, x_{2}, \, x_{3}]^\top$ and \acp{IC} $\mx_{0} = [-1
     \text{Index-1 \acp{DAE}:} \quad \mE = \begin{bmatrix}
       0 & 0 & 1 \\
       0 & 1 & 0
-    \end{bmatrix}, \quad
+    \end{bmatrix} \, \text{,} \quad
     \mg = \begin{bmatrix}
       \sin(t) - x_{2} \\
       \sin(t) - x_{1}
-    \end{bmatrix}, \quad
+    \end{bmatrix} \, \text{,} \quad
     \ma = \begin{bmatrix}
       \sin(t) - 2\cos(t) - x_{1}
     \end{bmatrix} \, \text{.} \\[1.0em]
@@ -288,7 +288,7 @@ with states $\mx = [x_{1}, \, x_{2}, \, x_{3}]^\top$ and \acp{IC} $\mx_{0} = [-1
       0 & 0 & 1 \\
       0 & 1 & 0 \\
       1 & 0 & 0
-    \end{bmatrix}, \quad
+    \end{bmatrix} \, \text{,} \quad
     \mg = \begin{bmatrix}
       \sin(t) - x_{2} \\
       \sin(t) - x_{1} \\
@@ -351,7 +351,9 @@ While the algorithm just presented is relatively straightforward to implement, i
 %
 These are the two main points that we acknowledge in the implementation of the algorithm. In the forthcoming sections, each of these matters is discussed in detail, with recommendations on techniques and open-source software solutions that are used to address them.
 
-\section{Index Reduction Algorithm with Expression Swell Mitigation}
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\section{Index Reduction with Expression Swell Mitigation}
 
 The most interesting and relevant aspect to be explored is the connection between the hierarchical representation of expressions (see Section~\ref{chap3:sec:lem}) and the \ac{DAE} index reduction. The use of veiling variables may be used to hide some parts of the expressions by the collection of common sub-expressions. Even if this may appear to be a substantial improvement, it is not so frequent to encounter expressions that are common to all the equations of the \ac{DAE} system. Still, this concept can be extended to mitigate the expression swell during matrix factorization (see Section~\ref{chap3:sec:last}). The veiling variables $\mv$ would then include the states $\mx$ of the \ac{DAE} system. In this manner, the hierarchical representation of the expression serves as a system augmentation technique as well as a means to limit expression swell during the index reduction procedure. The augmented \ac{DAE} system would then be expressed as
 %
@@ -414,7 +416,7 @@ Notice that if the matrix $\mAv$ is non-singular, the augmented \ac{DAE} system~
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-\section{Index Reduction and Numerical Integration Scheme}
+\section{The Symbolic-Numeric Solution Scheme}
 \label{chap4:sec:indigo}
 
 After this fairly long discussion on the actual implementation aspects of the index reduction algorithm, we can now present the \Indigo{} index reduction and integration toolbox~\cite{indigo}. This toolbox consists of two main components: a \Maple{} package to carry out symbolic index reduction of \ac{DAE} systems, and a \Matlab{} toolbox to perform numerical integration of the reduced-index system. \Indigo{} is designed to be used in conjunction with the \LEM{} package, to limit the expression swell, and the \LAST{} package, to conveniently factorize matrices. In the following paragraphs, we briefly discuss the usage of the \Indigo{} package.
@@ -511,14 +513,12 @@ Once the solver is instantiated, it is only necessary to specify the \acp{IC} an
 %
 The solver returns the solution of the system in the form of multiple outputs: \texttt{x} contains the integrated solution, \texttt{x\_dot} the states' time derivative, \texttt{t} the time vector, \texttt{v} the veiling variables, and finally \texttt{h} the values of the invariants over the specified time mesh \texttt{t\_ini:d\_t:t\_end}.
 
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-
-\section{Proofing the Symbolic-Numeric Scheme}
+\subsection{Proofing the Algorithm Implementation}
 \label{chap4:sec:example}
 
 In this section, we showcase an example of a high-index \ac{DAE} system: an index-3 problem with an analytical solution, which describes the motion of a particle on a 3D torus surface~\cite{campbell1995constraint}. This example is employed to validate the numerical stability of the reduced-index system, as well as the good conditioning of both the symbolic matrix factorization and the numerical integration scheme. To ease the understanding of the results, we purposely avoid the use of the veiling variables in this example. However, the veiling variables just add an evaluation layer to the expressions, and they do not affect the numerical properties of the integrator.
 
-\subsection{Expression Complexity of the Reduced-Index Systems}
+\subsubsection{Expression Complexity of the Reduced-Index Systems}
 \label{chap4:sec:daes_complexity}
 
 As a first demonstration of the proposed index reduction algorithm capabilities, we first consider the given example from a purely symbolic perspective. In particular, we consider the computational cost of the expressions generated during the presented procedure, both with \ac{LU} and \ac{FFLU} factorization of the system matrix. The compactness of the expressions generated during the index reduction algorithm is a crucial aspect, as it ensures that limited computational overhead is introduced in the numerical integration of the reduced-index system, as well as in the projection of the solution on the hidden constraints. Specifically, the index reduction algorithm is applied to the \ac{DAE} system and reduced to index-0. For each reduction stage of the example considered, the computational cost is reported in Table~\ref{chap4:tab:torus}. Notably, the results show that the expression complexity is similar for both \ac{LU} and \ac{FFLU} factorization, with a slight increase in the number of multiplications and divisions for the latter.
@@ -558,7 +558,7 @@ As a first demonstration of the proposed index reduction algorithm capabilities,
     \end{tabular}}
 \end{table}
 
-\subsection{Numerical Integration of the Reduced-Index System}
+\subsubsection{Numerical Integration of the Reduced-Index System}
 \label{chap4:sec:numerical_integration}
 
 The numerical stability and consistency of the reduced-index system are demonstrated by exploiting the analytical solution of the problem in~\cite{campbell1995constraint}. Specifically, the \ac{DAE} system consists of three position variables $[x_{1}, \, x_{2}, \, x_{3}]^\top$, three velocity variables $[u_{1}, \, u_{2}, \, u_{3}]^\top$, and one constraint with Lagrange multiplier $\lambda$. The solution manifold is 4D, and the exact solution is

@@ -85,7 +85,7 @@
 %\usepackage[normalem]{ulem}      % underline command which will break over line ends
 \usepackage{listings}            % to include code in the document
 \usepackage{realboxes}           % to create boxes around text
-\usepackage{url}                 % to write url in the document
+\usepackage[spaces, hyphens]{url}                 % to write url in the document
 
 \urlstyle{tt}                    % teletype font of the document (forced in the bibliography)
 \lstset{                         % settings for the listings package
@@ -591,7 +591,7 @@
 % Copyright --------------------------------------------------------------------
 \subsection*{Copyright Notice}
 
-The content of this thesis is the result of the author's original research work. Permission to include the following published material for non-commercial purposes is granted from the publishers' copyright policy. The published works are cited in the bibliography and are listed below.
+The content of this thesis is the result of the author's original research work. Permission to include the following published material for non-commercial purposes is granted by the publishers' copyright policy. The published works are cited in the bibliography and are listed below.
 %
 \begin{itemize}
   \setlength{\itemsep}{0.0em}
@@ -604,7 +604,7 @@ The content of this thesis is the result of the author's original research work.
 
 \subsection*{Material Submitted for Publication}
 
-This thesis contains material that is currently submitted for publication. The material has not yet been published previously, and a short adapted version of the content is provided in the thesis. The submitted works are cited in the bibliography and are listed below.
+This thesis contains material that is currently submitted for publication. The material has not yet been published, and this thesis provides a short adapted version of its content. The submitted works are cited in the bibliography and are listed below.
 %
 \begin{itemize}
   \setlength{\itemsep}{0.0em}
@@ -613,7 +613,7 @@ This thesis contains material that is currently submitted for publication. The m
   \item \fullcite{larcher2024imece_symbolic}
 \end{itemize}
 %
-\dag{}: The author contributed equally to the work.
+\dag{}: The authors contributed equally to the work.
 
 \vspace*{\fill}
 
@@ -730,11 +730,11 @@ This thesis contains material that is currently submitted for publication. The m
 \DeclareFieldFormat{doi}{%
   \textsc{Doi}\addcolon\space%
   \ifhyperref{%
-  \href{https://doi.org/#1}{
-    \nolinkurl{#1}
+  \href{https://doi.org/#1}{%
+    \nolinkurl{#1}%
   }
-  }{
-    \nolinkurl{#1}
+  }{%
+    \nolinkurl{#1}%
   }
 }
 \printbibliography

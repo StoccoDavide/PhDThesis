@@ -59,7 +59,7 @@ Comprehensive documentation is available on the provided website, encompassing b
 In the 3D Euclidean space, a point represents an exact location. A point $\pt{p} \in \mathbb{R}^3$ is represented by an ordered triplet of coordinates
 %
 \begin{equation*}
-  \pt{p} = \left[x, y, z\right]^{\top} \text{.}
+  \pt{p} = \left[x, y, z\right]^{\top} \, \text{.}
 \end{equation*}
 %
 The \Point{} class is built through public inheritance from the virtual class \Entity{} and the \Eigen{}::\MatrixBase{} template class. It is worth noting that in many \cpp{} libraries, vectors and points are often described by the same class. However, in \Acme{}, we have provided a clear way to distinguish them. This distinction is evident in the inheritance structure, where the \Point{} class inherits publicly from the \Entity{} class. On the other hand, the inheritance of the \MatrixBase{} template class makes it possible to easily build mathematical vectors out of point entities and vice versa. In our software, both vectors and points are represented by column sets of elements.
@@ -68,49 +68,49 @@ The \Point{} class is built through public inheritance from the virtual class \E
 A line $\boldsymbol{\ell}$ is defined by an origin point $\pt{o}$ and a unit direction vector $\et{d}$, such that the line corresponds to the set
 %
 \begin{equation*}
-  \boldsymbol{\ell}(\pt{o}, \et{d}) = \left\{ \pt{o} + \et{d} t ~ \big| ~ t \in \mathbb{R} \right\} \text{.}
+  \boldsymbol{\ell}(\pt{o}, \et{d}) = \left\{ \pt{o} + \et{d} t ~ \big| ~ t \in \mathbb{R} \right\} \, \text{.}
 \end{equation*}
 
 \paragraph{\Ray{}}
 A ray $\boldsymbol{\varrho}$ is defined by an origin point $\pt{o}$ and a unit direction vector $\et{d}$, such that the ray corresponds to the set
 %
 \begin{equation*}
-  \boldsymbol{\varrho}(\pt{o}, \et{d}) = \left\{ \pt{o} + \et{d} t ~ \big| ~ t \in \mathbb{R}_{\ge0} \right\} \text{.}
+  \boldsymbol{\varrho}(\pt{o}, \et{d}) = \left\{ \pt{o} + \et{d} t ~ \big| ~ t \in \mathbb{R}_{\ge0} \right\} \, \text{.}
 \end{equation*}
 
 \paragraph{\Plane{}}
 A plane $\boldsymbol{\pi}$ is defined by a generic point on the plane $\pt{p}$ and a unit normal vector $\et{n}$, such that the plane corresponds to the set
 %
 \begin{equation*}
-  \boldsymbol{\pi}(\pt{p}, \et{n}) = \left\{ \et{n} \cdot (\pt{p} - \left[x, y, z\right]^{\top}) = 0 ~ \big| ~ \left[x, y,  z\right]^{\top} \in \mathbb{R}^3 \right\} \text{.}
+  \boldsymbol{\pi}(\pt{p}, \et{n}) = \left\{ \et{n} \cdot (\pt{p} - \left[x, y, z\right]^{\top}) = 0 ~ \big| ~ \left[x, y,  z\right]^{\top} \in \mathbb{R}^3 \right\} \, \text{.}
 \end{equation*}
 
 \paragraph{\Segment{}}
 A segment $\boldsymbol{\sigma}$ is defined by two points $\pt{p}_1$ and $\pt{p}_2$, such that the segment corresponds to the set
 %
 \begin{equation*}
-  \boldsymbol{\sigma}(\pt{p}_1, \pt{p}_2) = \left\{ \pt{p}_1 + \left(\pt{p}_2-\pt{p}_1\right)t ~ \big| ~ t \in \mathbb{R}, \, 0 \le t \le 1 \right\} \text{.}
+  \boldsymbol{\sigma}(\pt{p}_1, \pt{p}_2) = \left\{ \pt{p}_1 + \left(\pt{p}_2-\pt{p}_1\right)t ~ \big| ~ t \in \mathbb{R}, \, 0 \le t \le 1 \right\} \, \text{.}
 \end{equation*}
 
 \paragraph{\Triangle{}}
 A triangle $\boldsymbol{\tau}$ is defined by three points $\pt{p}_1$, $\pt{p}_2$ and $\pt{p}_3$, such that the triangle corresponds to the set
 %
 \begin{equation*}
-  \boldsymbol{\tau}(\pt{p}_1, \pt{p}_2, \pt{p}_3) = \left\{ t_1\pt{p}_1 + t_2\pt{p}_2 + t_3\pt{p}_3 ~ \big| ~ t_1, t_2, t_3 \in \mathbb{R}_{\ge0}, \, t_1 + t_2+t_3 \le 1 \right\} \text{.}
+  \boldsymbol{\tau}(\pt{p}_1, \pt{p}_2, \pt{p}_3) = \left\{ t_1\pt{p}_1 + t_2\pt{p}_2 + t_3\pt{p}_3 ~ \big| ~ t_1, t_2, t_3 \in \mathbb{R}_{\ge0}, \, t_1 + t_2+t_3 \le 1 \right\} \, \text{.}
 \end{equation*}
 
 \paragraph{\Disk{}}
 A disk $\boldsymbol{\phi}$ is defined by a radius $r$, a center point $\pt{o}$, and a unit normal vector to the disk face $\et{n}$. Equivalently, using the same notation for the center point and the unit normal vector to the face, a disk can be defined by a radius $r$ and a laying plane $\boldsymbol{\pi}(\pt{o}, \et{n})$. In both cases, the disk corresponds to the set
 %
 \begin{equation*}
-  \boldsymbol{\phi}(r, \pt{o}, \et{n}) = \boldsymbol{\phi}(r, \boldsymbol{\pi}(\pt{o}, \et{n})) = \left\{ \big\| \pt{o} - \left[x, y, z\right]^{\top} \big\|^2_2 \le r^2 ~ \big| ~ \left[x, y, z\right]^{\top} \in \boldsymbol{\pi}(\pt{o}, \et{n}) \right\} \text{.}
+  \boldsymbol{\phi}(r, \pt{o}, \et{n}) = \boldsymbol{\phi}(r, \boldsymbol{\pi}(\pt{o}, \et{n})) = \left\{ \big\| \pt{o} - \left[x, y, z\right]^{\top} \big\|^2_2 \le r^2 ~ \big| ~ \left[x, y, z\right]^{\top} \in \boldsymbol{\pi}(\pt{o}, \et{n}) \right\} \, \text{.}
 \end{equation*}
 
 \paragraph{\Ball{}}
 A ball $\boldsymbol{\omega}$ is defined by a radius $r$ and a center point $\pt{o}$, such that it corresponds to the set
 %
 \begin{equation*}
-  \boldsymbol{\omega}(r, \pt{o}) = \left\{ \big\| \pt{o} - \left[x, y, z\right]^{\top} \big\|^2_2 \le r^2 ~ \big| ~\left[x, y, z\right]^{\top} \in \mathbb{R}^3 \right\} \text{.}
+  \boldsymbol{\omega}(r, \pt{o}) = \left\{ \big\| \pt{o} - \left[x, y, z\right]^{\top} \big\|^2_2 \le r^2 ~ \big| ~\left[x, y, z\right]^{\top} \in \mathbb{R}^3 \right\} \, \text{.}
 \end{equation*}
 
 \subsection{Mesh Tools}
@@ -133,7 +133,7 @@ An \Aabb{} $\boldsymbol{\beta}$ is defined by a maximum point $\pt{p}_{\max}$ an
 \begin{equation*}
   \pt{p}_{\max} = \left[x_{\max}, y_{\max}, z_{\max}\right]^{\top}
   \quad \text{and} \quad
-  \pt{p}_{\min} = \left[x_{\min}, y_{\min}, z_{\min}\right]^{\top} \text{.}
+  \pt{p}_{\min} = \left[x_{\min}, y_{\min}, z_{\min}\right]^{\top} \, \text{.}
 \end{equation*}
 %
 The \Aabb{} corresponds to the set
@@ -147,7 +147,7 @@ The \Aabb{} corresponds to the set
     y_{\min} \leq y \leq y_{\max} \\
     z_{\min} \leq z \leq z_{\max}
   \end{array}
-  \right\} \text{.}
+  \right\} \, \text{.}
 \end{equation*}
 %
 Indeed, this type of geometrical entity is very simple, requiring only two \Point{} objects to fully describe the space it occupies. Furthermore, the algorithms involved in \Aabb{} collision detection and/or intersection are highly efficient. Specifically, the basic algorithm for \Aabb{}-\Aabb{} collision detection can be executed solely through two-way comparison operators, making it lightweight and fast to perform.
@@ -241,7 +241,7 @@ Table~\ref{app1:tab:acme_timing} presents a comparison of timing performances be
     \Segment{}-\Triangle{}  & \num{15}   & \num{0.568}  & \num{13.8} & \num{0.247}  & \num{1.1} \\
     \bottomrule
   \end{tabular}
-  \caption{Timing performance comparison between \CGAL{} and \Acme{} libraries. The test consists of $10^5$ intersections between randomly created objects. Notice that intersections are only made between types of geometric entities common to the two libraries. \emph{Legend}: $\mu$ average intersection run-time, and $\sigma^2$ intersection run-time variance.}
+  \caption{Timing performance comparison between \CGAL{} and \Acme{} libraries. The test consists of $10^{5}$ intersections between randomly created objects. Notice that intersections are only made between types of geometric entities common to the two libraries. \emph{Legend}: $\mu$ average intersection run-time, and $\sigma^2$ intersection run-time variance.}
   \label{app1:tab:acme_timing}
 \end{table}
 
@@ -259,8 +259,8 @@ Table~\ref{app1:tab:acme_timing} presents a comparison of timing performances be
 We now present an example that illustrates some capabilities of the \Acme{} library. Specifically, the same example will be presented in both the \cpp{} language and the \Matlab{} environment, allowing us to understand the few differences between the two working environments. In the following \cpp{} and \Matlab{} code snippets, we will create the \Disk{} objects
 %
 \begin{equation*}
-  \boldsymbol{\phi}_1(r_1, \pt{o}_1, \et{n}_1) = \boldsymbol{\phi}_1(2, \, \left[0, 0, 0\right]^{\top}, \left[0, 1, 0\right]^{\top}) \text{,} \quad \text{and} \quad
-  \boldsymbol{\phi}_2(r_2, \pt{o}_2, \et{n}_2) = \boldsymbol{\phi}_2(1, \, \left[0, 0, 0\right]^{\top}, \left[1, 1, 0\right]^{\top}) \text{,}
+  \boldsymbol{\phi}_1(r_1, \pt{o}_1, \et{n}_1) = \boldsymbol{\phi}_1(2, \, \left[0, 0, 0\right]^{\top}, \left[0, 1, 0\right]^{\top}) \, \text{,} \quad \text{and} \quad
+  \boldsymbol{\phi}_2(r_2, \pt{o}_2, \et{n}_2) = \boldsymbol{\phi}_2(1, \, \left[0, 0, 0\right]^{\top}, \left[1, 1, 0\right]^{\top}) \, \text{,}
 \end{equation*}
 %
 that will be indicated by the variables \code{d1} and \code{d2}, respectively. Then, we will then intersect them, obtaining a geometric entity whose type is unknown to us. Subsequently, we will use the \code{type()} method to identify and print a string describing the type of the obtained \Entity{} object. In both cases, the output will be the string ``\code{segment}''. Finally, we will plot the obtained \Entity{} object in a \Matlab{} figure. The \cpp{} and \Matlab{} code snippets are reported in the following. The visualization of the example problem is reported in Figure~\ref{app1:fig:acme_example}, which is obtained through the last 6 lines of the \Matlab{} example code. \\[1.0em]

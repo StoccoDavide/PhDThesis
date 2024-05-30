@@ -338,7 +338,7 @@ Mechanisms involving motion are prevalent in engineering applications. Typically
   \label{app4:fig:optimization}
 \end{figure}
 
-\subsection{Efficient Simulation of Parametric Mechanisms Using Model Reduction}
+\subsection{Model Reduction}
 
 This example application explores the inclusion of suspension compliance in vehicle simulation using a hybrid symbolic-numerical approach. This methodology facilitates easy generalization and \ac{RT} modification of model parameters without the need for code regeneration. The suspension's dynamic characteristics are modeled through a system of differential-algebraic equations, integrated using methods described in~\cite{larcher2024imece_symbolic}. Depending on the modeling approach, suspension pick-up points' positions and tire force at the hub are extracted either through semi-analytical solutions or numerical integration. These are then utilized to calculate the suspension's compliance characteristics. The compliance contribution can be incorporated into the overall suspension system displacement as either a \emph{steady-state} or \emph{full dynamic} contribution~\cite{larcher2024imece_symbolic}. The former approach reduces computational costs, while the latter yields accurate simulations at a higher computational expense. Results from this approach are compared with simulation data from commercial software \Ansys{}, showing good agreement under both static (Figure~\ref{app4:fig:rotations} and Figure~\ref{app4:fig:translations}) and dynamic conditions (Figure~\ref{chap5:fig:suspension_dynamic_results} in Chapter~\ref{chap5:applications}).
 
