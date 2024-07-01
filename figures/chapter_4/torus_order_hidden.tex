@@ -3,12 +3,12 @@
 
 \begin{axis}[%
   title={Runge-Kutta Methods Order},
-  title style={font=\bfseries},
+  title style={yshift=-2.0mm, font=\bfseries},
   minor tick num=1,
   minor grid style={dashed, line width=0.1pt, draw=gray!45},
   major grid style={line width=0.2pt, draw=gray!60},
-  width=5.0cm,
-  height=5.0cm,
+  width=4.0cm,
+  height=4.0cm,
   at={(0.0in,0.0in)},
   scale only axis,
   xmode=log,
@@ -103,19 +103,17 @@
 \node[draw, fill=white] at (1.01e-2, 2.30e-02) {$p = 0.932$};
 \node[draw, fill=white] at (1.01e-2, 2.40e-08) {$p = 2.958$};
 \node[draw, fill=white] at (1.01e-2, 0.85e-14) {$p = 5.095$};
-
 \end{axis}
-
 
 \begin{axis}[%
   title={Projection Error},
-  title style={font=\bfseries},
+  title style={yshift=-2.0mm, font=\bfseries},
   minor tick num=1,
   minor grid style={dashed, line width=0.1pt, draw=gray!45},
   major grid style={line width=0.2pt, draw=gray!60},
-  width=5.0cm,
-  height=5.0cm,
-  at={(5.25cm,0.0in)},
+  width=4.0cm,
+  height=4.0cm,
+  at={(4.25cm,0.0in)},
   scale only axis,
   xmin=0,
   xmax=6.28318530717959,
@@ -128,8 +126,8 @@
     at={(1.015, 0.945)}, anchor=south west, inner sep=0pt
   },
   ytick scale label code/.code={$\times \, 10^{-13}$},
-  ymin=-0.05e-13,
-  ymax=1.15e-13,
+  ymin=-0.02e-13,
+  ymax=1.085e-13,
   ylabel style={font=\color{black}},
   ylabel={$\| \, \mh \, \|_{\infty}$},
   yticklabel pos=right,

@@ -1,6 +1,6 @@
 # Symbolic Computation Methods for the Numerical Solution of Dynamic Systems Described by Differential-Algebraic Equations
 
-### Ph.D. Candidate
+### PhD Candidate
 Davide Stocco
 
 ### Supervisors

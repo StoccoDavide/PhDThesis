@@ -1,6 +1,6 @@
 # Makefile for the thesis
 
-LATEX  = pdflatex
+LATEX  = xelatex
 BIBTEX = biber
 SOURCE = main
 FLAGS  = -enable-write18 -synctex=1 -interaction=nonstopmode -file-line-error
@@ -24,7 +24,6 @@ all:
 final: pdf_shell_escape bib pdf_shell_escape pdf_shell_escape
 
 dir:
-	mkdir -p figures/externalized
 	mkdir -p out/abstract
 	mkdir -p out/acknowledgements
 	mkdir -p out/appendices

@@ -1,7 +1,7 @@
-\setlength\tabcolsep{2.5pt}
+\setlength\tabcolsep{0.15em}
 \setlength{\LTcapwidth}{\textwidth}
 {\footnotesize\centering\begin{longtable}{lccl}
-  \caption{Numerical integration results of the reduced-index \ac{DAE} systems. The table reports the name and reference of the \ac{DAE} system, the index of the system, the integration interval $t \in [t_{\text{ini}}, \, t_{\text{end}}]$, and the outcomes of the whole code generation and integration process for both \Maple{} and \Indigo{}. If not otherwise specified, the tests are integrated using an embedded Runge-Kutta-Fehlberg 4(5) method with a relative tolerance of $10^{-6}$ and an absolute tolerance of $10^{-7}$. The computation time limit is \SI{1000}{\second}, to both generate the necessary code and perform numerical computations. \emph{Legend:} \mycheckmark{} successful code generation and numerical integration, \mycrossmark{} errors in the code generation, numerical integration or time expired, and \mywarnmark{} warnings encountered or non-default settings used in the code generation or numerical integration.}
+  \caption{Numerical integration results of the reduced-index \ac{DAE} systems. The table reports the name and reference of the \ac{DAE} system, the index of the system, the integration interval $t \in [t_{\text{ini}}, \, t_{\text{end}}]$, and the outcomes of the whole code generation and integration process for both \Maple{} and \Indigo{}. If not otherwise specified, the tests are integrated using an embedded \ac{RKF} 4(5) method with a relative tolerance of $10^{-6}$ and an absolute tolerance of $10^{-7}$. The computation time limit is \SI{1000}{\second}, to both generate the necessary code and perform numerical computations. \emph{Legend:} \mycheckmark{} successful code generation and numerical integration, \mycrossmark{} errors in the code generation, numerical integration or time expired, and \mywarnmark{} warnings encountered or non-default settings used in the code generation or numerical integration.}
   \label{chap5:tab:numerical_integration}
   \endfirsthead
   \endhead
@@ -37,7 +37,7 @@
   \multirow{1}{*}{\textbf{7.~~5-Pendula~\cite{nedialkov2008solvingIII}}}
     & \Maple{}  & \mycrossmark{}\phantom{\mywarnmark{}} & Error, time expired in \texttt{dsolve} \\ \cmidrule{2-4}
     Index-11 \quad $t \in [0, 60]$ seconds & \Indigo{} & \mycheckmark{}\mywarnmark{} & Success with RadauIIA5 method \\ \midrule
-  \multirow{1}{*}{\textbf{8.~~Double-Wishbone Suspension}}
+  \multirow{1}{*}{\textbf{8.~~Double-Wishbone Suspension~\cite{larcher2024imece_symbolic, stocco2024trussme}}}
     & \Maple{}  & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \cmidrule{2-4}
     Index-3 \quad $t \in [0, 60]$ seconds & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \midrule
   \multirow{1}{*}{\textbf{9.~~Initial Stage Space Shuttle Reentry~\cite{brenan1995numerical}}}

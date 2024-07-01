@@ -120,9 +120,11 @@ we can write
   \begin{bmatrix} \mI_1 & \m{0} \end{bmatrix} \, \m{M}\m{A} =
   \begin{bmatrix} \mI_1 & \m{0} \end{bmatrix}
   \begin{bmatrix} \m{U}_1 \\[0.2em] \m{0} \end{bmatrix} \mQ^\top = \m{U}_1 \mQ^\top \, \text{,}
-  %
-  \quad \text{and} \quad
-  %
+\end{equation*}
+%
+and
+%
+\begin{equation*}
   \begin{bmatrix} \m{0} & \mI_2 \end{bmatrix} \, \m{M}\m{A} =
   \begin{bmatrix} \m{0} & \mI_2 \end{bmatrix}
   \begin{bmatrix} \m{U}_2 \\[0.2em] \m{0} \end{bmatrix} \mQ^\top = \m{0} \, \text{.}
@@ -205,14 +207,14 @@ The iterative procedure, involving the sequential separation and differentiation
   \caption{Index reduction algorithm (without large expression management)~\cite{stocco2024symbolic}.}
   \label{chap4:alg:index_reduction}
   \begin{algorithmic}[1]
-    \State \textbf{Require:} A \ac{DAE} system of the form $\mF \eqdef \mA \, \mxp - \mb = \m{0}$.
+    \State \textbf{Require:} A \ac{DAE} system of the form $\mF = \mA \, \mxp - \mb = \m{0}$.
     \Procedure{ReduceIndex}{$\mF$} \Comment{Index reduction procedure}
       \State $\mh \gets \varnothing$ \Comment{The set of invariants}
       \State $\mA, \, \mb \gets \mathrm{GenerateMatrix}(\mF, \, \mxp)$ \Comment{The \ac{DAE} system matrix}
       \State $m \gets \mathrm{Size}(\mx)$\Comment{The size of $\mx$}
       \While{$\mA$ is singular}
         \State $\displaystyle\triangleright$ Differential and algebraic equations separation (Section~\ref{chap4:sec:separation})
-        \State $\mL, \, \mU, \, \mP, \, \mQ \gets \mathrm{MatrixFactorization}(\mA)$ \Comment{LU or FFLU decomposition of $\mA$}
+        \State $\mL, \, \mU, \, \mP, \, \mQ \gets \mathrm{MatrixFactorization}(\mA)$ \Comment{Factorization of $\mA$}
         \State $r \gets \mathrm{Rank}(\mU)$ \Comment{The rank of $\mU$ is equal to the rank of $\mA$}
         \State $\mI_1 \gets \mathrm{IdentityMatrix}(r, \, r)$ \Comment{The upper identity matrix}
         \State $\mI_2 \gets \mathrm{IdentityMatrix}(m-r, \, m-r)$ \Comment{The lower identity matrix}
@@ -255,8 +257,8 @@ with states $\mx = [x_{1}, \, x_{2}, \, x_{3}]^\top$ and \acp{IC} $\mx_{0} = [-1
     \mg = \begin{bmatrix}
       \sin(t) - x_{1} \\
       \sin(t) - x_{2}
-    \end{bmatrix} \, \text{,} \quad
-    \ma = \begin{bmatrix}
+    \end{bmatrix} \, \text{,} \\[0.5em]
+    \phantom{\text{Index-3 \acp{DAE}:}} \quad \ma = \begin{bmatrix}
       \cos(t) - x_{3}
     \end{bmatrix} \, \text{.} \\[1.0em]
     %
@@ -267,8 +269,8 @@ with states $\mx = [x_{1}, \, x_{2}, \, x_{3}]^\top$ and \acp{IC} $\mx_{0} = [-1
     \mg = \begin{bmatrix}
       \sin(t) - x_{1} \\
       \sin(t) - x_{2}
-    \end{bmatrix} \, \text{,} \quad
-    \ma = \begin{bmatrix}
+    \end{bmatrix} \, \text{,} \\[0.5em]
+    \phantom{\text{Index-2 \acp{DAE}:}} \quad \ma = \begin{bmatrix}
       2\sin(t) - x_{2}
     \end{bmatrix} \, \text{.} \\[1.0em]
     %
@@ -279,8 +281,8 @@ with states $\mx = [x_{1}, \, x_{2}, \, x_{3}]^\top$ and \acp{IC} $\mx_{0} = [-1
     \mg = \begin{bmatrix}
       \sin(t) - x_{2} \\
       \sin(t) - x_{1}
-    \end{bmatrix} \, \text{,} \quad
-    \ma = \begin{bmatrix}
+    \end{bmatrix} \, \text{,} \\[0.5em]
+    \phantom{\text{Index-1 \acp{DAE}:}} \quad \ma = \begin{bmatrix}
       \sin(t) - 2\cos(t) - x_{1}
     \end{bmatrix} \, \text{.} \\[1.0em]
     %
@@ -293,8 +295,8 @@ with states $\mx = [x_{1}, \, x_{2}, \, x_{3}]^\top$ and \acp{IC} $\mx_{0} = [-1
       \sin(t) - x_{2} \\
       \sin(t) - x_{1} \\
       2\sin(t) + \cos(t)
-    \end{bmatrix} \, \text{,} \quad
-    \ma = \varnothing \, \text{.}
+    \end{bmatrix} \, \text{,} \\[0.5em]
+    \phantom{\text{Index-0 \acp{DAE}:}} \quad \ma = \varnothing \, \text{.}
   \end{array}
 \end{equation*}
 %
@@ -306,9 +308,11 @@ The final form of the system is an index-0 \acp{DAE} system is then
     x^{\prime}_{3} - x_{2} - \sin(t) \\
     x^{\prime}_{1} - \cos(t) - 2\sin(t)
   \end{bmatrix} \, \text{,}
-  %
-  \quad \text{with invariants} \quad
-  %
+\end{equation*}
+%
+with invariants
+%
+\begin{equation*}
   \mh = \begin{bmatrix}
     \cos(t) - x_{3} \\
     2\sin(t) - x_{2} \\
@@ -319,11 +323,11 @@ The final form of the system is an index-0 \acp{DAE} system is then
 Although the just presented example is not so complex and relevant for a real validation of the algorithm, it is useful to demonstrate the step-by-step results of the index reduction algorithm. Furthermore, the expression complexities encountered throughout the index reduction algorithm applied to the Index-3 problem are reported below in Table~\ref{chap4:tab:index_3}.
 
 \begin{table}
-  \caption{Expression complexity encountered throughout the index reduction of the index-3 step-by-step example problem~\cite{mathematica} \ac{DAE} system index reduction. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \caption{Expression complexity encountered throughout the index reduction of the index-3 step-by-step example problem~\cite{mathematica} \ac{DAE} system index reduction with both the \ac{LU} and \ac{FFLU} factorization techniques. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:index_3}
   \centering
-  {\footnotesize\begin{tabular}{cccc}
-    \multicolumn{4}{c}{\textbf{Index-3 \acp{DAE}~\cite{mathematica}}} \\
+  {\small\begin{tabular}{cccc}
+    \multicolumn{4}{c}{\textbf{Index-3 \acp{DAE} (LU Factorization)~\cite{mathematica}}} \\
     \toprule
     \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 10\cf + 5\ca$ \quad $\mh = 0$} \\
     \midrule
@@ -332,6 +336,20 @@ Although the just presented example is not so complex and relevant for a real va
     Index-3 \acp{DAE} & $0$ & $4\cf + 2\ca$ & $2\cf + 1\ca$ \\
     Index-2 \acp{DAE} & $0$ & $4\cf + 2\ca$ & $2\cf + 1\cm + 1\ca$ \\
     Index-1 \acp{DAE} & $0$ & $4\cf + 2\ca$ & $3\cf + 1\cm + 1\ca$ \\
+    Index-0 \acp{DAE} & $0$ & $6\cf + 1\cm + 3\ca$ & $0$ \\
+    \midrule
+    \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 12\cf + 1\cm + 6\ca$ \quad $\mh = 7\cf + 2\cm + 4\ca$} \\
+    \bottomrule \\[0.5em]
+    %
+    \multicolumn{4}{c}{\textbf{Index-3 \acp{DAE} (FFLU Factorization)~\cite{mathematica}}} \\
+    \toprule
+    \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 10\cf + 5\ca$ \quad $\mh = 0$} \\
+    \midrule
+    \textbf{Reduction step} & $\mE$ & $\mg$ & $\ma$ \\
+    \midrule
+    Index-3 \acp{DAE} & $0$ & $4\cf + 2\ca$ & $2\cf + 1\ca$ \\
+    Index-2 \acp{DAE} & $0$ & $4\cf + 2\ca$ & $2\cf + 1\cm + 2\ca$ \\
+    Index-1 \acp{DAE} & $0$ & $4\cf + 2\ca$ & $3\cf + 1\cm + 2\ca$ \\
     Index-0 \acp{DAE} & $0$ & $6\cf + 1\cm + 3\ca$ & $0$ \\
     \midrule
     \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 12\cf + 1\cm + 6\ca$ \quad $\mh = 7\cf + 2\cm + 4\ca$} \\
@@ -373,18 +391,11 @@ The most interesting and relevant aspect to be explored is the connection betwee
 %
 Notice that if the matrix $\mAv$ is non-singular, the augmented \ac{DAE} system~\eqref{chap4:eq:augmented_dae} has index-1. This is a crucial aspect to be taken into consideration since, as demonstrated in Section~\ref{chap4:sec:daes_complexity}, the final reduction to index-0 \acp{DAE} is costly. Furthermore, the vector $\mv$ and its Jacobian with respect to the states $\mx$ can be sequentially evaluated for additional reduction of the computational burden. Nonetheless, the augmented formulation~\eqref{chap4:eq:augmented_dae} allows for the full exploitation of the signature technique to detect null expressions without the need for symbolic simplification~\cite{monagan1994signature}. Eventually, this will be the subject of future research and implementations that will exploit index-1 \acp{DAE} integrators similarly to the other state-of-the-art \acp{DAE} solver presented in the Introduction. A pseudocode and a flowchart of the index reduction algorithm with expression swell mitigation can be found in Algorithm~\ref{chap4:alg:index_reduction_veil} and \figurename~\ref{chap4:fig:index_reduction_veil}, respectively.
 
-\begin{figure}[htb]
-  \centering
-  \includegraphics[angle=0, width=9cm]{dae_flowchart_veil}
-  \caption{Flowchart of the index reduction algorithm with expression swell mitigation.}
-  \label{chap4:fig:index_reduction_veil}
-\end{figure}
-
 \begin{breakablealgorithm}
   \caption{Index reduction algorithm with expression swell mitigation.}
   \label{chap4:alg:index_reduction_veil}
   \begin{algorithmic}[1]
-    \State \textbf{Require:} A \ac{DAE} system of the form $\mFv \eqdef \mAv \, \mxp - \mbv = \m{0}$.
+    \State \textbf{Require:} A \ac{DAE} system of the form $\mFv = \mAv \, \mxp - \mbv = \m{0}$.
     \Procedure{ReduceIndex}{$\mFv$} \Comment{Index reduction procedure}
       \State $\mhiv \gets \varnothing$ \Comment{The set of invariants}
       \State $\mv \gets \varnothing$ \Comment{The veiling variables vector}
@@ -392,7 +403,8 @@ Notice that if the matrix $\mAv$ is non-singular, the augmented \ac{DAE} system~
       \State $m \gets \mathrm{Size}(\mx)$\Comment{The size of $\mx$}
       \While{$\mAv$ is singular}
         \State $\displaystyle\triangleright$ Differential and algebraic equations separation (Section~\ref{chap4:sec:separation})
-        \State $\mLv, \, \mUv, \, \mP, \, \mQ, \, \m{v}_d(\mx, \m{v}, \, t) \gets \mathrm{MatrixFactorization}(\mAv)$ \Comment{\ac{LU} or \ac{FFLU} decomposition of $\mAv$ with new veiling variables $\m{v}_d(\mx, \m{v}, \, t)$}
+        \State $\mLv, \, \mUv, \, \mP, \, \mQ \gets \mathrm{MatrixFactorization}(\mAv)$ \Comment{Factorization of $\mAv$}
+        \State $\m{v}_d(\mx, \m{v}, \, t) \gets \mathrm{NewVeilings}(\mAv, \, \mv)$ \Comment{New veils from factorization of $\mAv$}
         \State $\mv \gets \mv \cup \m{v}_d(\mx, \m{v}, \, t)$ \Comment{Update the veiling variables vector}
         \State $r \gets \mathrm{Rank}(\mUv)$ \Comment{The rank of $\mUv$ is equal to the rank of $\mAv$}
         \State $\mI_1 \gets \mathrm{IdentityMatrix}(r, \, r)$ \Comment{The upper identity matrix}
@@ -405,14 +417,21 @@ Notice that if the matrix $\mAv$ is non-singular, the augmented \ac{DAE} system~
         \State $\mav \gets \mathrm{Diff}(\mav, \, t)$ \Comment{Differentiate the equations $\mav$}
         \State $\mav \gets \mathrm{Substitute}(\jac{\m{v}}{\mx}(\mx, \m{v}, \, t), \mav)$ \Comment{Remove the $\mv$ derivatives from $\mav$}
         \State $\mAdv, \, \mgdv \gets \mathrm{GenerateMatrix}(\mav, \, \mxp)$ \Comment{Differentiate the equations $\mav$}
-        \State $\mAv \gets \begin{bmatrix} \mEv \\ \mAdv \end{bmatrix}$ and $\mbv \gets \begin{bmatrix} \mgv \\ \mgdv \end{bmatrix}$
-        \Comment{The new matrix $\mAv$ and vector $\mbv$}
+        \State $\mAv \gets \begin{bmatrix} \mEv \\ \mAdv \end{bmatrix}$ \Comment{The new matrix $\mAv$}
+        \State $\mbv \gets \begin{bmatrix} \mgv \\ \mgdv \end{bmatrix}$ \Comment{The new vector $\mbv$}
         \State $\mhiv \gets \mhiv \cup \mav$ \Comment{Add the algebraic equations to the set of invariants}
       \EndWhile \\
       \Return $\mAv, \, \mbv, \, \mhiv, \, \mv$ \Comment{The \acp{DAE} reduced to an \ac{ODE} system with invariants}
     \EndProcedure
   \end{algorithmic}
 \end{breakablealgorithm}
+
+\begin{sidewaysfigure}[htbp]
+  \centering
+  \includegraphics[angle=270, width=\textwidth]{dae_flowchart_veil}
+  \caption{Flowchart of the index reduction algorithm with expression swell mitigation.}
+  \label{chap4:fig:index_reduction_veil}
+\end{sidewaysfigure}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
@@ -524,10 +543,10 @@ In this section, we showcase an example of a high-index \ac{DAE} system: an inde
 As a first demonstration of the proposed index reduction algorithm capabilities, we first consider the given example from a purely symbolic perspective. In particular, we consider the computational cost of the expressions generated during the presented procedure, both with \ac{LU} and \ac{FFLU} factorization of the system matrix. The compactness of the expressions generated during the index reduction algorithm is a crucial aspect, as it ensures that limited computational overhead is introduced in the numerical integration of the reduced-index system, as well as in the projection of the solution on the hidden constraints. Specifically, the index reduction algorithm is applied to the \ac{DAE} system and reduced to index-0. For each reduction stage of the example considered, the computational cost is reported in Table~\ref{chap4:tab:torus}. Notably, the results show that the expression complexity is similar for both \ac{LU} and \ac{FFLU} factorization, with a slight increase in the number of multiplications and divisions for the latter.
 
 \begin{table}[htb]
-  \caption{Expression complexity encountered throughout the index reduction of the particle motion \ac{DAE} system. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
+  \caption{Expression complexity encountered throughout the index reduction of the particle motion \ac{DAE} system with both the \ac{LU} and \ac{FFLU} factorization techniques. \emph{Legend}: $\cf$ = functions, $\ca$ = additions, $\cm$ = multiplications, and $\cd$ = divisions.}
   \label{chap4:tab:torus}
   \centering
-  {\footnotesize\begin{tabular}{cccc}
+  {\small\begin{tabular}{cccc}
     \multicolumn{4}{c}{\textbf{Particle Motion (LU Factorization)~\cite{campbell1995constraint}}} \\
     \toprule
     \textbf{Original \acp{DAE}} & \multicolumn{3}{c}{$\mF = 47\cf + 30\cm + 23\ca$ \quad $\mh = 0$} \\
@@ -588,7 +607,7 @@ The initial value problem is defined as follows
   \end{bmatrix} \, \text{,}
 \end{equation}
 %
-with $c = 1 - {r} / {(x_{1}^2 + x_{2}^2)^{1/2}}$, states $\mx = [x_{1}, \, x_{2}, \, x_{3}, \, u_{1}, \, u_{2}, \, u_{3}, \, \lambda]^{\top}$, \acp{IC} $\mx_{0} = [15, \, 0, \, 0, \, 0, \, 15, \, -5, \, \lambda]^{\top}$, and parameters $\rho = 5$ and $r = 10$.
+with parameters $\rho = 5$ and $r = 10$, $c = 1 - {r} / {(x_{1}^2 + x_{2}^2)^{1/2}}$, states $\mx = [x_{1}, \, x_{2}, \, x_{3}, \, u_{1}, \, u_{2}, \, u_{3}, \, \lambda]^{\top}$, and \acp{IC} $\mx_{0} = [15, \, 0, \, 0, \, 0, \, 15, \, -5, \, \lambda]^{\top}$.
 
 The numerical integration of the reduced-index system is performed through Implicit Euler, RadauIIA3, and RadauIIA5 \ac{RK} methods. To respect the invariants during the integration the \emph{standard projection} method is applied~\cite{hairer2000symmetric}. This method consists of projecting the solution $\mx$ of the numerically integrated system onto the invariants on the hidden constraints $\mh = \m{0}$, which is equivalent to the constrained minimization
 %
@@ -603,11 +622,11 @@ To verify that the projection is performed correctly and does not affect the ord
 \begin{figure}[htb]
   \centering
   \small{\includetikz{figures/chapter_4/torus_order_hidden.tex}}
-  \caption{Numerical integration error $\varepsilon = \| \, \mx - \mx_\text{exact} \, \|_{\infty}$ of the \acp{DAE}~\eqref{chap4:eq:torus} over different integration time steps $\Delta t$, along with the computed order of the method (left). The projection on the hidden constraints is performed and the invariants violation $\| \, \mh \, \|_{\infty}$ is reported (right). Notice that the implemented projection preserves the order of the method for all the integration time steps. The tests are performed in the interval $t \in [0, \, 2\pi]$ seconds, using Implicit Euler, RadauIIA3, and RadauIIA5 Runge-Kutta methods.}
+  \caption{Numerical integration error $\varepsilon = \| \, \mx - \mx_\text{exact} \, \|_{\infty}$ of the \acp{DAE}~\eqref{chap4:eq:torus} over different integration time steps $\Delta t$, along with the computed order of the method (left). The projection on the hidden constraints is performed and the invariants violation $\| \, \mh \, \|_{\infty}$ is reported (right). Notice that the implemented projection preserves the order of the method for all the integration time steps. The tests are performed in the interval $t \in [0, \, 2\pi]$ seconds, using Implicit Euler, RadauIIA3, and RadauIIA5 \ac{RK} methods.}
   \label{chap4:fig:torus_order}
 \end{figure}
 
-\begin{figure}[htb]
+\begin{figure}[htbp]
   \centering
   \small{\includetikz{figures/chapter_4/torus_implicit_euler.tex}}%
   \hspace{0.25cm}%
@@ -615,7 +634,8 @@ To verify that the projection is performed correctly and does not affect the ord
   \small{\includetikz{figures/chapter_4/torus_radauiia5.tex}}%
   \hspace{0.25cm}%
   \small{\includetikz{figures/chapter_4/torus_radauiia5_noproj.tex}}
-  \caption{Numerically integrated solution of the \acp{DAE}~\eqref{chap4:eq:torus} in the interval $t \in [0, \, 400\pi]$ seconds, with step $\Delta t = 0.025$ seconds, using Implicit Euler (top left), RadauIIA3 (top right), and RadauIIA5 (bottom left and right) Runge-Kutta methods. The first three plots show the numerical integration of the reduced-index system with projection on the hidden constraints $\mh$ produced by the index reduction algorithm. On the bottom right plot, the numerical integration of the reduced-index system is performed without projection on the manifold $\mh$ and substantial drift is observed.}
+  \caption{Numerically integrated solution of the \acp{DAE}~\eqref{chap4:eq:torus} in the interval $t \in [0, \, 400\pi]$ seconds, with step $\Delta t = 0.025$ seconds, using Implicit Euler (top left), RadauIIA3 (top right), and RadauIIA5 (bottom left and right) \ac{RK} methods.}
+  %The first three plots show the numerical integration of the reduced-index system with projection on the hidden constraints $\mh$ produced by the index reduction algorithm. On the bottom right plot, the numerical integration of the reduced-index system is performed without projection on the manifold $\mh$ and substantial drift is observed.}
   \label{chap4:fig:torus_integration}
 \end{figure}
 

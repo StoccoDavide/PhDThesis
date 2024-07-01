@@ -1,4 +1,4 @@
-\documentclass[a4paper, 11pt, openright]{book} % book template, paper size is b5
+\documentclass[a5paper, 8pt, openright]{extbook} % book template, paper size is b5
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -71,6 +71,7 @@
 \usepackage{geometry}            % change margins of the document
 \usepackage{acronym}             % to define abbreviations
 \usepackage{rotating}            % rotate objects
+\usepackage{lscape}              % to write in landscape mode
 
 % Text settings ----------------------------------------------------------------
 \usepackage[dvipsnames]{xcolor}  % color the text
@@ -254,8 +255,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Set custom margins for the document ------------------------------------------
-\newgeometry{top=1.25in, bottom=1.0in, left=1.0in, right=1.0in} % digital version
-%\newgeometry{top=2.0cm, bottom=2.0cm, width=11cm, bindingoffset=12mm} % print version
+\newgeometry{top=2.5cm, bottom=2.0cm, left=2.0cm, right=2.0cm} % digital version
+%\newgeometry{top=2.0cm, bottom=2.0cm, width=11.0cm, bindingoffset=1.2cm} % print version
 %headsep=0.25in, headheight=20pt, heightrounded
 
 % Write 10^0 instead of 1 (requires 'siunitx') ---------------------------------
@@ -302,7 +303,6 @@
 \usepackage{biblatex} % to display bibliography
 \usepackage{bibentry} % to insert bibliography entries inline
 \emergencystretch=1em
-
 
 \renewcommand*{\mkbibnamefamily}[1]{% mkbibcompletename
   \ifitemannotation{jointfirst}
@@ -511,7 +511,7 @@
 \newcommand{\vari}{\ensuremath{\mathrm{\sigma^2}}}
 
 \newcommand{\undx}{\ensuremath{\pt{x}}}
-\newcommand{\undt}{\ensuremath{\vt{t}}}
+\newcommand{\undt}{\ensuremath{\pt{t}}}
 \newcommand{\Fiala}{\textsc{Fiala}}
 \newcommand{\NeoFiala}{\textsc{Neo-Fiala}}
 \newcommand{\TreadSim}{\textsc{TreadSim}}
@@ -521,6 +521,7 @@
 % Commands for the structural analysis
 \newcommand{\Je}{\mathbf{J}_{e}}
 \newcommand{\Ke}{\mathbf{K}_{e}}
+\newcommand{\Kc}{\mathbf{K}_{c}}
 \newcommand{\Ne}{N_{e}}
 \newcommand{\Pe}{\mathbf{P}_{e}}
 \renewcommand{\Re}{\mathbf{R}_{e}}

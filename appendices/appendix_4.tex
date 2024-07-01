@@ -18,7 +18,7 @@ The drive to optimize product performance while minimizing design and production
 
 Symbolic computation in structural analysis has been explored in literature~\cite{noor1979computerized, pavlovic2003symbolic}. Successful attempts include symbolic manipulation in stiffness matrix generation~\cite{cecchi1977automatic} and solving equation systems~\cite{ioakimidis1992application, beltzer2012variational}. However, as highlighted in~\cite{pavlovic2003symbolic}, the symbolic structural solution remains limited by symbolic kernel capabilities, restricting the analysis to relatively small structures. Nonetheless, recent decades have seen significant advancements in solving large linear equation systems symbolically~\cite{carette2006linear, zhou2007symbolic}. These advances, utilizing symbolic matrix factorization with hierarchical representation, enable solutions previously deemed impractical.
 
-The absence of a symbolic analysis and solution package for structures within the \Maple{} environment spurred the development of this toolbox\footnote{It is worth noting that, unlike \Maple{}, \Mathematica{} features a pre-existing suite of packages tailored for symbolic analysis of elastic structural elements, known as the \emph{Structural Mechanics} package~\cite{structuralmechanics}.}. Specifically, the authors' necessity for a tool to symbolically represent, solve, and generate code for modeling, simulating, and optimizing compliant mechanisms prompted the creation of \TrussMe{}. Leveraging the symbolic computation capabilities of \Maple{} and the numerical efficiency of \Matlab{}, this toolbox constitutes a framework for symbolic-numerical analysis and solution of structures. Grounded in the aforementioned \ac{DSM}, the solution method enables modeling, analysis, and resolution of structures. Depending on the symbolic kernel's capabilities, available computation time, and problem complexity, the symbolic solution can be found either symbolically in closed form or numerically. In both scenarios, a \Matlab{} class can be generated to efficiently evaluate the symbolic solution or solve the problem numerically. Throughout code generation, model inputs and class internal data are also mapped into the generated code. Particular emphasis is placed on the symbolic solution of linear equation systems arising from the \ac{DSM}, where the symbolic matrix factorization routines from Chapter~\ref{chap3:symbolic_computation} are employed. Notably the toolbox, named \TrussMe{}, along with its optional dependencies(\LEM{}~\cite{lem} and \LAST{}~\cite{last}), is released as open-source software under the BSD 3-Clause License~\cite{trussme}.
+The absence of a symbolic analysis and solution package for structures within the \Maple{} environment spurred the development of this toolbox\footnote{It is worth noting that, unlike \Maple{}, \Mathematica{} features a pre-existing suite of packages tailored for symbolic analysis of elastic structural elements, known as the \emph{Structural Mechanics} package~\cite{structuralmechanics}.}. Specifically, the authors' necessity for a tool to symbolically represent, solve, and generate code for modeling, simulating, and optimizing compliant mechanisms prompted the creation of \TrussMe{}. Leveraging the symbolic computation capabilities of \Maple{} and the numerical efficiency of \Matlab{}, this toolbox constitutes a framework for symbolic-numerical analysis and solution of structures. Grounded in the aforementioned \ac{DSM}, the solution method enables modeling, analysis, and resolution of structures. Depending on the symbolic kernel's capabilities, available computation time, and problem complexity, the symbolic solution can be found either symbolically in closed form or numerically. In both scenarios, a \Matlab{} class can be generated to efficiently evaluate the symbolic solution or solve the problem numerically. Throughout code generation, model inputs and class internal data are also mapped into the generated code. Particular emphasis is placed on the symbolic solution of linear equation systems arising from the \ac{DSM}, where the symbolic matrix factorization routines from Chapter~\ref{chap3:symbolic_computation} are employed. Notably the toolbox, named \TrussMe{}, along with its optional dependencies(\LEM{}~\cite{lem} and \LAST{}~\cite{last}), is released as open-source software under the \ac{BSD} 3-Clause License~\cite{trussme}.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
@@ -48,12 +48,12 @@ The stiffness matrix $\Ke$ delineates how an element reacts when subjected to un
     {\Ke}_{,21} & {\Ke}_{,22}
   \end{matrix}\,\right] \quad \xrightarrow[\text{condensation}]{\text{stiffness}} \quad
    \Pe \, {\Ke}_{,c} \, \Pe^\top = \left[\,\begin{matrix}
-    {\Ke}_{,11} - {\Ke}_{,12} \, {{\Ke}_{,22}}^{-1} \, {\Ke}_{,21} & 0 \\
-    0 & 0
+    \Kc & 0 \\
+    0   & 0
   \end{matrix}\,\right] \, \text{.}
 \end{equation*}
 %
-It is important to apply condensation to each element of the structure as needed. Subsequently, the subscript $c$ in ${\Ke}_{,c}$ is dropped, and the condensed stiffness matrix is denoted simply as $\Ke$.
+where $\Kc = {\Ke}_{,11} - {\Ke}_{,12} \, {{\Ke}_{,22}}^{-1} \, {\Ke}_{,21}$. It is important to apply condensation to each element of the structure as needed. Subsequently, the subscript $c$ in ${\Ke}_{,c}$ is dropped, and the condensed stiffness matrix is denoted simply as $\Ke$.
 
 \subsection{Global Stiffness Matrix Assemblage}
 
@@ -147,7 +147,7 @@ Consider the depicted simple structure illustrated in Figure~\ref{app4:fig:usage
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=0.8\textwidth]{./figures/appendix_4/usage_example.eps}
+  \includegraphics[width=0.85\textwidth]{./figures/appendix_4/usage_example.eps}
   \caption{Simple structure used to demonstrate the usage of the \TrussMe{} package.}
   \label{app4:fig:usage_example}
 \end{figure}
@@ -172,10 +172,12 @@ Before defining the elements, the material properties must be specified. Custom 
 Next, the \texttt{MakeBeam} function is employed, necessitating the element's name, nodes at its ends, material, and cross-section properties.
 %
 \begin{verbatim}
-> E1 := MakeBeam("E1", N1, [N2, <0,0,0,0,0,0>], material=M, area=A, inertia=[I_x,I_y,I_z],
-    frame=GenerateFrameXY(N1["coordinates"], N2["coordinates"], [0,0,1])):
-> E2 := MakeBeam("E2", [N2, <0,0,0,0,0,1>], N3, material=M, area=A, inertia=[I_x,I_y,I_z],
-    frame=GenerateFrameXY(N2["coordinates"], N3["coordinates"], [0,0,1])):
+> E1 := MakeBeam("E1", N1, [N2, <0,0,0,0,0,0>], material=M, area=A, inertia=
+    [I_x,I_y,I_z], frame=GenerateFrameXY(N1["coordinates"], N2["coordinates"],
+    [0,0,1])):
+> E2 := MakeBeam("E2", [N2, <0,0,0,0,0,1>], N3, material=M, area=A, inertia=
+    [I_x,I_y,I_z], frame=GenerateFrameXY(N2["coordinates"], N3["coordinates"],
+    [0,0,1])):
 \end{verbatim}
 %
 During the element definition, the reference frame is also specified. Here, the \texttt{GenerateFrameXY} function aligns the coordinate system axes based on the coordinates of the two nodes. Additional details about how the element ends are connected to the nodes can be provided using an augmented six-element vector, such as \texttt{[N, <1,1,1,1,1,1>]}. If this vector is not provided, the element ends are assumed to be rigidly connected to the nodes in all directions. In the provided code snippet, element $E_1$ is connected rigidly to nodes $N_1$ and $N_2$, while element $E_2$ is hinged to node $N_2$ with constrained translational \acp{DOF} and free rotational \acp{DOF}. Element $E_2$ is then rigidly connected to node $N_3$. This hinge connection is achieved by specifying the free rotational \acp{DOF} of the element ends. In this case, element $E_2$ can rotate freely around the $z$-axis.
@@ -214,9 +216,9 @@ When using the \texttt{tryhard} flag, the solvability check described in step (5
 In cases where no symbolic solution could be obtained, or if the user just prefers to assess the solution numerically, the \texttt{GenerateMatlabCode} function can be employed.
 %
 \begin{verbatim}
-> GenerateMatlabCode("FemClass", fem, path="./dir/", info="Usage example class", vars=[P],
-    data=[I_x=4.0e-4, I_y=2.0e-4, I_z=2.0e-4, E=210.0e6, nu=0.33, A=5.0e-3, L_1=1.0,
-    L_2=1.0]);
+> GenerateMatlabCode("FemClass", fem, path="./dir/", info="Usage example class",
+    vars=[P], data=[I_x=4.0e-4, I_y=2.0e-4, I_z=2.0e-4, E=210.0e6, nu=0.33, A=5.0e-3,
+    L_1=1.0, L_2=1.0]);
 \end{verbatim}
 %
 This function creates the \texttt{FemClass.m} file in the \texttt{./dir/} directory, which contains a class definition of the aforementioned \ac{FE} model. During the code generation process, users can establish default class properties in the \texttt{data} field and variable parameters in the \texttt{vars} field. The latter is intended to represent parameters that may vary during the structure analysis, such as the load magnitude $P$. Further insights into the generated class and its application are elaborated in the subsequent section.
@@ -297,7 +299,7 @@ It is worth noting that the vector \texttt{x} includes the system's parameters, 
 >>> f = fem.compute_f(x,v);
 \end{verbatim}
 %
-The least squares solution can also be acquired by incorporating the tolerance value and maximum number of iterations into the \texttt{compute\_d} and \texttt{compute\_f} methods, such as \texttt{fem.compute\_f(x,v,tol,iter)}. Alternative numerical solution methods, relying on constrained minimization of energy functional, can be utilized to solve the system of equations~\eqref{app4:eq:macrosol}~\cite{hutton2004fundamentals}. However, these methods are not currently integrated into the \TrussMe{} \Matlab{} toolbox.
+The least squares solution can also be acquired by incorporating the tolerance value and maximum number of iterations into the \texttt{compute\_d} and \texttt{compute\_f} methods, such as \texttt{fem.compute\_f(x, v, tol, iter)}. Alternative numerical solution methods, relying on constrained minimization of energy functional, can be utilized to solve the system of equations~\eqref{app4:eq:macrosol}~\cite{hutton2004fundamentals}. However, these methods are not currently integrated into the \TrussMe{} \Matlab{} toolbox.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
@@ -308,8 +310,8 @@ In this section, we briefly showcase two example applications of the \TrussMe{} 
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=0.475\textwidth, trim={2cm 2cm 3.5cm 2cm}, clip]{./figures/appendix_4/rendering.eps}
-  \includegraphics[width=0.425\textwidth]{./figures/appendix_4/constraints.eps}
+  \includegraphics[width=6.5cm, trim={2cm 2cm 3.5cm 2cm}, clip]{./figures/appendix_4/rendering.eps}
+  \includegraphics[width=6.5cm]{./figures/appendix_4/constraints.eps}
   \caption{Rendering and schematic representation of the rear left double wishbone suspension. The spherical and cylindrical constraints are respectively represented by the symbols \circled{S} and \circled{C}.}
   \label{app4:fig:suspension}
 \end{figure}
@@ -318,24 +320,20 @@ Before delving into the example applications, it is essential to clarify the wor
 
 \subsection{Design Optimization}
 
-Mechanisms involving motion are prevalent in engineering applications. Typically, the design of such mechanisms assumes rigid bodies. However, in certain instances, the flexibility of the mechanism can significantly impact its performance. Optimization emerges as a potent tool for designing structures with optimal performance. The \TrussMe{} toolbox facilitates shape optimization aimed at reducing the compliance of the mechanism and minimizing internal forces. Specifically, the presented optimizations aim to minimize both the wheel compliance hub angle $\theta_z$ and the tie rod axial force $F_a$ by varying the $x$- and $z$- coordinates of the hard point connecting the tie rod to the chassis, referred to as point $P_5$ according to~\cite{larcher2024imece_symbolic}. The results of these optimizations are depicted in Figure~\ref{app4:fig:optimization}. These optimization demonstrations underscore that the current design does not represent the optimal solution in terms of minimum tie rod axial force and minimum wheel compliance hub angle. Optimum conditions are attained through a combination of values indicated by the green point. It is noteworthy that these optimization examples serve solely as a proof of concept for the model's parametric characteristics. In a real-world scenario, a multi-objective optimization considering compliance, structural analysis, and kinematic characteristics of the suspension would be imperative.
+Mechanisms involving motion are prevalent in engineering applications. Typically, the design of such mechanisms assumes rigid bodies. However, in certain instances, the flexibility of the mechanism can significantly impact its performance. Optimization emerges as a potent tool for designing structures with optimal performance. The \TrussMe{} toolbox facilitates shape optimization aimed at reducing the compliance of the mechanism and minimizing internal forces. Specifically, the presented optimizations aim to minimize both the wheel compliance hub angle $\theta_z$ and the tie rod axial force $F_a$ by varying the $x$- and $z$- coordinates of the hard point connecting the tie rod to the chassis, referred to as point $P_5$ according to~\cite{larcher2024imece_symbolic}. The results of these optimizations are depicted in Figures~\ref{app4:fig:variation_theta_z} and \ref{app4:fig:variation_force_tie}. These optimization demonstrations underscore that the current design does not represent the optimal solution in terms of minimum tie rod axial force and minimum wheel compliance hub angle. Optimum conditions are attained through a combination of values indicated by the green point. It is noteworthy that these optimization examples serve solely as a proof of concept for the model's parametric characteristics. In a real-world scenario, a multi-objective optimization considering compliance, structural analysis, and kinematic characteristics of the suspension would be imperative.
 
 \begin{figure}[htb]
   \centering
-    \begin{subfigure}[t]{0.49\textwidth}
-    \small{\includetikz{figures/appendix_4/optimization_hub_angle.tex}}
-    \caption{Wheel hub compliance angle $\theta_z$ dependency from the $x$- and $z$- coordinates of the $P_5$ hard point.}
-    \label{app4:fig:variation_theta_z}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.49\textwidth}
-    \centering
-    \small{\includetikz{figures/appendix_4/optimization_tie_force.tex}}
-    \caption{Tie rod axial force $F_a$ dependency from the $x$- and $z$- coordinates of the $P_5$ hard point.}
-    \label{app4:fig:variation_force_tie}
-  \end{subfigure}
-  \caption{Optimization is conducted on the coordinates of point $P_5$, specifically its $x$- and $z$-coordinates, with the aim of minimizing both the wheel compliance hub angle $\theta_z$ and the tie rod axial force $F_a$. The experiments are conducted under the application of a constant torque $M_z$ of \SI{0.4}{\kilo\newton\meter}. \emph{Marks legend:} {\color{mycolor2}\raisebox{-.15pt}{\Large$\bullet$}} current design, {\color{mycolor5}\raisebox{-.15pt}{\Large$\bullet$}} optimality condition.}
-  \label{app4:fig:optimization}
+  \small{\includetikz{figures/appendix_4/optimization_hub_angle.tex}}
+  \caption{Optimization of the point $P_5$ $x$- and $z$-coordinates to minimize both the wheel compliance hub angle $\theta_z$. The experiments are conducted under the application of a constant torque $M_z$ of \SI{0.4}{\kilo\newton\meter}. \emph{Marks legend:} {\color{mycolor2}\raisebox{-.15pt}{\Large$\bullet$}} current design, {\color{mycolor5}\raisebox{-.15pt}{\Large$\bullet$}} optimality condition.}
+  \label{app4:fig:variation_theta_z}
+\end{figure}
+
+\begin{figure}[htb]
+  \centering
+  \small{\includetikz{figures/appendix_4/optimization_tie_force.tex}}
+  \caption{Optimization of the point $P_5$ $x$- and $z$-coordinates to minimize both the tie rod axial force $F_a$. The experiments are conducted under the application of a constant torque $M_z$ of \SI{0.4}{\kilo\newton\meter}. \emph{Marks legend:} {\color{mycolor2}\raisebox{-.15pt}{\Large$\bullet$}} current design, {\color{mycolor5}\raisebox{-.15pt}{\Large$\bullet$}} optimality condition.}
+  \label{app4:fig:variation_force_tie}
 \end{figure}
 
 \subsection{Model Reduction}

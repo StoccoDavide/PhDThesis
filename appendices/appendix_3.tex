@@ -12,7 +12,7 @@ We present a novel tire brush model with carcass flexibility, primarily designed
 
 Numerous investigations and experiments have been conducted over the past century to understand tire characteristics and behavior, revealing a close relationship between tire performance and the technologies, techniques, and materials used in manufacturing~\cite{nakajima2019advanced, gil2020inplane}. However, accurately modeling tire characteristics from construction specifications is challenging due to the complex tire internal structure. To tackle this challenge, two main modeling approaches have been proposed so far: \emph{empirical} and \emph{physical}~\cite{guiggiani2014science, rill2020road, pacejka2012tire, oertel2015years}.
 
-The empirical approach is popular because of its simplicity, low computational cost, and ability to capture accurate tire behavior. In this approach, tire-road interaction forces are approximated using a combination of functions derived from physical insights, as well as years of experimental campaigns and experience. The identification process for computing the set of parameters that best fit experimental data for a specific tire is one of the biggest challenges for these models. The \MagicFormulae{} model, initially developed by~\citet{bakker1987tyre} and later improved multiple times~\cite{pacejka2012tire}, is the most-known and state-of-the-art empirical model. It fits experimental data through a sequence of numerical optimizations on predetermined curve shapes~\cite{bayle1993new}. Due to its diffusion, low computational complexity and overall performance, the \MagicFormulae{} model is considered the standard in both data fitting and vehicle simulation~\cite{guiggiani2014science, pacejka2012tire}.
+The empirical approach is popular because of its simplicity, low computational cost, and ability to capture accurate tire behavior. In this approach, tire-road interaction forces are approximated using a combination of functions derived from physical insights, as well as years of experimental campaigns and experience. The identification process for computing the set of parameters that best fit experimental data for a specific tire is one of the biggest challenges for these models. The \MagicFormulae{} model, initially developed by \citet{bakker1987tyre} and later improved multiple times~\cite{pacejka2012tire}, is the most-known and state-of-the-art empirical model. It fits experimental data through a sequence of numerical optimizations on predetermined curve shapes~\cite{bayle1993new}. Due to its diffusion, low computational complexity and overall performance, the \MagicFormulae{} model is considered the standard in both data fitting and vehicle simulation~\cite{guiggiani2014science, pacejka2012tire}.
 
 The physical approach involves direct geometrical and physical tire modeling, providing a deeper understanding of the complex phenomena related to tire behavior~\cite{nakajima2019advanced}. While the computational burden heavily depends on the desired accuracy, this approach can better generalize behavior without fitting a large experimental dataset for every specific tire. Additionally, physical models usually depend on a smaller number of parameters that have a direct physical meaning. The \ac{FE} method represents a physical approach to tire modeling primarily used, though not exclusively, for assessing static characteristics, stiffnesses, resonant frequencies, and vibration modes~\cite{taheri2014technical}. Another physical modeling technique is based on the \ac{DE} method~\cite{karpman2020discrete}, which employs a limited number of interconnected elements and nodes to mimic the degrees of freedom and constraints of real tire carcass structures~\cite{gipser2005ftire, gallrein2007cdtire, yamashita2016physicsbased}. Prominent \ac{DE} models like \FTire{} and \CDTire{} are capable of running under \ac{RT} environments~\cite{cosinscientific, gallrein2014advanced}, and encompass advanced features such as detailed external geometry description, flexible and visco-plastic rim, air cavity vibration, deformable and visco-elastic ground soil compatibility, as well as temperature and wear modeling. However, the availability of detailed information regarding the computational time performance of both \FTire{} and \CDTire{} remains limited.
 
@@ -46,19 +46,16 @@ where $\undx{} = [x,y,z]^\top$. The contact patch region is defined as a closed 
 
 \begin{figure}[htb]
   \centering
-  \begin{minipage}[t]{0.425\linewidth}
-    \centering
-    \includegraphics[width=0.9\linewidth]{figures/appendix_3/tire_iso}
-    \caption{Tire-road schematics according to ISO coordinate system~\cite{iso88552011}.}
-    \label{app3:fig:tire_iso}
-  \end{minipage}
-  \hfill
-  \begin{minipage}[t]{0.525\linewidth}
-    \centering
-    \includegraphics[width=1.0\linewidth]{figures/appendix_3/belt_section}
-    \caption{Illustration of the tire-road contact geometry parameters.}
-    \label{app3:fig:belt_section}
-  \end{minipage}
+  \includegraphics[width=6.0cm]{figures/appendix_3/tire_iso}
+  \caption{Tire-road schematics according to ISO coordinate system~\cite{iso88552011}.}
+  \label{app3:fig:tire_iso}
+\end{figure}
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=8.0cm]{figures/appendix_3/belt_section}
+  \caption{Illustration of the tire-road contact geometry parameters.}
+  \label{app3:fig:belt_section}
 \end{figure}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
@@ -104,27 +101,27 @@ The pressure distribution is one of the most complex, challenging-to-model facto
 %
 \begin{equation}
   \begin{cases}
-    \dfrac{\mathrm{d}^2}{\mathrm{d}\chi^2}\Upsilon\left(\dfrac{1}{2}\right) = -\lambda & \text{convexity at the center of the contact patch $\chi = \dfrac{1}{2}$,}
+    \dfrac{\mathrm{d}^2}{\mathrm{d}\chi^2}\Upsilon\left(\dfrac{1}{2}\right) = -\lambda %& \text{convexity at the center of the contact patch $\chi = \dfrac{1}{2}$,}
     \\[1.0em]
-    \displaystyle\int_{0}^{1} \Upsilon(\chi)\,\mathrm{d}\chi = 1 & \text{normalization condition for the total contact force over the contact patch,}
+    \displaystyle\int_{0}^{1} \Upsilon(\chi)\,\mathrm{d}\chi = 1 %& \text{normalization condition for the total contact force over the contact patch,}
     \\[1.0em]
-    \displaystyle\int_{0}^{1} \Upsilon(\chi)\chi\,\mathrm{d}\chi = \dfrac{1}{2} - \delta & \text{barycentre shift with respect to the center of the contact patch $\chi = \dfrac{1}{2}$,}
-    \\[1.5em]
-    \Upsilon(0) = \Upsilon(-1) = 0 & \text{absence of pressure at the edges of the contact patch $\chi = 0$ and $\chi = 1$.}
-    \\[0.5em]
+    \displaystyle\int_{0}^{1} \Upsilon(\chi)\chi\,\mathrm{d}\chi = \dfrac{1}{2} - \delta %& \text{barycentre shift with respect to the center of the contact patch $\chi = \dfrac{1}{2}$,}
+    \\[1.0em]
+    \Upsilon(0) = \Upsilon(-1) = 0 %& \text{absence of pressure at the edges of the contact patch $\chi = 0$ and $\chi = 1$.}
+    %\\[0.5em]
   \end{cases}
   \label{app3:eq:upsilon}
 \end{equation}
 %
 Then, we solve for $c_0, \dots, c_4$, and the solution of the system is
 %
-\begin{equation*}
-  c_0 = 0, \quad
-  c_1 = -\dfrac{1}{3}\lambda + 10 + 60\delta \, \text{,} \quad
-  c_2 = 2\lambda - 30 - 180\delta \, \text{,} \quad
-  c_3 = -\dfrac{10}{3}\lambda + 40 + 120\delta \, \text{,} \quad \text{and} \quad
-  c_4 = \dfrac{5}{3}\lambda - 20 \, \text{.}
-\end{equation*}
+\begin{align*}
+  c_0 &= 0 \, \text{,} \\ %\quad
+  c_1 &= -\dfrac{1}{3}\lambda + 10 + 60\delta \, \text{,} \\ %\quad
+  c_2 &= 2\lambda - 30 - 180\delta \, \text{,} \\ %\quad
+  c_3 &= -\dfrac{10}{3}\lambda + 40 + 120\delta \, \text{,} \\ %\quad \text{and} \quad
+  c_4 &= \dfrac{5}{3}\lambda - 20 \, \text{.}
+\end{align*}
 %
 Here, $\lambda \in \mathbb{R}$ and $\delta \in \mathbb{R}$ respectively denote the convexity and longitudinal barycentre shift of the base curve $\Upsilon(\chi)$. The only drawback of this approach is that for certain values of $\delta$ and $\lambda$, the condition of positive pressure $\Upsilon(\chi) \ge 0$ within the range $\chi \in [0,1]$ is not always guaranteed and must be numerically checked in the software implementation. Thus, a careful selection of these parameters is essential. On the other hand, the use of a polynomial to describe the pressure distribution over the contact patch allows us to adopt some numerically robust algorithms and efficient evaluations for some of the calculations that will follow. Given the objective of achieving \ac{RT} applicability for the numerical tire model, this aspect should not be overlooked. The vertical contact stress distribution $q_z(\undx{},t)$ is then written as
 %
@@ -172,7 +169,7 @@ where time-dependent parameters $x_c$ and $y_c$ represent the carcass longitudin
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=0.8\linewidth]{figures/appendix_3/contact_patch}
+  \includegraphics[width=\linewidth]{figures/appendix_3/contact_patch}
   \caption{Depictions of the deformed carcass baseline $\sett{L}(\undx{}, \vt{c})$, along with the contact line of bristles, adherence limit, distribution of bending torque, and the adherence and sliding regions.}
   \label{app3:fig:contact_patch}
 \end{figure}
@@ -242,41 +239,38 @@ is a regularized function of the positive part. Notice that the deformation of t
 
 \begin{figure}[htb]
   \centering
-  \begin{minipage}[t]{0.475\linewidth}
-    \centering
-    \includegraphics[width=0.9\linewidth]{figures/appendix_3/contact_patch_vertical}
-    \caption{Representation of the contact patch region $\sett{P}$ and contact patch reference frame $\bm{\xi}_i(y_i,t)$. Notice that the contact patch is defined as a D-convex and arbitrary region, whose shape is described along the $y$-axis by the quantity $\ell(y,t)$.}
-    \label{app3:fig:contact_patch_vertical}
-  \end{minipage}
-  \hfill
-  \begin{minipage}[t]{0.475\linewidth}
-    \centering
-    \includegraphics[width=0.9\linewidth, trim={4.35cm 3cm 4.35cm 0cm}, clip]{figures/appendix_3/brush_model}
-    \caption{Illustration of the brush model. The tire $\sett{T}$ is discretized into a series of $n_\sett{D}$ ribs. Carcass and bristles are represented as the main components of the model. Conversely, the rim is assumed to be a rigid body and thus has no impact on the tire-road contact.}
-    \label{app3:fig:brush_model}
-  \end{minipage}
+  \includegraphics[width=6.5cm]{figures/appendix_3/contact_patch_vertical}
+  \caption{Representation of the contact patch region $\sett{P}$ and contact patch reference frame $\bm{\xi}_i(y_i,t)$. Notice that the contact patch is defined as a D-convex and arbitrary region, whose shape is described along the $y$-axis by the quantity $\ell(y,t)$.}
+  \label{app3:fig:contact_patch_vertical}
+\end{figure}
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=6.5cm, trim={4.35cm 3cm 4.35cm 0cm}, clip]{figures/appendix_3/brush_model}
+  \caption{Illustration of the brush model. The tire $\sett{T}$ is discretized into a series of $n_\sett{D}$ ribs. Carcass and bristles are represented as the main components of the model. Conversely, the rim is assumed to be a rigid body and thus has no impact on the tire-road contact.}
+  \label{app3:fig:brush_model}
 \end{figure}
 
 \subsubsection{Tire-Road Tangential Contact Mechanics Equations}
 
 For each point $\undx{} \in \sett{P}$, given a carcass pose $\vt{c}$, we associate a speed field $\pt{v}(\undx{}, t)$ and a displacement vector $\vt{u}(\undx{}, \vt{c}, t)$. The speed field $\pt{v}$ represents the relative speed between the outer tread layer and the road, while the displacement vector $\vt{u}$ represents the deformation of the material point (also referred to as a \emph{bristle}) located at the coordinate $\undx{}$. Additionally, each material point is also subjected to an external force $\vt{q}(\undx{}, \vt{c}, t)$ generated by the tire-road contact.
 
-We define the generic tangential position as $\undt{} = x\et{e}_x + y\et{e}_y$, the tangential velocity field as $\vt{v}{\undt{}}(\undx{}, \vt{c}, t) = v_x(\undx{}, \vt{c}, t)\et{e}_x + v_y(\undx{},\vt{c},t)\et{e}_y$, the tangential displacement vectors as $\vt{u}{\undt{}}(\undx{},\vt{c},t) = u_x(\undx{},\vt{c},t)\et{e}_x + u_y(\undx{},\vt{c},t)\et{e}_y$, and the tangential stress vector as $vt{q}{\undt{}}(\undx{},\vt{c},t) = q_x(\undx{},\vt{c},t)\et{e}_x + q_y(\undx{},\vt{c},t)\et{e}_y$, in a such a way that
+We define the generic tangential position as $\undt{} = x\et{e}_x + y\et{e}_y$, the tangential velocity field as $\vt{v}_{\undt{}}(\undx{}, \vt{c}, t) = v_x(\undx{}, \vt{c}, t)\et{e}_x + v_y(\undx{},\vt{c},t)\et{e}_y$, the tangential displacement vectors as $\vt{u}_{\undt{}}(\undx{},\vt{c},t) = u_x(\undx{},\vt{c},t)\et{e}_x + u_y(\undx{},\vt{c},t)\et{e}_y$, and the tangential stress vector as $vt{q}_{\undt{}}(\undx{},\vt{c},t) = q_x(\undx{},\vt{c},t)\et{e}_x + q_y(\undx{},\vt{c},t)\et{e}_y$, in a such a way that
 %
 \begin{equation}
   \vt{v} =
   \begin{bmatrix}
-    \vt{v}{\undt{}} \\
+    \vt{v}_{\undt{}} \\
     v_z
   \end{bmatrix} \, \text{,} \quad
   \vt{u} =
   \begin{bmatrix}
-    \vt{u}{\undt{}} \\
+    \vt{u}_{\undt{}} \\
     u_z
   \end{bmatrix} \, \text{,} \quad \text{and} \quad
   \vt{q} =
   \begin{bmatrix}
-    \vt{q}{\undt{}} \\
+    \vt{q}_{\undt{}} \\
     q_z
   \end{bmatrix} \, \text{.}
   \label{app3:eq:ut}
@@ -295,14 +289,14 @@ The bristles tangential \emph{micro-sliding speed} is defined as
 which represents the relative speed between a material point within the contact patch $\sett{P}$ and the road surface $\boundary{R}$. In the following, we will employ an isotropic steady-state Coulomb friction model, which enables us to write the equations governing the contact mechanics between the tire tread layer and the road surface as
 %
 \begin{equation}
-  \vt{v}_s = 0 \iff \|\pt{q}{\undt{}}\| \leq \mu_s q_z
+  \vt{v}_s = 0 \iff \|\pt{q}_{\undt{}}\| \leq \mu_s q_z
   \quad \text{and} \quad
-  \vt{q}{\undt{}} = -\mu_d q_z \dfrac{\vt{v}_s}{\|\vt{v}_s\|}
+  \vt{q}_{\undt{}} = -\mu_d q_z \dfrac{\vt{v}_s}{\|\vt{v}_s\|}
   \iff \vt{v}_s \neq 0 \, \text{.}
   \label{app3:eq:fundamental_eqns}
 \end{equation}
 %
-In these equations, $\mu_s$ represents the static friction coefficient and $\mu_d(\undx{}, \vt{c}, t)$ denotes the ``dynamic'' friction coefficient. It is important to note that~\eqref{app3:eq:fundamental_eqns} is only valid under the assumption of memory-less friction, meaning there is a one-to-one map between the tangential stress and the micro-sliding speed~\cite{canudasdewit2003dynamic}. To solve~\eqref{app3:eq:fundamental_eqns}, two additional sets of equations are necessary. The first set consists of the so-called \emph{tire-road kinematic equations}, which link the wheel hub's relative motion to the deformation field over the contact patch area. The second set includes the \emph{constitutive relations}, which correlate the bristles deformation field to the generated tangential stress $\vt{q}{\undt{}}$.
+In these equations, $\mu_s$ represents the static friction coefficient and $\mu_d(\undx{}, \vt{c}, t)$ denotes the ``dynamic'' friction coefficient. It is important to note that~\eqref{app3:eq:fundamental_eqns} is only valid under the assumption of memory-less friction, meaning there is a one-to-one map between the tangential stress and the micro-sliding speed~\cite{canudasdewit2003dynamic}. To solve~\eqref{app3:eq:fundamental_eqns}, two additional sets of equations are necessary. The first set consists of the so-called \emph{tire-road kinematic equations}, which link the wheel hub's relative motion to the deformation field over the contact patch area. The second set includes the \emph{constitutive relations}, which correlate the bristles deformation field to the generated tangential stress $\vt{q}_{\undt{}}$.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
@@ -313,9 +307,10 @@ Friction significantly affects tire behavior. As noted in prior works~\cite{seli
 
 Numerous physical formulations aim to capture the relationship between the friction coefficient and sliding speed. One of the most important is the \emph{Savkoor friction law}, which includes the so-called \emph{Stribeck effect}~\cite{savkoor1965friction, savkoor1966some, savkoor1987dry}. When accounting for contact pressure dependency, the ``dynamic'' friction coefficient $\mu_d(\undx{})$ can be expressed as
 %
-\begin{equation*}
-  \mu_d = \mu_w (\mu_{p_0} + \mu_{p_1} \exp( -\mu_{p_2} q_z )) (\mu_k + (\mu_s - \mu_k)) \exp\left( -\mu_{v_0}^2 \log^2 \left( \dfrac{\|\vt{v}_s\|}{v_\mu} + \mu_{v_1} \exp\left(-\dfrac{\|\vt{v}_s\|}{v_\mu}\right)\right)\right) \, \text{,}
-\end{equation*}
+\begin{align*}
+  \mu_d = \mu_w (\mu_{p_0} &+ \mu_{p_1} \exp( -\mu_{p_2} q_z )) (\mu_k + (\mu_s - \mu_k)) \dots \\
+  &\exp\left( -\mu_{v_0}^2 \log^2 \left( \dfrac{\|\vt{v}_s\|}{v_\mu} + \mu_{v_1} \exp\left(-\dfrac{\|\vt{v}_s\|}{v_\mu}\right)\right)\right) \, \text{,}
+\end{align*}
 %
 where
 %
@@ -337,11 +332,11 @@ where
 The relative velocity between the bristles and the road, first introduced with the name of micro-sliding velocity $\vt{v}_s$, are expressed in Eulerian form similar to that in~\cite{romano2019novel, romano2020unsteadystate, romano2022brush, romano2022analytical, pacejka2012tire, guiggiani2014science, limebeer2018dynamics}. Hence, using~\eqref{app3:eq:parabola} and~\eqref{app3:eq:ut}, $\vt{v}_s$ can be written as
 %
 \begin{equation}
-  \vt{v}_s = V_r\left(\bm{\sigma} + \varphi\et{e}_z \times \left(\sett{L} + \undt{}\right) + \dfrac{\mathrm{d}}{\mathrm{d}x}\sett{L}\,\right) + \dfrac{\mathrm{d}}{\mathrm{d}t}\vt{u}{\undt{}} \, \text{,}
+  \vt{v}_s = V_r\left(\bm{\sigma} + \varphi\et{e}_z \times \left(\sett{L} + \undt{}\right) + \dfrac{\mathrm{d}}{\mathrm{d}x}\sett{L}\,\right) + \dfrac{\mathrm{d}}{\mathrm{d}t}\vt{u}_{\undt{}} \, \text{,}
   \label{app3:eq:v_s}
 \end{equation}
 %
-where the material point deformation $\vt{u}{\undt{}}$ is assumed to be small. For a comprehensive description and derivation of such sliding refer to~\cite{rill2020road, pacejka2012tire, guiggiani2014science, limebeer2018dynamics, romano2019novel, romano2022brush, romano2022analytical}. The \emph{theoretical translational slips} $\bm{\sigma}$ represent the normalized difference between the longitudinal and lateral components of the speed of the wheel hub and that of the tire periphery $V_r(y,t) = \omega(t)R_r(y,t)$. Therefore, they are defined as
+where the material point deformation $\vt{u}_{\undt{}}$ is assumed to be small. For a comprehensive description and derivation of such sliding refer to~\cite{rill2020road, pacejka2012tire, guiggiani2014science, limebeer2018dynamics, romano2019novel, romano2022brush, romano2022analytical}. The \emph{theoretical translational slips} $\bm{\sigma}$ represent the normalized difference between the longitudinal and lateral components of the speed of the wheel hub and that of the tire periphery $V_r(y,t) = \omega(t)R_r(y,t)$. Therefore, they are defined as
 %
 \begin{equation*}
   \bm{\sigma}(y,t) =
@@ -401,19 +396,19 @@ and thus
 Since we are using the same Eulerian form of~\cite{romano2022analytical}, the total time derivative is given by
 %
 \begin{equation*}
-  \dfrac{\mathrm{d}}{\mathrm{d}t} =  \dfrac{\partial}{\partial t} + \vt{v}{\undt{}} \cdot\nabla{\undt{}} \, \text{,}
+  \dfrac{\mathrm{d}}{\mathrm{d}t} =  \dfrac{\partial}{\partial t} + \vt{v}_{\undt{}} \cdot\nabla{\undt{}} \, \text{,}
 \end{equation*}
 %
 where $\nabla{\undt{}}$ collects the tangential components of the gradient, and $\partial/\partial t = 0$ since we are neglecting the viscous component of the Kelvin-Voigt element representing the rubber material point~\cite{meyers2008mechanical}. Neglecting the viscous effect of the tread rubber material eliminates any explicit time dependence in the formulation of brush model forces and torques. Consequently, the tread rubber always operates under stationary conditions. Considering these points, the total derivative of the material point can be explicitly expressed as
 %
 \begin{equation*}
-  \dfrac{\mathrm{d}}{\mathrm{d}t}\vt{u}{\undt{}} = \underbrace{\dfrac{\partial}{\partial t}\vt{u}{\undt{}}}_{=0} + \vt{v}{\undt{}}\cdot\nabla{\undt{}}\vt{u}{\undt{}} \, \text{,}
+  \dfrac{\mathrm{d}}{\mathrm{d}t}\vt{u}_{\undt{}} = \underbrace{\dfrac{\partial}{\partial t}\vt{u}_{\undt{}}}_{=0} + \vt{v}_{\undt{}}\cdot\nabla{\undt{}}\vt{u}_{\undt{}} \, \text{,}
 \end{equation*}
 %
-where the tangential gradient is given by $\nabla{\undt{}} = [\partial/\partial x, \partial/\partial y]^\top$. The velocity field $\vt{v}{\undt{}}$ of the tread rubber is formulated as
+where the tangential gradient is given by $\nabla{\undt{}} = [\partial/\partial x, \partial/\partial y]^\top$. The velocity field $\vt{v}_{\undt{}}$ of the tread rubber is formulated as
 %
 \begin{equation*}
-  \vt{v}{\undt{}} = -V_r \dfrac{\dfrac{\mathrm{d}}{\mathrm{d}x} \sett{L}}{\Big\|\dfrac{\mathrm{d}}{\mathrm{d}x} \sett{L}\,\Big\|} \, \text{.}
+  \vt{v}_{\undt{}} = -V_r \dfrac{\dfrac{\mathrm{d}}{\mathrm{d}x} \sett{L}}{\Big\|\dfrac{\mathrm{d}}{\mathrm{d}x} \sett{L}\,\Big\|} \, \text{.}
 \end{equation*}
 %
 Given the assumption of small carcass deformations (approximatively $|x_c| < \rho_b$, $|y_c| < \rho_b$, and $|\theta_c| < \pi/10$) and small tire camber angles ($|\gamma(t)| < \pi/10$) the following relationships holds~\cite{romano2022advanced}
@@ -422,12 +417,12 @@ Given the assumption of small carcass deformations (approximatively $|x_c| < \rh
   \dfrac{\mathrm{d}}{\mathrm{d}x} \sett{L}_x \approx 1 \quad \text{and} \quad \dfrac{\mathrm{d}}{\mathrm{d}x} \sett{L}_y \approx 0 \, \text{.}
 \end{equation*}
 %
-The trajectories of the bristles moving within the contact patch are straightened in the longitudinal direction. Therefore, the formulation is constrained to a velocity field of the form $\vt{v}{\undt{}} = [-V_r, 0]^\top$
+The trajectories of the bristles moving within the contact patch are straightened in the longitudinal direction. Therefore, the formulation is constrained to a velocity field of the form $\vt{v}_{\undt{}} = [-V_r, 0]^\top$
 
 By separating the longitudinal and tangential displacements of the bristles, we derive the bristle micro-sliding speed formulated as
 %
 \begin{equation}
-  \vt{v}_s = V_r\left( \vt{\bm{\sigma}} + \varphi\huvec_z \times \left(\sett{L} + \undt{}\right) + \dfrac{\mathrm{d}}{\mathrm{d}x}\sett{L} - \dfrac{\mathrm{d}}{\mathrm{d}x}\vt{u}{\undt{}} \right) \, \text{.}
+  \vt{v}_s = V_r\left( \vt{\bm{\sigma}} + \varphi\huvec_z \times \left(\sett{L} + \undt{}\right) + \dfrac{\mathrm{d}}{\mathrm{d}x}\sett{L} - \dfrac{\mathrm{d}}{\mathrm{d}x}\vt{u}_{\undt{}} \right) \, \text{.}
   \label{app3:eq:v_s_int}
 \end{equation}
 
@@ -440,12 +435,12 @@ In the present work, we assume that -- from a frictional perspective -- two regi
 
 \paragraph{Adhesion Region}
 
-Each individual, material point, acting independently of others,  enters the contact patch through the leading edge in an undeformed state.  As a result of van der Waals molecular bonding and rubber indentation at the rubber/ground interface, the tip of the bristles sticks to the ground. However, due to the micro-sliding velocity $\vt{v}_s$ between the root of the bristles and the road, a tangential deflection $\vt{u}{\undt{}}$ starts to build up, along with tangential stress $\vt{q}{\undt{}}$. Initially null, this bristle deformation increases gradually along the contact length until it reaches the transition line $\xi_s(\bm{\xi},\vt{c})$. This transition line represents the contact length coordinate at which the local force exerted by the bristle deformation in adhesion equals the maximum possible static friction force.
+Each material point, acting independently of others, enters the contact patch through the leading edge in an undeformed state.  As a result of van der Waals molecular bonding and rubber indentation at the rubber/ground interface, the tip of the bristles sticks to the ground. However, due to the micro-sliding velocity $\vt{v}_s$ between the root of the bristles and the road, a tangential deflection $\vt{u}_{\undt{}}$ starts to build up, along with tangential stress $\vt{q}_{\undt{}}$. Initially null, this bristle deformation increases gradually along the contact length until it reaches the transition line $\xi_s(\bm{\xi},\vt{c})$. This transition line represents the contact length coordinate at which the local force exerted by the bristle deformation in adhesion equals the maximum possible static friction force.
 
 It is important to note that within the adhesion region, the tips of the bristles do not slide relative to the ground, resulting in a zero micro-sliding velocity. Consequently, the deformation of the bristles increases along the contact length direction with a spatial derivative equal to
 %
 \begin{equation}
-  \dfrac{\mathrm{d}}{\mathrm{d}x}\vt{u}{\undt{}} =
+  \dfrac{\mathrm{d}}{\mathrm{d}x}\vt{u}_{\undt{}} =
   \dfrac{\mathrm{d}}{\mathrm{d}x}
   \begin{bmatrix}
     u_x \\[0.2em]
@@ -473,10 +468,10 @@ We now introduce a new contact patch coordinate system (also depicted in \figure
   \end{bmatrix} \, \text{.}
 \end{equation*}
 %
-The variable $\xi$ represents the distance from the entrance to the longitudinal coordinate, measured longitudinally from the contact patch leading edge. From now on, we will use the superscript ``$\,\bm{\xi}\,$'' to denote variables described in reference system $\bm{\xi}$, \eg{}, $\vt{u}{\undt{}}(\bm{\xi},\vt{c})$. Substituting $\bm{\xi}$ in~\eqref{app3:eq:u_dx} we obtain
+The variable $\xi$ represents the distance from the entrance to the longitudinal coordinate, measured longitudinally from the contact patch leading edge. From now on, we will use the superscript ``$\,\bm{\xi}\,$'' to denote variables described in reference system $\bm{\xi}$, \eg{}, $\vt{u}_{\undt{}}(\bm{\xi},\vt{c})$. Substituting $\bm{\xi}$ in~\eqref{app3:eq:u_dx} we obtain
 %
 \begin{equation}
-  \dfrac{\mathrm{d}}{\mathrm{d}\xi}\vt{u}{\undt{}}^{\bm{\xi}} =
+  \dfrac{\mathrm{d}}{\mathrm{d}\xi}\vt{u}_{\undt{}}^{\bm{\xi}} =
   \dfrac{\mathrm{d}}{\mathrm{d}\xi}
   \begin{bmatrix}
     u_{x}^{\bm{\xi}} \\[0.2em]
@@ -485,23 +480,23 @@ The variable $\xi$ represents the distance from the entrance to the longitudinal
   \label{app3:eq:u_dxi}
 \end{equation}
 %
-The specific deformation $\vt{u}{\undt{}}^{\bm{\xi}}$ at a contact length coordinate $\xi$ and lateral coordinate $y$ is obtained from integrating~\eqref{app3:eq:u_dxi} over space, while imposing the boundary condition $\vt{u}{\undt{}}(\undx{} = [0,y,0]^\top,\vt{c}) = 0$, namely
+The specific deformation $\vt{u}_{\undt{}}^{\bm{\xi}}$ at a contact length coordinate $\xi$ and lateral coordinate $y$ is obtained from integrating~\eqref{app3:eq:u_dxi} over space, while imposing the boundary condition $\vt{u}_{\undt{}}(\undx{} = [0,y,0]^\top,\vt{c}) = 0$, namely
 %
 \begin{equation}
-  \vt{u}{\undt{}}^{\bm{\xi}} = \int_0^\xi \dfrac{\mathrm{d}}{\mathrm{d}\zeta}\vt{u}{\undt{}}(\zeta,\vt{c}) \,\mathrm{d}\zeta.
+  \vt{u}_{\undt{}}^{\bm{\xi}} = \int_0^\xi \dfrac{\mathrm{d}}{\mathrm{d}\zeta}\vt{u}_{\undt{}}(\zeta,\vt{c}) \,\mathrm{d}\zeta.
   \label{app3:eq:u_xi}
 \end{equation}
 %
 The infinitesimal adherence force at a specific contact length coordinate $\xi$ is determined by the product between~\eqref{app3:eq:u_xi} and the tread tangential stiffness matrix $\pt{k}$
 %
 \begin{equation*}
-  \vt{q}{\undt{}}^{\bm{\xi}} = -\nu\pt{K}{\undt{}}\vt{u}{\undt{}}^{\bm{\xi}} \, \text{.}
+  \vt{q}_{\undt{}}^{\bm{\xi}} = -\nu\pt{K}_{\undt{}}\vt{u}_{\undt{}}^{\bm{\xi}} \, \text{.}
 \end{equation*}
 %
-Here, $\nu$ represents the tread pattern void ratio, and $\pt{K}{\undt{}}$ denotes the tangential stiffness matrix. This latter is typically expressed as
+Here, $\nu$ represents the tread pattern void ratio, and $\pt{K}_{\undt{}}$ denotes the tangential stiffness matrix. This latter is typically expressed as
 %
 \begin{equation*}
-  \pt{K}{\undt{}} =
+  \pt{K}_{\undt{}} =
   \begin{bmatrix}
     k_{xx} & k_{yx} \\[0.2em]
     k_{yx} & k_{yy}
@@ -511,14 +506,14 @@ Here, $\nu$ represents the tread pattern void ratio, and $\pt{K}{\undt{}}$ denot
 where $k_{xy} \approx k_{yx} \ll k_{xx} \approx k_{yy}$, as proofed by \citet{okonieski2003simpified}. The total bristles force induced by the deformation in adherence is obtained by integrating the following over the entire adhesion region \adh{}
 %
 \begin{equation}
-  \vt{F}_a(\vt{c},t) = \int_{\adh} \vt{q}{\undt{}}^{\bm{\xi}} \mathrm{d}\bm{\xi} \, \text{.}
+  \vt{F}_a(\vt{c},t) = \int_{\adh} \vt{q}_{\undt{}}^{\bm{\xi}} \mathrm{d}\bm{\xi} \, \text{.}
   \label{app3:eq:F_a}
 \end{equation}
 
 In the original brush model presented in~\cite{pacejka2012tire}, the self-aligning moment is attributed solely to the asymmetrical distribution of lateral shear stress along the contact length. However, in this study, we will also consider that the difference in longitudinal force on each side of the contact patch contributes to the generation of the self-aligning moment. Thereby, the adhesive self-aligning moment is defined as the cross-product between forces induced by deformation and the position vector (the sum of bristle position and carcass baseline position vectors), which reads
 %
 \begin{equation}
-  \vt{M}_{a}(\vt{c},t) = \int_{\adh} \vt{q}{\undt{}}^{\bm{\xi}} \times \left(\sett{L}^{\bm{\xi}} + \bm{\xi}\right) \mathrm{d}\bm{\xi} \, \text{.}
+  \vt{M}_{a}(\vt{c},t) = \int_{\adh} \vt{q}_{\undt{}}^{\bm{\xi}} \times \left(\sett{L}^{\bm{\xi}} + \bm{\xi}\right) \mathrm{d}\bm{\xi} \, \text{.}
   \label{app3:eq:M_a}
 \end{equation}
 
@@ -537,14 +532,14 @@ When the local force induced by bristle deformation in adhesion is greater than 
 The total bristles force induced by the deformation in sliding is determined by integrating the following expression over the entire sliding region \sli{}
 %
 \begin{equation}
-  \vt{F}_s(\vt{c},t) = \int_{\sli} \mu_d^{\bm{\xi}}\,q_z^{\bm{\xi}}\,\vt{d}{\undt{}}^{\bm{\xi}} \, \mathrm{d}\bm{\xi} \, \text{.}
+  \vt{F}_s(\vt{c},t) = \int_{\sli} \mu_d^{\bm{\xi}}\,q_z^{\bm{\xi}}\,\vt{d}_{\undt{}}^{\bm{\xi}} \, \mathrm{d}\bm{\xi} \, \text{.}
   \label{app3:eq:F_s}
 \end{equation}
 %
 Similar to the adhesive scenario, the self-aligning moment is defined as the cross-product between the local force induced by the sliding and the position vector
 %
 \begin{equation}
-  \vt{M}_s(\vt{c},t) = \int_{\sli} \mu_d^{\bm{\xi}}\,q_z^{\bm{\xi}}\,\vt{d}{\undt{}}^{\bm{\xi}} \times \left(\sett{L}^{\bm{\xi}} + \bm{\xi}\right) \mathrm{d}\bm{\xi} \, \text{.}
+  \vt{M}_s(\vt{c},t) = \int_{\sli} \mu_d^{\bm{\xi}}\,q_z^{\bm{\xi}}\,\vt{d}_{\undt{}}^{\bm{\xi}} \times \left(\sett{L}^{\bm{\xi}} + \bm{\xi}\right) \mathrm{d}\bm{\xi} \, \text{.}
   \label{app3:eq:M_s}
 \end{equation}
 
@@ -633,21 +628,32 @@ The bottom part of Table~\ref{app3:tab:timing} presents the performance of the B
   \emph{Symbols legend}: \mini{} minimum number of evaluations/iterations, \maxi{} maximum number of evaluations/iterations, \meai{} average evaluations/iterations, \vari{} evaluations/iterations variance.
   }
   \label{app3:tab:timing}
-  \small
-  \input{./appendices/appendix_3_table_experiments.tex}
+  {\small\input{./appendices/appendix_3_table_experiments.tex}}
 \end{table}
 
 \subsection{Validation of the Tire Model}
 
-To demonstrate the effectiveness of the proposed fitting procedure, we validate the proposed tire model under pure slip conditions by comparing its predictions with those of a \MagicFormulae{}~5.2~\cite{pacejka2012tire} on the fitting of experimental data for a \Hoosier{} 18x6-10 LCO tire. As previously mentioned in the introduction, the dataset is obtained from the Calspan \ac{TIRF} for the \ac{FSAE} \ac{TTC} testing program~\cite{kasprzak2006formula}. In Figure~\ref{app3:fig:fsae_pure}, we compare the fitting of the longitudinal and lateral forces and aligning moment for the \Hoosier{} tire at several discrete values of vertical load with zero camber angle. The results indicate that the proposed model provides data fitting comparable to the \MagicFormulae{}~5.2 for the lateral force, while a higher \ac{RMS} error is observed for the longitudinal force and aligning moment. Given the limited number of parameters and the simplicity of the proposed model, these results are considered satisfactory.
+To demonstrate the effectiveness of the proposed fitting procedure, we validate the proposed tire model under pure slip conditions by comparing its predictions with those of a \MagicFormulae{}~5.2~\cite{pacejka2012tire} on the fitting of experimental data for a \Hoosier{} 18x6-10 LCO tire. As previously mentioned in the introduction, the dataset is obtained from the Calspan \ac{TIRF} for the \ac{FSAE} \ac{TTC} testing program~\cite{kasprzak2006formula}. In Figures~\ref{app3:fig:fsae_pure_Fx}, \ref{app3:fig:fsae_pure_Fy} and \ref{app3:fig:fsae_pure_Mz}, we compare the fitting of the longitudinal and lateral forces and aligning moment for the \Hoosier{} tire at several discrete values of vertical load with zero camber angle. The results indicate that the proposed model provides data fitting comparable to the \MagicFormulae{}~5.2 for the lateral force, while a higher \ac{RMS} error is observed for the longitudinal force and aligning moment. Given the limited number of parameters and the simplicity of the proposed model, these results are considered satisfactory.
 
 \begin{figure}[htb]
   \centering
   \small{\includetikz{figures/appendix_3/Fx_fsae.tex}}
+  \caption{Comparison between the \MagicFormulae{} and the proposed model regarding the fitting of longitudinal force experimental data for a \Hoosier{} 18x6-10 LCO tire. Experiments are performed under pure longitudinal slips at several discrete values of vertical load with zero camber angle. The dataset is provided by the Calspan \ac{TIRF} for the \ac{FSAE} \ac{TTC} testing program~\cite{kasprzak2006formula}. \emph{Lines and marks legend}: \textbullet~experimental data, \textbf{---}~proposed model, and \textbf{--~--}~\MagicFormulae{}~5.2. \emph{Colors legend}: \textcolor{mycolor1}{$\blacksquare$}~$F_z = \SI{222}{\newton}$, \textcolor{mycolor2}{$\blacksquare$}~$F_z = \SI{444}{\newton}$, \textcolor{mycolor3}{$\blacksquare$}~$F_z = \SI{667}{\newton}$, \textcolor{mycolor4}{$\blacksquare$}~$F_z = \SI{890}{\newton}$, and \textcolor{mycolor5}{$\blacksquare$}~$F_z = \SI{1120}{\newton}$.}
+  \label{app3:fig:fsae_pure_Fx}
+\end{figure}
+
+\begin{figure}[htb]
+  \centering
   \small{\includetikz{figures/appendix_3/Fy_fsae.tex}}
+  \caption{Comparison between the \MagicFormulae{} and the proposed model regarding the fitting of lateral force experimental data for a \Hoosier{} 18x6-10 LCO tire. Experiments are performed under pure lateral slips at several discrete values of vertical load with zero camber angle. The dataset is provided by the Calspan \ac{TIRF} for the \ac{FSAE} \ac{TTC} testing program~\cite{kasprzak2006formula}. \emph{Lines and marks legend}: \textbullet~experimental data, \textbf{---}~proposed model, and \textbf{--~--}~\MagicFormulae{}~5.2. \emph{Colors legend}: \textcolor{mycolor1}{$\blacksquare$}~$F_z = \SI{222}{\newton}$, \textcolor{mycolor2}{$\blacksquare$}~$F_z = \SI{444}{\newton}$, \textcolor{mycolor3}{$\blacksquare$}~$F_z = \SI{667}{\newton}$, \textcolor{mycolor4}{$\blacksquare$}~$F_z = \SI{890}{\newton}$, and \textcolor{mycolor5}{$\blacksquare$}~$F_z = \SI{1120}{\newton}$.}
+  \label{app3:fig:fsae_pure_Fy}
+\end{figure}
+
+\begin{figure}[htb]
+  \centering
   \small{\includetikz{figures/appendix_3/Mz_fsae.tex}}
-  \caption{Comparison between the \MagicFormulae{} and the proposed model regarding the fitting of experimental data for a \Hoosier{} 18x6-10 LCO tire. Experiments are performed under pure longitudinal and lateral slips at several discrete values of vertical load with zero camber angle. The dataset is provided by the Calspan \ac{TIRF} for the \ac{FSAE} \ac{TTC} testing program~\cite{kasprzak2006formula}. \emph{Lines and marks legend}: \textbullet~experimental data, \textbf{---}~proposed model, and \textbf{--~--}~\MagicFormulae{}~5.2. \emph{Colors legend}: \textcolor{mycolor1}{$\blacksquare$}~$F_z = \SI{222}{\newton}$, \textcolor{mycolor2}{$\blacksquare$}~$F_z = \SI{444}{\newton}$, \textcolor{mycolor3}{$\blacksquare$}~$F_z = \SI{667}{\newton}$, \textcolor{mycolor4}{$\blacksquare$}~$F_z = \SI{890}{\newton}$, and \textcolor{mycolor5}{$\blacksquare$}~$F_z = \SI{1120}{\newton}$.}
-  \label{app3:fig:fsae_pure}
+  \caption{Comparison between the \MagicFormulae{} and the proposed model regarding the fitting of self-aligning moment experimental data for a \Hoosier{} 18x6-10 LCO tire. Experiments are performed under pure lateral slips at several discrete values of vertical load with zero camber angle. The dataset is provided by the Calspan \ac{TIRF} for the \ac{FSAE} \ac{TTC} testing program~\cite{kasprzak2006formula}. \emph{Lines and marks legend}: \textbullet~experimental data, \textbf{---}~proposed model, and \textbf{--~--}~\MagicFormulae{}~5.2. \emph{Colors legend}: \textcolor{mycolor1}{$\blacksquare$}~$F_z = \SI{222}{\newton}$, \textcolor{mycolor2}{$\blacksquare$}~$F_z = \SI{444}{\newton}$, \textcolor{mycolor3}{$\blacksquare$}~$F_z = \SI{667}{\newton}$, \textcolor{mycolor4}{$\blacksquare$}~$F_z = \SI{890}{\newton}$, and \textcolor{mycolor5}{$\blacksquare$}~$F_z = \SI{1120}{\newton}$.}
+  \label{app3:fig:fsae_pure_Mz}
 \end{figure}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %

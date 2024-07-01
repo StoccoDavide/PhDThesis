@@ -64,7 +64,7 @@
     \put(0.85604082,0.31106895){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\et{e}_y$\\\end{tabular}}}}%
     \put(0.67871309,0.49572882){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\et{e}_z$\\\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{tire_zoom.pdf}}%
-    \put(0.12502819,0.86223684){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Shape\\function\\$R(y)$\end{tabular}}}}%
+    \put(0.14152819,0.85523684){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}Shape\\function\\$R(y)$\end{tabular}}}}%
     \put(0.78067263,0.68873663){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\Rib{} objects\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=5]{tire_zoom.pdf}}%
   \end{picture}%

@@ -2,8 +2,8 @@
 
 \begin{axis}[%
   major grid style={line width=.2pt, draw=gray!60},
-  width=6cm,
-  height=4.5cm,
+  width=7.0cm,
+  height=5.0cm,
   at={(0.896in,0.642in)},
   scale only axis,
   point meta min=3942.0,
@@ -11,11 +11,11 @@
   colormap name=PuOr-4,
   colorbar horizontal,
   colorbar style={
-    at={(-0.1,1.15)}, anchor=north west, height=0.25cm, width=2.5in,
+    at={(0.0,1.15)}, anchor=north west, height=0.25cm, %width=2.5in,
     xtick scale label code/.code={},
     xtick={3900.0, 3950, 4000, 4050, 4100, 4150, 4200},
     xticklabels={$3.9$, $3.95$, $4$, $4.05$, $4.1$, $4.15$, $4.2$},
-    title={$F_a$~(\USI{\kilo\newton})}, title style={yshift=-0.2cm},
+    title={$F_a$~(\USI{\kilo\newton})}, title style={yshift=-2.0mm, font=\bfseries},
     ylabel style={at={(0.8,1.01)}, anchor=south}
   },
   xmin=-0.05,
