@@ -1,6 +1,6 @@
-\setlength\tabcolsep{0.15em}
+{\setlength\tabcolsep{0.1em}
 \setlength{\LTcapwidth}{\textwidth}
-{\footnotesize\centering\begin{longtable}{lccl}
+\footnotesize\centering\begin{longtable}{lccl}
   \caption{Numerical integration results of the reduced-index \ac{DAE} systems. The table reports the name and reference of the \ac{DAE} system, the index of the system, the integration interval $t \in [t_{\text{ini}}, \, t_{\text{end}}]$, and the outcomes of the whole code generation and integration process for both \Maple{} and \Indigo{}. If not otherwise specified, the tests are integrated using an embedded \ac{RKF} 4(5) method with a relative tolerance of $10^{-6}$ and an absolute tolerance of $10^{-7}$. The computation time limit is \SI{1000}{\second}, to both generate the necessary code and perform numerical computations. \emph{Legend:} \mycheckmark{} successful code generation and numerical integration, \mycrossmark{} errors in the code generation, numerical integration or time expired, and \mywarnmark{} warnings encountered or non-default settings used in the code generation or numerical integration.}
   \label{chap5:tab:numerical_integration}
   \endfirsthead
@@ -10,61 +10,60 @@
   \textbf{Integrated \ac{DAE} system} &
   \multicolumn{3}{l}{\textbf{Integration outcomes and errors}} \\
   \midrule
-  \multirow{1}{*}{\textbf{1.~~Particle Motion~\cite{campbell1995constraint}}}
+  \multirow{1}{*}{\textbf{1.~Particle Motion}} %~\cite{campbell1995constraint}}}
     & \Maple{}       & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \cmidrule{2-4}
-    \multirow{4}{*}{Index-3 \quad $t \in [0, 400\pi]$ seconds} & \Mathematica{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \cmidrule{2-4}
+    \multirow{4}{*}{Index-3 \quad $t \in [0, 400\pi]\,\USI{\second}$} & \Mathematica{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \cmidrule{2-4}
     & \multirow{2}{*}{\Matlab{}} & \mycheckmark{}\phantom{\mywarnmark{}} & \texttt{reduceDAEIndex} -- Success \\ \cmidrule{3-4}
     &                            & \mycheckmark{}\phantom{\mywarnmark{}} & \texttt{reduceDAEToODE} -- Success \\ \cmidrule{2-4}\cmidrule{2-4}
     & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \midrule
-  \multirow{1}{*}{\textbf{2.~~Car-Axis~\cite{lioen1998test, mazzia2008test}}}
+  \multirow{1}{*}{\textbf{2.~Car-Axis}} %~\cite{lioen1998test, mazzia2008test}}}
     & \Maple{}       & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \cmidrule{2-4}
-    \multirow{4}{*}{Index-3 \quad $t \in [0, 3]$ seconds} & \Mathematica{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \cmidrule{2-4}
+    \multirow{4}{*}{Index-3 \quad $t \in \RSI{0}{3}{\second}$} & \Mathematica{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \cmidrule{2-4}
     & \multirow{2}{*}{\Matlab{}} & \mycheckmark{}\phantom{\mywarnmark{}} & \texttt{reduceDAEIndex} -- Success \\ \cmidrule{3-4}
     &                            & \mycheckmark{}\phantom{\mywarnmark{}} & \texttt{reduceDAEToODE} -- Success \\ \cmidrule{2-4}\cmidrule{2-4}
     & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \midrule
-  \multirow{1}{*}{\textbf{3.~~Flexible Slider-Crank~\cite{lioen1998test, mazzia2008test}}}
+  \multirow{1}{*}{\textbf{3.~Flexible Slider-Crank}} %~\cite{lioen1998test, mazzia2008test}}}
     & \Maple{}  & \mycrossmark{}\phantom{\mywarnmark{}} & Error, time expired in \texttt{dsolve} \\ \cmidrule{2-4}
-    Index-3 \quad $t \in [0, 0.1]$ seconds & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \midrule
-  \multirow{1}{*}{\textbf{4.~~2-Pendula~\cite{pryce1998solving}}}
+    Index-3 \quad $t \in \RSI{0}{0.1}{\second}$ & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \midrule
+  \multirow{1}{*}{\textbf{4.~2-Pendula}} %~\cite{pryce1998solving}}}
     & \Maple{}  & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \cmidrule{2-4}
-    Index-5 \quad $t \in [0, 60]$ seconds & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \midrule
-  \multirow{1}{*}{\textbf{5.~~3-Pendula~\cite{nedialkov2008solvingIII}}}
+    Index-5 \quad $t \in \RSI{0}{60}{\second}$ & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \midrule
+  \multirow{1}{*}{\textbf{5.~3-Pendula}} %~\cite{nedialkov2008solvingIII}}}
     & \Maple{}  & \mycrossmark{}\phantom{\mywarnmark{}} & Error, time expired in \texttt{dsolve} \\ \cmidrule{2-4}
-    Index-7 \quad $t \in [0, 60]$ seconds & \Indigo{} & \mycheckmark{}\mywarnmark{} & Success with RadauIIA5 method \\ \midrule
-  \multirow{1}{*}{\textbf{6.~~4-Pendula~\cite{nedialkov2008solvingIII}}}
+    Index-7 \quad $t \in \RSI{0}{60}{\second}$ & \Indigo{} & \mycheckmark{}\mywarnmark{} & Success with RadauIIA5 method \\ \midrule
+  \multirow{1}{*}{\textbf{6.~4-Pendula}} %~\cite{nedialkov2008solvingIII}}}
     & \Maple{}  & \mycrossmark{}\phantom{\mywarnmark{}} & Error, time expired in \texttt{dsolve} \\ \cmidrule{2-4}
-    Index-9 \quad $t \in [0, 60]$ seconds & \Indigo{} & \mycheckmark{}\mywarnmark{} & Success with RadauIIA5 method \\ \midrule
-  \multirow{1}{*}{\textbf{7.~~5-Pendula~\cite{nedialkov2008solvingIII}}}
+    Index-9 \quad $t \in \RSI{0}{60}{\second}$ & \Indigo{} & \mycheckmark{}\mywarnmark{} & Success with RadauIIA5 method \\ \midrule
+  \multirow{1}{*}{\textbf{7.~5-Pendula}} %~\cite{nedialkov2008solvingIII}}}
     & \Maple{}  & \mycrossmark{}\phantom{\mywarnmark{}} & Error, time expired in \texttt{dsolve} \\ \cmidrule{2-4}
-    Index-11 \quad $t \in [0, 60]$ seconds & \Indigo{} & \mycheckmark{}\mywarnmark{} & Success with RadauIIA5 method \\ \midrule
-  \multirow{1}{*}{\textbf{8.~~Double-Wishbone Suspension~\cite{larcher2024imece_symbolic, stocco2024trussme}}}
+    Index-11 \quad $t \in \RSI{0}{60}{\second}$ & \Indigo{} & \mycheckmark{}\mywarnmark{} & Success with RadauIIA5 method \\ \midrule
+  \multirow{1}{*}{\textbf{8.~Double-Wishbone Suspension}} %~\cite{larcher2024imece_symbolic, stocco2024trussme}}}
     & \Maple{}  & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \cmidrule{2-4}
-    Index-3 \quad $t \in [0, 60]$ seconds & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \midrule
-  \multirow{1}{*}{\textbf{9.~~Initial Stage Space Shuttle Reentry~\cite{brenan1995numerical}}}
+    Index-3 \quad $t \in \RSI{0}{60}{\second}$ & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \midrule
+  \multirow{1}{*}{\textbf{9.~Initial St. Space Shuttle Reentry}} %~\cite{brenan1995numerical}}}
     & \Maple{}  & \mycrossmark{}\phantom{\mywarnmark{}} & Error, time expired in \texttt{dsolve} \\ \cmidrule{2-4}
-    Index-3 \quad $t \in [332.8, 419.8]$ seconds & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \midrule
-  \multirow{1}{*}{\textbf{10.~~Final Stage Space Shuttle Reentry~\cite{brenan1995numerical}}}
-    & \Maple{}  & \mycrossmark{}\phantom{\mywarnmark{}} & Error, in \texttt{dsolve/numeric/DAE/checkconstraints} \\ \cmidrule{2-4}
-    Index-2 \quad $t \in [0, 300]$ seconds & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \midrule
-  \multirow{1}{*}{\textbf{11.~~Robotic Arm~\cite{pryce1998solving}}}
+    Index-3 \quad $t \in \RSI{332.8}{419.8}{\second}$ & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \midrule
+  \multirow{1}{*}{\textbf{10.~Final St. Space Shuttle Reentry}} %~\cite{brenan1995numerical}}}
+    & \Maple{}  & \mycrossmark{}\phantom{\mywarnmark{}} & Error, in \texttt{dsolve/.../checkconstraints} \\ \cmidrule{2-4}
+    Index-2 \quad $t \in \RSI{0}{300}{\second}$ & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \midrule
+  \multirow{1}{*}{\textbf{11.~Robotic Arm}} %~\cite{pryce1998solving}}}
     & \Maple{}       & \mycrossmark{}\phantom{\mywarnmark{}} & Error, time expired in \texttt{dsolve} \\ \cmidrule{2-4}
-    \multirow{4}{*}{Index-5 \quad $t \in [0, 2]$ seconds}
+    \multirow{4}{*}{Index-5 \quad $t \in \RSI{0}{2}{\second}$}
     & \Mathematica{} & \mycrossmark{}\phantom{\mywarnmark{}} & Error, time expired in \texttt{NDSolve} \\ \cmidrule{2-4}
-    & \multirow{2}{*}{\Matlab{}} & \mycrossmark{}\phantom{\mywarnmark{}} & \texttt{reduceDAEIndex} -- Error, index reduction not completed \\ \cmidrule{3-4}
+    & \multirow{2}{*}{\Matlab{}} & \mycrossmark{}\phantom{\mywarnmark{}} & \texttt{reduceDAEIndex} -- Error, reduction not complete \\ \cmidrule{3-4}
     &                            & \mycrossmark{}\phantom{\mywarnmark{}} & \texttt{reduceDAEToODE} -- Error, in \texttt{sym/decic} \\ \cmidrule{2-4}
     & \Indigo{} & \mycrossmark{}\phantom{\mywarnmark{}} & Error, time expired in \texttt{CodeGeneration} \\ \midrule
-  \multirow{1}{*}{\textbf{12.~~8-Nodes Transistor-Amplifier~\cite{lioen1998test, mazzia2008test}}}
+  \multirow{1}{*}{\textbf{12.~8-Nodes Transistor-Amplifier}} %~\cite{lioen1998test, mazzia2008test}}}
     & \Maple{}       & \mycheckmark{}\mywarnmark{} & Warning, function evaluations limit exceeded \\ \cmidrule{2-4}
-    \multirow{4}{*}{Index-1 \quad $t \in [0, 0.2]$ seconds} & \Mathematica{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \cmidrule{2-4}
+    \multirow{4}{*}{Index-1 \quad $t \in \RSI{0}{0.2}{\second}$} & \Mathematica{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \cmidrule{2-4}
     & \multirow{2}{*}{\Matlab{}} & \mycheckmark{}\phantom{\mywarnmark{}} & \texttt{reduceDAEIndex} -- Success \\ \cmidrule{3-4}
     &                            & \mycheckmark{}\phantom{\mywarnmark{}} & \texttt{reduceDAEToODE} -- Success \\ \cmidrule{2-4}\cmidrule{2-4}
     & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \midrule
-  \multirow{1}{*}{\textbf{13.~~Electric Ring Modulator~\cite{lioen1998test, mazzia2008test}}}
+  \multirow{1}{*}{\textbf{13.~Electric Ring Modulator}} %~\cite{lioen1998test, mazzia2008test}}}
     & \Maple{}  & \mycrossmark{}\phantom{\mywarnmark{}} & Error, time expired in \texttt{dsolve} \\ \cmidrule{2-4}
-    Index-2 \quad $t \in [0, 1]$ milliseconds & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \midrule
-  \multirow{1}{*}{\textbf{14.~~Cascaded Differential Amplifiers~\cite{brenan1995numerical}}}
-    & \Maple{}  & \mycrossmark{}\phantom{\mywarnmark{}} & Error, in \texttt{dsolve/numeric/DAE/checkconstraints} \\ \cmidrule{2-4}
-    Arbitrary high index \quad $t \in [0, 10]$ seconds & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\
+    Index-2 \quad $t \in \RSI{0}{1}{\milli\second}$ & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\ \midrule
+  \multirow{1}{*}{\textbf{14.~Cascaded Diff. Amplifiers}} %~\cite{brenan1995numerical}}}
+    & \Maple{}  & \mycrossmark{}\phantom{\mywarnmark{}} & Error, in \texttt{dsolve/.../checkconstraints} \\ \cmidrule{2-4}
+    Arbitrary index \quad $t \in \RSI{0}{10}{\second}$ & \Indigo{} & \mycheckmark{}\phantom{\mywarnmark{}} & Success \\
   \bottomrule
-  %
 \end{longtable}}

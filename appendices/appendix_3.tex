@@ -622,15 +622,6 @@ As depicted in Table~\ref{app3:tab:timing}, both the PIM and D-PIM fail to conve
 
 The bottom part of Table~\ref{app3:tab:timing} presents the performance of the BCM in relation to the number of ribs. Notably, the number of ribs does not impact the efficacy of the iterative method but merely affects the computational time. This arises from the fact that a change in the number of ribs does not alter the number of unknowns in~\eqref{app3:eq:nls}. Consequently, the computational time scales linearly with the number of ribs. However, it is worth noting that the variance of the computational time increases more than linearly due to small yet significant variations in the performance of Algorithm 748.
 
-\begin{table}[htb]
-  \centering
-  \caption{Comparison between quasi-Newton methods' performance based on a dataset comprising $10^5$ tests. The inputs are evenly distributed within the ranges $\sigma_x \in [-1, 1]$, $\sigma_y \in [-1, 1]$, $\varphi \in [-0.1, 0.1]$, $F_z \in [0, 5\cdot10^5]$, and $\gamma \in [-\pi/10, \pi/10]$, using a 325/660R13 race car tire discretized with $5$ ribs. Convergence is considered achieved when $\|\pt{G}(\vt{c})\|_2 \le 10^{-8}$ and $\|\vt{c}_{k+1} - \vt{c}_{k}\|_2 \le 10^{-16}$. Maximum algorithm iteration and relaxation steps are set to 100 and 10, respectively. The bottom part of the table demonstrates the impact of changing the number of ribs on the BCM method's performance. \\
-  \emph{Symbols legend}: \mini{} minimum number of evaluations/iterations, \maxi{} maximum number of evaluations/iterations, \meai{} average evaluations/iterations, \vari{} evaluations/iterations variance.
-  }
-  \label{app3:tab:timing}
-  {\small\input{./appendices/appendix_3_table_experiments.tex}}
-\end{table}
-
 \subsection{Validation of the Tire Model}
 
 To demonstrate the effectiveness of the proposed fitting procedure, we validate the proposed tire model under pure slip conditions by comparing its predictions with those of a \MagicFormulae{}~5.2~\cite{pacejka2012tire} on the fitting of experimental data for a \Hoosier{} 18x6-10 LCO tire. As previously mentioned in the introduction, the dataset is obtained from the Calspan \ac{TIRF} for the \ac{FSAE} \ac{TTC} testing program~\cite{kasprzak2006formula}. In Figures~\ref{app3:fig:fsae_pure_Fx}, \ref{app3:fig:fsae_pure_Fy} and \ref{app3:fig:fsae_pure_Mz}, we compare the fitting of the longitudinal and lateral forces and aligning moment for the \Hoosier{} tire at several discrete values of vertical load with zero camber angle. The results indicate that the proposed model provides data fitting comparable to the \MagicFormulae{}~5.2 for the lateral force, while a higher \ac{RMS} error is observed for the longitudinal force and aligning moment. Given the limited number of parameters and the simplicity of the proposed model, these results are considered satisfactory.
@@ -655,5 +646,14 @@ To demonstrate the effectiveness of the proposed fitting procedure, we validate 
   \caption{Comparison between the \MagicFormulae{} and the proposed model regarding the fitting of self-aligning moment experimental data for a \Hoosier{} 18x6-10 LCO tire. Experiments are performed under pure lateral slips at several discrete values of vertical load with zero camber angle. The dataset is provided by the Calspan \ac{TIRF} for the \ac{FSAE} \ac{TTC} testing program~\cite{kasprzak2006formula}. \emph{Lines and marks legend}: \textbullet~experimental data, \textbf{---}~proposed model, and \textbf{--~--}~\MagicFormulae{}~5.2. \emph{Colors legend}: \textcolor{mycolor1}{$\blacksquare$}~$F_z = \SI{222}{\newton}$, \textcolor{mycolor2}{$\blacksquare$}~$F_z = \SI{444}{\newton}$, \textcolor{mycolor3}{$\blacksquare$}~$F_z = \SI{667}{\newton}$, \textcolor{mycolor4}{$\blacksquare$}~$F_z = \SI{890}{\newton}$, and \textcolor{mycolor5}{$\blacksquare$}~$F_z = \SI{1120}{\newton}$.}
   \label{app3:fig:fsae_pure_Mz}
 \end{figure}
+
+\begin{table}[htbp] % MOVED FOR BETTER PLACEMENT
+  \centering
+  \caption{Comparison between quasi-Newton methods' performance based on a dataset comprising $10^5$ tests. The inputs are evenly distributed within the ranges $\sigma_x \in [-1, 1]$, $\sigma_y \in [-1, 1]$, $\varphi \in [-0.1, 0.1]$, $F_z \in [0, 5\cdot10^5]$, and $\gamma \in [-\pi/10, \pi/10]$, using a 325/660R13 race car tire discretized with $5$ ribs. Convergence is considered achieved when $\|\pt{G}(\vt{c})\|_2 \le 10^{-8}$ and $\|\vt{c}_{k+1} - \vt{c}_{k}\|_2 \le 10^{-16}$. Maximum algorithm iteration and relaxation steps are set to 100 and 10, respectively. The bottom part of the table demonstrates the impact of changing the number of ribs on the BCM method's performance. \\
+  \emph{Symbols legend}: \mini{} minimum number of evaluations/iterations, \maxi{} maximum number of evaluations/iterations, \meai{} average evaluations/iterations, \vari{} evaluations/iterations variance.
+  }
+  \label{app3:tab:timing}
+  {\small\input{./appendices/appendix_3_table_experiments.tex}}
+\end{table}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %

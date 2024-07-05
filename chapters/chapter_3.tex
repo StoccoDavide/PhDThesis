@@ -258,10 +258,10 @@ Let us consider a more complex example involving a multivariable function. We mi
 
 \begin{mapleinline}
 # Define the Rosenbrock function
-> rosenbrock := (x, y) -> (1 - x)^2 + 100 * (y - x^2)^2;
+> rosenbrock := (x,y) -> (1-x)^2+100*(y-x^2)^2;
 
 # Use optimization package to minimize the Rosenbrock function
-> sol := Optimization:-Minimize(rosenbrock(x, y), {x = -2 .. 2, y = -1 .. 3});
+> sol := Optimization:-Minimize(rosenbrock(x,y), {x=-2..2, y=-1..3});
 \end{mapleinline}
 
 In this example, we define the Rosenbrock function $f\,(x,y) = (1-x)^2 + 100(y-x^2)^2$, and then use \Maple{}'s optimization function \code{Optimization:-Minimize} to find the minimum value and the corresponding point of $(x,y)$. The result, stored in the variable \texttt{sol}, gives us the minimum value of the function and its corresponding point at which it occurs (the minimum point is $f\,(x, y) = 0$ at $(x,y) = (1,1)$).
@@ -281,26 +281,26 @@ In this example, we define the Rosenbrock function $f\,(x,y) = (1-x)^2 + 100(y-x
 %
 We can use \Mathematica{} to solve this \ac{ODE} symbolically and obtain the closed-form solution for $y(t)$
 %
-\begin{small}
+\begin{footnotesize}
   \begin{equation*}
     y(t) = \begin{cases}
       5-\dfrac{981}{200}t^2 &
-        0\leq t\leq \dfrac{10 \sqrt{\dfrac{10}{109}}}{3} \\[0.1em]
+        0\leq t\leq \dfrac{10 \sqrt{\dfrac{10}{109}}}{3} \\[0.2em]
       \dfrac{3}{200} \left(-327 t^2+34 \sqrt{1090} t-800\right) &
-        \dfrac{10\sqrt{\dfrac{10}{109}}}{3}<t\leq 8 \sqrt{\dfrac{10}{109}} \\[0.1em]
+        \dfrac{10\sqrt{\dfrac{10}{109}}}{3}<t\leq 8 \sqrt{\dfrac{10}{109}} \\[0.2em]
       \dfrac{3 \left(-1635 t^2+289 \sqrt{1090} t-13520\right)}{1000} &
-        8\sqrt{\dfrac{10}{109}}<t\leq \dfrac{169 \sqrt{\dfrac{2}{545}}}{3} \\[0.1em]
+        8\sqrt{\dfrac{10}{109}}<t\leq \dfrac{169 \sqrt{\dfrac{2}{545}}}{3} \\[0.2em]
       \dfrac{-49050 t^2+11169 \sqrt{1090} t-687154}{10000} &
-        \dfrac{169\sqrt{\dfrac{2}{545}}}{3}<t\leq \dfrac{2033}{15 \sqrt{1090}} \\[0.1em]
+        \dfrac{169\sqrt{\dfrac{2}{545}}}{3}<t\leq \dfrac{2033}{15 \sqrt{1090}} \\[0.2em]
       \dfrac{3 \left(-817500 t^2+215305 \sqrt{1090} t-15404041\right)}{500000} &
-        \dfrac{2033}{15\sqrt{1090}}<t\leq \dfrac{7577}{50 \sqrt{1090}} \\[0.1em]
+        \dfrac{2033}{15\sqrt{1090}}<t\leq \dfrac{7577}{50 \sqrt{1090}} \\[0.2em]
       \dfrac{3 \left(-81750000 t^2+23571350 \sqrt{1090} t-1849674509\right)}{50000000} &
-        \dfrac{7577}{50 \sqrt{1090}}<t\leq \dfrac{244117}{1500 \sqrt{1090}} \\[0.1em]
+        \dfrac{7577}{50 \sqrt{1090}}<t\leq \dfrac{244117}{1500 \sqrt{1090}} \\[0.2em]
       \dfrac{-24525000000 t^2+7499983500 \sqrt{1090} t-624651217823}{5000000000} &
         \dfrac{244117}{1500 \sqrt{1090}}<t\leq 5
       \end{cases} \, \text{.}
   \end{equation*}
-\end{small}
+\end{footnotesize}
 
 Even more complex \acp{ODE} can be solved using \acp{CAS} for design optimization, control systems, and other engineering applications. For example, \Mathematica{} can find the symbolic solution for a proportional-derivative controller keeping the position of a moving mass $x(t)$ constant through the control input $u(t)$, given by
 %
@@ -316,44 +316,44 @@ Even more complex \acp{ODE} can be solved using \acp{CAS} for design optimizatio
 %
 The solution for $x(t)$ and $u(t)$ is respectively given by
 %
-\begin{small}
+\begin{footnotesize}
   \begin{equation*}
     x(t) = \begin{cases}
-      \dfrac{t^2}{2} & 0\leq t\leq 1 \\[0.1em]
-      \dfrac{1}{4} \left(-t^2+6 t-3\right) & 1<t\leq 2 \\[0.1em]
-      -\dfrac{3 t^2}{8}+2 t-\dfrac{5}{4} & 2<t\leq 3 \\[0.1em]
-      \dfrac{1}{16} \left(-t^2+2 t+25\right) & 3<t\leq 4 \\[0.1em]
-      \dfrac{1}{32} \left(5 t^2-52 t+162\right) & 4<t\leq 5 \\[0.1em]
-      \dfrac{1}{64} \left(7 t^2-74 t+249\right) & 5<t\leq 6 \\[0.1em]
-      \dfrac{1}{128} \left(-3 t^2+56 t-114\right) & 6<t\leq 7 \\[0.1em]
-      \dfrac{1}{256} \left(-17 t^2+266 t-767\right) & 7<t\leq 8 \\[0.1em]
-      \dfrac{1}{512} \left(-11 t^2+164 t-62\right) & 8<t\leq 9 \\[0.1em]
-      \dfrac{23 t^2-482 t+3521}{1024} & 9<t\leq 10 \\[0.1em]
-      \dfrac{45 t^2-944 t+6942}{2048} & 10<t\leq 11 \\[0.1em]
-      \dfrac{-t^2+114 t+2873}{4096} & 11<t\leq 12 \\[0.1em]
-      \dfrac{-91 t^2+2364 t-7070}{8192} & 12<t\leq 13 \\[0.1em]
-      \dfrac{-89 t^2+2310 t+1577}{16384} & 13<t\leq 14 \\[0.1em]
+      \dfrac{t^2}{2} & 0\leq t\leq 1 \\[0.2em]
+      \dfrac{1}{4} \left(-t^2+6 t-3\right) & 1<t\leq 2 \\[0.2em]
+      -\dfrac{3 t^2}{8}+2 t-\dfrac{5}{4} & 2<t\leq 3 \\[0.2em]
+      \dfrac{1}{16} \left(-t^2+2 t+25\right) & 3<t\leq 4 \\[0.2em]
+      \dfrac{1}{32} \left(5 t^2-52 t+162\right) & 4<t\leq 5 \\[0.2em]
+      \dfrac{1}{64} \left(7 t^2-74 t+249\right) & 5<t\leq 6 \\[0.2em]
+      \dfrac{1}{128} \left(-3 t^2+56 t-114\right) & 6<t\leq 7 \\[0.2em]
+      \dfrac{1}{256} \left(-17 t^2+266 t-767\right) & 7<t\leq 8 \\[0.2em]
+      \dfrac{1}{512} \left(-11 t^2+164 t-62\right) & 8<t\leq 9 \\[0.2em]
+      \dfrac{23 t^2-482 t+3521}{1024} & 9<t\leq 10 \\[0.2em]
+      \dfrac{45 t^2-944 t+6942}{2048} & 10<t\leq 11 \\[0.2em]
+      \dfrac{-t^2+114 t+2873}{4096} & 11<t\leq 12 \\[0.2em]
+      \dfrac{-91 t^2+2364 t-7070}{8192} & 12<t\leq 13 \\[0.2em]
+      \dfrac{-89 t^2+2310 t+1577}{16384} & 13<t\leq 14 \\[0.2em]
       \dfrac{93 t^2-2968 t+56270}{32768} & 14<t\leq 15
     \end{cases} \, \text{,}
     \quad \text{and} \quad u(t) = \begin{cases}
-      1 & 0\leq t\leq 1 \\[0.1em]
-      -\dfrac{1}{2} & 1<t\leq 2 \\[0.1em]
-      -\dfrac{3}{4} & 2<t\leq 3 \\[0.1em]
-      -\dfrac{1}{8} & 3<t\leq 4 \\[0.1em]
-      \dfrac{5}{16} & 4<t\leq 5 \\[0.1em]
-      \dfrac{7}{32} & 5<t\leq 6 \\[0.1em]
-      -\dfrac{3}{64} & 6<t\leq 7 \\[0.1em]
-      -\dfrac{17}{128} & 7<t\leq 8 \\[0.1em]
-      -\dfrac{11}{256} & 8<t\leq 9 \\[0.1em]
-      \dfrac{23}{512} & 9<t\leq 10 \\[0.1em]
-      \dfrac{45}{1024} & 10<t\leq 11 \\[0.1em]
-      -\dfrac{1}{2048} & 11<t\leq 12 \\[0.1em]
-      -\dfrac{91}{4096} & 12<t\leq 13 \\[0.1em]
-      -\dfrac{89}{8192} & 13<t\leq 14 \\[0.1em]
+      1 & 0\leq t\leq 1 \\[0.2em]
+      -\dfrac{1}{2} & 1<t\leq 2 \\[0.2em]
+      -\dfrac{3}{4} & 2<t\leq 3 \\[0.2em]
+      -\dfrac{1}{8} & 3<t\leq 4 \\[0.2em]
+      \dfrac{5}{16} & 4<t\leq 5 \\[0.2em]
+      \dfrac{7}{32} & 5<t\leq 6 \\[0.2em]
+      -\dfrac{3}{64} & 6<t\leq 7 \\[0.2em]
+      -\dfrac{17}{128} & 7<t\leq 8 \\[0.2em]
+      -\dfrac{11}{256} & 8<t\leq 9 \\[0.2em]
+      \dfrac{23}{512} & 9<t\leq 10 \\[0.2em]
+      \dfrac{45}{1024} & 10<t\leq 11 \\[0.2em]
+      -\dfrac{1}{2048} & 11<t\leq 12 \\[0.2em]
+      -\dfrac{91}{4096} & 12<t\leq 13 \\[0.2em]
+      -\dfrac{89}{8192} & 13<t\leq 14 \\[0.2em]
       \dfrac{93}{16384} & 14<t\leq 15
     \end{cases} \, \text{.}
   \end{equation*}
-\end{small}
+\end{footnotesize}
 \end{example}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
@@ -681,7 +681,7 @@ The full-pivoting \ac{LU} and \ac{FFLU} decompositions are widely used algorithm
   \begin{itemize}
     \setlength{\itemsep}{0.0em}
     \item a lower-triangular matrix $\m{L} \in \mathbb{R}^{m \times m}$ with all diagonal entries equal to $1$;
-    \item a diagonal matrix $\m{D} \in \mathbb{R}^{m \times n}$;
+    \item a diagonal matrix $\m{D} \in \mathbb{R}^{m \times m}$;
     \item an upper-triangular matrix $\m{U} \in \mathbb{R}^{m \times n}$;
     \item a $\m{P} \in \mathbb{R}^{m \times m}$ and a $\m{Q} \in \mathbb{R}^{n \times n}$ matrices for rows and columns permutation, respectively;
   \end{itemize}
@@ -717,7 +717,7 @@ From a numerical perspective, we can reduce round-off errors during computation 
     \end{bmatrix} \, \text{.}
   \end{equation*}
   %
-  When these computations are performed in floating point arithmetic, the number $2 - 10^{-20}$ is not represented exactly but will be rounded to the nearest floating point number which we will say is $-10^{-20}$. This means that our matrices are now floating point matrices $\m{L}^\prime$ and $\m{U}^\prime$ where
+  When these computations are performed in floating point arithmetic, the number $2 - 10^{20}$ is not represented exactly but will be rounded to the nearest floating point number which we will say is $-10^{20}$. This means that our matrices are now floating point matrices $\m{L}^\prime$ and $\m{U}^\prime$ where
   %
   %
   \begin{equation*}
@@ -745,9 +745,9 @@ From a numerical perspective, we can reduce round-off errors during computation 
 After the \ac{LU} factorization of a sparse matrix $\m{A}$, it is common to observe that the joint non-zeroes pattern of $\m{L}$ and $\m{U}$ exhibit either equal or lower sparsity compared to the original non-zero pattern of $\m{A}$. The additional elements in $\m{L}$ and $\m{U}$ are known as the \emph{fill-in}. This phenomenon diminishes performance as the number of non-zero elements in the $\m{L}$ and $\m{U}$ factors is directly related to the number of operations required to solve a linear system using the \ac{LU} factorization. In other words, the more non-zero elements in the $\m{L}$ and $\m{U}$ factors, the more operations are required to solve a linear system. This is especially important when dealing with sparse matrices, where the number of non-zero elements in the $\m{L}$ and $\m{U}$ factors can be significantly reduced by using the right pivoting strategy. Indeed, specific reordering algorithms can be embedded in the pivoting strategy to minimize the fill-in of the factored matrix. These algorithms mainly include \emph{nested dissection}~\cite{george1973nested, lipton1979generalized} and \emph{minimum degree}~\cite{markowitz1957elimination, rose1970symmetric} techniques. The following example illustrates the importance of pivoting in reducing fill-in during the \ac{LU} factorization.
 
 \begin{example}[Fill-in reduction in \ac{LU} factorization]
-  Consider the \code{west0479} sparse unsymmetric matrix $\m{A} \in \mathbb{R}^{479 \times 479}$, having non-zero 1910 entries~\cite{matlab}. The sparsity pattern of the original matrix $\m{A}$ and the $\m{L}$ and $\m{U}$ factors with and without pivoting, using the minimum degree and nested dissection pivoting strategies, are shown in Figure~\ref{chap3:fig:sparsity_patterns}. As illustrated, the \ac{LU} factorization of $\m{A}$ with pivoting has significantly less fill-in than the \ac{LU} factorization of $\m{A}$ without pivoting, thus highlighting the relevance of pivoting in reducing fill-in during the \ac{LU} factorization.
+  Consider the \code{west0479} sparse unsymmetric matrix $\m{A} \in \mathbb{R}^{479 \times 479}$, having non-zero 1887 entries~\cite{matlab}. The sparsity pattern of the original matrix $\m{A}$ and the $\m{L}$ and $\m{U}$ factors with and without pivoting, using the minimum degree and nested dissection pivoting strategies, are shown in Figure~\ref{chap3:fig:sparsity_patterns}. As illustrated, the \ac{LU} factorization of $\m{A}$ with pivoting has significantly less fill-in than the \ac{LU} factorization of $\m{A}$ without pivoting, thus highlighting the relevance of pivoting in reducing fill-in during the \ac{LU} factorization.
   %
-  \begin{figure}[!htb] % FIXME should be[H]
+  \begin{figure}[htb]
     \centering
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
@@ -784,7 +784,6 @@ Designing a pivoting strategy that is both numerically stable and symbolically v
 
 It is important to note that the expression may inevitably grow during the factorization process, thereby hindering the simplification of the expressions. This issue is mitigated by the \emph{zero-testing} capabilities of the previously presented signature functions, which are used to verify the presence of null expressions without the need for simplification. The zero-testing is a crucial detail in symbolic pivoting as it strongly improves numerical stability allowing for the detection of null expressions in a very efficient way. Other than the zero-testing, the \emph{hybrid symbolic-numerical} or \emph{static pivoting approach} is also employed to validate the stability of symbolic code through random numerical evaluations. This approach may be computationally less efficient compared to the former method, but it yields satisfactory results. In other words, the ``choice of pivots is numerically good at most numerical specializations'' as emphasized in~\cite{giesbrecht2014symbolic}. However, signature-based zero-testing is preferred as it is a proven and effective technique in previous successful symbolic linear algebra works~\cite{carette2006linear, zhou2007symbolic}. It is worth noting that, to the authors' knowledge, there is still no well-established rule for determining whether a \emph{generic} expression is ``likely'' null. For this reason, this topic is still an open question.
 
-\pagebreak
 \begin{breakablealgorithm}
   \caption{Symbolic \ac{LU} Factorization.}
   \label{chap3:alg:lu}
@@ -941,12 +940,12 @@ A detailed description of the developed symbolic pivoting strategy is presented 
       \For{$j$ \textbf{from} $k$ \textbf{to} $n$} \Comment{Iterate over the columns}
         \State $D_{ij} \gets \infty$ \Comment{Set the combined degree matrix to infinity}
         \IfThen{$A_{ij} \neq 0$}
-        {$D_{ij} \gets d^r_{i} \, \max(0, \, d^c_j-1) + d^c_j \, \max(0, \, d^r_i-1)$} \Comment{The combined degree}
+        {$D_{ij} \gets d^r_{i} \, \max(0, \, d^c_j-1) + d^c_j \, \max(0, \, d^r_i-1)$} \Comment{The degree}
       \EndFor
     \EndFor
     \State $\mathcal{P} \gets \mathrm{Sort}(\m{D})$ \Comment{Find the permutation that sorts the pivots list by degree cost}
     \State $q, \, l \gets \, 0, \, 0$ \Comment{Initialize the temporary pivot row and column indices}
-    \State $p, \, p_c, \, p_n \gets \infty, \, \infty, \, \infty$ \Comment{Initialize the temporary pivot value, complexity and numerical value}
+    \State $p, \, p_c, \, p_n \gets \infty, \, \infty, \, \infty$ \Comment{Initialize the pivot value, complexity and numerical value}
     \For{\textbf{all} $(i, j)$ \textbf{in} $\mathcal{P}$} \Comment{Iterate on the permutation set}
       \IfThen{$p_c \neq \infty$ \textbf{and} $D_{ij} > D_{ql}$}{\textbf{break}} \Comment{No more good pivots to check}
       \State $t \gets A_{ij}$ \Comment{Get the pivot value}
@@ -957,7 +956,7 @@ A detailed description of the developed symbolic pivoting strategy is presented 
       \IfThen{$t$ is numeric}{$t_n \gets \max(1, \, \mathrm{abs}(t))$} \Comment{Set the numerical value of the pivot}
       \If{$t_c < p_c$ \textbf{or} ($t_c = p_c$ \textbf{and} $t_n > p_n$)} \Comment{If the pivot is better than the current one}
         \State $q, \, l \gets i, \, j$ \Comment{Update the best pivot row and column indices}
-        \State $p, \, p_c, \, p_n \gets t, \, t_c, \, t_n$ \Comment{Update the best pivot value, complexity and numerical value}
+        \State $p, \, p_c, \, p_n \gets t, \, t_c, \, t_n$ \Comment{Save the best pivot value, complexity and numerical value}
       \EndIf
     \EndFor \\
     \Return $p, \, q, \, l$ \Comment{The $k$-th pivot and its position}

@@ -1,6 +1,6 @@
 %!TEX root = ../main.tex
 
-\chapter{Symbolic-Numerical Analysis and Solution of Structures}
+\chapter[Symbolic Solution of Structures]{Symbolic-Numerical Analysis and Solution of Structures}
 \label{app4:trussme}
 
 Understanding how structures react to external forces and imposed displacements is fundamental in engineering. This knowledge is essential for predicting system behavior, optimizing performance, and ensuring safety. Structural analysis involves evaluating deformations and internal reactions under specified \acp{BC}, a process foundational in structural mechanics. Typically, structural analysis is carried out numerically using the \ac{DSM}, a \ac{FEM} implementation known for solving large systems of equations. However, this method's principles can also be applied in a symbolic or hybrid symbolic-numerical fashion. This dual approach is valuable for reducing computational load, as symbolic solutions can be simplified and translated into efficient code for simulations. Moreover, symbolic \ac{DSM} facilitates model reduction, enabling the creation of smaller-scale models for faster simulations. Despite its advantages, symbolic computation has limitations, particularly in solving large linear systems of equations, which can be computationally intensive and may exceed software capabilities. This chapter introduces \TrussMe{}, a toolbox built on the \ac{DSM}, harnessing symbolic computation from \Maple{} and numerical capabilities from \Matlab{} for structural analysis. The toolbox facilitates both symbolic and hybrid symbolic-numerical analyses, streamlining code generation for efficient simulations. To address challenges in the symbolic solution of large linear systems, \TrussMe{} incorporates the routines for symbolic matrix factorization previously presented in Chapter~\ref{chap3:symbolic_computation}, employing hierarchical representation for managing large expressions in the symbolic solution.
@@ -29,10 +29,10 @@ The forthcoming discussion of the solution method is indispensable for grasping 
 %
 \begin{equation}
   \label{app4:eq:system}
-  \mathbf{K}^{n} \, \mathbf{d}^{n} = \mathbf{f}^{n} \, \text{.}
+  \mathbf{K}^{n} \, \mathbf{d}^{n} = \mathbf{f}{\,}^{n} \, \text{.}
 \end{equation}
 %
-Here, $\mathbf{K}^{n} \in \mathbb{R}^{N \times N}$ represents the stiffness matrix, $\mathbf{d}^{n} \in \mathbb{R}^{N}$ denotes the displacement vector, $\mathbf{f}^{n} \in \mathbb{R}^{N}$ signifies the force vector, and $N$ signifies the number of \acp{DOF} of the structure. The superscript $n$ indicates that these quantities are expressed in the nodes' reference frames. Subsequent sections briefly outline the derivation of the components of the system of equations~\eqref{app4:eq:system}. Furthermore, the toolbox's solution method for effectively handling the system of equations is later discussed.
+Here, $\mathbf{K}^{n} \in \mathbb{R}^{N \times N}$ represents the stiffness matrix, $\mathbf{d}^{n} \in \mathbb{R}^{N}$ denotes the displacement vector, $\mathbf{f}{\,}^{n} \in \mathbb{R}^{N}$ signifies the force vector, and $N$ signifies the number of \acp{DOF} of the structure. The superscript $n$ indicates that these quantities are expressed in the nodes' reference frames. Subsequent sections briefly outline the derivation of the components of the system of equations~\eqref{app4:eq:system}. Furthermore, the toolbox's solution method for effectively handling the system of equations is later discussed.
 
 \subsection{Element Stiffness Matrix}
 
@@ -72,25 +72,25 @@ Note that $\Re$ represents the rotation matrix from the $e$-th element reference
 %
 where $\mathcal{E}$ is the set of elements of the structure.
 
-Following this transformation, we arrive at the linear system of equations~\eqref{app4:eq:system} expressed in the global reference frame, denoted as $\mathbf{K}^{g} \, \mathbf{d}^{g} = \mathbf{f}^{g}$, where $\mathbf{d}^{g}$ and $\mathbf{f}^{g}$ represent the displacement and force vectors in the global reference frame, respectively. However, \acp{BC} for displacements and forces are typically applied in the nodes' reference frames. Consequently, to account for this, the system of equations~\eqref{app4:eq:system} must be adjusted by incorporating the nodes' rotations $\mathbf{Q}_{i}$ with respect to the global reference frame, which are expressed in the block diagonal matrix $\mathbf{Q}$. This adjustment allows us to express the system~\eqref{app4:eq:system} as
+Following this transformation, we arrive at the linear system of equations~\eqref{app4:eq:system} expressed in the global reference frame, denoted as $\mathbf{K}^{g} \, \mathbf{d}^{g} = \mathbf{f}{\,}^{g}$, where $\mathbf{d}^{g}$ and $\mathbf{f}{\,}^{g}$ represent the displacement and force vectors in the global reference frame, respectively. However, \acp{BC} for displacements and forces are typically applied in the nodes' reference frames. Consequently, to account for this, the system of equations~\eqref{app4:eq:system} must be adjusted by incorporating the nodes' rotations $\mathbf{Q}_{i}$ with respect to the global reference frame, which are expressed in the block diagonal matrix $\mathbf{Q}$. This adjustment allows us to express the system~\eqref{app4:eq:system} as
 %
 \begin{equation*}
-  \underbrace{\mathbf{Q} \, \mathbf{K}^{g} \, \mathbf{Q}^\top}_{\displaystyle\mathbf{K}^{n}} \, \underbrace{\mathbf{Q} \, \mathbf{d}^{g}}_{\displaystyle\mathbf{d}^{n}} = \underbrace{\mathbf{Q} \, \mathbf{f}^{g}}_{\displaystyle\mathbf{f}^{n}} \, \text{,} \quad \text{where} \quad \mathbf{Q} = \mathrm{diag}\left( \mathbf{Q}_{1}, \dots, \mathbf{Q}_{N} \right) \, \text{,}
+  \underbrace{\mathbf{Q} \, \mathbf{K}^{g} \, \mathbf{Q}^\top}_{\displaystyle\mathbf{K}^{n}} \, \underbrace{\mathbf{Q} \, \mathbf{d}^{g}}_{\displaystyle\mathbf{d}^{n}} = \underbrace{\mathbf{Q} \, \mathbf{f}{\,}^{g}}_{\displaystyle\mathbf{f}{\,}^{n}} \, \text{,} \quad \text{where} \quad \mathbf{Q} = \mathrm{diag}\left( \mathbf{Q}_{1}, \dots, \mathbf{Q}_{N} \right) \, \text{,}
 \end{equation*}
 %
 and $\mathcal{N}$ is the number of nodes of the structure.
 
-To construct the nodal force vector $\mathbf{f}^{n}$ and displacement vector $\mathbf{d}^{n}$, it is necessary to incorporate the individual nodes' \acp{BC} into their corresponding \acp{DOF}. This process involves multiplying the $i$-th nodal force vector $\mathbf{f}^{n}_{i}$ and displacement vector $\mathbf{d}^{n}_{i}$ by the injection matrix $\mathbf{J}_{i} \in \mathbb{R}^{N_i \times N}$, where $N_i$ represents the number of \acp{DOF} of the node. Consequently, the vectors $\mathbf{f}^{n}$ and $\mathbf{d}^{n}$ are respectively derived as
+To construct the nodal force vector $\mathbf{f}{\,}^{n}$ and displacement vector $\mathbf{d}^{n}$, it is necessary to incorporate the individual nodes' \acp{BC} into their corresponding \acp{DOF}. This process involves multiplying the $i$-th nodal force vector $\mathbf{f}{\,}^{n}_{i}$ and displacement vector $\mathbf{d}^{n}_{i}$ by the injection matrix $\mathbf{J}_{i} \in \mathbb{R}^{N_i \times N}$, where $N_i$ represents the number of \acp{DOF} of the node. Consequently, the vectors $\mathbf{f}{\,}^{n}$ and $\mathbf{d}^{n}$ are respectively derived as
 %
 \begin{equation*}
-  \mathbf{f}^{n} = \sum_{i \, \in \, \mathcal{N}} \mathbf{J}_{i}^\top \, \mathbf{f}^{n}_{i}
+  \mathbf{f}{\,}^{n} = \sum_{i \, \in \, \mathcal{N}} \mathbf{J}_{i}^\top \, \mathbf{f}{\,}^{n}_{i}
   \quad \text{and} \quad
   \mathbf{d}^{n} = \sum_{i \, \in \, \mathcal{N}} \mathbf{J}_{i}^\top \, \mathbf{d}^{n}_{i} \, \text{.}
 \end{equation*}
 
 \subsection{Linear System Partitioning and Solution}
 
-To solve the system of equations~\eqref{app4:eq:system}, it is beneficial to split it into two distinct sets of equations: the first set is solved for the free displacements $\mathbf{d}^{n}_{f}$, while the second set is solved for the reaction (internal) forces $\mathbf{f}^{n}_{s}$. This division is accomplished by rearranging and partitioning the stiffness matrix $\mathbf{K}^{n}$ into four submatrices $\mathbf{K}^{n}_{ff}$, $\mathbf{K}^{n}_{fs}$, $\mathbf{K}^{n}_{sf}$, and $\mathbf{K}^{n}_{ss}$, where the subscripts $f$ and $s$ denote the free and specified (or subject to \acp{BC}) \acp{DOF}, respectively. Similarly, the displacement and force vectors are partitioned accordingly, \eg{}, $\mathbf{d}^{n}_{f}$, $\mathbf{d}^{n}_{s}$, and $\mathbf{f}^{n}_{f}$, $\mathbf{f}^{n}_{s}$. Subsequently, the system of equations~\eqref{app4:eq:system} can be expressed as
+To solve the system of equations~\eqref{app4:eq:system}, it is beneficial to split it into two distinct sets of equations: the first set is solved for the free displacements $\mathbf{d}^{n}_{f}$, while the second set is solved for the reaction (internal) forces $\mathbf{f}{\,}^{n}_{s}$. This division is accomplished by rearranging and partitioning the stiffness matrix $\mathbf{K}^{n}$ into four submatrices $\mathbf{K}^{n}_{ff}$, $\mathbf{K}^{n}_{fs}$, $\mathbf{K}^{n}_{sf}$, and $\mathbf{K}^{n}_{ss}$, where the subscripts $f$ and $s$ denote the free and specified (or subject to \acp{BC}) \acp{DOF}, respectively. Similarly, the displacement and force vectors are partitioned accordingly, \eg{}, $\mathbf{d}^{n}_{f}$, $\mathbf{d}^{n}_{s}$, and $\mathbf{f}{\,}^{n}_{f}$, $\mathbf{f}{\,}^{n}_{s}$. Subsequently, the system of equations~\eqref{app4:eq:system} can be expressed as
 %
 \begin{equation}
     \label{app4:eq:macrofe}
@@ -101,22 +101,22 @@ To solve the system of equations~\eqref{app4:eq:system}, it is beneficial to spl
       \mathbf{d}^{n}_{f} \\[0.5em]
       \mathbf{d}^{n}_{s}
     \end{matrix}\,\right]}_{\displaystyle \mathbf{P}^{n} \, \mathbf{d}^{n}} = \underbrace{\left[\,\begin{matrix}
-      \mathbf{f}^{n}_{f} \\[0.5em]
-      \mathbf{f}^{n}_{s} + \mathbf{f}^{n}_{r}
-    \end{matrix}\,\right]}_{\displaystyle \mathbf{P}^{n} \, \mathbf{f}^{n}} \, \text{,}
+      \mathbf{f}{\,}^{n}_{f} \\[0.5em]
+      \mathbf{f}{\,}^{n}_{s} + \mathbf{f}{\,}^{n}_{r}
+    \end{matrix}\,\right]}_{\displaystyle \mathbf{P}^{n} \, \mathbf{f}{\,}^{n}} \, \text{,}
 \end{equation}
 %
-where $\mathbf{P}^{n}$ denotes the permutation matrix responsible for rearranging the rows and columns of the stiffness matrix $\mathbf{K}^{n}$. It is noteworthy that the vector $\mathbf{f}^{n}_{r}$ is introduced to conveniently represent the forces and moments applied to the nodes' \acp{DOF} that are also subject to \acp{BC}. This vector is henceforth referred to as the "remainder" force vector. The linear system~\eqref{app4:eq:macrofe} is subsequently solved for the unknowns $\mathbf{d}^{n}_{f}$ and $\mathbf{f}^{n}_{s}$ through the following operations
+where $\mathbf{P}^{n}$ denotes the permutation matrix responsible for rearranging the rows and columns of the stiffness matrix $\mathbf{K}^{n}$. It is noteworthy that the vector $\mathbf{f}{\,}^{n}_{r}$ is introduced to conveniently represent the forces and moments applied to the nodes' \acp{DOF} that are also subject to \acp{BC}. This vector is henceforth referred to as the "remainder" force vector. The linear system~\eqref{app4:eq:macrofe} is subsequently solved for the unknowns $\mathbf{d}^{n}_{f}$ and $\mathbf{f}{\,}^{n}_{s}$ through the following operations
 %
 \begin{subequations}
   \label{app4:eq:macrosol}
   \begin{align}
-    \textrm{[solve for $\mathbf{d}^{n}_{f}$]} \quad &\mathbf{K}^{n}_{ff}\mathbf{d}^{n}_{f} = \mathbf{f}^{n}_{f} - \mathbf{K}^{n}_{fs}\,\mathbf{d}^{n}_{s} \label{app4:eq:macrodf} \, \text{,} \\
-    \textrm{[compute $\mathbf{f}^{n}_{s}$]} \quad &\mathbf{f}^{n}_{s} = \mathbf{K}^{n}_{sf}\,\mathbf{d}^{n}_{f} + \mathbf{K}^{n}_{ss}\,\mathbf{d}^{n}_{s} - \mathbf{f}^{n}_{r} \, \text{.} \label{app4:eq:macrosolfs}
+    \textrm{[solve for $\mathbf{d}^{n}_{f}$]} \quad & \mathbf{K}^{n}_{ff}\mathbf{d}^{n}_{f} = \mathbf{f}{\,}^{n}_{f} - \mathbf{K}^{n}_{fs}\,\mathbf{d}^{n}_{s} \label{app4:eq:macrodf} \, \text{,} \\
+    \textrm{[compute $\mathbf{f}{\,}^{n}_{s}$]} \quad & \mathbf{f}{\,}^{n}_{s} = \mathbf{K}^{n}_{sf}\,\mathbf{d}^{n}_{f} + \mathbf{K}^{n}_{ss}\,\mathbf{d}^{n}_{s} - \mathbf{f}{\,}^{n}_{r} \, \text{.} \label{app4:eq:macrosolfs}
   \end{align}
 \end{subequations}
 %
-As will be elucidated later, obtaining a symbolic solution for~\eqref{app4:eq:macrodf} is not always feasible due to limitations in software capabilities. In such instances, one can resort to the numerical solution by performing a numerical factorization of the $\mathbf{K}^{n}_{ff}$ matrix and evaluating both~\eqref{app4:eq:macrodf} and~\eqref{app4:eq:macrosolfs}. If one's sole interest lies in the free displacements $\mathbf{d}^{n}_{f}$ and not in the specified forces (or support reactions) $\mathbf{f}^{n}_{f}$, it suffices to compute the solution for~\eqref{app4:eq:macrodf} only.
+As will be elucidated later, obtaining a symbolic solution for~\eqref{app4:eq:macrodf} is not always feasible due to limitations in software capabilities. In such instances, one can resort to the numerical solution by performing a numerical factorization of the $\mathbf{K}^{n}_{ff}$ matrix and evaluating both~\eqref{app4:eq:macrodf} and~\eqref{app4:eq:macrosolfs}. If one's sole interest lies in the free displacements $\mathbf{d}^{n}_{f}$ and not in the specified forces (or support reactions) $\mathbf{f}{\,}^{n}_{f}$, it suffices to compute the solution for~\eqref{app4:eq:macrodf} only.
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
@@ -147,7 +147,7 @@ Consider the depicted simple structure illustrated in Figure~\ref{app4:fig:usage
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=0.85\textwidth]{./figures/appendix_4/usage_example.eps}
+  \includegraphics[width=1.0\textwidth]{./figures/appendix_4/usage_example.eps}
   \caption{Simple structure used to demonstrate the usage of the \TrussMe{} package.}
   \label{app4:fig:usage_example}
 \end{figure}
@@ -165,19 +165,19 @@ This function requires the node name, coordinates, and \acp{DOF} as inputs. In t
 Before defining the elements, the material properties must be specified. Custom materials can be defined using the \texttt{MakeMaterial} function, which requires the material name, Young's modulus, Poisson's ratio, and density as inputs. If the shear modulus is not provided, it is calculated from Young's modulus and Poisson's ratio. In this case, the material is defined as follows.
 %
 \begin{verbatim}
-> M := MakeMaterial(name="GenericMaterial", elastic_modulus=E, shear_modulus=G,
-    poisson_ratio=nu, density=rho):
+> M := MakeMaterial(name="GenericMaterial", elastic_modulus=E,
+shear_modulus=G, poisson_ratio=nu, density=rho):
 \end{verbatim}
 %
 Next, the \texttt{MakeBeam} function is employed, necessitating the element's name, nodes at its ends, material, and cross-section properties.
 %
 \begin{verbatim}
-> E1 := MakeBeam("E1", N1, [N2, <0,0,0,0,0,0>], material=M, area=A, inertia=
-    [I_x,I_y,I_z], frame=GenerateFrameXY(N1["coordinates"], N2["coordinates"],
-    [0,0,1])):
-> E2 := MakeBeam("E2", [N2, <0,0,0,0,0,1>], N3, material=M, area=A, inertia=
-    [I_x,I_y,I_z], frame=GenerateFrameXY(N2["coordinates"], N3["coordinates"],
-    [0,0,1])):
+> E1 := MakeBeam("E1", N1, [N2, <0,0,0,0,0,0>], material=M, area=A,
+    inertia=[I_x,I_y,I_z], frame=GenerateFrameXY(N1["coordinates"],
+    N2["coordinates"], [0,0,1])):
+> E2 := MakeBeam("E2", [N2, <0,0,0,0,0,1>], N3, material=M, area=A,
+    inertia=[I_x,I_y,I_z], frame=GenerateFrameXY(N2["coordinates"],
+    N3["coordinates"], [0,0,1])):
 \end{verbatim}
 %
 During the element definition, the reference frame is also specified. Here, the \texttt{GenerateFrameXY} function aligns the coordinate system axes based on the coordinates of the two nodes. Additional details about how the element ends are connected to the nodes can be provided using an augmented six-element vector, such as \texttt{[N, <1,1,1,1,1,1>]}. If this vector is not provided, the element ends are assumed to be rigidly connected to the nodes in all directions. In the provided code snippet, element $E_1$ is connected rigidly to nodes $N_1$ and $N_2$, while element $E_2$ is hinged to node $N_2$ with constrained translational \acp{DOF} and free rotational \acp{DOF}. Element $E_2$ is then rigidly connected to node $N_3$. This hinge connection is achieved by specifying the free rotational \acp{DOF} of the element ends. In this case, element $E_2$ can rotate freely around the $z$-axis.
@@ -202,23 +202,25 @@ When using the \texttt{tryhard} flag, the solvability check described in step (5
 \begin{verbatim}
 > f = fem["f"]^%T; d = fem["d"]^%T;
 \end{verbatim}
-\begin{equation*}
-  \begin{matrix}
-    f = \left[\,\begin{matrix}
-      \, 0, \, \dfrac{PL_2^3}{L_1^3+L_2^3}, \, 0, \, 0, \, 0, \, \dfrac{PL_1L_2^3}{L_1^3+L_2^3}, \, 0, \, -P, \, 0, \, 0, \, 0, \, 0, \, 0, \, \dfrac{PL_1^3}{L_1^3+L_2^3}, \, 0, \, 0, \, 0, \, -\dfrac{PL_1^3L_2}{L_1^3+L_2^3} \,
-    \end{matrix}\,\right] \\[1.5em]
-    d = \left[\,\begin{matrix}
-      \, 0, \, 0, \, 0, \, 0, \, 0, \, 0, \, 0, \, \dfrac{PL_1^3L_2^3}{3EI_z(L_1^3+L_2^3)}, \, 0, \, 0, \, 0, \, \dfrac{PL_1^2L_2^3}{2EI_z(L_1^3+L_2^3)} \, 0, \, 0, \, 0, \, 0, \, 0, \, 0 \,
-    \end{matrix}\,\right]
-  \end{matrix}
-\end{equation*}
+\begin{small}
+  \begin{equation*}
+    \begin{matrix}
+      f = \left[\,\begin{matrix}
+        \, 0, \, \dfrac{PL_2^3}{L_1^3+L_2^3}, \, 0, \, 0, \, 0, \, \dfrac{PL_1L_2^3}{L_1^3+L_2^3}, \, 0, \, -P, \, 0, \, 0, \, 0, \, 0, \, 0, \, \dfrac{PL_1^3}{L_1^3+L_2^3}, \, 0, \, 0, \, 0, \, -\dfrac{PL_1^3L_2}{L_1^3+L_2^3} \,
+      \end{matrix}\,\right] \\[1.5em]
+      d = \left[\,\begin{matrix}
+        \, 0, \, 0, \, 0, \, 0, \, 0, \, 0, \, 0, \, \dfrac{PL_1^3L_2^3}{3EI_z(L_1^3+L_2^3)}, \, 0, \, 0, \, 0, \, \dfrac{PL_1^2L_2^3}{2EI_z(L_1^3+L_2^3)} \, 0, \, 0, \, 0, \, 0, \, 0, \, 0 \,
+      \end{matrix}\,\right]
+    \end{matrix}
+  \end{equation*}
+\end{small}
 
 In cases where no symbolic solution could be obtained, or if the user just prefers to assess the solution numerically, the \texttt{GenerateMatlabCode} function can be employed.
 %
 \begin{verbatim}
-> GenerateMatlabCode("FemClass", fem, path="./dir/", info="Usage example class",
-    vars=[P], data=[I_x=4.0e-4, I_y=2.0e-4, I_z=2.0e-4, E=210.0e6, nu=0.33, A=5.0e-3,
-    L_1=1.0, L_2=1.0]);
+> GenerateMatlabCode("FemClass", fem, path="./dir/", info="Usage example
+    class", vars=[P], data=[I_x=4.0e-4, I_y=2.0e-4, I_z=2.0e-4, E=210.0e6,
+    nu=0.33, A=5.0e-3, L_1=1.0, L_2=1.0]);
 \end{verbatim}
 %
 This function creates the \texttt{FemClass.m} file in the \texttt{./dir/} directory, which contains a class definition of the aforementioned \ac{FE} model. During the code generation process, users can establish default class properties in the \texttt{data} field and variable parameters in the \texttt{vars} field. The latter is intended to represent parameters that may vary during the structure analysis, such as the load magnitude $P$. Further insights into the generated class and its application are elaborated in the subsequent section.
@@ -245,10 +247,10 @@ Since the symbolic solution of~\eqref{app4:eq:macrodf} may not always be feasibl
   \begin{itemize}
   \setlength{\itemsep}{0.0em}
   \item specified displacement vector $\mathbf{d}^{n}_{s}$;
-  \item force vector $\mathbf{f}$*;
-  \item free force vector $\mathbf{f}^{n}_{f}$;
-  \item specified force vector $\mathbf{f}^{n}_{s}$*;
-  \item remainder force vector $\mathbf{f}^{n}_{r}$;
+  \item force vector $\mathbf{f}$\,*;
+  \item free force vector $\mathbf{f}{\,}^{n}_{f}$;
+  \item specified force vector $\mathbf{f}{\,}^{n}_{s}$*;
+  \item remainder force vector $\mathbf{f}{\,}^{n}_{r}$;
   \item \acp{DOF} permutation $\mathbf{P}^{n}$;
   \item getters and setters for the system data;
   \end{itemize}
@@ -267,8 +269,9 @@ The \TrussMe{} \Matlab{} toolbox serves to numerically assess the problem's solu
 Optionally, during instantiation, we have the liberty to assign values to the class's internal data.
 %
 \begin{verbatim}
->>> data.I_x = 4.0e-4; data.I_y = 2.0e-4; data.I_z = 2.0e-4; data.E = 210.0e9; ...
-    data.A = 5.0e-3; data.L_1 = 1.0; data.L_2 = 1.0;
+>>> data.I_x = 4.0e-4; data.I_y = 2.0e-4; data.I_z = 2.0e-4; ...
+    data.E = 210.0e9; data.E = 210.0e9; data.A = 5.0e-3; ...
+    data.L_1 = 1.0; data.L_2 = 1.0;
 >>> fem = FemClass(data);
 \end{verbatim}
 %
@@ -310,8 +313,8 @@ In this section, we briefly showcase two example applications of the \TrussMe{} 
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=6.5cm, trim={2cm 2cm 3.5cm 2cm}, clip]{./figures/appendix_4/rendering.eps}
-  \includegraphics[width=6.5cm]{./figures/appendix_4/constraints.eps}
+  \includegraphics[width=6.0cm, trim={2cm 2cm 3.5cm 2cm}, clip]{./figures/appendix_4/rendering.eps}
+  \includegraphics[width=5.5cm]{./figures/appendix_4/constraints.eps}
   \caption{Rendering and schematic representation of the rear left double wishbone suspension. The spherical and cylindrical constraints are respectively represented by the symbols \circled{S} and \circled{C}.}
   \label{app4:fig:suspension}
 \end{figure}

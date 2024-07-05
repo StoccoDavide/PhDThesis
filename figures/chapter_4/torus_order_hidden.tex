@@ -100,9 +100,9 @@
   0.015 1.57024270189941e-11\\
 }--cycle;
 
-\node[draw, fill=white] at (1.01e-2, 2.30e-02) {$p = 0.932$};
-\node[draw, fill=white] at (1.01e-2, 2.40e-08) {$p = 2.958$};
-\node[draw, fill=white] at (1.01e-2, 0.85e-14) {$p = 5.095$};
+\node[draw, fill=white] at (1.05e-2, 2.00e-02) {\footnotesize{$p = 0.932$}};
+\node[draw, fill=white] at (1.05e-2, 2.10e-08) {\footnotesize{$p = 2.958$}};
+\node[draw, fill=white] at (1.05e-2, 0.65e-14) {\footnotesize{$p = 5.095$}};
 \end{axis}
 
 \begin{axis}[%
@@ -122,14 +122,14 @@
   xlabel shift={0.125em},
   xtick={0, 1.5707963267949, 3.14159265358979, 4.71238898038469, 6.28318530717959},
   xticklabels={$0$, $\pi/2$, $\pi$, $3\pi/2$, $2\pi$},
-  every y tick scale label/.style={
-    at={(1.015, 0.945)}, anchor=south west, inner sep=0pt
-  },
+  %every y tick scale label/.style={
+  %  at={(1.015, 0.945)}, anchor=south west, inner sep=0pt
+  %},
   ytick scale label code/.code={$\times \, 10^{-13}$},
   ymin=-0.02e-13,
   ymax=1.085e-13,
   ylabel style={font=\color{black}},
-  ylabel={$\| \, \mh \, \|_{\infty}$},
+  ylabel={$\| \mh \|_{\infty}$},
   yticklabel pos=right,
   axis background/.style={fill=none},
   xmajorgrids,

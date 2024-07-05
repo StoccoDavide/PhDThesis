@@ -1,4 +1,4 @@
-\documentclass[a5paper, 8pt, openright]{extbook} % book template, paper size is b5
+\documentclass[a5paper, 9pt, openright]{extbook} % book template, paper size is b5
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -61,35 +61,36 @@
 
 \newenvironment{system}%
   {\left\{\begin{array}{@{}r@{~}c@{~}l}}%
-    {\end{array}\hspace{-.75\arraycolsep}\right.}
+  {\end{array}\hspace{-.75\arraycolsep}\right.}
 
 \renewenvironment{cases}%
   {\left\{\begin{array}{@{}l@{\;}lr@{}}}%
   {\end{array}\hspace{-.75\arraycolsep}\right.}
 
 % Document settings ------------------------------------------------------------
-\usepackage{geometry}            % change margins of the document
-\usepackage{acronym}             % to define abbreviations
-\usepackage{rotating}            % rotate objects
-\usepackage{lscape}              % to write in landscape mode
+\usepackage{geometry}              % change margins of the document
+\usepackage[nohyperlinks]{acronym} % to define abbreviations
+\usepackage{rotating}              % rotate objects
+\usepackage{lscape}                % to write in landscape mode
 
 % Text settings ----------------------------------------------------------------
-\usepackage[dvipsnames]{xcolor}  % color the text
-\usepackage{soul}                % to strike-through text
-\usepackage{tcolorbox}           % create a colored box wrapping the text
-\usepackage[final]{microtype}    % improves the spacing between words and letters
-\usepackage{appendix}       % to create appendices
-\usepackage[english]{babel}      % useful to interpret the language of the document
-\usepackage[T1]{fontenc}         % to write correctly in Italian
-\usepackage[utf8]{inputenc}      % to correctly write accented letter and other symbols
-%\usepackage[latin1]{inputenc}    % codec input useful to write docs in Italian
-%\usepackage[normalem]{ulem}      % underline command which will break over line ends
-\usepackage{listings}            % to include code in the document
-\usepackage{realboxes}           % to create boxes around text
-\usepackage[spaces, hyphens]{url}                 % to write url in the document
+\usepackage[dvipsnames]{xcolor}   % color the text
+\usepackage{soul}                 % to strike-through text
+\usepackage{tcolorbox}            % create a colored box wrapping the text
+\usepackage[final]{microtype}     % improves the spacing between words and letters
+\usepackage{appendix}             % to create appendices
+\usepackage[english]{babel}       % useful to interpret the language of the document
+\usepackage{csquotes}             % to write quotes in the document (required by babel)
+\usepackage[T1]{fontenc}          % to write correctly in Italian
+%\usepackage[utf8]{inputenc}       % to correctly write accented letter and other symbols
+%\usepackage[latin1]{inputenc}     % codec input useful to write docs in Italian
+%\usepackage[normalem]{ulem}       % underline command which will break over line ends
+\usepackage{listings}             % to include code in the document
+\usepackage{realboxes}            % to create boxes around text
+\usepackage[spaces, hyphens]{url} % to write url in the document
 
-\urlstyle{tt}                    % teletype font of the document (forced in the bibliography)
-\lstset{                         % settings for the listings package
+\urlstyle{tt}                     % teletype font of the document (forced in the bibliography)
+\lstset{                          % settings for the listings package
   basicstyle=\ttfamily,
   columns=fullflexible,
   keepspaces=false
@@ -149,7 +150,7 @@
   citecolor   = blue_ncs,
   anchorcolor = black
 ]{hyperref}                      % generate hyper-reference links in the pdf document
-\usepackage{cleveref}            % to reference equations, figures, tables, etc
+%\usepackage{cleveref}            % to reference equations, figures, tables, etc
 
 % Figures and tables -----------------------------------------------------------
 \usepackage{graphicx}            % advanced package to load figures
@@ -273,6 +274,7 @@
 \DeclareSIUnit\feet{ft}
 \DeclareSIUnit\foot{ft}
 \DeclareSIUnit\slugs{slugs}
+\DeclareSIUnit\barp{bar}
 
 % Set the path of the figure files ---------------------------------------------
 \graphicspath{
@@ -429,9 +431,9 @@
 \newcommand{\CDTire}{\textsc{CDTire}\textsuperscript{\textregistered}}
 
 % Goodlooking check, cross and warning marks
-\newcommand{\mycheckmark}{\textcolor{mycolor5}{\faCheck}}
-\newcommand{\mycrossmark}{\textcolor{mycolor2}{\faTimes}}
-\newcommand{\mywarnmark}{\textcolor{mycolor3}{\faExclamationTriangle}}
+\newcommand{\mycheckmark}{\textcolor{mycolor5}{{\footnotesize\faCheck}}}
+\newcommand{\mycrossmark}{\textcolor{mycolor2}{{\small\faTimes}}}
+\newcommand{\mywarnmark}{\textcolor{mycolor3}{{\footnotesize\faExclamationTriangle}}}
 
 % Mathematical symbols
 \newcommand{\code}[1]{\texttt{#1}}
@@ -448,7 +450,7 @@
 % Matrices and vectors
 \newcommand{\dif}[2]{\ensuremath{{#1}_{#2}}}
 \newcommand{\jac}[2]{\ensuremath{{#1}_{#2}}}
-\newcommand{\hes}[2]{\ensuremath{{#1}_{#2}}}
+\newcommand{\hes}[2]{\ensuremath{\dot{#1}_{#2}}}
 \newcommand{\m}[1]{\ensuremath{\mathbf{#1}}}
 \newcommand{\mx}{\ensuremath{\m{x}}}
 \newcommand{\mxp}{\ensuremath{\mx^\prime}}
@@ -576,6 +578,18 @@
 \renewcommand*\@chapter[2][]{\std@chapter[#2]{#2}\chaptermark{#1}}
 \makeatother
 
+% Revision ---------------------------------------------------------------------
+\newcommand{\revG}[2]{%
+  \textcolor{mycolor1}{%
+  %\textbf{G{#1}}:~#2}%
+  #2}%
+}
+\newcommand{\revM}[2]{%
+  \textcolor{mycolor2}{%
+  %\textbf{M{#1}}:~#2}%
+  #2}%
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % BEGIN DOCUMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -592,7 +606,7 @@
 % Copyright --------------------------------------------------------------------
 \subsection*{Copyright Notice}
 
-The content of this thesis is the result of the author's original research work. Permission to include the following published material for non-commercial purposes is granted by the publishers' copyright policy. The published works are cited in the bibliography and are listed below.
+The content of this thesis is the result of the author's original research work. Permission to include the following published material for non-commercial purposes is granted by the publishers' copyright policy. The published works are the following.
 %
 \begin{itemize}
   \setlength{\itemsep}{0.0em}
@@ -603,9 +617,7 @@ The content of this thesis is the result of the author's original research work.
   \item \fullcite{stocco2024physical}
 \end{itemize}
 
-\subsection*{Material Submitted for Publication}
-
-This thesis contains material that is currently submitted for publication. The material has not yet been published, and this thesis provides a short adapted version of its content. The submitted works are cited in the bibliography and are listed below.
+This thesis also contains material that is currently submitted/accepted for publication. The material has not yet been published, and this thesis provides a short adapted version of its content. The submitted works are the following.
 %
 \begin{itemize}
   \setlength{\itemsep}{0.0em}
@@ -619,7 +631,7 @@ This thesis contains material that is currently submitted for publication. The m
 \vspace*{\fill}
 
 \begin{center}
-  Copyright \textcopyright{} 2024 Davide Stocco \\
+  Copyright \textcopyright{} 2024 Davide Stocco
 \end{center}
 \thispagestyle{empty}
 \cleardoublepage
@@ -640,77 +652,75 @@ This thesis contains material that is currently submitted for publication. The m
 \addcontentsline{toc}{chapter}{List of Abbreviations}
 \chapter*{List of Abbreviations}
 \markboth{LIST OF ABBREVIATIONS}{}
-\begin{multicols}{2}
-  \begin{acronym}[XXXXXXXX]
-    \setlength{\itemsep}{-0.5em}
-    \acro{AABB}{Axis-Aligned Bounding Box}
-    \acro{AD}{Automatic Differentiation}
-    \acro{ADAS}{Advanced Driver-Assistance Systems}
-    \acro{AI}{Artificial Intelligence}
-    \acro{API}{Application Programming Interface}
-    \acro{BC}{Boundary Condition}
-    \acro{BDF}{Backward Differentiation Formula}
-    \acro{BLAS}{Basic Linear Algebra Subprograms}
-    \acro{BSD}{Berkeley Software Distribution}
-    \acro{BVH}{Bounding Volume Hierarchy}
-    \acro{BVM}{Bounding Value Method}
-    \acro{BVP}{Bounding Volume Primitive}
-    \acro{CAS}{Computer Algebra System}
-    \acro{CERN}{Conseil Europ{\'e}en pour la Recherche Nucl{\'e}aire}
-    \acro{CPU}{Central Processing Unit}
-    \acro{DAE}{Differential-Algebraic Equation}
-    \acro{DE}{Discrete Element}
-    \acro{DOF}{Degree of Freedom}
-    \acro{DIL}{Driver In the Loop}
-    \acro{DSM}{Direct Stiffness Method}
-    \acro{FE}{Finite Element}
-    \acro{FEA}{Finite Element Analysis}
-    \acro{FEM}{Finite Element Method}
-    \acro{FFLU}{Fraction-Free Lower-Upper}
-    \acro{FSAE}{Formula SAE}
-    \acro{GPU}{Graphics Processing Unit}
-    \acro{GJ}{Gauss-Jordan}
-    \acro{GUI}{Graphical User Interface}
-    \acro{HIL}{Hardware In the Loop}
-    \acro{HRT}{Hard Real-Time}
-    \acro{IC}{Initial Condition}
-    \acro{IVP}{Initial Value Problem}
-    \acro{KKT}{Karush-Kuhn-Tucker}
-    \acro{LLNL}{Lawrence Livermore National Laboratory}
-    \acro{LAPACK}{Linear Algebra PACKage}
-    \acro{LU}{Lower-Upper}
-    \acro{MB}{Multi-Body}
-    \acro{MBD}{Multi-Body Dynamics}
-    \acro{MIT}{Massachusetts Institute of Technology}
-    \acro{MBS}{Multi-Body System}
-    \acro{MPL}{Mathematical Pseudo-Language}
-    \acro{NASA}{National Aeronautics and Space Administration}
-    \acro{NLP}{nonlinear Programming}
-    \acro{OC}{Optimal Control}
-    \acro{OCP}{Optimal Control Problem}
-    \acro{ODE}{Ordinary Differential Equation}
-    \acro{OS}{Operative System}
-    \acro{PDAE}{Partial Differential-Algebraic Equation}
-    \acro{PDE}{Partial Differential Equation}
-    \acro{RAM}{Random Access Memory}
-    \acro{RDF}{Road Data Format}
-    \acro{RK}{Runge-Kutta}
-    \acro{RKF}{Runge-Kutta-Fehlberg}
-    \acro{RT}{Real-Time}
-    \acro{RTF}{Real-Time Factor}
-    \acro{RMS}{Root Mean Square}
-    \acro{SA}{Structural Analysis}
-    \acro{SAE}{Society of Automotive Engineers}
-    \acro{SIL}{Software In the Loop}
-    \acro{SRT}{Soft Real-Time}
-    \acro{SUNDIALS}{SUite of Nonlinear and DIfferential-ALgebraic equation Solvers}
-    \acro{SVD}{Singular Value Decomposition}
-    \acro{TIRF}{Tire Research Facility}
-    \acro{TTC}{Tire Test Consortium}
-    \acro{TPPC}{Trajectory Prescribed Path Control}
-    \acro{UHD}{Ultra High Definition}
-  \end{acronym}
-\end{multicols}
+\begin{acronym}[XXXXXXXX]
+  \setlength{\itemsep}{-0.5em}
+  \acro{AABB}{Axis-Aligned Bounding Box}
+  \acro{AD}{Automatic Differentiation}
+  \acro{ADAS}{Advanced Driver-Assistance Systems}
+  \acro{AI}{Artificial Intelligence}
+  \acro{API}{Application Programming Interface}
+  \acro{BC}{Boundary Condition}
+  \acro{BDF}{Backward Differentiation Formula}
+  \acro{BLAS}{Basic Linear Algebra Subprograms}
+  \acro{BSD}{Berkeley Software Distribution}
+  \acro{BVH}{Bounding Volume Hierarchy}
+  \acro{BVM}{Bounding Value Method}
+  \acro{BVP}{Bounding Volume Primitive}
+  \acro{CAS}{Computer Algebra System}
+  \acro{CERN}{Conseil Europ{\'e}en pour la Recherche Nucl{\'e}aire}
+  \acro{CPU}{Central Processing Unit}
+  \acro{DAE}{Differential-Algebraic Equation}
+  \acro{DE}{Discrete Element}
+  \acro{DOF}{Degree of Freedom}
+  \acro{DIL}{Driver In the Loop}
+  \acro{DSM}{Direct Stiffness Method}
+  \acro{FE}{Finite Element}
+  \acro{FEA}{Finite Element Analysis}
+  \acro{FEM}{Finite Element Method}
+  \acro{FFLU}{Fraction-Free Lower-Upper}
+  \acro{FSAE}{Formula SAE}
+  \acro{GPU}{Graphics Processing Unit}
+  \acro{GJ}{Gauss-Jordan}
+  \acro{GUI}{Graphical User Interface}
+  \acro{HIL}{Hardware In the Loop}
+  \acro{HRT}{Hard Real-Time}
+  \acro{IC}{Initial Condition}
+  \acro{IVP}{Initial Value Problem}
+  \acro{KKT}{Karush-Kuhn-Tucker}
+  \acro{LLNL}{Lawrence Livermore National Laboratory}
+  \acro{LAPACK}{Linear Algebra PACKage}
+  \acro{LU}{Lower-Upper}
+  \acro{MB}{Multi-Body}
+  \acro{MBD}{Multi-Body Dynamics}
+  \acro{MIT}{Massachusetts Institute of Technology}
+  \acro{MBS}{Multi-Body System}
+  \acro{MPL}{Mathematical Pseudo-Language}
+  \acro{NASA}{National Aeronautics and Space Administration}
+  \acro{NLP}{nonlinear Programming}
+  \acro{OC}{Optimal Control}
+  \acro{OCP}{Optimal Control Problem}
+  \acro{ODE}{Ordinary Differential Equation}
+  \acro{OS}{Operative System}
+  \acro{PDAE}{Partial Differential-Algebraic Equation}
+  \acro{PDE}{Partial Differential Equation}
+  \acro{RAM}{Random Access Memory}
+  \acro{RDF}{Road Data Format}
+  \acro{RK}{Runge-Kutta}
+  \acro{RKF}{Runge-Kutta-Fehlberg}
+  \acro{RT}{Real-Time}
+  \acro{RTF}{Real-Time Factor}
+  \acro{RMS}{Root Mean Square}
+  \acro{SA}{Structural Analysis}
+  \acro{SAE}{Society of Automotive Engineers}
+  \acro{SIL}{Software In the Loop}
+  \acro{SRT}{Soft Real-Time}
+  \acro{SUNDIALS}{SUite of Nonlinear and DIfferential-ALgebraic equation Solvers}
+  \acro{SVD}{Singular Value Decomposition}
+  \acro{TIRF}{Tire Research Facility}
+  \acro{TTC}{Tire Test Consortium}
+  \acro{TPPC}{Trajectory Prescribed Path Control}
+  \acro{UHD}{Ultra High Definition}
+\end{acronym}
 
 % Mainmatter -------------------------------------------------------------------
 \include{chapters/chapter_1}

@@ -65,52 +65,52 @@ In the 3D Euclidean space, a point represents an exact location. A point $\pt{p}
 The \Point{} class is built through public inheritance from the virtual class \Entity{} and the \Eigen{}::\MatrixBase{} template class. It is worth noting that in many \cpp{} libraries, vectors and points are often described by the same class. However, in \Acme{}, we have provided a clear way to distinguish them. This distinction is evident in the inheritance structure, where the \Point{} class inherits publicly from the \Entity{} class. On the other hand, the inheritance of the \MatrixBase{} template class makes it possible to easily build mathematical vectors out of point entities and vice versa. In our software, both vectors and points are represented by column sets of elements.
 
 \paragraph{\Line{}}
-A line $\boldsymbol{\ell}$ is defined by an origin point $\pt{o}$ and a unit direction vector $\et{d}$, such that the line corresponds to the set
+A line $\sett{\ell}$ is defined by an origin point $\pt{o}$ and a unit direction vector $\et{d}$, such that the line corresponds to the set
 %
 \begin{equation*}
-  \boldsymbol{\ell}(\pt{o}, \et{d}) = \left\{ \pt{o} + \et{d} t ~ \big| ~ t \in \mathbb{R} \right\} \, \text{.}
+  \sett{\ell}(\pt{o}, \et{d}) = \left\{ \pt{o} + \et{d} t ~ \big| ~ t \in \mathbb{R} \right\} \, \text{.}
 \end{equation*}
 
 \paragraph{\Ray{}}
-A ray $\boldsymbol{\varrho}$ is defined by an origin point $\pt{o}$ and a unit direction vector $\et{d}$, such that the ray corresponds to the set
+A ray $\sett{\varrho}$ is defined by an origin point $\pt{o}$ and a unit direction vector $\et{d}$, such that the ray corresponds to the set
 %
 \begin{equation*}
-  \boldsymbol{\varrho}(\pt{o}, \et{d}) = \left\{ \pt{o} + \et{d} t ~ \big| ~ t \in \mathbb{R}_{\ge0} \right\} \, \text{.}
+  \sett{\varrho}(\pt{o}, \et{d}) = \left\{ \pt{o} + \et{d} t ~ \big| ~ t \in \mathbb{R}_{\ge0} \right\} \, \text{.}
 \end{equation*}
 
 \paragraph{\Plane{}}
-A plane $\boldsymbol{\pi}$ is defined by a generic point on the plane $\pt{p}$ and a unit normal vector $\et{n}$, such that the plane corresponds to the set
+A plane ${\pi}$ is defined by a generic point on the plane $\pt{p}$ and a unit normal vector $\et{n}$, such that the plane corresponds to the set
 %
 \begin{equation*}
-  \boldsymbol{\pi}(\pt{p}, \et{n}) = \left\{ \et{n} \cdot (\pt{p} - \left[x, y, z\right]^{\top}) = 0 ~ \big| ~ \left[x, y,  z\right]^{\top} \in \mathbb{R}^3 \right\} \, \text{.}
+  {\pi}(\pt{p}, \et{n}) = \left\{ \et{n} \cdot (\pt{p} - \left[x, y, z\right]^{\top}) = 0 ~ \big| ~ \left[x, y,  z\right]^{\top} \in \mathbb{R}^3 \right\} \, \text{.}
 \end{equation*}
 
 \paragraph{\Segment{}}
-A segment $\boldsymbol{\sigma}$ is defined by two points $\pt{p}_1$ and $\pt{p}_2$, such that the segment corresponds to the set
+A segment $\sett{\sigma}$ is defined by two points $\pt{p}_1$ and $\pt{p}_2$, such that the segment corresponds to the set
 %
 \begin{equation*}
-  \boldsymbol{\sigma}(\pt{p}_1, \pt{p}_2) = \left\{ \pt{p}_1 + \left(\pt{p}_2-\pt{p}_1\right)t ~ \big| ~ t \in \mathbb{R}, \, 0 \le t \le 1 \right\} \, \text{.}
+  \sett{\sigma}(\pt{p}_1, \pt{p}_2) = \left\{ \pt{p}_1 + \left(\pt{p}_2-\pt{p}_1\right)t ~ \big| ~ t \in \mathbb{R}, \, 0 \le t \le 1 \right\} \, \text{.}
 \end{equation*}
 
 \paragraph{\Triangle{}}
-A triangle $\boldsymbol{\tau}$ is defined by three points $\pt{p}_1$, $\pt{p}_2$ and $\pt{p}_3$, such that the triangle corresponds to the set
+A triangle $\sett{\tau}$ is defined by three points $\pt{p}_1$, $\pt{p}_2$ and $\pt{p}_3$, such that the triangle corresponds to the set
 %
 \begin{equation*}
-  \boldsymbol{\tau}(\pt{p}_1, \pt{p}_2, \pt{p}_3) = \left\{ t_1\pt{p}_1 + t_2\pt{p}_2 + t_3\pt{p}_3 ~ \big| ~ t_1, t_2, t_3 \in \mathbb{R}_{\ge0}, \, t_1 + t_2+t_3 \le 1 \right\} \, \text{.}
+  \sett{\tau}(\pt{p}_1, \pt{p}_2, \pt{p}_3) = \left\{ t_1\pt{p}_1 + t_2\pt{p}_2 + t_3\pt{p}_3 ~ \big| ~ t_1, t_2, t_3 \in \mathbb{R}_{\ge0}, \, t_1 + t_2+t_3 \le 1 \right\} \, \text{.}
 \end{equation*}
 
 \paragraph{\Disk{}}
-A disk $\boldsymbol{\phi}$ is defined by a radius $r$, a center point $\pt{o}$, and a unit normal vector to the disk face $\et{n}$. Equivalently, using the same notation for the center point and the unit normal vector to the face, a disk can be defined by a radius $r$ and a laying plane $\boldsymbol{\pi}(\pt{o}, \et{n})$. In both cases, the disk corresponds to the set
+A disk $\sett{\phi}$ is defined by a radius $r$, a center point $\pt{o}$, and a unit normal vector to the disk face $\et{n}$. Equivalently, using the same notation for the center point and the unit normal vector to the face, a disk can be defined by a radius $r$ and a laying plane ${\pi}(\pt{o}, \et{n})$. In both cases, the disk corresponds to the set
 %
 \begin{equation*}
-  \boldsymbol{\phi}(r, \pt{o}, \et{n}) = \boldsymbol{\phi}(r, \boldsymbol{\pi}(\pt{o}, \et{n})) = \left\{ \big\| \pt{o} - \left[x, y, z\right]^{\top} \big\|^2_2 \le r^2 ~ \big| ~ \left[x, y, z\right]^{\top} \in \boldsymbol{\pi}(\pt{o}, \et{n}) \right\} \, \text{.}
+  \sett{\phi}(r, \pt{o}, \et{n}) = \sett{\phi}(r, {\pi}(\pt{o}, \et{n})) = \left\{ \big\| \pt{o} - \left[x, y, z\right]^{\top} \big\|^2_2 \le r^2 ~ \big| ~ \left[x, y, z\right]^{\top} \in {\pi}(\pt{o}, \et{n}) \right\} \, \text{.}
 \end{equation*}
 
 \paragraph{\Ball{}}
-A ball $\boldsymbol{\omega}$ is defined by a radius $r$ and a center point $\pt{o}$, such that it corresponds to the set
+A ball $\sett{\omega}$ is defined by a radius $r$ and a center point $\pt{o}$, such that it corresponds to the set
 %
 \begin{equation*}
-  \boldsymbol{\omega}(r, \pt{o}) = \left\{ \big\| \pt{o} - \left[x, y, z\right]^{\top} \big\|^2_2 \le r^2 ~ \big| ~\left[x, y, z\right]^{\top} \in \mathbb{R}^3 \right\} \, \text{.}
+  \sett{\omega}(r, \pt{o}) = \left\{ \big\| \pt{o} - \left[x, y, z\right]^{\top} \big\|^2_2 \le r^2 ~ \big| ~\left[x, y, z\right]^{\top} \in \mathbb{R}^3 \right\} \, \text{.}
 \end{equation*}
 
 \subsection{Mesh Tools}
@@ -128,7 +128,7 @@ The \Collection{} object consists of a vector of \SharedPointer{} to \Entity{} t
 \end{figure}
 
 \paragraph{\Aabb{}}
-An \Aabb{} $\boldsymbol{\beta}$ is defined by a maximum point $\pt{p}_{\max}$ and a minimum point $\pt{p}_{\min}$, which are respectively equal to
+An \Aabb{} $\sett{\beta}$ is defined by a maximum point $\pt{p}_{\max}$ and a minimum point $\pt{p}_{\min}$, which are respectively equal to
 %
 \begin{equation*}
   \pt{p}_{\max} = \left[x_{\max}, y_{\max}, z_{\max}\right]^{\top}
@@ -139,7 +139,7 @@ An \Aabb{} $\boldsymbol{\beta}$ is defined by a maximum point $\pt{p}_{\max}$ an
 The \Aabb{} corresponds to the set
 %
 \begin{equation*}
-  \boldsymbol{\beta} (\pt{p}_{\max}, \pt{p}_{\min}) =
+  \sett{\beta} (\pt{p}_{\max}, \pt{p}_{\min}) =
   \left\{
   \left[x, y, z\right]^{\top} \in \mathbb{R}^3 ~ \bigg| ~
   \begin{array}{c}
@@ -164,6 +164,7 @@ The \Acme{} geometry library consists of a \cpp{} core and a \Matlab{} \Mex{} wr
 
 \begin{table}[htb]
   \centering
+  \setlength{\tabcolsep}{0.3em}
   \begin{tabular}{ccccccccc}
     \toprule
     \makecell[cc]{\textbf{Geometrical}\\\textbf{intersection}\\\textbf{tests}} &
@@ -188,6 +189,7 @@ The \Acme{} geometry library consists of a \cpp{} core and a \Matlab{} \Mex{} wr
 
 \begin{table}[htb]
   \centering
+  \setlength{\tabcolsep}{0.3em}
   \begin{tabular}{ccccccccc}
     \toprule
     \makecell[cc]{\textbf{Geometrical}\\\textbf{intersection}\\\textbf{tests}} &
@@ -259,8 +261,13 @@ Table~\ref{app1:tab:acme_timing} presents a comparison of timing performances be
 We now present an example that illustrates some capabilities of the \Acme{} library. Specifically, the same example will be presented in both the \cpp{} language and the \Matlab{} environment, allowing us to understand the few differences between the two working environments. In the following \cpp{} and \Matlab{} code snippets, we will create the \Disk{} objects
 %
 \begin{equation*}
-  \boldsymbol{\phi}_1(r_1, \pt{o}_1, \et{n}_1) = \boldsymbol{\phi}_1(2, \, \left[0, 0, 0\right]^{\top}, \left[0, 1, 0\right]^{\top}) \, \text{,} \quad \text{and} \quad
-  \boldsymbol{\phi}_2(r_2, \pt{o}_2, \et{n}_2) = \boldsymbol{\phi}_2(1, \, \left[0, 0, 0\right]^{\top}, \left[1, 1, 0\right]^{\top}) \, \text{,}
+  \sett{\phi}_1(r_1, \pt{o}_1, \et{n}_1) = \sett{\phi}_1(2, \, \left[0, 0, 0\right]^{\top}, \left[0, 1, 0\right]^{\top}) \, \text{,}
+\end{equation*}
+%
+and
+%
+\begin{equation*}
+\sett{\phi}_2(r_2, \pt{o}_2, \et{n}_2) = \sett{\phi}_2(1, \, \left[0, 0, 0\right]^{\top}, \left[1, 1, 0\right]^{\top}) \, \text{,}
 \end{equation*}
 %
 that will be indicated by the variables \code{d1} and \code{d2}, respectively. Then, we will then intersect them, obtaining a geometric entity whose type is unknown to us. Subsequently, we will use the \code{type()} method to identify and print a string describing the type of the obtained \Entity{} object. In both cases, the output will be the string ``\code{segment}''. Finally, we will plot the obtained \Entity{} object in a \Matlab{} figure. The \cpp{} and \Matlab{} code snippets are reported in the following. The visualization of the example problem is reported in Figure~\ref{app1:fig:acme_example}, which is obtained through the last 6 lines of the \Matlab{} example code. \\[1.0em]
@@ -286,7 +293,6 @@ int main(void){
 
   // Check output entity type
   cout << e1->type() << endl;
-
   return 0;
 }
 \end{mapleboxed}
@@ -311,7 +317,6 @@ disp(e1.type());
 
 % Plot output
 f1 = figure;
-xlabel('x'); ylabel('y'); zlabel('z');
 grid on; grid minor;
 d1.plot(f1, 'red');
 d2.plot(f1, 'blue');

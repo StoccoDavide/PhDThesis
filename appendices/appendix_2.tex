@@ -34,13 +34,13 @@ This appendix has two main goals. The first is to provide a methodology for the 
 Let us consider a reference frame $\pt{H}xyz$ with unit vectors ($\et{h}_x$, $\et{h}_y$, $\et{h}_z$), whose origin $\pt{H}$ is located in the wheel hub (see Figure~\ref{app2:fig:tire_shell}). The axes are oriented according to the ISO 8855:2011 standard~\cite{iso88552011}. The $x$-axis is directed towards the longitudinal direction of motion, the $z$-axis points upwards and the $y$-axis is oriented in such a way that the coordinate system is right-handed. The tire is defined geometrically as an axially symmetric (around the axis $\et{h}_y$), convex and closed set $\sett{T}$
 %
 \begin{equation*}
-  \sett{T} = \big\{ [x, y, z]^\mathrm{T} \in \mathbb{R}^3, ~ y \in [ y_l, \, y_r ], ~ R(y):\mathbb{R} \mapsto \mathbb{R}_{\geq 0} ~ \big\lvert ~ \sqrt{x^2+z^2} \leq R(y) \big\}  \, \text{,}
+  \sett{T} = \left\{ [x, y, z]^\mathrm{T} \in \mathbb{R}^3, ~ y \in [ y_l, \, y_r ], ~ R(y):\mathbb{R} \mapsto \mathbb{R}_{\geq 0} ~ \big\lvert ~ \sqrt{x^2+z^2} \leq R(y) \right\}  \, \text{,}
 \end{equation*}
 %
 whose interior and boundary are respectively denoted with $\interior{T}$ and $\boundary{T}$. The function $R(y)$ can be chosen arbitrarily to properly reconstruct the tire's external morphology. On the other hand, the ground is modeled as a closed half-space $\sett{G}$
 %
 \begin{equation*}
-  \sett{G} = \big\{ [x, y, z]^\mathrm{T} \in \mathbb{R}^3 ~ \big\lvert ~ z \leq g(x,y), ~ g(x,y): \mathbb{R}^2 \mapsto \mathbb{R}, ~ f(x,y):\mathbb{R}^2 \mapsto \mathbb{R}_{\geq 0}\big\}  \, \text{,}
+  \sett{G} = \left\{ [x, y, z]^\mathrm{T} \in \mathbb{R}^3 ~ \big\lvert ~ z \leq g(x,y), ~ g(x,y): \mathbb{R}^2 \mapsto \mathbb{R}, ~ f(x,y):\mathbb{R}^2 \mapsto \mathbb{R}_{\geq 0} \right\}  \, \text{,}
 \end{equation*}
 %
 whose interior and boundary are respectively denoted with $\interior{G}$ and $\boundary{G}$. The map $g(x,y)$ is a mapping between $\mathbb{R}^2$ to $\mathbb{R}$ that defines the height of the track surface. Similarly, the map $f(x,y)$ defines the local friction coefficient scaling factor, which is used to scale the tire performance according to the local ground surface conditions. Notice that the concept behind the friction coefficient scaling factor can be extended to other relevant local properties of the ground surface, \eg{}, temperature, water film thickness, and asphalt wear.
@@ -54,7 +54,7 @@ whose interior and boundary are respectively denoted with $\interior{G}$ and $\b
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=6.0cm]{./figures/appendix_2/zoom_ipe}
+  \includegraphics[width=5.75cm]{./figures/appendix_2/zoom_ipe}
   \caption{Representation of the ground boundary $\boundary{G}$ normal directions (green arrows) inside the tire set boundary $\boundary{T}$. Each of these directions, together with other information, is exploited to calculate the contact point $\pt{P}$ and normal $\et{n}$.}
   \label{app2:fig:zoom}
 \end{figure}
@@ -162,8 +162,8 @@ The representation of tire and ground allows us to restate the enveloping model 
 \begin{equation}
   \begin{split}
     \begin{aligned}
-      \sett{\phi} = \big\{ w \in \mathbb{R}_{\geq 0}, ~ \pt{x} = \left[x, y, z\right]^\mathrm{T} ~ \big\lvert ~ \pt{O} = \left[0, \, y, \, 0\right]^\mathrm{T}, \dots \\
-      r = R(y), ~ \|\pt{O} - \pt{x}\| \leq r, ~ \et{h}_y \cdot (\pt{O} - \pt{x}) = 0\big\} \, \text{.}
+      \sett{\phi} = \Big\{ w \in \mathbb{R}_{\geq 0}, ~ \pt{x} = \left[x, y, z\right]^\mathrm{T} ~ \big\lvert ~ \pt{O} = \left[0, \, y, \, 0\right]^\mathrm{T}, \dots \\
+      r = R(y), ~ \|\pt{O} - \pt{x}\| \leq r, ~ \et{h}_y \cdot (\pt{O} - \pt{x}) = 0\Big\} \, \text{.}
     \end{aligned}
   \end{split}
   \label{app2:eq:rib}
@@ -174,7 +174,7 @@ Similarly, the discretized ground boundary $\boundary{G}$ is represented through
 \begin{equation}
   \begin{split}
     \begin{aligned}
-      \sett{\tau} = \big\{ & \lambda\in\mathbb{R}_{\geq 0}, ~ \pt{x}\in\mathbb{R}^3 ~ \big\lvert ~ \pt{x} = t_1\,\pt{p}_1 + t_2\,\pt{p}_2 + t_3\,\pt{p}_3, ~ \dots \\
+      \sett{\tau} = \Big\{ & \lambda\in\mathbb{R}_{\geq 0}, ~ \pt{x}\in\mathbb{R}^3 ~ \Big\lvert ~ \pt{x} = t_1\,\pt{p}_1 + t_2\,\pt{p}_2 + t_3\,\pt{p}_3, ~ \dots \\
       &t_1 + t_2 + t_3 \leq 1, ~ t_1\geq 0, ~ t_2\geq 0, ~ t_3\geq 0\big\} \, \text{,}
     \end{aligned}
   \end{split}
@@ -186,7 +186,7 @@ and where $\pt{p}_1$, $\pt{p}_2$, and $\pt{p}_3$ are the three vertices of the t
 The intersection between the set of ribs \sett{S} and the ground mesh triangles \sett{M} allows us to identify the contact parameters, namely the contact patch area $A$, the intersection volume $V$, the contact point location $\pt{P}$, and the contact force direction $\et{n}$. Trivially, if a generic rib $\sett{\phi}$ is intersected with a generic mesh triangle $\sett{\tau}$, the result will be a set $\sett{\sigma} = \sett{\phi} \cap \sett{\tau}$. This intersection can lead to four different cases, in which the set $\sett{\sigma}$ can be: (1) an empty set, if $\sett{\phi}$ does not touch $\sett{\tau}$ at all; (2) a point, if $\sett{\phi}$ intersects $\sett{\tau}$ one of its vertices; (3) a segment, if $\sett{\phi}$ intersects $\sett{\tau}$ or a portion of it; and (4) a convex hull, if $\sett{\phi}$ and $\sett{\tau}$ are coplanar and intersect. Cases 1 and 2 are not considered since they are not relevant to the modeled contact. Case 4 corresponds to a tire lying on the ground, which is not relevant for a vehicle simulation in which the tire is always rolling. Hence, case 3 is the only relevant one for the modeled contact. In this case, the intersection region is a segment $\sett{\sigma}$ such that
 %
 \begin{equation*}
-  \sett{\sigma} = \big\{ \pt{x}\in\mathbb{R}^3 ~ \big\lvert ~ \pt{x}=(1-t)\,\pt{p}_a + t\,\pt{p}_b, ~ t \in [0, \, 1] \big\}
+  \sett{\sigma} = \left\{ \pt{x}\in\mathbb{R}^3 ~ \big\lvert ~ \pt{x}=(1-t)\,\pt{p}_a + t\,\pt{p}_b, ~ t \in [0, \, 1] \right\}
    \, \text{,}
 \end{equation*}
 %
@@ -313,7 +313,7 @@ The mesh represents the discretized ground set $\sett{M}$ on which the tire roll
 Using a mesh to represent a flat ground surface is not always the most efficient choice, as this can prolong the time needed for computation unnecessarily. With a \Mesh{} the software is forced to go through the creation of an \AabbTree{} and to make an evaluation of the intersection of the same tree with the \Aabb{} containing the tire. To eliminate this source of inefficiency, the \Flat{} class has been implemented, to represent a perfectly flat terrain. The \Flat{} object publicly inherit from the \Acme{}::\Plane{} object and a friction coefficient scaling factor $\lambda$ is added to the class description
 %
 \begin{equation*}
-  \sett{\pi} = \big\{ \lambda \in \mathbb{R}_{\geq 0}, ~ \pt{x},\pt{p},\et{n} \in \mathbb{R}^3 ~ \big\lvert ~ \et{n} \cdot (\pt{p} - \pt{x}) = 0\big\}
+  {\pi} = \left\{ \lambda \in \mathbb{R}_{\geq 0}, ~ \pt{x},\pt{p},\et{n} \in \mathbb{R}^3 ~ \big\lvert ~ \et{n} \cdot (\pt{p} - \pt{x}) = 0 \right\}
    \, \text{,}
 \end{equation*}
 %
@@ -424,7 +424,7 @@ The contact parameters are calculated by intersecting the \Shell{} object and th
 \section{Simulations and Discussion}
 \label{app2:sec:discusson}
 
-In this section, we present some simulations to prove the capabilities of the proposed model. The simulations are divided into two categories: quasi-static simulations, and \ac{RT} performance assessments. Quasi-static simulations are carried out according to the SAE J2731 standard~\cite{saej2731} to assess the enveloping capabilities at low speed of the presented model, while dynamic simulations highlight the outcomes of the tire-ground enveloping model in a dynamic scenario. In both types of simulations, a comparison with the \Swift{} model~\cite{schmeitz2004semiempirical} and the \TMEasy{} model~\cite{rill2018sophisticated} is provided. Simulations are performed by modeling the tire as a 205/60R15 (\SSI{2.2}{\bar} inflation pressure) passenger car tire, which is one of the tires used in~\cite{schmeitz2004semiempirical} to validate the \Swift{} model. The tire is discretized into 10 $\times$ 10 cams for the \Swift{} model and 10 ribs for the \Enve{} model.
+In this section, we present some simulations to prove the capabilities of the proposed model. The simulations are divided into two categories: quasi-static simulations, and \ac{RT} performance assessments. Quasi-static simulations are carried out according to the SAE J2731 standard~\cite{saej2731} to assess the enveloping capabilities at low speed of the presented model, while dynamic simulations highlight the outcomes of the tire-ground enveloping model in a dynamic scenario. In both types of simulations, a comparison with the \Swift{} model~\cite{schmeitz2004semiempirical} and the \TMEasy{} model~\cite{rill2018sophisticated} is provided. Simulations are performed by modeling the tire as a 205/60R15 (\SSI{2.2}{\barp} inflation pressure) passenger car tire, which is one of the tires used in~\cite{schmeitz2004semiempirical} to validate the \Swift{} model. The tire is discretized into 10 $\times$ 10 cams for the \Swift{} model and 10 ribs for the \Enve{} model.
 
 \subsection{Quasi-Static Simulations on Uneven Road Surfaces}
 \label{app2:sec:enveloping}
