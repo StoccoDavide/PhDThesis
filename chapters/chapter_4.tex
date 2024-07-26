@@ -521,7 +521,7 @@ The \Indigo{} \Matlab{} toolbox is an object-oriented library that allows the us
 To respect the invariants during the integration the \emph{standard projection} method is applied~\cite{hairer2000symmetric}. This method consists of projecting the solution $\mx$ of the numerically integrated reduced-index system onto the invariants manifold $\m{h}(\mx, \m{v}, t) = \m{0}$, which is equivalent to the following constrained minimization
 %
 \begin{equation*}
-  \underset{\widetilde{\mx}}{\textrm{minimize}} \quad \dfrac{1}{2}\left(\mx - \widetilde{\mx}\right)^2
+  \underset{\mx}{\textrm{minimize}} \quad \dfrac{1}{2}\left(\mx - \tilde{\mx}\right)^2
     \quad \textrm{subject to} \quad
     \m{h}(\mx, \m{v}, t) = \m{0}.
 \end{equation*}
@@ -581,7 +581,7 @@ As a first demonstration of the proposed index reduction algorithm capabilities,
     Index-1 \acp{DAE} & $0$ & $39\cf + 36\cm + 13\ca$ & $68\cf + 72\cm + 33\ca$ \\
     Index-0 \acp{DAE} & $388\cf + 424\cm + 180\ca$ & $79\cf + 77\cm + 26\ca$ & $0$ \\
     \midrule
-    \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 258\cf + 239\cm + 109\ca$ \quad $\mh = 97\cf + 105\cm + 47\ca$} \\
+    \textbf{Reduced \acp{DAE}} & \multicolumn{3}{c}{$\mF = 258\cf + 239\cm + 109\ca$ \quad $\mh = 101\cf + 105\cm + 47\ca$} \\
     \bottomrule
     \end{tabular}}
 \end{table}
@@ -621,7 +621,7 @@ with parameters $\rho = 5$ and $r = 10$, $c = 1 - {r} / {(x_{1}^2 + x_{2}^2)^{1/
 The numerical integration of the reduced-index system is performed through Implicit Euler, RadauIIA3, and RadauIIA5 \ac{RK} methods. To respect the invariants during the integration the \emph{standard projection} method is applied~\cite{hairer2000symmetric}. This method consists of projecting the solution $\mx$ of the numerically integrated system onto the invariants on the hidden constraints $\mh = \m{0}$, which is equivalent to the constrained minimization
 %
 \begin{equation*}
-  \underset{\tilde{\mx}}{\textrm{minimize}} \quad \dfrac{1}{2}\left(\mx - \tilde{\mx}\right)^2
+  \underset{\mx}{\textrm{minimize}} \quad \dfrac{1}{2}\left(\mx - \tilde{\mx}\right)^2
     \quad \textrm{subject to} \quad
     \mh = \m{0} \, \text{.}
 \end{equation*}

@@ -9,7 +9,7 @@ While the solution of \acp{ODE} has been extensively studied and is well underst
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
-\section{Overview on Differential-Algebraic Equations}
+\section[Overview on DAEs]{Overview on Differential-Algebraic Equations}
 
 A system of equations involving one or more unknown functions and their derivatives is referred to as a \ac{DAE} system (or \acp{DAE}). In its general form, a first-order \ac{DAE} system is expressed as
 %
@@ -53,7 +53,7 @@ It is worth noting that, while the simple pendulum's motion can be described by 
 
 \acp{DAE}, in either general or specific formulations, are commonly encountered in mathematical models across diverse engineering and scientific disciplines. Further real-life examples of \ac{DAE} systems, spanning from \ac{MB} mechanical systems to electrical circuits and \acp{TPPC}, are detailed in~\cite{brenan1995numerical}. It is important to note that while constraints in mechanical systems like the pendulum physically represent the system's limitations, those in other scenarios, such as \acp{TPPC}, may also serve as performance specifications or control objectives.
 
-\subsection{The Significance of Differential-Algebraic Equations}
+\subsection[The Significance of DAEs]{The Significance of Differential-Algebraic Equations}
 
 As demonstrated in the example above, working with implicit \ac{DAE} models often provides a more natural representation compared to explicit formulations, particularly when dealing with complex systems. Indeed, \ac{DAE} systems represent a generalization of \acp{ODE}. However, contrary to \acp{DAE}, \ac{ODE} systems have a well-established literature in mathematical theory and numerical solution technique. They can be typically expressed as $\m{x}^{\prime} = \m{f}(\m{x}, t)$ or $\m{M}(\m{x}, t)\m{x}^{\prime} = \m{f}(\m{x}, t)$ with $\m{M}(\m{x}, t)$ a non-singular matrix. Nonetheless, the broader scope of \acp{DAE} encompasses problems with distinct mathematical properties and presents unique challenges for numerical resolution.
 
@@ -327,9 +327,9 @@ All the showcased software solutions offer integrators for index-0 and index-1 \
 
 \section{Advancing Index Reduction}
 
-Notably, in findings presented by the group of Roswitha M{\"a}rz, which are summarized in~\cite{lamour2013differential}, there is little mention of symbolic computation tools in the derivation of projector functions and matrix function sequences. Instead, the authors rely on numerical factorization methods with a coupled automatic differentiation method to compute the projector functions and the matrix function sequences~\cite{lamour2011computational, schwarz2015diagnosis}. However, it is noteworthy that in \citet{lamour2013differential}, authors show that the latest state-of-the-art \ac{CAS} allows the derivation of smooth symbolic projector functions, especially for simple or small-scale \acp{DAE}. This can significantly reduce the computational cost of the projector-based analysis method as it eliminates the need for numerical factorization methods and automatic differentiation.
+Notably, in findings presented by the group of Roswitha M{\"a}rz, which are detailed in~\cite{lamour2013differential}, there is little mention of symbolic computation tools in the derivation of projector functions and matrix function sequences. Instead, the authors rely on numerical factorization methods with a coupled automatic differentiation method to compute the projector functions and the matrix function sequences~\cite{lamour2011computational, schwarz2015diagnosis}. However, it is noteworthy that in \citet{lamour2013differential}, authors show that the latest state-of-the-art \ac{CAS} allows the derivation of smooth symbolic projector functions, especially for simple or small-scale \acp{DAE}. This can significantly reduce the computational cost of the projector-based analysis method as it eliminates the need for numerical factorization methods and automatic differentiation.
 
-Nevertheless, the most relevant consideration arising from what we stated in Section~\ref{chap2:sec:index_reduction_methods}, as well as in \citet{bojarincev1980regular, gear1984ode, griepentrog1989basic} (despite being these works focused on linear \acp{DAE}), is that a neat separation between the differential and algebraic equations of the \ac{DAE} system is crucial for the successful application of the differential index reduction method. This separation is achieved by transforming the \ac{DAE} system into its Hessenberg form. However, this process is not always straightforward. Particularly, for generic nonlinear \acp{DAE}, the separation process can be computationally expensive and time-consuming.
+Nevertheless, the most relevant consideration arising from what we stated in Section~\ref{chap2:sec:index_reduction_methods}, as well as in \citet{bojarincev1980regular, gear1984ode, griepentrog1989basic, mehrmann2015index} (despite part of these works focused on linear \acp{DAE}), is that a neat separation between the differential and algebraic equations of the \ac{DAE} system is crucial for the successful application of the differential index reduction method. This separation is achieved by transforming the \ac{DAE} system into its Hessenberg form. However, this process is not always straightforward. Particularly, for generic nonlinear \acp{DAE}, the separation process can be computationally expensive and time-consuming.
 
 \paragraph{A Novel Symbolic Algorithm for Index Reduction}
 

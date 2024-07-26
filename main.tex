@@ -144,10 +144,11 @@
 
 \definecolor{blue_ncs}{rgb}{0.0, 0.53, 0.74}
 \usepackage[
-  colorlinks  = true,
+  hidelinks, % remove the boxes around the links
+  colorlinks  = false, %true,
   linkcolor   = black,
-  urlcolor    = blue_ncs,
-  citecolor   = blue_ncs,
+  urlcolor    = black, %blue_ncs,
+  citecolor   = black, %blue_ncs,
   anchorcolor = black
 ]{hyperref}                      % generate hyper-reference links in the pdf document
 %\usepackage{cleveref}            % to reference equations, figures, tables, etc
@@ -257,8 +258,7 @@
 
 % Set custom margins for the document ------------------------------------------
 \newgeometry{top=2.5cm, bottom=2.0cm, left=2.0cm, right=2.0cm} % digital version
-%\newgeometry{top=2.0cm, bottom=2.0cm, width=11.0cm, bindingoffset=1.2cm} % print version
-%headsep=0.25in, headheight=20pt, heightrounded
+%\newgeometry{top=2.5cm, bottom=2.0cm, width=10.8cm, bindingoffset=0.0cm} % print version
 
 % Write 10^0 instead of 1 (requires 'siunitx') ---------------------------------
 \sisetup{retain-zero-exponent=false, parse-numbers=false, per-mode=symbol}
@@ -578,17 +578,12 @@
 \renewcommand*\@chapter[2][]{\std@chapter[#2]{#2}\chaptermark{#1}}
 \makeatother
 
-% Revision ---------------------------------------------------------------------
-\newcommand{\revG}[2]{%
-  \textcolor{mycolor1}{%
-  %\textbf{G{#1}}:~#2}%
-  #2}%
-}
-\newcommand{\revM}[2]{%
-  \textcolor{mycolor2}{%
-  %\textbf{M{#1}}:~#2}%
-  #2}%
-}
+% Copyright --------------------------------------------------------------------
+\usepackage[
+  type     = {CC},       % Creative Commons license
+  modifier = {by-nc-nd}, % Attribution-NonCommercial-NoDerivatives
+  version  = {4.0},      % Version 4.0 International
+]{doclicense}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % BEGIN DOCUMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -600,10 +595,25 @@
 \emptystyles
 \include{frontmatter/frontmatter}
 \hbox{}
+
+% Copyright --------------------------------------------------------------------
+\doclicenseThis{}
+\vspace*{\fill}
+Davide Stocco: \emph{Symbolic Computation Methods for the Numerical Solution of Dynamic Systems Described by Differential-Algebraic Equations} \textcopyright{} July 2024 \\[1.0em]
+\textsc{Supervisors:} \\
+Prof. Enrico Bertolazzi \\
+Prof. Francesco Biral \\[1.0em]
+\textsc{Members of the Committee:} \\
+Prof. Francesca Mazzia \\
+Prof. Matthias Gerdts \\
+Prof. Luca Zaccarian \\[1.0em]
+\textsc{Date:} \\
+August 1, 2024 \\[1.0em]
+\textsc{Location:} \\
+Department of Industrial Engineering, University of Trento, Povo, Trento, Italy
 \thispagestyle{empty}
 \newpage
 
-% Copyright --------------------------------------------------------------------
 \subsection*{Copyright Notice}
 
 The content of this thesis is the result of the author's original research work. Permission to include the following published material for non-commercial purposes is granted by the publishers' copyright policy. The published works are the following.
@@ -630,9 +640,6 @@ This thesis also contains material that is currently submitted/accepted for publ
 
 \vspace*{\fill}
 
-\begin{center}
-  Copyright \textcopyright{} 2024 Davide Stocco
-\end{center}
 \thispagestyle{empty}
 \cleardoublepage
 

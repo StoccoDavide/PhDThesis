@@ -6,13 +6,13 @@
 
 Firstly, we need to underline that the approach presented in the thesis is a symbolic factorization method, which is different from the direct dicretization method used in GENDA...
 
-## Q3: The minimum degree pivoting strategy apparantly worked for the examples in the thesis. In general, I assume, it cannot guarantee that all pivots are non-zero during evaluation. If a zero pivot is detected for a specific example, how would you proceed with the symbolic factorization?
+## Q3: The minimum degree pivoting strategy apperantly worked for the examples in the thesis. In general, I assume, it cannot guarantee that all pivots are non-zero during evaluation. If a zero pivot is detected for a specific example, how would you proceed with the symbolic factorization?
 
 This is the main problem of the approach presented in the thesis. In general, there is no way to guarantee that all pivots are non-zero during the symbolic factorization, unless they are a constant. However, if a pivot is not a constant than it only may be:
 
- - a parameter or a combination of parameters;
- - a function of the state variables;
- - a mixture of the above cases.
+- a parameter or a combination of parameters;
+- a function of the state variables;
+- a mixture of the above cases.
 
 If a parameter is set to zero then it may change the structure of the DAE system, which may lead to a different index. Therefore, new index reduction of the DAEs with such a parameter set to zero is necessary.
 If a pivot is a function of the state variables then it may be singularity or *impasse* points of the system...
